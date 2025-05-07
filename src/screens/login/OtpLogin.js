@@ -280,13 +280,13 @@ const OtpLogin = ({ navigation, route }) => {
     setAlert(false);
   };
   return (
-    <LinearGradient colors={["white", "white"]} style={styles.container}>
+    <LinearGradient colors={["#F0F8F6", "#F0F8F6"]} style={styles.container}>
       <View
         style={{
           width: "100%",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: 'white',
+          backgroundColor: '#F0F8F6',
         }}
       >
         <View
@@ -490,6 +490,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     alignItems: "center",
+    backgroundColor:'#F0F8F6'
   },
   semicircle: {
     position: "absolute",

@@ -125,9 +125,9 @@ const Splash = ({ navigation }) => {
   // const [gotLoginData, setGotLoginData] = useState()
   const isConnected = useSelector((state) => state.internet.isConnected);
 
-  const gifUri = Image.resolveAssetSource(
-    require("../../../assets/gif/Splash-myro.gif")
-  ).uri;
+  // const gifUri = Image.resolveAssetSource(
+  //   require("../../../assets/gif/SplashMotherWood.png")
+  // ).uri;
   // generating functions and constants for API use cases---------------------
   const [
     getAppTheme,
@@ -441,7 +441,7 @@ const Splash = ({ navigation }) => {
         {
           navigation.reset({
             index: "0",
-            routes: [{ name: "Introduction" }],
+            routes: [{ name: "SelectUser" }],
           });
         }
       }
@@ -452,7 +452,7 @@ const Splash = ({ navigation }) => {
         {
           navigation.reset({
             index: "0",
-            routes: [{ name: "Introduction" }],
+            routes: [{ name: "SelectUser" }],
           });
         }
       }
@@ -783,28 +783,28 @@ const Splash = ({ navigation }) => {
       <View
         style={{ alignItems: "center", justifyContent: "center", width: "90%" }}
       >
-        <FastImage
+        {/* <FastImage
           style={{ width: "100%", height: "100%", alignSelf: "center" }}
           source={{
             uri: gifUri, // Update the path to your GIF
             priority: FastImage.priority.normal,
           }}
           resizeMode={FastImage.resizeMode.cover}
-        />
+        /> */}
       </View>
     );
   };
 
   return (
-    <View>
-      <FastImage
+    <ImageBackground style={{flex:1,}} source={require('../../../assets/images/SplashMotherWood.png')}>
+      {/* <FastImage
         style={{ width: "100%", height: "100%", alignSelf: "center" }}
         source={{
           uri: gifUri, // Update the path to your GIF
           priority: FastImage.priority.normal,
         }}
         resizeMode={FastImage.resizeMode.cover}
-      />
+      /> */}
       {console.log("isSlow", isConnected.isInternetReachable)}
       {!connected && (
         <InternetModal visible={!connected} comp={NoInternetComp} />
@@ -846,7 +846,7 @@ const Splash = ({ navigation }) => {
           </View>
         </View>
       }
-    </View>
+    </ImageBackground>
   );
 };
 
