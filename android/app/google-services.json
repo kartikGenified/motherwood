@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "887043420639",
+    "project_id": "calcutta-knitwear",
+    "storage_bucket": "calcutta-knitwear.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:887043420639:android:9b057574f99039e613d46a",
+        "android_client_info": {
+          "package_name": "com.genefied.calcuttaKnitWear"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGzOtQ1RyfhM8R8thgsSBvlaEYW2Ehvh0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
