@@ -21,7 +21,7 @@ import { useGetLoginOtpMutation } from "../../apiServices/login/otpBased/SendOtp
 import ButtonNavigate from "../../components/atoms/buttons/ButtonNavigate";
 import ErrorModal from "../../components/modals/ErrorModal";
 import { useGetNameMutation } from "../../apiServices/login/GetNameByMobile";
-import TextInputRectangularWithPlaceholder from "../../components/atoms/input/TextInputRectangularWithPlaceholder";
+
 import { useIsFocused } from "@react-navigation/native";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
 import Checkbox from "../../components/atoms/checkbox/Checkbox";
@@ -31,11 +31,14 @@ import FastImage from "react-native-fast-image";
 import { useTranslation } from "react-i18next";
 import AlertModal from "../../components/modals/AlertModal";
 import crashlytics from "@react-native-firebase/crashlytics";
-import { appIcon } from "../../utils/HandleClientSetup";
+import { appIcon, eKyc } from "../../utils/HandleClientSetup";
+import TextInputInsIdePlaceholder from "../../components/atoms/input/TextInputInsIdePlaceholder";
+import { useGetLoginOtpForVerificationMutation } from "../../apiServices/otp/GetOtpApi";
+import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 
 const OtpLogin = ({ navigation, route }) => {
   const [mobile, setMobile] = useState("");
-  const [name, setName] = useState("");
+  const [name, setName] = useState("test");
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState();
   const [error, setError] = useState(false);
@@ -61,12 +64,13 @@ const OtpLogin = ({ navigation, route }) => {
     (state) => state.apptheme.ternaryThemeColor
   );
 
-  const icon = useSelector(state => state.apptheme.icon)
+  const icon = useSelector((state) => state.apptheme.icon);
 
-  console.log("Icon in  select user", icon)
+  console.log("Icon in  select user", icon);
 
   // ------------------------------------------------
   const focused = useIsFocused();
+
   // send otp for login--------------------------------
   const [
     sendOtpFunc,
@@ -77,6 +81,13 @@ const OtpLogin = ({ navigation, route }) => {
       isError: sendOtpIsError,
     },
   ] = useGetLoginOtpMutation();
+
+  //for Registration
+  const [sendOtpFuncReg, {
+    data: sendOtpDataReg,
+    error: sendOtpErrorReg,
+    isLoading: sendOtpIsLoaReg
+  }] = useGetLoginOtpForVerificationMutation()
 
   const [
     getTermsAndCondition,
@@ -109,10 +120,11 @@ const OtpLogin = ({ navigation, route }) => {
     user_type_id: user_type_id,
     user_type: user_type,
     mobile: mobile,
-    name: name,
+    name: mobile,
+    registrationRequired:registrationRequired
   };
   console.log("navigationParams", navigationParams);
-  
+
   const gifUri = Image.resolveAssetSource(
     require("../../../assets/gif/loaderNew.gif")
   ).uri;
@@ -134,21 +146,39 @@ const OtpLogin = ({ navigation, route }) => {
     if (sendOtpData) {
       console.log("sendOtpData", sendOtpData);
       if (sendOtpData?.success === true && mobile.length === 10) {
-        if (Object.keys(getNameData.body).length != 0) {
-          navigation.navigate("VerifyOtp", { navigationParams });
+        if (Object.keys(getNameData?.body).length != 0) {
+          navigation.navigate("VerifyOtp", { ...navigationParams, isExisting:true });
         }
       } else {
         console.log("Trying to open error modal");
       }
       setHideButton(false);
     } else if (sendOtpError) {
-      console.log("err", sendOtpError);
+      console.log("errLogin", sendOtpError);
       if (sendOtpError.status == 400) setAlert(true);
       else setError(true);
       setHideButton(false);
       setMessage(sendOtpError?.data?.message);
     }
   }, [sendOtpData, sendOtpError]);
+
+  useEffect(() => {
+    if (sendOtpDataReg) {
+      console.log("sendOtpDataReg", sendOtpDataReg);
+      if (sendOtpDataReg?.success === true && mobile.length === 10) {
+          
+          navigation.navigate("VerifyOtp", { ...navigationParams, isExisting:false });
+
+      }
+      setHideButton(false);
+    } else if (sendOtpErrorReg) {
+      console.log("errReg", sendOtpErrorReg);
+      if (sendOtpErrorReg.status == 400) setAlert(true);
+      else setError(true);
+      setHideButton(false);
+      setMessage(sendOtpErrorReg?.data?.message);
+    }
+  }, [sendOtpDataReg, sendOtpErrorReg]);
 
   useEffect(() => {
     if (getNameData) {
@@ -161,9 +191,7 @@ const OtpLogin = ({ navigation, route }) => {
     }
   }, [getNameData, getNameError]);
 
-  useEffect(() => {
-    console.log("Name in use effect--------->>>>>>>>>>>>>>>", name);
-  }, [name]);
+
 
   const getMobile = (data) => {
     // console.log(data)
@@ -178,7 +206,7 @@ const OtpLogin = ({ navigation, route }) => {
           Keyboard.dismiss();
         } else {
           setError(true);
-          setMessage(t("Please enter a valid mobile number"))
+          setMessage(t("Please enter a valid mobile number"));
         }
       }
     }
@@ -209,69 +237,50 @@ const OtpLogin = ({ navigation, route }) => {
   const navigateToOtp = () => {
     sendOtpFunc({ mobile, name, user_type, user_type_id });
     setHideButton(true);
-    // navigation.navigate('VerifyOtp',{navigationParams})
+
   };
   const handleButtonPress = () => {
-    crashlytics().setAttributes({
-      name: "test",
-      id: "13",
-      email: "nishankphulera@gmail.com",
-      userType: "carpenter",
-    });
-    // console.log("first",getNameData.message)
-    // console.log("mobile",mobile,name.length,name,isChecked,getNameData)
+
     if (isChecked) {
       console.log("handleButtonPress", getNameData, isChecked, name, mobile);
       if (
-        getNameData &&
-        isChecked &&
-        name !== undefined &&
         mobile !== undefined &&
-        name != "" &&
-        mobile.length !== 0 &&
-        name.length !== 0
+        mobile.length !== 0 
       ) {
-        // console.log("mobile",mobile,name.length)
-        if (getNameData.message === "Not Found") {
-          console.log("registrationRequired", registrationRequired);
+        if (getNameData && getNameData.message === "Not Found"){
           if (mobile?.length == 10) {
             if (registrationRequired) {
-              setMobile("");
-              setName("");
-              navigation.navigate("BasicInfo", {
-                needsApproval: needsApproval,
-                userType: user_type,
-                userId: user_type_id,
-                name: name,
-                mobile: mobile,
-                navigatingFrom: "OtpLogin",
-                registrationRequired: registrationRequired,
-              });
-            } else {
-              navigateToOtp();
-            }
+              const params = { mobile: mobile, name: mobile, user_type_id: user_type_id, user_type: user_type,type:'registration' }
+              sendOtpFuncReg(params)
+            } 
           } else {
             setError(true);
-            setMessage(t("Please enter your 10 digit mobile number"))
+            setMessage(t("Please enter your 10 digit mobile number"));
           }
-          // setName('')
-          // setMobile('')
-        } else {
-          sendOtpFunc({ mobile, name, user_type, user_type_id });
-          // navigation.navigate('VerifyOtp',{navigationParams})
+
+        }
+        else{
+          if (mobile?.length == 10) {
+            sendOtpFunc({ mobile, name, user_type, user_type_id });
+
+          }
+          else {
+            setError(true);
+            setMessage(t("Please enter your 10 digit mobile number"));
+          }
         }
       } else {
         if (mobile?.length != 10) {
           setError(true);
-          setMessage(t("Please enter your 10 digit mobile number"))
+          setMessage(t("Please enter your 10 digit mobile number"));
         } else if (name == undefined || name == "") {
-          setError(true);
-          setMessage(t("Please enter name"))
+          const params = { mobile: mobile, name: mobile, user_type_id: user_type_id, user_type: user_type,type:'registration' }
+          sendOtpFuncReg(params)
         }
       }
     } else {
-      setError(true);
-      setMessage(t("Please Accept Terms and Condition"))
+      setError(true); 
+      setMessage(t("Please Accept Terms and Condition"));
     }
   };
 
@@ -286,7 +295,6 @@ const OtpLogin = ({ navigation, route }) => {
           width: "100%",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: '#F0F8F6',
         }}
       >
         <View
@@ -295,7 +303,7 @@ const OtpLogin = ({ navigation, route }) => {
             width: "100%",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: 'white',
+
             flexDirection: "row",
           }}
         >
@@ -320,29 +328,32 @@ const OtpLogin = ({ navigation, route }) => {
 
           <Image
             style={{
-              height: 50,
-              width: 80,
-              resizeMode: "contain",
-              top: 20,
+              height: 220,
+              width: 220,
+              resizeMode: "cover",
+              top: 0,
+              left: 0,
               position: "absolute",
-              left: 50,
             }}
-            source={(icon != undefined || icon!= null  ) ? {uri:icon} : appIcon}
+            source={require("../../../assets/images/MotherWoodCircle.png")}
           ></Image>
         </View>
         <View
           style={{
-            alignItems: "flex-start",
+            alignItems: "center",
             justifyContent: "center",
-            marginTop: 10,
-            marginLeft:12,
-            width: "90%",
+            marginTop: 200,
+            marginLeft: 12,
           }}
         >
-          <PoppinsText
-            style={{ color: "black", fontSize: 28 }}
-            content={t("tell us number")}
-          ></PoppinsText>
+          <PoppinsTextMedium
+            style={{ color: "#00A79D", fontSize: 28, fontWeight: "800" }}
+            content={t("Welcome")}
+          ></PoppinsTextMedium>
+          <PoppinsTextMedium
+            style={{ color: "#00A79D", fontSize: 18 }}
+            content={t("Login to your account")}
+          ></PoppinsTextMedium>
         </View>
       </View>
 
@@ -370,20 +381,22 @@ const OtpLogin = ({ navigation, route }) => {
               marginTop: 40,
             }}
           >
-            <TextInputRectangularWithPlaceholder
-              placeHolder={t("mobile no")}
-              handleData={getMobile}
-              maxLength={10}
+            <TextInputInsIdePlaceholder
               value={mobile}
-              KeyboardType="numeric"
-            ></TextInputRectangularWithPlaceholder>
+              title="mobile"
+              placeHolder="Mobile No"
+              keyboardType="numeric"
+              inputHolder = {"Enter Your Number"}
+              maxLength={10}
+              handleData={getMobile}
+            />
 
-            <TextInputRectangularWithPlaceholder
+            {/* <TextInputRectangularWithPlaceholder
               placeHolder={t("name")}
               handleData={getName}
               value={name}
               specialCharValidation={true}
-            ></TextInputRectangularWithPlaceholder>
+            ></TextInputRectangularWithPlaceholder> */}
           </View>
         </KeyboardAvoidingView>
 
@@ -398,6 +411,7 @@ const OtpLogin = ({ navigation, route }) => {
           <View style={{ flexDirection: "row", marginHorizontal: 24 }}>
             <Checkbox CheckBoxData={getCheckBoxData} />
             <TouchableOpacity
+            style={{flexDirection:'row'}}
               onPress={() => {
                 navigation.navigate("PdfComponent", {
                   pdf: getTermsData?.body?.data?.[0]?.files[0],
@@ -405,33 +419,47 @@ const OtpLogin = ({ navigation, route }) => {
               }}
             >
               <PoppinsTextLeftMedium
-                content={t("terms and condition")}
+                content={t("I hearby accept all the ")}
                 style={{
                   color: "#808080",
-                  marginHorizontal: 30,
+
                   marginBottom: 20,
                   fontSize: 15,
                   marginLeft: 8,
                   marginTop: 16,
                 }}
               ></PoppinsTextLeftMedium>
+                   <PoppinsTextLeftMedium
+                content={t("Terms & Conditions")}
+                style={{
+                  color: "#00A79D",
+
+                  marginBottom: 20,
+                  fontSize: 15,
+
+                  marginTop: 16,
+                }}
+              ></PoppinsTextLeftMedium>
             </TouchableOpacity>
           </View>
-
-          <ButtonNavigateArrow
+        <View style={{marginHorizontal:20, marginRight:40}}>
+        <ButtonNavigateArrow
             success={success}
             handleOperation={handleButtonPress}
-            backgroundColor={buttonThemeColor}
+            backgroundColor={ isChecked ? "black" : "#000000"}
             style={{ color: "white", fontSize: 16 }}
             isLoading={sendOtpIsLoading}
-            content={t("login")}
+            content={t("Send OTP")}
             navigateTo="VerifyOtp"
             navigationParams={navigationParams}
             mobileLength={mobile}
+            needArrow={false}
             isChecked={
               isChecked && mobile?.length == 10 && name != "" && !hideButton
             }
           ></ButtonNavigateArrow>
+
+        </View>
 
           {sendOtpIsLoading && (
             <FastImage
@@ -449,10 +477,8 @@ const OtpLogin = ({ navigation, route }) => {
             />
           )}
         </View>
-
-      
       </ScrollView>
-      {registrationRequired && (
+      {/* {registrationRequired && (
           <View style={{ position: "absolute", right: 20, top: 10 }}>
             <ButtonNavigate
               handleOperation={() => {
@@ -480,7 +506,8 @@ const OtpLogin = ({ navigation, route }) => {
               }}
             ></ButtonNavigate>
           </View>
-        )}
+        )} */}
+        <SocialBottomBar/>
     </LinearGradient>
   );
 };
@@ -490,7 +517,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     alignItems: "center",
-    backgroundColor:'#F0F8F6'
+    backgroundColor: "#F0F8F6",
   },
   semicircle: {
     position: "absolute",

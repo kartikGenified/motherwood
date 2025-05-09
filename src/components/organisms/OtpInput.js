@@ -7,6 +7,7 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
+import SocialBottomBar from '../socialBar/SocialBottomBar';
 
 
 
@@ -58,14 +59,15 @@ const OtpInput = (propData) => {
             onLayout={getCellOnLayoutHandler(index)}
             key={index}
             style={[styles.cellRoot, isFocused && {...styles.focusCell,borderBlockColor:primaryThemeColor,
-            borderBottomWidth: 2,},{borderBottomColor: buttonThemeColor,
-            borderBottomWidth: 1,}]}>
+            borderWidth: 2,},{borderBottomColor: buttonThemeColor,
+            borderWidth: 1,}]}>
             <Text style={{...styles.cellText, color: buttonThemeColor,}}>
               {symbol || (isFocused ? <Cursor /> : null)}
             </Text>
           </View>
         )}
       />
+   
     </SafeAreaView>
   );
 };
@@ -78,6 +80,7 @@ const styles =  StyleSheet.create({
       width: 300,
       marginLeft: 'auto',
       marginRight: 'auto',
+      backgroundColor:'white'
     },
     cellRoot: {
       width: 40,

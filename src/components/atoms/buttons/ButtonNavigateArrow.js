@@ -5,25 +5,22 @@ import AnimatedDots from "../../animations/AnimatedDots";
 import { useIsFocused } from "@react-navigation/native";
 
 const ButtonNavigateArrow = (props) => {
-  const [isClicked, setIsClicked] = useState(false)
+  const [isClicked, setIsClicked] = useState(false);
   const backgroundColor = props.backgroundColor;
+  const needArrow = props?.needArrow ? props?.needArrow : true;
   // prop to manipulate background color of button
   const style = props.style;
   const isChecked = props.isChecked;
-  const isLoading = props.isLoading
+  const isLoading = props.isLoading;
 
   // prop to navigate to another page
   const content = props.content;
 
   console.log(props.success);
 
-  const focus = useIsFocused()
+  const focus = useIsFocused();
 
-  useEffect(()=>{
-
-  },[focus])
-
-
+  useEffect(() => {}, [focus]);
 
   const handleButtonPress = () => {
     if (!isClicked) {
@@ -48,25 +45,28 @@ const ButtonNavigateArrow = (props) => {
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: isChecked ? backgroundColor : "#808080",
-        margin: 10,
-        paddingLeft: 20,
-        paddingRight: 20,
+
         flexDirection: "row",
-        width: "60%",
+        // width: "60%",
       }}
     >
-      {
-        isLoading ?
-          <AnimatedDots color={'white'} /> :
-          <PoppinsText style={style} content={content}></PoppinsText>
+      {isLoading ? (
+        <AnimatedDots color={"white"} />
+      ) : (
+        <PoppinsText style={style} content={content}></PoppinsText>
+      )}
 
-      }
-
-
-      <Image
-        style={{ height: 20, width: 20, resizeMode: "contain", marginLeft: 20 }}
-        source={require("../../../../assets/images/whiteArrowRight.png")}
-      ></Image>
+      {needArrow && (
+        <Image
+          style={{
+            height: 20,
+            width: 20,
+            resizeMode: "contain",
+            marginLeft: 20,
+          }}
+          source={require("../../../../assets/images/whiteArrowRight.png")}
+        ></Image>
+      )}
     </TouchableOpacity>
   );
 };

@@ -32,6 +32,7 @@ import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import hideUserFromLogin from "../../utils/hideUserFromLogin";
 import FastImage from "react-native-fast-image";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
+import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 
 const SelectUser = ({ navigation }) => {
   const [listUsers, setListUsers] = useState();
@@ -265,105 +266,7 @@ const SelectUser = ({ navigation }) => {
             {/* <PoppinsTextMedium style={{color:'black',fontSize:12,marginTop:20,marginBottom:10}} content="Designed and developed by Genefied"></PoppinsTextMedium> */}
           </ScrollView>
 
-          <View
-            style={{
-              position: "absolute",
-              width: "100%",
-              bottom: 0,
-              height: 50,
-              borderTopColor: "#B6202D",
-              borderTopWidth: 1,
-              alignItems: "center",
-              justifyContent:'center',
-              flexDirection: "row",
-            }}
-          >
-            <TouchableOpacity style={{ flexDirection: "row", marginLeft: 20,marginTop:5 }}>
-              <Image
-                style={{
-                  height: 20,
-                  width: 20,
-                  resizeMode: "cover",
-                }}
-                source={require("../../../assets/images/facebook.png")}
-              ></Image>
-
-              <View
-                style={{ borderRightWidth: 1, borderRightColor: "#B9B9B9" ,marginLeft:10,height:20, }}
-              ></View>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={{ flexDirection: "row", marginLeft: 20,marginTop:5 }}>
-              <Image
-                style={{
-                  height: 20,
-                  width: 20,
-                  resizeMode: "cover",
-                }}
-                source={require("../../../assets/images/instagram.png")}
-              ></Image>
-
-              <View
-                style={{ borderRightWidth: 1, borderRightColor: "#B9B9B9" ,marginLeft:10,height:20, }}
-              ></View>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ flexDirection: "row", marginLeft: 20,marginTop:5 }}>
-              <Image
-                style={{
-                  height: 20,
-                  width: 20,
-                  resizeMode: "cover",
-                }}
-                source={require("../../../assets/images/youtube.png")}
-              ></Image>
-
-              <View
-                style={{ borderRightWidth: 1, borderRightColor: "#B9B9B9" ,marginLeft:10,height:20, }}
-              ></View>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ flexDirection: "row", marginLeft: 20,marginTop:5 }}>
-              <Image
-                style={{
-                  height: 20,
-                  width: 20,
-                  resizeMode: "cover",
-                }}
-                source={require("../../../assets/images/linkedin.png")}
-              ></Image>
-
-              <View
-                style={{ borderRightWidth: 1, borderRightColor: "#B9B9B9" ,marginLeft:10,height:20, }}
-              ></View>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ flexDirection: "row", marginLeft: 20,marginTop:5 }}>
-              <Image
-                style={{
-                  height: 20,
-                  width: 20,
-                  resizeMode: "cover",
-                }}
-                source={require("../../../assets/images/phone.png")}
-              ></Image>
-
-              <View
-                style={{ borderRightWidth: 1, borderRightColor: "#B9B9B9" ,marginLeft:10,height:20, }}
-              ></View>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ flexDirection: "row", marginLeft: 20,marginTop:5 }}>
-              <Image
-                style={{
-                  height: 20,
-                  width: 20,
-                  resizeMode: "cover",
-                }}
-                source={require("../../../assets/images/help.png")}
-              ></Image>
-
-              <View
-                style={{ borderRightWidth: 1, borderRightColor: "#B9B9B9" ,marginLeft:10,height:20, }}
-              ></View>
-            </TouchableOpacity>
-          </View>
+          <SocialBottomBar></SocialBottomBar>
         </LinearGradient>
       ) : (
         //   <ImageBackground
