@@ -10,6 +10,7 @@ const ButtonWithPlane = (props) => {
     const navigate = props.navigate
     const title = props.title
     const type = props.type
+    const plane = props.plane == false ? props.plane : true
     const params = props.params
     console.log("------------->", props)
     const ternaryThemeColor = useSelector(
@@ -33,9 +34,11 @@ const ButtonWithPlane = (props) => {
         <TouchableOpacity onPress={() => {
             handleButtonPress()
 
-        }} style={{ height: 60, width: 200, backgroundColor: ternaryThemeColor, alignItems: "center", justifyContent: 'center', flexDirection: 'row', borderRadius: 4, marginLeft: 10, marginTop: 50 }}>
-            <Image style={{ height: 30, width: 30, resizeMode: 'contain' }} source={require('../../../../assets/images/plane.png')}></Image>
-            <PoppinsTextMedium content={title} style={{ fontSize: 18, fontWeight: '800', color: 'white', marginLeft: 10 }}></PoppinsTextMedium>
+        }} style={{ height: 60,backgroundColor: "black", alignItems: "center", justifyContent: 'center', flexDirection: 'row', borderRadius: 4, marginLeft: 10, marginTop: 50 }}>
+        {plane &&
+         <Image style={{ height: 30, width: 30, resizeMode: 'contain' }} source={require('../../../../assets/images/plane.png')}></Image>
+        }   
+            <PoppinsTextMedium content={title} style={{ fontSize: 18, fontWeight: '800', color: 'white', marginLeft: plane ? 10 :0 }}></PoppinsTextMedium>
         </TouchableOpacity>
     );
 }

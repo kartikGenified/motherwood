@@ -26,7 +26,7 @@ const DashboardSupportBox = (props) => {
 
   const handleNavigation = () => {
     if (text === "Feedback") {
-      navigation.navigate("Feedback");
+      navigation.navigate("FeedbackOptions");
     } else if (text === "Rewards") {
       navigation.navigate("RedeemRewardHistory");
     } else if (text === "Customer Support") {

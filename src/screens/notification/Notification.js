@@ -47,8 +47,11 @@ const Notification = ({ navigation }) => {
     const buttonThemeColor = useSelector(
         state => state.apptheme.ternaryThemeColor,
     )
-        ? useSelector(state => state.apptheme.ternaryThemeColor)
-        : '#ef6110';
+
+    const secondaryThemeColor =  useSelector(
+        state => state.apptheme.secondaryThemeColor,
+    )
+     
     const height = Dimensions.get('window').height
 
     const Notificationbar = (props) => {
@@ -70,7 +73,7 @@ const Notification = ({ navigation }) => {
     }
 
     return (
-       <View style={{width:'100%',alignItems:'flex-start',justifyContent:'center',backgroundColor: buttonThemeColor,height:'100%' }}>
+       <View style={{width:'100%',alignItems:'flex-start',justifyContent:'center',backgroundColor: secondaryThemeColor,height:'100%' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10,height:'10%' }}>
                 <TouchableOpacity onPress={() => {
                     console.log("hello")
@@ -78,7 +81,7 @@ const Notification = ({ navigation }) => {
                 }}>
                     <Image style={{ height: 30, width: 30, resizeMode: 'contain', marginRight: 8 }} source={require('../../../assets/images/blackBack.png')}></Image>
                 </TouchableOpacity>
-                <Text style={{ color: 'white', marginLeft: 10, fontWeight: '500' }}>{t("Notification")}</Text>
+                <Text style={{ color: 'black', marginLeft: 10, fontWeight: '500' , fontSize:20}}>{t("Notification")}</Text>
             </View>
             {isNotifLoading && 
             <View style={{width:'100%',alignItems:'center',justifyContent:'center',height:'50%'}}>

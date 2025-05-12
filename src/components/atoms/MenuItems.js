@@ -19,8 +19,11 @@ const MenuItems = (props) => {
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   )
-    ? useSelector((state) => state.apptheme.ternaryThemeColor)
-    : "#FFB533";
+
+  const secondaryThemeColor = useSelector(
+    (state) => state.apptheme.secondaryThemeColor
+  )
+
   const image = props.image;
   const content = props.content;
   const platformFontSize = Platform.OS === "ios" ? 10 : 12;
@@ -48,12 +51,12 @@ const MenuItems = (props) => {
           handlePress();
         }}
         style={{
-          height:100,
+          height:90,
           width: 110,
           borderRadius:5,
           borderWidth:1,
           borderColor:ternaryThemeColor,
-          backgroundColor: "#FFF8E7",
+          backgroundColor: secondaryThemeColor,
           alignItems: "center",
           justifyContent: "center",
           opacity: 1,
@@ -84,7 +87,7 @@ const MenuItems = (props) => {
         style={{
           width: 80,
           marginTop: 6,
-          color: "black",
+          color: ternaryThemeColor,
           fontSize: platformFontSize,
           fontWeight: platformFontWeight,
         }}

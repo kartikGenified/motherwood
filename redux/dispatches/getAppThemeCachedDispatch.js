@@ -7,7 +7,7 @@ const { setDrawerData } = require("../slices/drawerDataSlice");
 
 
 export const getAppThemeCachedDispatch=async(dispatch, getAppThemeData)=>{
-  console.log("getAppThemeCachedDispatch",getAppThemeData)
+  console.log("getAppThemeCachedDispatch",JSON.stringify(getAppThemeData))
   await dispatch(setLocationSetup(getAppThemeData?.body?.location));
       console.log(
         "dispatching locaion setup data",

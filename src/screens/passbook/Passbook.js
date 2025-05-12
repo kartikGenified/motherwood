@@ -289,7 +289,7 @@ const Passbook = ({ navigation }) => {
             <View style={{ alignItems: "center", height: '100%', width: "100%", backgroundColor: "white",  }}>
 
                 {/* coloured header */}
-                <View style={{  width: '100%', backgroundColor: "#FFF8E7",}}>
+                <View style={{  width: '100%', backgroundColor: secondaryThemeColor,}}>
 
                     <View style={{ alignItems: "center", justifyContent: "flex-start", flexDirection: "row", width: '100%', marginTop: 10, height: 40, marginLeft: 20 }}>
                         <TouchableOpacity onPress={() => { navigation.navigate("Dashboard") }}>

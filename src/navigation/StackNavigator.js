@@ -91,6 +91,7 @@ import AssignUser from '../screens/assignTo/AssignUser';
 import ScanReturn from '../screens/return/ScanReturn';
 import ReturnList from '../screens/return/ReturnList';
 import KycVerificationNewScreen from '../screens/verification/KycVerificationNewScreen';
+import FeedbackOptions from '../screens/feedback/FeedbackOptions';
 
 
 
@@ -238,6 +239,12 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="MpinSetupScreen" component={MpinSetupScreen}></Stack.Screen>
+                          <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="FeedbackOptions" component={FeedbackOptions}></Stack.Screen>
+                
                                 <Stack.Screen options={
                     {
                         headerShown: false

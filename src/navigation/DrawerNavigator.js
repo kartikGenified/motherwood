@@ -56,8 +56,9 @@ const CustomDrawer = () => {
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   )
-    ? useSelector((state) => state.apptheme.ternaryThemeColor)
-    : "grey";
+  const secondaryThemeColor = useSelector(
+    (state) => state.apptheme.secondaryThemeColor
+  )
   const primaryThemeColor = useSelector(
     (state) => state.apptheme.primaryThemeColor
   )
@@ -494,8 +495,7 @@ const CustomDrawer = () => {
         style={{
           width: "100%",
           height: 125,
-          backgroundColor: ternaryThemeColor,
-          borderBottomLeftRadius: 30,
+          backgroundColor: secondaryThemeColor,
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
@@ -517,20 +517,25 @@ const CustomDrawer = () => {
         ) : (
           <View
             style={{
+              height:60,
+              width:60,
               paddingHorizontal: 10,
               paddingVertical: 10,
               borderRadius: 30,
               marginLeft: 10,
-              position: "absolute",
+              borderWidth:2,
+              borderColor:ternaryThemeColor,
               backgroundColor: "white",
-              left: 15,
-              resizeMode: "contain",
+              alignItems:'center',
+              justifyContent:'center',
+
             }}
           >
             <Image
               style={{
-                height: 40,
-                width: 40,
+                height: 30,
+                width: 30,
+                resizeMode:'contain'
               }}
               source={require("../../assets/images/userGrey.png")}
             ></Image>
@@ -539,41 +544,11 @@ const CustomDrawer = () => {
         <View
           style={{ justifyContent: "center", marginLeft: 50, width: "50%" }}
         >
-          {userData && (
-            <Text
-              style={{
-                color: "white",
-                margin: 0,
-                fontWeight: "600",
-                fontSize: 16,
-              }}
-            >
-              {userData.name}
-            </Text>
-          )}
-          {userData && (
-            <Text
-              style={{ color: "white", margin: 0, textTransform: "capitalize" }}
-            >
-              {userData.user_type} Account
-            </Text>
-          )}
+
+ 
 
           {!Object.values(kycData).includes(false) ? <View style={{ flexDirection: 'row', marginTop: 4 }}>
-            <View
-              style={{
-                height: 22,
-                width: 80,
-                borderRadius: 20,
-                backgroundColor: 'white',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                marginTop: 2,
-              }}>
-              <Image style={{ height: 10, width: 10, resizeMode: 'contain' }} source={require('../../assets/images/tickBlue.png')}></Image>
-              <Text style={{ marginLeft: 4, color: 'black', fontSize: 10, fontWeight: '500' }}>KYC Status</Text>
-            </View>
+  
 
           </View> :
             <View style={{ flexDirection: 'row', marginTop: 4 }}>

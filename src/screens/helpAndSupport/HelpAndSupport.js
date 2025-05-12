@@ -24,8 +24,9 @@ const HelpAndSupport = ({ navigation }) => {
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   )
-    ? useSelector((state) => state.apptheme.ternaryThemeColor)
-    : "grey";
+  const secondaryThemeColor = useSelector(
+    (state) => state.apptheme.secondaryThemeColor
+  )
 
   const { t } = useTranslation();
 
@@ -53,7 +54,7 @@ const HelpAndSupport = ({ navigation }) => {
           justifyContent: "flex-start",
           flexDirection: "row",
           width: "100%",
-          backgroundColor: "#FFF8E7",
+          backgroundColor:secondaryThemeColor,
           height: 60,
         }}
       >

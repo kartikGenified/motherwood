@@ -128,8 +128,9 @@ const Dashboard = ({ navigation }) => {
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   )
-    ? useSelector((state) => state.apptheme.ternaryThemeColor)
-    : "#FFB533";
+  const secondaryThemeColor = useSelector(
+    (state) => state.apptheme.secondaryThemeColor
+  )
 
   const gifUri = Image.resolveAssetSource(
     require("../../../assets/gif/loaderNew.gif")
@@ -544,7 +545,7 @@ const Dashboard = ({ navigation }) => {
       style={{
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#FFF8E7",
+        backgroundColor: secondaryThemeColor,
         flex: 1,
         height: "100%",
       }}
@@ -601,13 +602,14 @@ const Dashboard = ({ navigation }) => {
 
           <View
             style={{
-              width: "100%",
+              width: "90%",
               marginBottom: 20,
               flexDirection:'row',
+              justifyContent:'space-between'
 
             }}
           >
-            <View style={{ flexDirection: "row", alignItems: "center" ,width:'100%',justifyContent:'space-around',}}>
+            <View style={{ flexDirection: "row", alignItems: "center" ,marginHorizontal:20}}>
 
               <View
                 style={{
@@ -630,11 +632,10 @@ const Dashboard = ({ navigation }) => {
               </Text>
             </View>
 
-
-
-            <View>
-                <Text>hi</Text>
-            </View>
+            <TouchableOpacity style={{ flexDirection:'row', marginTop:13}}>
+              <Image source={require("../../screens/../../assets/images/info_white.png")}></Image>
+              <PoppinsTextLeftMedium style={{color:ternaryThemeColor, fontWeight:'600'}} content={t("Earn Badge")}></PoppinsTextLeftMedium>
+            </TouchableOpacity>
             
           </View>
 
@@ -696,7 +697,7 @@ const Dashboard = ({ navigation }) => {
             <DashboardSupportBox
               title={t("customer support")}
               text="Customer Support"
-              backgroundColor="#FFF8E7"
+              backgroundColor={secondaryThemeColor}
               borderColor={ternaryThemeColor}
               image={require("../../../assets/images/user_red.png")}
             ></DashboardSupportBox>
@@ -704,7 +705,7 @@ const Dashboard = ({ navigation }) => {
             <DashboardSupportBox
               title={t("feedback")}
               text="Feedback"
-              backgroundColor="#FFF8E7"
+              backgroundColor={secondaryThemeColor}
               borderColor={ternaryThemeColor}
               image={require("../../../assets/images/feedback_red.png")}
             ></DashboardSupportBox>

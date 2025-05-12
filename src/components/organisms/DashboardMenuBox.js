@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 
 const DashboardMenuBox=(props)=>{
     const data = props?.data
+    console.log("dahsjfjd", data)
     const navigation = props.navigation
     const width = Dimensions.get('window').width
     const requiresLocation = props.requiresLocation
