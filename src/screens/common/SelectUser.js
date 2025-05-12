@@ -84,13 +84,10 @@ const SelectUser = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => true
-    );
+
     getData();
     getUsers();
-    return () => backHandler.remove();
+
   }, []);
   useEffect(() => {
     if (getUsersData) {
@@ -336,8 +333,10 @@ const styles = StyleSheet.create({
   userListContainer: {
     width: "100%",
     flexDirection: "row",
+
     flexWrap: "wrap",
-    marginHorizontal: 30,
+    justifyContent:'center',
+
   },
 });
 

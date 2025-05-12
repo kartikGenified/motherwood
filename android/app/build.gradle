@@ -75,14 +75,14 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.genefied.calcuttaKnitWear"
+    namespace "com.genefied.motherwood"
     defaultConfig 
     {
-        applicationId "com.genefied.calcuttaKnitWear"
+        applicationId "com.genefied.motherwood"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 6
-        versionName "1.0.5"
+        versionCode 1
+        versionName "1.0.0"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
 

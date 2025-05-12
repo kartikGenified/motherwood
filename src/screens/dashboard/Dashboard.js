@@ -46,7 +46,7 @@ import PlatinumModal from "../../components/platinum/PlatinumModal";
 import { useFetchAllQrScanedListMutation } from "../../apiServices/qrScan/AddQrApi";
 import FastImage from "react-native-fast-image";
 import ScannedDetailsBox from "../../components/organisms/ScannedDetailsBox";
-import dayjs from 'dayjs'
+import dayjs from "dayjs";
 import AnimatedDots from "../../components/animations/AnimatedDots";
 import analytics from "@react-native-firebase/analytics";
 import messaging from "@react-native-firebase/messaging";
@@ -55,7 +55,10 @@ import ModalWithBorder from "../../components/modals/ModalWithBorder";
 import ErrorModal from "../../components/modals/ErrorModal";
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { needCaimpaign, needRandomRedeemPoint } from "../../utils/HandleClientSetup";
+import {
+  needCaimpaign,
+  needRandomRedeemPoint,
+} from "../../utils/HandleClientSetup";
 import { useGetAppCampaignMutation } from "../../apiServices/campaign/CampaignApi";
 import Tooltip from "react-native-walkthrough-tooltip";
 import {
@@ -81,7 +84,7 @@ const Dashboard = ({ navigation }) => {
   const [success, setSuccess] = useState(false);
   const [hide, setHide] = useState(true);
   const [campaignData, setCaimpaignData] = useState(null);
-  const [showCampaign, setShowCampaign] = useState()
+  const [showCampaign, setShowCampaign] = useState();
   const [error, setError] = useState(false);
   const [walkThrough, setWalkThrough] = useState(false);
   const stepId = useSelector((state) => state.walkThrough.stepId);
@@ -90,7 +93,7 @@ const Dashboard = ({ navigation }) => {
   const pointsRef = useRef(0);
   const randomNoRef = useRef(0);
 
-  console.log("timeeeeee", date, time, month, year)
+  console.log("timeeeeee", date, time, month, year);
 
   // const position1 = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
 
@@ -336,7 +339,7 @@ const Dashboard = ({ navigation }) => {
 
   useEffect(() => {
     if (getKycStatusData) {
-      console.log("getKycStatusData", getKycStatusData)
+      console.log("getKycStatusData", getKycStatusData);
       if (getKycStatusData?.success) {
         const tempStatus = Object.values(getKycStatusData?.body);
 
@@ -483,12 +486,10 @@ const Dashboard = ({ navigation }) => {
     setError(false);
   };
 
-  const dontShow=(status)=>{
-    console.log("dont show campaign")
-    setShowCampaign(status)
-  }
-
-  
+  const dontShow = (status) => {
+    console.log("dont show campaign");
+    setShowCampaign(status);
+  };
 
   const notifModalFunc = () => {
     return (
@@ -543,7 +544,7 @@ const Dashboard = ({ navigation }) => {
       style={{
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#F7F9FA",
+        backgroundColor: "#FFF8E7",
         flex: 1,
         height: "100%",
       }}
@@ -575,62 +576,7 @@ const Dashboard = ({ navigation }) => {
         }}
       >
         <DrawerHeader></DrawerHeader>
-        <View
-          style={{
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "flex-start",
-            flexDirection: "row",
-            marginBottom: 10,
-          }}
-        >
-          <PoppinsTextLeftMedium
-            style={{
-              color: ternaryThemeColor,
-              fontWeight: "bold",
-              fontSize: 19,
-              marginLeft: 20,
-            }}
-            content={`${t("Welcome")} ${userData?.name}`}
-          ></PoppinsTextLeftMedium>
-          {getActiveMembershipData?.body !== null && (
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                marginLeft: 10,
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexDirection: "row",
-                  backgroundColor: ternaryThemeColor,
-                  padding: 4,
-                  borderRadius: 4,
-                }}
-                onPress={showSuccessModal}
-              >
-                <Image
-                  style={{ height: 16, width: 16, resizeMode: "contain" }}
-                  source={require("../../../assets/images/reward.png")}
-                ></Image>
 
-                <PoppinsTextMedium
-                  style={{ color: "white", fontSize: 14 }}
-                  content={membership}
-                ></PoppinsTextMedium>
-              </TouchableOpacity>
-            </View>
-          )}
-          <PlatinumModal
-            isVisible={isSuccessModalVisible}
-            onClose={hideSuccessModal}
-            getActiveMembershipData={getActiveMembershipData}
-          />
-        </View>
         <View
           style={{
             width: "100%",
@@ -642,169 +588,56 @@ const Dashboard = ({ navigation }) => {
           <View style={{ height: 200, width: "100%", marginBottom: 20 }}>
             {bannerArray && <Banner images={bannerArray}></Banner>}
 
-            {showCampaign && <CampaignVideoModal dontShow = {dontShow} isVisible={CampainVideoVisible} onClose={()=>{
-              setCmpainVideoVisible(false)
-            }} />}
+            {showCampaign && (
+              <CampaignVideoModal
+                dontShow={dontShow}
+                isVisible={CampainVideoVisible}
+                onClose={() => {
+                  setCmpainVideoVisible(false);
+                }}
+              />
+            )}
           </View>
-          {/* Ozone specific change do not show for sales */}
-          {userData?.user_type!== 'distributor' && userData && !userPointIsLoading && (
-            <View
-              style={{ width: "90%", alignItems: "center", justifyContent: "" }}
-            >
-              
-              {needRandomRedeemPoint ?
-                <PointBox pointBalance ={Math.trunc(Number(userPointData?.body?.point_balance)) } ></PointBox> 
-            :
-            <View
+
+          <View
             style={{
-              width: "90%",
-              height: 50,
-              backgroundColor: "white",
+              width: "100%",
               marginBottom: 20,
-              flexDirection: "row",
-              alignItems: "center",
-              borderColor: "#808080",
-              borderWidth: 0.3,
-              borderRadius: 10,
+              flexDirection:'row',
+
             }}
           >
-            <View
-              style={{
-                backgroundColor: "white",
-                width: "42%",
-                marginHorizontal: 20,
-              }}
-            >
-              {userPointData?.body?.point_balance ? (
-                <View>
-                  <PoppinsTextMedium
-                    content={`${t("Balance points ")}`}
-                    style={{ color: "black", fontWeight: "bold" }}
-                  ></PoppinsTextMedium>
-                  <PoppinsTextMedium
-                    content={`${
-                      userPointData?.body?.point_balance
-                        ? Math.floor(userPointData?.body?.point_balance)
-                        : "loading"
-                    }`}
-                    style={{ color: "black", fontWeight: "bold" }}
-                  ></PoppinsTextMedium>
-                </View>
-              ) : (
-                <AnimatedDots color={"black"} />
-              )}
+            <View style={{ flexDirection: "row", alignItems: "center" ,width:'100%',justifyContent:'space-around',}}>
 
-              
-            </View>
-
-            <View
-              style={{
-                height: "100%",
-                borderWidth: 0.4,
-                color: "#808080",
-                opacity: 0.3,
-              }}
-            >
               <View
                 style={{
-                  width: "90%",
+                  backgroundColor: "white",
+                  width: 40,
+                  height: 40,
+                  borderRadius: 20,
                   alignItems: "center",
-                  justifyContent: "",
+                  justifyContent: "center",
+                  flexDirection: "row",
                 }}
               >
+                <Image
+                  style={{ height: 20, width: 20 }}
+                  source={require("../../../assets/images/userGrey.png")}
+                ></Image>
               </View>
+              <Text style={{ color: "black", marginLeft: 5 }}>
+                {userData?.name}
+              </Text>
             </View>
 
-            <View style={{ backgroundColor: "white", width: "46%" }}>
-              {userData && !userPointIsLoading && (
-                <View>
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: ternaryThemeColor,
-                      height: "100%",
-                      borderRadius: 5,
-                      width: "100%",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                    onPress={() => {
-                      navigation.navigate("RedeemedHistory");
-                    }}
-                  >
-                    <PoppinsTextLeftMedium
-                      style={{
-                        color: "white",
-                        fontWeight: "800",
-                        fontSize: 16,
-                      }}
-                      content={t("redeem")}
-                    ></PoppinsTextLeftMedium>
-                  </TouchableOpacity>
-                  <Tooltip
-                    isVisible={walkThrough}
-                    content={
-                      <View style={{ alignItems: "center" }}>
-                        <Text
-                          style={{
-                            color: "black",
-                            textAlign: "center",
-                            marginBottom: 10,
-                            fontWeight: "bold",
-                          }}
-                        >
-                          Use redeem to use your scanned point
-                        </Text>
-                        <View style={{ flexDirection: "row" }}>
-                          <TouchableOpacity
-                            style={{
-                              backgroundColor: ternaryThemeColor,
-                              paddingVertical: 5,
-                              paddingHorizontal: 15,
-                              borderRadius: 5,
-                              marginRight: 12,
-                            }}
-                            onPress={() => handleSkip()}
-                          >
-                            <Text style={{ color: "white" }}>Skip</Text>
-                          </TouchableOpacity>
 
-                          <TouchableOpacity
-                            style={{
-                              backgroundColor: "lightgray",
-                              paddingVertical: 5,
-                              paddingHorizontal: 15,
-                              borderRadius: 5,
-                            }}
-                            onPress={() => handleNextStep()}
-                          >
-                            <Text style={{ color: "black" }}>Next</Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                    }
-                    placement="right"
-                    animated={true}
-                    onClose={() => setWalkThrough(false)}
-                    tooltipStyle={{ borderRadius: 30 }}
-                    contentStyle={{
-                      backgroundColor: "white",
-                      minHeight: 100,
-                      borderWidth: 2,
-                      borderRadius: 10,
-                      borderColor: ternaryThemeColor,
-                    }}
-                  ></Tooltip>
-                </View>
-              )}
+
+            <View>
+                <Text>hi</Text>
             </View>
-          </View>
-            }
             
+          </View>
 
-
-
-            </View>
-          )}
           {(userData?.user_type).toLowerCase() !== "dealer" ? (
             (userData?.user_type).toLowerCase() !== "sales" ? (
               scanningDetails &&
@@ -845,69 +678,37 @@ const Dashboard = ({ navigation }) => {
               source={{
                 uri: gifUri, // Update the path to your GIF
                 priority: FastImage.priority.normal,
-                
               }}
               resizeMode={FastImage.resizeMode.contain}
             />
           )}
-          <View
-            style={{
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-              marginBottom: 20,
-            }}
-          >
-            {showKyc && (
-              <KYCVerificationComponent
-                buttonTitle={t("Complete Your KYC")}
-                title={t("Your KYC is not completed")}
-              ></KYCVerificationComponent>
-            )}
-          </View>
+
           <View
             style={{
               flexDirection: "row",
               width: "100%",
+              height: 100,
+              backgroundColor: "white",
               alignItems: "center",
               justifyContent: "space-evenly",
             }}
           >
-            {userData.user_type.toLowerCase() !== "distributor" && (
-              <DashboardSupportBox
-                title={t("rewards")}
-                text="Rewards"
-                backgroundColor="#D9C7B6"
-                borderColor="#FEE8D4"
-                image={require("../../../assets/images/reward_dashboard.png")}
-              ></DashboardSupportBox>
-            )}
             <DashboardSupportBox
               title={t("customer support")}
               text="Customer Support"
-              backgroundColor="#BCB5DC"
-              borderColor="#E4E0FC"
-              image={require("../../../assets/images/support.png")}
+              backgroundColor="#FFF8E7"
+              borderColor={ternaryThemeColor}
+              image={require("../../../assets/images/user_red.png")}
             ></DashboardSupportBox>
+
             <DashboardSupportBox
               title={t("feedback")}
               text="Feedback"
-              backgroundColor="#D8C8C8"
-              borderColor="#FDDADA"
-              image={require("../../../assets/images/feedback.png")}
+              backgroundColor="#FFF8E7"
+              borderColor={ternaryThemeColor}
+              image={require("../../../assets/images/feedback_red.png")}
             ></DashboardSupportBox>
           </View>
-          {/* <Button
-        title="Add To Basket"
-        onPress={async () =>
-          await analytics().logEvent('basket', {
-            id: 3745092,
-            item: 'mens grey t-shirt',
-            description: ['round neck', 'long sleeved'],
-            size: 'L',
-          })
-        }
-      /> */}
         </View>
       </ScrollView>
     </View>

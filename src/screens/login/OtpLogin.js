@@ -115,12 +115,13 @@ const OtpLogin = ({ navigation, route }) => {
   const registrationRequired = route?.params?.registrationRequired;
   console.log("registrationRequiredotpLogin", registrationRequired);
   const width = Dimensions.get("window").width;
+  
   const navigationParams = {
     needsApproval: needsApproval,
     user_type_id: user_type_id,
     user_type: user_type,
     mobile: mobile,
-    name: mobile,
+    name: name ? name : mobile,
     registrationRequired:registrationRequired
   };
   console.log("navigationParams", navigationParams);
@@ -248,6 +249,8 @@ const OtpLogin = ({ navigation, route }) => {
         mobile.length !== 0 
       ) {
         if (getNameData && getNameData.message === "Not Found"){
+          console.log("haa jara hai" , mobile, registrationRequired)
+          
           if (mobile?.length == 10) {
             if (registrationRequired) {
               const params = { mobile: mobile, name: mobile, user_type_id: user_type_id, user_type: user_type,type:'registration' }
@@ -257,11 +260,12 @@ const OtpLogin = ({ navigation, route }) => {
             setError(true);
             setMessage(t("Please enter your 10 digit mobile number"));
           }
-
         }
         else{
+          console.log("haa aara hai",mobile, name, user_type, user_type_id )
           if (mobile?.length == 10) {
             sendOtpFunc({ mobile, name, user_type, user_type_id });
+            console.log("haa aara hai2")
 
           }
           else {

@@ -676,7 +676,7 @@ const Splash = ({ navigation }) => {
                 text: t("Update"),
                 onPress: () =>
                   Linking.openURL(
-                    "https://play.google.com/store/apps/details?id=com.genefied.calcuttaKnitWear"
+                    "https://play.google.com/store/apps/details?id=com.genefied.motherwood"
                   ),
               },
             ]
@@ -692,7 +692,7 @@ const Splash = ({ navigation }) => {
                 text: "Update",
                 onPress: () =>
                   Linking.openURL(
-                    "https://play.google.com/store/apps/details?id=com.genefied.calcuttaKnitWear"
+                    "https://play.google.com/store/apps/details?id=com.genefied.motherwood"
                   ),
               },
             ]

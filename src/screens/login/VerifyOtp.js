@@ -491,7 +491,7 @@ const VerifyOtp = ({ navigation, route }) => {
     setModalWithBorder(false);
     setMessage("");
     // navigation.reset({ index: '0', routes: [{ name: 'Dashboard' }] })
-    navigation.reset({ index: "0", routes: [{ name: "MpinSetupScreen" }] });
+    navigation.reset({ index: "0", routes: [{ name: "Dashboard" }] });
   };
 
   const ModalContent = () => {
@@ -751,7 +751,7 @@ const VerifyOtp = ({ navigation, route }) => {
         <View style={{  flexDirection:'row', justifyContent:'space-around' }}>
         
           <View style={{ alignItems: "center", justifyContent: "center",flexDirection:'row' }}>
-            <Text style={{ color: ternaryThemeColor, marginTop: 10 ,fontSize:14}}>
+            <Text style={{ color: "black", marginTop: 10 ,fontSize:14}}>
               didn't recieve any OTP?  
             </Text>
 
@@ -786,7 +786,7 @@ const VerifyOtp = ({ navigation, route }) => {
               }}
               source={require("../../../assets/images/clock.png")}
             ></Image>
-            <Text style={{ color: ternaryThemeColor, marginLeft: 4 }}>
+            <Text style={{ color: "black", marginLeft: 4 }}>
               {timer}
             </Text>
           </View>

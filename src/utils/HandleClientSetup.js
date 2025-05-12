@@ -1,14 +1,14 @@
 //Thanks to Karik for this Setup (The Half Blood Prince)
 
 //clint ID's
-export const clientName = "calkn";
-export const clientID = 29;
-export const clientOfficialName = "Calcutta Knit Wear"
+export const clientName = "sudama";
+export const clientID = 41;
+export const clientOfficialName = "MotherWood"
 export const baseUrl =  "http://saas-api-dev.genefied.in/"
 // "https://saas.genefied.in/" production
 // "http://saas-api-dev.genefied.in/" staging
 //icons and images
-export const appIcon = require("../../assets/images/Logo.png");
+export const appIcon = require("../../assets/images/motherwood_white_logo.png");
 export const splash = require("../../assets/gif/Splash-myro.gif");
 export const supplyUrl = "https://supplybeam.genefied.in/api"
 export const descriptionImages = [

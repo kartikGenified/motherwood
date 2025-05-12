@@ -22,8 +22,8 @@ const DrawerHeader = () => {
         ? useSelector(state => state.apptheme.ternaryThemeColor)
         : 'grey';
     const icon = useSelector(state => state.apptheme.icon)
-        ? useSelector(state => state.apptheme.icon)
-        : require('../../../assets/images/demoIcon.png');
+
+
 
     const stepId = useSelector((state) => state.walkThrough.stepId);
 

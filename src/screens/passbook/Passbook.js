@@ -11,6 +11,7 @@ import { useGetPointSharingDataMutation } from '../../apiServices/pointSharing/p
 import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium';
 import { useTranslation } from 'react-i18next';
 import { neededHistory } from '../../utils/HandleClientSetup';
+import PointsCard from '../../components/passbook/PointsCard';
 
 const Passbook = ({ navigation }) => {
     const [warrantyOptionEnabled, setWarrantyOptionEnabled] = useState(false)
@@ -51,6 +52,10 @@ const Passbook = ({ navigation }) => {
     )
         ? useSelector(state => state.apptheme.ternaryThemeColor)
         : 'grey';
+
+            const secondaryThemeColor = useSelector(
+        state => state.apptheme.secondaryThemeColor,
+      )
     const userData = useSelector(state => state.appusersdata.userData)
 
     console.log('userdata', userData)
@@ -280,63 +285,29 @@ const Passbook = ({ navigation }) => {
 
 
     return (
-        <ScrollView style={{ height: '100%', width: '100%', flex: 1 }}>
-            <View style={{ alignItems: "center", height: '100%', width: "100%", backgroundColor: "white", paddingBottom: 100, }}>
+        <ScrollView contentContainerStyle={{flexGrow:1}} style={{ height: '100%', width: '100%', }}>
+            <View style={{ alignItems: "center", height: '100%', width: "100%", backgroundColor: "white",  }}>
 
                 {/* coloured header */}
-                <View style={{ height: 250, width: '100%', backgroundColor: ternaryThemeColor, alignItems: "flex-start", justifyContent: 'flex-start' }}>
+                <View style={{  width: '100%', backgroundColor: "#FFF8E7",}}>
 
                     <View style={{ alignItems: "center", justifyContent: "flex-start", flexDirection: "row", width: '100%', marginTop: 10, height: 40, marginLeft: 20 }}>
                         <TouchableOpacity onPress={() => { navigation.navigate("Dashboard") }}>
                             <Image style={{ height: 30, width: 30, resizeMode: 'contain' }} source={require('../../../assets/images/blackBack.png')}></Image>
                         </TouchableOpacity>
-                        <PoppinsTextMedium content={t("Passbook" )}style={{ marginLeft: 10, fontSize: 18, fontWeight: '700', color: 'white' }}></PoppinsTextMedium>
-                        {/* <TouchableOpacity style={{marginLeft:'50%'}}>
-            <Image style={{height:30,width:30,resizeMode:'contain'}} source={require('../../../assets/images/notificationOn.png')}></Image>
-            </TouchableOpacity> */}
+                        <PoppinsTextMedium content={t("Passbook" )}style={{ marginLeft: 10, fontSize: 18, fontWeight: '700', color: 'black' }}></PoppinsTextMedium>
                     </View>
-                    {/* name and membership */}
-                    {/* --------------------------- */}
-                    <View style={{ flexDirection: "row", height: 50, width: '100%', alignItems: "center", justifyContent: "flex-start" }}>
-                        <PoppinsText content={name} style={{ color: 'white', fontSize: 20, marginLeft: 20 }}></PoppinsText>
-                        {/* <View style={{ height: 20, width: 2, backgroundColor: "white", marginLeft: 10 }}></View>
-
-                        <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => {
-                            setPlatinumModal(true)
-                        }}>
-                            <Image style={{ height: 20, width: 20, resizeMode: 'contain', marginLeft: 10 }} source={require('../../../assets/images/reward.png')}></Image>
-                            <PoppinsTextMedium style={{ color: "white" }} content={membership}></PoppinsTextMedium>
-                        </TouchableOpacity> */}
+                    <View style={{width:'100%', marginTop:40}}>
+                    <PointsCard/>
 
                     </View>
-                    {workflowProgram?.length !== 0 && <View style={{ alignItems: "center", justifyContent: "center", width: '100%', }}>
-                        <RewardBox ></RewardBox>
 
-                    </View>}
-
-                    {/* <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
-                        <View style={{ backgroundColor: 'white' }}>
-                            {userData && <TouchableOpacity style={{ backgroundColor: ternaryThemeColor, padding: 10, borderRadius: 5, width: 120, alignItems: 'center', }} onPress={() => { navigation.navigate("RedeemedHistory") }}>
-                                <PoppinsTextLeftMedium style={{ color: 'white', fontWeight: '800' }} content="Redeem"  ></PoppinsTextLeftMedium>
-                            </TouchableOpacity>}
-                        </View>
-                    </View> */}
-                
                 </View>
-{/* 
-                <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
-                        <View style={{ backgroundColor: ternaryThemeColor, }}>
-                            {userData && <TouchableOpacity style={{ backgroundColor: ternaryThemeColor, padding: 10, borderRadius: 5, width: 120, alignItems: 'center', }} onPress={() => { navigation.navigate("RedeemedHistory") }}>
-                                <PoppinsTextLeftMedium style={{ color: 'white', fontWeight: '800' }} content={t("redeem")}  ></PoppinsTextLeftMedium>
-                            </TouchableOpacity>}
-                        </View>
-                    </View> */}
 
-                {/* options----------------------------- */}
 
                 {
                     listView &&
-                    <View style={{ width: '90%', alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: '#EEEEEE', borderRadius: 20, marginTop: 100 }}>
+                    <View style={{ width: '90%', alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: '#EEEEEE', borderRadius: 20, marginTop: 150 }}>
 
                         <View style={{ width: '100%', height: 50, flexDirection: "row", alignItems: "center", justifyContent: 'space-between', borderBottomWidth: 1, borderColor: '#EEEEEE' }}>
                             <View style={{width:'70%',height:'100%',alignItems:'center',justifyContent:'center'}}>

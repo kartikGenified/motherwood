@@ -1,4 +1,4 @@
-import React, {useEffect, useId, useState} from 'react';
+import React, { useEffect, useId, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -10,124 +10,224 @@ import {
   Dimensions,
   Text,
   Linking,
-} from 'react-native';
-import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
-import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
-import Icon from 'react-native-vector-icons/Ionicons';
-import LinearGradient from 'react-native-linear-gradient';
-import * as Keychain from 'react-native-keychain';
-import {useSelector} from 'react-redux';
-import { useTranslation } from 'react-i18next';
+} from "react-native";
+import PoppinsText from "../../components/electrons/customFonts/PoppinsText";
+import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
+import Icon from "react-native-vector-icons/Ionicons";
+import LinearGradient from "react-native-linear-gradient";
+import * as Keychain from "react-native-keychain";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
 
-const HelpAndSupport = ({navigation}) => {
+const HelpAndSupport = ({ navigation }) => {
   const ternaryThemeColor = useSelector(
-    state => state.apptheme.ternaryThemeColor,
+    (state) => state.apptheme.ternaryThemeColor
   )
-    ? useSelector(state => state.apptheme.ternaryThemeColor)
-    : 'grey';
+    ? useSelector((state) => state.apptheme.ternaryThemeColor)
+    : "grey";
 
-    const {t} = useTranslation()
+  const { t } = useTranslation();
 
-  const supportMobile = useSelector(state=>state.apptheme.customerSupportMobile)
-  const supportMail = useSelector(state=>state.apptheme.customerSupportMail)
-  console.log(supportMail,supportMobile)
-    return (
-        <View
+  const supportMobile = useSelector(
+    (state) => state.apptheme.customerSupportMobile
+  );
+  const supportMail = useSelector(
+    (state) => state.apptheme.customerSupportMail
+  );
+  console.log(supportMail, supportMobile);
+
+  return (
+    <View
       style={{
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        width: '100%',
+        alignItems: "center",
+        justifyContent: "flex-start",
+        width: "100%",
         backgroundColor: "white",
-        height: '100%',
-      }}>
+        height: "100%",
+      }}
+    >
       <View
         style={{
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          width: '100%',
-          marginTop: 10,
-          height: '10%',
-          marginLeft: 20,
-        }}>
+          alignItems: "center",
+          justifyContent: "flex-start",
+          flexDirection: "row",
+          width: "100%",
+          backgroundColor: "#FFF8E7",
+          height: 60,
+        }}
+      >
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
-          }}>
+          }}
+        >
           <Image
             style={{
               height: 24,
               width: 24,
-              resizeMode: 'contain',
+              resizeMode: "contain",
               marginLeft: 10,
             }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
+            source={require("../../../assets/images/blackBack.png")}
+          ></Image>
         </TouchableOpacity>
         <PoppinsTextMedium
           content={t("Help And Support")}
           style={{
             marginLeft: 10,
             fontSize: 16,
-            fontWeight: '700',
-            color: 'black',
-          }}></PoppinsTextMedium>
+            fontWeight: "700",
+            color: "black",
+          }}
+        ></PoppinsTextMedium>
       </View>
-            <View style={{alignItems:'center',justifyContent:'center',width:'100%',height:'40%'}}>
-              <Image style={{height:300,width:300,resizeMode:"contain"}} source={require('../../../assets/images/customerSupportnew.png')}></Image>
-            </View>
-          <View style={{width:'100%',borderTopRightRadius:30,borderTopLeftRadius:30,backgroundColor:ternaryThemeColor,alignItems:'center',justifyContent:'flex-start',height:'60%'}}>
-            <TouchableOpacity onPress={()=>{Linking.openURL(`mailto:${supportMail}`)}} style={{width:'90%',alignItems:'center',justifyContent:'center',paddingBottom:20,borderBottomWidth:1,borderColor:'#DDDDDD',marginTop:10}}>
-              <View style={{height:60,width:60,borderRadius:30,alignItems:"center",justifyContent:"center"}}>
-                <Image style={{height:40,width:40,resizeMode:"contain"}} source={require('../../../assets/images/whitemail.png')}></Image>
-              </View>
-              <PoppinsTextMedium
-          content={t("Mail us")}
+      <View style={{ alignItems: "center", width: "100%",  }}>
+        <PoppinsTextMedium
+          content={t("Get In Touch")}
           style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: '700',
-            color: 'white',
-          }}></PoppinsTextMedium>
-          <PoppinsTextMedium
-          content={supportMail}
+            fontSize: 24,
+            marginTop: 20,
+            fontWeight: "700",
+            color: "black",
+          }}
+        ></PoppinsTextMedium>
+        <PoppinsTextMedium
+          content={t(
+            "Don't hesitate to contact us whether you have a suggestion for improvement, a complaint to discuss, or an issue to resolve."
+          )}
           style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: '700',
-            color: 'white',
-          }}></PoppinsTextMedium>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{Linking.openURL(`tel:${supportMobile}`)}} style={{width:'90%',alignItems:'center',justifyContent:'center',paddingBottom:20,borderBottomWidth:1,borderColor:'#DDDDDD',marginTop:10}}>
-              <View style={{height:60,width:60,borderRadius:30,alignItems:"center",justifyContent:"center"}}>
-                <Image style={{height:40,width:40,resizeMode:"contain"}} source={require('../../../assets/images/whitemobile.png')}></Image>
-              </View>
-              <PoppinsTextMedium
-          content={t("Call us")}
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: '700',
-            color: 'white',
-          }}></PoppinsTextMedium>
-          <PoppinsTextMedium
-          content={supportMobile}
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: '700',
-            color: 'white',
-          }}></PoppinsTextMedium>
-            </TouchableOpacity>
-            <PoppinsTextMedium style={{color:'white',fontSize:14,fontWeight:'600',marginTop:20}} content="Call our customer care executive" ></PoppinsTextMedium>
-            <PoppinsTextMedium style={{color:'white',fontSize:14,fontWeight:'600'}} content="Monday - Friday" ></PoppinsTextMedium>
-            <PoppinsTextMedium style={{color:'white',fontSize:14,fontWeight:'600'}} content="10am - 6pm" ></PoppinsTextMedium>
-
-
+            fontSize: 17,
+            marginTop: 20,
+            marginHorizontal: 20,
+            color: "black",
+          }}
+        ></PoppinsTextMedium>
+      </View>
+          {/* mail */}
+      <View
+        style={{
+          width: "90%",
+          height: 80,
+          marginTop:50,
+          borderWidth: 1,
+          borderRadius: 40,
+          borderColor: "#B7202C",
+          justifyContent: "center",
+          paddingHorizontal: 30,
+        }}
+      >
+        <View style={{ flexDirection: "row" }}>
+          <Image
+            style={{
+              height: 30,
+              width: 50,
+              resizeMode: "contain",
+              marginTop: 13,
+            }}
+            source={require("../../../assets/images/mail_red.png")}
+          ></Image>
+          <View>
+            <PoppinsTextLeftMedium
+              style={{
+                fontSize: 20,
+                marginLeft: 20,
+                color: "#303030",
+                fontWeight: "600",
+              }}
+              content={t("Mail Us")}
+            ></PoppinsTextLeftMedium>
+            <PoppinsTextLeftMedium
+              style={{
+                fontSize: 17,
+                marginLeft: 20,
+                color: "#303030",
+                fontWeight: "700",
+              }}
+              content={supportMail ? supportMail : "customercare@motherwood.in"}
+            ></PoppinsTextLeftMedium>
           </View>
         </View>
-    );
-}
+      </View>
+        {/* phone */}
+      <View
+        style={{
+          width: "90%",
+          height: 80,
+          marginTop:20,
+          borderWidth: 1,
+          borderRadius: 40,
+          borderColor: "#B7202C",
+          justifyContent: "center",
+          paddingHorizontal: 30,
+        }}
+      >
+        <View style={{ flexDirection: "row" }}>
+          <Image
+            style={{
+              height: 37,
+              width: 50,
+              resizeMode: "contain",
+              marginTop: 13,
+            }}
+            source={require("../../../assets/images/phone_red.png")}
+          ></Image>
+          <View>
+            <PoppinsTextLeftMedium
+              style={{
+                fontSize: 20,
+                marginLeft: 20,
+                color: "#303030",
+                fontWeight: "600",
+              }}
+              content={t("Call Us")}
+            ></PoppinsTextLeftMedium>
+            <PoppinsTextLeftMedium
+              style={{
+                fontSize: 17,
+                marginLeft: 20,
+                color: "#303030",
+                fontWeight: "700",
+              }}
+              content={supportMobile ? supportMobile : ""}
+            ></PoppinsTextLeftMedium>
+          </View>
+        </View>
+      </View>
 
-const styles = StyleSheet.create({})
+      <View style={{height:70, backgroundColor:'#B6202D', width:'90%', marginTop:30, borderRadius:35,alignItems:'center', flexDirection:'row'}}>
+        <Image style={{height:30,width:30, resizeMode:'contain', marginLeft:20}} source={require("../../../assets/images/faq_white.png")}></Image>
+            <PoppinsTextLeftMedium style={{color:"white", fontSize:24, fontWeight:'600', marginHorizontal:20}} content={"FAQs"}></PoppinsTextLeftMedium>
+      </View>
+      
+      <View>
+      <PoppinsTextMedium style={{color:"black", fontSize:24, fontWeight:'600', marginHorizontal:20, marginTop:20, fontWeight:'800'}} content={"Social Media"}></PoppinsTextMedium>
+      <PoppinsTextMedium style={{color:"black", fontSize:20, fontWeight:'600', marginHorizontal:20, marginTop:10, fontWeight:'600'}} content={"For more updates, please follow us on"}></PoppinsTextMedium>
+      <View style={{flexDirection:'row',justifyContent:'center', alignItems:'center',marginTop:30}}>
+
+        <TouchableOpacity style={{marginRight:20, }} onPress={()=>{}}>
+        <Image style={{height:40,width:40,resizeMode:'cover'}} source={require("../../../assets/images/facebook.png")}></Image>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={{marginRight:30, }} onPress={()=>{}}>
+        <Image style={{height:40,width:40,resizeMode:'cover'}} source={require("../../../assets/images/instagram.png")}></Image>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={{marginRight:25, }} onPress={()=>{}}>
+        <Image style={{height:50,width:50,resizeMode:'cover',marginTop:5}} source={require("../../../assets/images/youtube.png")}></Image>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={{marginRight:20, }} onPress={()=>{}}>
+        <Image style={{height:40,width:40,resizeMode:'cover'}} source={require("../../../assets/images/linkedin.png")}></Image>
+        </TouchableOpacity>              
+      </View>
+
+      <Image style={{resizeMode:'contain', height:100, marginTop:40}} source={require("../../../assets/images/phone_with_wire.png")}></Image>
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({});
 
 export default HelpAndSupport;
