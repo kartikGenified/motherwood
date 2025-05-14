@@ -63,7 +63,7 @@ const MenuItems = (props) => {
         }}
       >
         <Image
-          style={{ height: 49, width: 39, }}
+          style={{ height: 39, width: 39,marginTop:10 }}
           source={{ uri: image }}
         ></Image>
            <PoppinsTextMedium

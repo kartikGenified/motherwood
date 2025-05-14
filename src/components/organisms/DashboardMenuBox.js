@@ -28,6 +28,10 @@ const DashboardMenuBox=(props)=>{
         {
             navigation.navigate("ReturnList")
         }
+        else if(data.toLowerCase()==="Points Calculator")
+            {
+                // navigation.navigate("ReturnList")
+            }
         
         else if(data.toLowerCase()==="checkout" || data.toLowerCase()==="assign" || data.toLowerCase()== "assign product")
         {
