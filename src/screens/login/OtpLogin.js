@@ -186,6 +186,7 @@ const OtpLogin = ({ navigation, route }) => {
       console.log("getNameData", getNameData);
       if (getNameData?.success) {
         setName(getNameData?.body.name);
+
       }
     } else if (getNameError) {
       console.log("getNameError", getNameError);
@@ -346,7 +347,7 @@ const OtpLogin = ({ navigation, route }) => {
           style={{
             alignItems: "center",
             justifyContent: "center",
-            marginTop: 200,
+            marginTop: 170,
             marginLeft: 12,
           }}
         >

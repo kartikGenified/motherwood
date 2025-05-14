@@ -575,11 +575,11 @@ const Splash = ({ navigation }) => {
     const backAction = () => {
       Alert.alert(t("Exit App"), t("Are you sure you want to exit?"), [
         {
-          text: "Cancel",
+          text: t("Cancel"),
           onPress: () => null,
           style: "cancel",
         },
-        { text: "Exit", onPress: () => BackHandler.exitApp() },
+        { text: t("Exit"), onPress: () => BackHandler.exitApp() },
       ]);
       return true;
     };
@@ -590,12 +590,7 @@ const Splash = ({ navigation }) => {
     );
 
     return () => {
-      console.log("removing backhandler at cleanup", backHandler);
-      try {
-        backHandler.remove();
-      } catch (e) {
-        console.log("error in removing backhandler", e);
-      }
+      backHandler.remove(); // Clean up the listener
     };
   }, []);
   //--------------------------------------------------

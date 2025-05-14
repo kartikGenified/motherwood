@@ -8,6 +8,7 @@ import {
   BackHandler,
   ImageBackground,
   Text,
+  Alert,
   TouchableOpacity,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
@@ -89,6 +90,31 @@ const SelectUser = ({ navigation }) => {
     getUsers();
 
   }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert(t("Exit App"), t("Are you sure you want to exit?"), [
+        {
+          text: t("Cancel"),
+          onPress: () => null,
+          style: "cancel",
+        },
+        { text: t("Exit"), onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => {
+      backHandler.remove(); // Clean up the listener
+    };
+  }, []);
+
+
   useEffect(() => {
     if (getUsersData) {
       console.log("type of users", getUsersData?.body);

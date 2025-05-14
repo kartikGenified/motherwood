@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, View,BackHandler} from 'react-native';
+import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
 import { useSelector } from 'react-redux';
 import  Icon  from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
