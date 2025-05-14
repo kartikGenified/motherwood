@@ -80,6 +80,7 @@ const BasicInfo = ({ navigation, route }) => {
   const [mappedUserType, setMappedUserType] = useState()
   const [gstVerified, setGstVerified] = useState(true)
   const [gstEntered, setGstEntered] = useState(false)
+  const [formStage, setFormStage] = useState(1);
   const [gstinRequired, setGstinRequired] = useState(false)
   const [distributorName, setDistributorName] = useState("");
   const [distributorMobile, setDistributorMobile] = useState("");
@@ -124,11 +125,15 @@ const BasicInfo = ({ navigation, route }) => {
   console.log("appUsers", userType, userTypeId, isManuallyApproved, name, mobile)
   const width = Dimensions.get('window').width
   const height = Dimensions.get('window').height
+  const locationStage = ["city", "state", "district", "pincode"]
   const {t} = useTranslation()
   const gifUri = Image.resolveAssetSource(
     require("../../../assets/gif/loaderNew.gif")
   ).uri;
-
+  const progressStage = ["details", "address"]
+  const isLocationStageField = (fieldName) => {
+    return locationStage.includes(fieldName.trim().toLowerCase());
+  };
   let timeoutId;
     let preferedLanguage ;
   const [getFormFunc, {
@@ -719,108 +724,7 @@ const BasicInfo = ({ navigation, route }) => {
     console.log("aadhar text input status", bool)
     
       setAadhaarVerified(bool)
-      
-    
   }
-
-
-//     console.log("handleRegistrationFormSubmission", registrationForm)
-//     const inputFormData = {};
-//     let isFormValid = true; 
-//     let missingParam = "";
-
-//     inputFormData["user_type"] = userType;
-//     inputFormData["user_type_id"] = userTypeId;
-//     inputFormData["is_approved_needed"] = isManuallyApproved;
-//     inputFormData["name"] = name;
-//     inputFormData["mobile"] = mobile;
-
-//     for (var i = 0; i < responseArray.length; i++) {
-//         inputFormData[responseArray[i].name] = responseArray[i].value;
-
-//         if (responseArray[i].required && !responseArray[i].value) {
-//           console.log("missing params",responseArray[i].name)
-//             isFormValid = false;
-//             missingParam = responseArray[i].label;
-//             break;
-//         }
-
-//         if (responseArray[i].required && responseArray[i].name === "pincode" && responseArray[i].value.length !== 6) {
-//             isFormValid = false;
-//             missingParam = "Pincode must be exactly 6 digits";
-//             break;
-//         }
-//     }
-
-//     console.log("missing params", missingParam);
-
-//     const body = inputFormData;
-//     console.log("registration output", body);
-
-//     if (otpVerified) {
-//         const keys = Object.keys(body);
-//         const values = Object.values(body);
-//         if(keys.includes('pincode'))
-//         {
-//           if(!isCorrectPincode)
-//           {
-//             setError(true);
-//             setMessage("Pincode must be verified first");
-//           }
-//         }
-//         if (keys.includes('email')) {
-//             const index = keys.indexOf('email');
-//             if (isValidEmail(values[index])) {
-//                 if (isFormValid) {
-//                   if(keys.includes('pincode'))
-//                   {
-//                     if(!isCorrectPincode)
-//                     {
-//                       setError(true);
-//                       setMessage("Pincode must be verified first");
-//                     }
-//                     else{
-//                       registerUserFunc(body);
-//                       setHideButton(true);
-//                     }
-//                   }
-                  
-                    
-//                 } else {
-//                     setError(true);
-//                     setMessage(missingParam);
-//                 }
-//             } else {
-//                 setError(true);
-//                 setMessage("Email isn't verified");
-//             }
-//         } else {
-//             if (isFormValid) {
-//               if(keys.includes('pincode'))
-//               {
-//                 if(!isCorrectPincode)
-//                 {
-//                   setError(true);
-//                   setMessage("Pincode must be verified first");
-//                 }
-//                 else{
-//                   registerUserFunc(body);
-  
-//                 }
-//               }
-              
-//             } else {
-//                 setError(true);
-//                 setMessage(missingParam);
-//             }
-//         }
-//     } else {
-//         setError(true);
-//         setMessage(t("Otp isn't verified yet"));
-//     }
-
-//     console.log("responseArraybody", body);
-// };
 
 const handleRegistrationFormSubmission = () => {
   console.log("handleRegistrationFormSubmission", responseArray,aadhaarRequired,panRequired,gstinRequired);
@@ -1006,6 +910,79 @@ console.log("responseMap",responseMap)
   console.log("responseArraybody", body);
 };
 
+const ProgressMeter = ({ currentStage }) => {
+  const Circle = ({ index, title }) => {
+    const isCompleted = index <= currentStage;
+
+    return (
+      <TouchableOpacity onPress={()=>{
+        setFormStage(index+1)
+      }} style={{ alignItems: 'center' }}>
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: 36,
+            width: 36,
+            borderRadius: 18,
+            backgroundColor: isCompleted ? '#00A79D' : 'white',
+            borderWidth: 2,
+            borderColor: '#00A79D',
+          }}
+        >
+          <PoppinsTextMedium
+            content={index + 1}
+            style={{
+              fontSize: 16,
+              fontWeight: '700',
+              color: isCompleted ? 'white' : '#00A79D',
+            }}
+          />
+        </View>
+        <PoppinsTextMedium
+          content={(title).toUpperCase()}
+          style={{
+            marginTop: 4,
+            fontSize: 14,
+            fontWeight: '700',
+            color: '#00A79D',
+            textAlign: 'center',
+          }}
+        />
+      </TouchableOpacity>
+    );
+  };
+
+  return (
+    <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+      <View
+        style={{
+          position: 'absolute',
+          top: 18, // aligned to the center of the circles
+          height: 2,
+          width: '70%',
+          backgroundColor: '#00A79D',
+          zIndex: 0,
+
+        }}
+      />
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          width: '90%',
+        }}
+      >
+        {progressStage.map((item, index) => (
+          <Circle index={index} key={index} title={item} />
+        ))}
+      </View>
+    </View>
+  );
+};
+
+
+
 
 
   return (
@@ -1014,7 +991,7 @@ console.log("responseMap",responseMap)
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
-        backgroundColor: ternaryThemeColor,
+        backgroundColor: "#F0F8F6",
         height: '100%',
 
 
@@ -1051,12 +1028,7 @@ console.log("responseMap",responseMap)
           alignItems: 'center',
           justifyContent: 'center',
           width: '100%',
-          height: '10%',
-
-
-
-
-
+          height: '20%',
         }}>
         <TouchableOpacity
           style={{
@@ -1084,9 +1056,10 @@ console.log("responseMap",responseMap)
               marginLeft: 10,
               fontSize: 16,
               fontWeight: '700',
-              color: 'white',
+              color: 'black',
             }}></PoppinsTextMedium>
         </View>
+        <ProgressMeter currentStage={formStage-1}></ProgressMeter>
       </View>
       <ScrollView style={{ width: '100%' }}>
 
@@ -1095,7 +1068,12 @@ console.log("responseMap",responseMap)
 
           {/* <RegistrationProgress data={["Basic Info","Business Info","Manage Address","Other Info"]}></RegistrationProgress> */}
           {registrationForm &&
-            registrationForm.map((item, index) => {
+  registrationForm
+    .filter((item) => {
+      const name = item.name?.trim()?.toLowerCase();
+      return formStage === 1 ? !isLocationStageField(name) : isLocationStageField(name);
+    })
+    .map((item, index) => {
               if (item.type === 'text') {
                 console.log("the user name", userName)
                 if ((item.name === 'phone' || item.name === "mobile")) {
@@ -1419,7 +1397,20 @@ console.log("responseMap",responseMap)
                 );
               }
             })}
-  {console.log("sadbhjasbhjvfhjvhasjvhj",hideButton)}
+
+{formFound && !hideButton  && <ButtonOval
+            handleOperation={() => {
+              setFormStage(2)
+            }}
+            content={t("Next")}
+            style={{
+              paddingLeft: 30,
+              paddingRight: 30,
+              padding: 10,
+              color: 'white',
+              fontSize: 16,
+            }}></ButtonOval>}
+  {/* {console.log("sadbhjasbhjvfhjvhasjvhj",hideButton)}
           {formFound && !hideButton  && <ButtonOval
             handleOperation={() => {
               handleRegistrationFormSubmission();
@@ -1431,7 +1422,7 @@ console.log("responseMap",responseMap)
               padding: 10,
               color: 'white',
               fontSize: 16,
-            }}></ButtonOval>}
+            }}></ButtonOval>} */}
         </View>
       </ScrollView>
 

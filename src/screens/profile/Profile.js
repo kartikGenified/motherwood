@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Text,
 } from "react-native";
 import { useSelector } from "react-redux";
 import PoppinsText from "../../components/electrons/customFonts/PoppinsText";
@@ -34,10 +35,11 @@ const Profile = ({ navigation }) => {
   const [showProfileData, setShowProfileData] = useState(false);
   const [openModalWithBorder, setModalBorder] = useState(false);
   const [profileData, setProfileData] = useState();
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
+  const options = ["Basic Details", "Address"];
   const kycData = useSelector((state) => state.kycDataSlice.kycData);
-
+  const addressArr = ["city", "state", "district", "pincode"]
   const { t } = useTranslation();
 
   const ternaryThemeColor = useSelector(
@@ -46,6 +48,9 @@ const Profile = ({ navigation }) => {
     ? useSelector((state) => state.apptheme.ternaryThemeColor)
     : "grey";
   const userData = useSelector((state) => state.appusersdata.userData);
+  const isLocationStageField = (fieldName) => {
+    return addressArr.includes(fieldName.trim().toLowerCase());
+  };
   console.log("userdata is", userData);
   const focused = useIsFocused();
   const [
@@ -212,6 +217,32 @@ const Profile = ({ navigation }) => {
   const gifUri = Image.resolveAssetSource(
     require("../../../assets/gif/loaderNew.gif")
   ).uri;
+
+
+  const TopBar = ({ options }) => {
+  
+    return (
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={{width:'100%',justifyContent:'space-around'}} horizontal showsHorizontalScrollIndicator={false}>
+          {options.map((option, index) => {
+            const isSelected = selectedIndex === index;
+            return (
+              <TouchableOpacity
+                key={index}
+                onPress={() => setSelectedIndex(index)}
+                style={[styles.optionContainer, isSelected && styles.selectedOption]}
+              >
+                <Text style={[styles.optionText, isSelected && styles.selectedText]}>
+                  {option}
+                </Text>
+                {isSelected && <View style={styles.bottomHighlight} />}
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      </View>
+    );
+  };
 
   const ProfileBox = (props) => {
     const image = props.image;
@@ -614,7 +645,7 @@ const Profile = ({ navigation }) => {
   };
 
   return (
-    <View style={{ ...styles.container, backgroundColor: "white" }}>
+    <View style={{ ...styles.containerWrapper, backgroundColor: "white" }}>
       <View
         style={{
           height: 50,
@@ -645,7 +676,8 @@ const Profile = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       {!showNoDataFoundMessage && <ProfileHeader></ProfileHeader>}
-      {fetchProfileData && <GreyBar></GreyBar>}
+      {/* {fetchProfileData && <GreyBar></GreyBar>} */}
+      <TopBar options={options} />
       {showDeleteModal && (
         <DeleteModal
           hideModal={hideModal}
@@ -668,7 +700,12 @@ const Profile = ({ navigation }) => {
             >
               {/* <ProfileData></ProfileData> */}
               {showProfileData &&
-                formFields.map((item, index) => {
+              
+                formFields.filter((item) => {
+                  const name = item.name?.trim()?.toLowerCase();
+                  return selectedIndex === 0 ? !isLocationStageField(name) : isLocationStageField(name);
+                })
+                .map((item, index) => {
                   console.log("showProfileData", item, formValues[index]);
                   if (item.type === "date" || item.type === "Date") {
                     return (
@@ -791,11 +828,11 @@ const Profile = ({ navigation }) => {
                     title={"Change Language"}
                     image={require("../../../assets/images/language.png")}
                   ></ProfileBox> */}
-                  <ProfileBox
+                  {/* <ProfileBox
                     buttonTitle={"View"}
                     title="Check Passbook"
                     image={require("../../../assets/images/passbook_icon.png")}
-                  ></ProfileBox>
+                  ></ProfileBox> */}
                 </ScrollView>
               </View>
             )}
@@ -844,13 +881,38 @@ const Profile = ({ navigation }) => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
-  container: {
+  containerWrapper: {
     height: "100%",
     width: "100%",
     flex: 1,
   },
+  container: {
+    paddingVertical: 10,
+    width:'100%',
+    borderBottomWidth:4,
+    borderColor:'#DFE5EA'
+  },
+  optionContainer: {
+    paddingHorizontal: 16,
+    alignItems: 'center',
+  },
+  optionText: {
+    color: 'grey',
+    fontSize: 16,
+  },
+  selectedText: {
+    color: 'maroon',
+    fontWeight: 'bold',
+  },
+  bottomHighlight: {
+    marginTop: 4,
+    height: 2,
+    width: '100%',
+    backgroundColor: 'maroon',
+  },
 });
+
+
 
 export default Profile;
