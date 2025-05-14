@@ -700,7 +700,7 @@ const PointHistory = ({ navigation }) => {
         height: "100%",
       }}
     >
-      <TopHeader />
+      <TopHeader title={"Received Points Summary"} />
 
       <View
         style={{

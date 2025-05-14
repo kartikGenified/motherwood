@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 
 // create a component
-const TopHeader = () => {
+const TopHeader = ({title}) => {
 
     const ternaryThemeColor = useSelector(
         (state) => state.apptheme.ternaryThemeColor
@@ -61,7 +61,7 @@ const TopHeader = () => {
             left: 60,
             fontWeight: "bold",
           }}
-          content={t("Recieved Points Summary")}
+          content={title}
         ></PoppinsTextMedium>
       </View>
     );
