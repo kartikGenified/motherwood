@@ -1398,7 +1398,7 @@ const ProgressMeter = ({ currentStage }) => {
               }
             })}
 
-{formFound && !hideButton  && <ButtonOval
+  {formStage!=2 && formFound && !hideButton  && <ButtonOval
             handleOperation={() => {
               setFormStage(2)
             }}
@@ -1410,8 +1410,8 @@ const ProgressMeter = ({ currentStage }) => {
               color: 'white',
               fontSize: 16,
             }}></ButtonOval>}
-  {/* {console.log("sadbhjasbhjvfhjvhasjvhj",hideButton)}
-          {formFound && !hideButton  && <ButtonOval
+  {console.log("sadbhjasbhjvfhjvhasjvhj",hideButton)}
+          {formStage==2 && formFound && !hideButton  && <ButtonOval
             handleOperation={() => {
               handleRegistrationFormSubmission();
             }}
@@ -1422,7 +1422,7 @@ const ProgressMeter = ({ currentStage }) => {
               padding: 10,
               color: 'white',
               fontSize: 16,
-            }}></ButtonOval>} */}
+            }}></ButtonOval>}
         </View>
       </ScrollView>
 
