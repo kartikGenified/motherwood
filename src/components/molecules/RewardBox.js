@@ -77,7 +77,7 @@ const RewardBox = () => {
                 }
 
                 {
-                    workflow?.includes("Points On Product") && userPointData && <RewardSquare amount={userPointData.body.point_earned} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("earned points")}></RewardSquare>
+                  userPointData && <RewardSquare amount={Math.floor(userPointData.body.point_earned)} color="#F0FCE7" image={require('../../../assets/images/current_point.png')} title={t("Current Points")}></RewardSquare>
                 }
                 {
                     userData && (userData?.user_type)?.toLowerCase() == 'distributor' && userPointData  && <RewardSquare amount={userPointData.body.point_earned} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("earned points")}></RewardSquare>
@@ -85,9 +85,13 @@ const RewardBox = () => {
                 {
                     workflow?.includes("Points On Product") && userPointData && <RewardSquare amount={userPointData.body.point_redeemed} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("redeemed points")}></RewardSquare>
                 }
-                {
-                    workflow?.includes("Points On Product") && userPointData && <RewardSquare amount={userPointData.body.point_balance} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("balance points")}></RewardSquare>
+                    {
+                  <RewardSquare amount={Math.floor(userPointData?.body.transfer_points)} color="#DCF0FF" image={require('../../../assets/images/transferable.png')} title={t("Transferable points")}></RewardSquare>
                 }
+                  {
+                  <RewardSquare amount={Math.floor(userPointData?.body.point_balance)} color="#FFFCCF" image={require('../../../assets/images/balance_black.png')} title={t("balance points")}></RewardSquare>
+                }
+            
                 {
                     // workflow?.includes("Points On Product") && userPointData && <RewardSquare amount={userPointData.body.point_reserved} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("reserved points")}></RewardSquare>
                 }

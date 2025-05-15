@@ -20,7 +20,6 @@ import { use } from "i18next";
 import { useSelector } from "react-redux";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 
-
 const PointsCalculator = () => {
   const [token, setToken] = useState();
   const [data, setData] = useState();
@@ -99,6 +98,12 @@ const PointsCalculator = () => {
     setProductRows(updatedRows);
   };
 
+  const deleteRow = (index) => {
+    const updatedRows = [...productRows];
+    updatedRows.splice(index, 1);
+    setProductRows(updatedRows);
+  };
+
   const handleSearch = (s) => {
     if (s.length > 2) {
       const data = {
@@ -128,6 +133,9 @@ const PointsCalculator = () => {
           handleSearch={handleSearch}
           selected={row.selected}
           qty={row.qty}
+          onDeleteRow={(index) => {
+            deleteRow(index);
+          }}
           onProductChange={(selected) => handleProductChange(index, selected)}
           onQtyChange={(qty) => handleQtyChange(index, qty)}
         />
@@ -195,6 +203,7 @@ const UiList = ({
   qty,
   onProductChange,
   onQtyChange,
+  onDeleteRow,
 }) => {
   return (
     <View
@@ -262,6 +271,16 @@ const UiList = ({
           keyboardType="numeric"
         />
       </View>
+      <TouchableOpacity
+        onPress={() => {
+          onDeleteRow(index);
+        }}
+      >
+        <Image
+          style={{ height: 30, width: 30, marginTop: 37, marginLeft: 20 }}
+          source={require("../../../assets/images/delete.png")}
+        ></Image>
+      </TouchableOpacity>
     </View>
   );
 };

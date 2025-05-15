@@ -93,6 +93,7 @@ import ReturnList from '../screens/return/ReturnList';
 import KycVerificationNewScreen from '../screens/verification/KycVerificationNewScreen';
 import FeedbackOptions from '../screens/feedback/FeedbackOptions';
 import PointsCalculator from '../screens/historyPages/PointsCalculator';
+import PointsTransfer from '../screens/dashmenu/PointsTransfer';
 
 
 
@@ -245,6 +246,11 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="PointsCalculator" component={PointsCalculator}></Stack.Screen>
+                                   <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="PointsTransfer" component={PointsTransfer}></Stack.Screen>
                           <Stack.Screen options={
                     {
                         headerShown: false

@@ -1,13 +1,53 @@
 //import liraries
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import PoppinsTextLeftMedium from "../electrons/customFonts/PoppinsTextLeftMedium";
 import PoppinsTextMedium from "../electrons/customFonts/PoppinsTextMedium";
+import { useFetchUserPointsMutation } from "../../apiServices/workflow/rewards/GetPointsApi";
+import * as Keychain from 'react-native-keychain';
+import { useSelector } from "react-redux";
 
-// create a component
+
 const PointsCard = () => {
+
+  const [userPointFunc, {
+    data: userPointData,
+    error: userPointError,
+    isLoading: userPointIsLoading,
+    isError: userPointIsError
+}] = useFetchUserPointsMutation();
+
+const id = useSelector(state => state.appusersdata.id);
+const userData = useSelector((state) => state.appusersdata.userData);
+
+useEffect(() => {
+  fetchPoints()
+}, []);
+
+useEffect(() => {
+  if (userPointData) {
+      console.log("userPointData", userPointData)
+  }
+  else if (userPointError) {
+      console.log("userPointError", userPointError)
+  }
+
+}, [userPointData, userPointError])
+
+const fetchPoints = async () => {
+  const credentials = await Keychain.getGenericPassword();
+  const token = credentials.username;
+  const params = {
+      userId: id,
+      token: token
+  }
+  userPointFunc(params)
+}
+
+
   const IconBox = ({ image, title, points }) => {
+    console.log("mddkkdd",points)
     return (
       <View
         style={{
@@ -45,6 +85,8 @@ const PointsCard = () => {
     );
   };
 
+
+
   return (
     <LinearGradient colors={["#B1202C", "#573B3D"]} style={styles.container}>
       <View
@@ -78,7 +120,7 @@ const PointsCard = () => {
           <View style={{ justifyContent: "center", marginBottom: 30 }}>
             <PoppinsTextLeftMedium
               style={{ color: "white", fontSize: 20, fontWeight: "800" }}
-              content={"Mr Sanjay"}
+              content={userData?.name}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "white", fontSize: 17 }}
@@ -121,22 +163,22 @@ const PointsCard = () => {
         >
           <IconBox
             image={require("../../../assets/images/hand_coin_white.png")}
-            points={"1000"}
+            points={Math.floor(userPointData?.body.point_earned)}
             title={"Recieved Points"}
           ></IconBox>
           <IconBox
             image={require("../../../assets/images/loop_star.png")}
-            points={"1000"}
+            points={Math.floor(userPointData?.body?.transfer_points)}
             title={"Transfered Points"}
           ></IconBox>
           <IconBox
             image={require("../../../assets/images/white_coin.png")}
-            points={"1000"}
+            points={Math.floor(userPointData?.body?.point_balance)}
             title={"Wallet Points"}
           ></IconBox>
           <IconBox
             image={require("../../../assets/images/white_gift.png")}
-            points={"1000"}
+            points={Math.floor(userPointData?.body?.point_balance)}
             title={"Redeemed Points"}
           ></IconBox>
         </ScrollView>
