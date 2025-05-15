@@ -15,10 +15,12 @@ import DropDownWithSearch from "../../components/atoms/dropdown/DropDownWithSear
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import { useGetProductListMutation } from "../../apiServices/product/getProducts";
 import * as Keychain from "react-native-keychain";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import { use } from "i18next";
 import { useSelector } from "react-redux";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 
-const PointsCalculator = () => {
+const PointsTransferNext = () => {
   const [token, setToken] = useState();
   const [data, setData] = useState();
   const [selected, setSelected] = useState();
@@ -159,9 +161,9 @@ const PointsCalculator = () => {
         style={{
           backgroundColor: "#B6202D",
           width: "100%",
-          height: 60,
+          height: 50,
           position: "absolute",
-          bottom: 60,
+          bottom: 150,
           flexDirection: "row",
           justifyContent: "space-between",
         }}
@@ -188,6 +190,31 @@ const PointsCalculator = () => {
           <Text style={{ color: "white", fontSize: 20 }}>{totalPoints}</Text>
         </View>
       </View>
+
+      {/* Button */}
+      <TouchableOpacity
+        onPress={() => {
+
+        }}
+        style={{
+          alignSelf:'center',
+          backgroundColor: "black",
+          marginHorizontal: 20,
+          position:'absolute', 
+          bottom:65,
+          height: 60,
+          width:'95%',
+          marginTop: 30,
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: 5,
+        }}
+      >
+        <PoppinsTextLeftMedium
+          style={{ color: "white", fontSize: 23, fontWeight: "bold" }}
+          content="NEXT"
+        ></PoppinsTextLeftMedium>
+      </TouchableOpacity>
       <SocialBottomBar />
     </View>
   );
@@ -292,4 +319,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default PointsCalculator;
+export default PointsTransferNext;

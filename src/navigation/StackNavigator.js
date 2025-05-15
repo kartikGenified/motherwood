@@ -94,6 +94,7 @@ import KycVerificationNewScreen from '../screens/verification/KycVerificationNew
 import FeedbackOptions from '../screens/feedback/FeedbackOptions';
 import PointsCalculator from '../screens/historyPages/PointsCalculator';
 import PointsTransfer from '../screens/dashmenu/PointsTransfer';
+import PointsTransferNext from '../screens/dashmenu/PointsTransferNext';
 
 
 
@@ -241,6 +242,11 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="MpinSetupScreen" component={MpinSetupScreen}></Stack.Screen>
+                                    <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="PointsTransferNext" component={PointsTransferNext}></Stack.Screen>
                    <Stack.Screen options={
                     {
                         headerShown: false

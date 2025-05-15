@@ -6,10 +6,11 @@ import RewardBox from "../../components/molecules/RewardBox";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import { useGetNameMutation } from "../../apiServices/login/GetNameByMobile";
+import { useNavigation } from "@react-navigation/native";
 
-// create a component
+// for userSearch
 const PointsTransfer = () => {
-
+    const navigation = useNavigation()
     const [
         getNameFunc,
         {
@@ -179,7 +180,7 @@ const PointsTransfer = () => {
       </View>
 
       {/* Button */}
-      <TouchableOpacity style={{backgroundColor:'black', marginHorizontal:20, height:65, marginTop:30, alignItems:'center', justifyContent:'center', borderRadius:10}} onPress={()=>{}}>
+      <TouchableOpacity onPress={()=>{navigation.navigate("PointsTransferNext")}} style={{backgroundColor:'black', marginHorizontal:20, height:65, marginTop:30, alignItems:'center', justifyContent:'center', borderRadius:10}} >
         <PoppinsTextLeftMedium style={{color:'white', fontSize:23, fontWeight:'bold'}} content="NEXT"></PoppinsTextLeftMedium>
       </TouchableOpacity>
     </View>
