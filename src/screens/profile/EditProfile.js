@@ -27,7 +27,7 @@ import ErrorModal from "../../components/modals/ErrorModal";
 import InputDateProfile from "../../components/atoms/input/InputDateProfile";
 import RectangularUnderlinedDropDown from "../../components/atoms/dropdown/RectangularUnderlinedDropDown";
 import ProfileDropDown from "../../components/atoms/dropdown/ProfileDropDown";
-import dayjs from 'dayjs'
+import dayjs from "dayjs";
 import TextInputRectangularWithPlaceholder from "../../components/atoms/input/TextInputRectangularWithPlaceholder";
 import DisplayOnlyTextInput from "../../components/atoms/DisplayOnlyTextInput";
 import { useTranslation } from "react-i18next";
@@ -37,18 +37,38 @@ import PrefilledTextInput from "../../components/atoms/input/PrefilledTextInput"
 const EditProfile = ({ navigation, route }) => {
   const [changedFormValues, setChangedFormValues] = useState([]);
   const [hasManualkyc, setHasManualKyc] = useState(false);
+  const [renderData, setRenderData] = useState()
   const [pressedSubmit, setPressedSubmit] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [profileImage, setProfileImage] = useState(route.params?.savedImage);
   const [filename, setFilename] = useState(route.params?.savedImage);
   const [message, setMessage] = useState();
-  const [location, setLocation] = useState()
+  const [location, setLocation] = useState();
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [marginB, setMarginB] = useState(0);
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isClicked, setIsClicked] = useState(false);
   const [submitProfile, setSubmitProfile] = useState(false);
+  const addressArr = [
+    "deliveryaddress",
+    "deliveryAddress",
+    "deliverycity",
+    "deliveryCity",
+    "deliverypincode",
+    "deliveryPincode",
+    "deliverystate",
+    "deliveryState",
+    "state",
+    "city",
+    "pincode",
+    "sameaddress",
+    "sameAddress",
+    "address",
+  ];
+  const options = ["Basic Details", "Address"];
+
   // const userData = useSelector(state=>state.appusersdata.userData)
   console.log("saved image", route.params?.savedImage);
   // console.log("route.params.savedImage",route.params.savedImage)
@@ -60,7 +80,10 @@ const EditProfile = ({ navigation, route }) => {
   const formFields = route.params?.formFields;
   const formValues = route.params?.formValues;
   const height = Dimensions.get("window").height;
-
+  const isLocationStageField = (fieldName) => {
+    console.log("array content", addressArr, fieldName);
+    return addressArr.includes(fieldName.trim());
+  };
   const { t } = useTranslation();
   // const manualkyc = ["fabricator","consumer","retailer","dealer"]
   console.log("form fields and values", JSON.stringify(formFields), formValues);
@@ -92,10 +115,9 @@ const EditProfile = ({ navigation, route }) => {
       console.log("updateProfileData", updateProfileData);
       setMessage(t("Profile Updated Successfully"));
       setSuccess(true);
-      setTimeout(()=>{
-        navigation.navigate("Dashboard")
-
-      },2000)
+      setTimeout(() => {
+        navigation.navigate("Dashboard");
+      }, 2000);
       setIsClicked(false);
     } else if (updateProfileError) {
       console.log("updateProfileError", updateProfileError);
@@ -118,6 +140,28 @@ const EditProfile = ({ navigation, route }) => {
     setChangedFormValues(temp);
   }, []);
 
+  useEffect(()=>{
+
+    console.log("selected index changed",selectedIndex)
+    const tempppp =formFields
+    .filter((item) => {
+      const name = item.name?.trim()?.toLowerCase();
+      console.log(
+        "isLocationStageField",
+        isLocationStageField(name),
+        item,
+        formFields,
+        selectedIndex
+      );
+      return selectedIndex === 0
+        ? !isLocationStageField(name)
+        : isLocationStageField(name);
+    })
+
+    console.log("jdjbschbhabshds",tempppp)
+    setRenderData(tempppp)
+  },[selectedIndex])
+
   useEffect(() => {
     if (uploadImageData) {
       console.log(uploadImageData);
@@ -133,38 +177,35 @@ const EditProfile = ({ navigation, route }) => {
   }, [uploadImageData, uploadImageError]);
 
   const handleFetchPincode = (data) => {
-    console.log("pincode is", data)
-    getLocationFromPinCode(data)
+    console.log("pincode is", data);
+    getLocationFromPinCode(data);
+  };
+  const getLocationFromPinCode = (pin) => {
+    console.log("getting location from pincode", pin);
+    var url = `http://postalpincode.in/api/pincode/${pin}`;
 
-  }
-  const getLocationFromPinCode =  (pin) => {
-    console.log("getting location from pincode",pin)
-    var url = `http://postalpincode.in/api/pincode/${pin}`
-
-  fetch(url).then(response => response.json()).then(json => {
-    console.log("location address=>", JSON.stringify(json));
-    if(json.PostOffice===null)
-    {
-      setError(true)
-      setMessage(t("Pincode data cannot be retrieved."))
-    }
-    else{
-      const locationJson = {
-        "postcode":pin,
-        "district":json.PostOffice[0].District,
-        "state":json.PostOffice[0].State,
-        "country":json.PostOffice[0].Country,
-        "city":json.PostOffice[0].Region
-      }
-      setLocation(locationJson)
-    }
-    
-
-  })
-}
+    fetch(url)
+      .then((response) => response.json())
+      .then((json) => {
+        console.log("location address=>", JSON.stringify(json));
+        if (json.PostOffice === null) {
+          setError(true);
+          setMessage(t("Pincode data cannot be retrieved."));
+        } else {
+          const locationJson = {
+            postcode: pin,
+            district: json.PostOffice[0].District,
+            state: json.PostOffice[0].State,
+            country: json.PostOffice[0].Country,
+            city: json.PostOffice[0].Region,
+          };
+          setLocation(locationJson);
+        }
+      });
+  };
 
   const handleData = (data, title, jsonData) => {
-    // console.log("djnjbdhdndddjj",data, title)
+    console.log("djnjbdhdndddjjjhdshfbshbchsa",data, title)
 
     let submissionData = [...changedFormValues];
     let removedValues = submissionData.filter((item, index) => {
@@ -198,12 +239,12 @@ const EditProfile = ({ navigation, route }) => {
     //  console.log("changedFormValues",changedFormValues)
   };
 
-  Keyboard.addListener("keyboardDidShow", () => {
-    setMarginB(100);
-  });
-  Keyboard.addListener("keyboardDidHide", () => {
-    setMarginB(0);
-  });
+  // Keyboard.addListener("keyboardDidShow", () => {
+  //   setMarginB(100);
+  // });
+  // Keyboard.addListener("keyboardDidHide", () => {
+  //   setMarginB(0);
+  // });
 
   const modalClose = () => {
     setError(false);
@@ -284,6 +325,45 @@ const EditProfile = ({ navigation, route }) => {
       setError(true);
       setMessage(t("Please select the image to be uploaded"));
     }
+  };
+
+  const TopBar = ({ options }) => {
+    return (
+      <View style={styles.container}>
+        <ScrollView
+          contentContainerStyle={{
+            width: "100%",
+            justifyContent: "space-around",
+          }}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        >
+          {options.map((option, index) => {
+            const isSelected = selectedIndex === index;
+            return (
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  console.log("setSelectedIndex", index);
+                  setSelectedIndex(index);
+                }}
+                style={[
+                  styles.optionContainer,
+                  isSelected && styles.selectedOption,
+                ]}
+              >
+                <Text
+                  style={[styles.optionText, isSelected && styles.selectedText]}
+                >
+                  {option}
+                </Text>
+                {isSelected && <View style={styles.bottomHighlight} />}
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      </View>
+    );
   };
   return (
     <View style={{ height: "100%", backgroundColor: "white", flex: 1 }}>
@@ -448,7 +528,7 @@ const EditProfile = ({ navigation, route }) => {
         style={{
           height: "10%",
           width: "100%",
-          backgroundColor: ternaryThemeColor,
+          backgroundColor: "#FFF8E7",
           alignItems: "center",
           justifyContent: "flex-start",
           flexDirection: "row",
@@ -467,7 +547,7 @@ const EditProfile = ({ navigation, route }) => {
         </TouchableOpacity>
         <PoppinsTextMedium
           style={{
-            color: "white",
+            color: "black",
             fontWeight: "700",
             fontSize: 16,
             marginLeft: 14,
@@ -480,7 +560,7 @@ const EditProfile = ({ navigation, route }) => {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "flex-start",
-          backgroundColor: ternaryThemeColor,
+          backgroundColor: "#FFF8E7",
           height: "20%",
         }}
       >
@@ -579,279 +659,278 @@ const EditProfile = ({ navigation, route }) => {
           showsVerticalScrollIndicator={false}
           style={{ width: "90%" }}
         >
-          {formFields &&
-            formValues &&
-            formFields.map((item, index) => {
-              if (item.type === "text") {
-                if (item.name === "aadhar") {
+          <TopBar options={options} />
+      {console.log("karthik render data", renderData)}
+          {
+            renderData &&
+            renderData
+              .map((item, index) => {
+                console.log("hasjdjkasjfvbhbs ajksbdjkbasjd", item);
+                if (item.type === "text") {
+                  if (item.name === "aadhar") {
+                    return (
+                      <DisplayOnlyTextInput
+                        key={index}
+                        data={
+                          formValues[index] === null ||
+                          formValues[index] === undefined
+                            ? "No data available"
+                            : formValues[index]
+                        }
+                        title={
+                          item.label == "Aadhaar" ? t("Aadhaar") : item.label
+                        }
+                        photo={require("../../../assets/images/eye.png")}
+                      ></DisplayOnlyTextInput>
+                    );
+                  } else if (item.name === "pan") {
+                    return (
+                      <DisplayOnlyTextInput
+                        key={index}
+                        data={
+                          formValues[index] === null ||
+                          formValues[index] === undefined
+                            ? "No data available"
+                            : formValues[index]
+                        }
+                        title={item.label == "Pan" ? t("Pan") : item.label}
+                        photo={require("../../../assets/images/eye.png")}
+                      ></DisplayOnlyTextInput>
+                    );
+                  } else if (item.name === "name") {
+                    return (
+                      <DisplayOnlyTextInput
+                        key={index}
+                        data={
+                          formValues[index] === null ||
+                          formValues[index] === undefined
+                            ? "No data available"
+                            : formValues[index]
+                        }
+                        title={item.label == "Name" ? t("name") : item.label}
+                        photo={require("../../../assets/images/eye.png")}
+                      ></DisplayOnlyTextInput>
+                    );
+                  } else if (item.name === "mobile") {
+                    return (
+                      <DisplayOnlyTextInput
+                        key={index}
+                        data={
+                          formValues[index] === null ||
+                          formValues[index] === undefined
+                            ? "No data available"
+                            : formValues[index]
+                        }
+                        title={
+                          item.label == "Mobile" ? t("mobile") : item.label
+                        }
+                        photo={require("../../../assets/images/eye.png")}
+                      ></DisplayOnlyTextInput>
+                    );
+                  } else if (item.name.trim().toLowerCase() === "pincode") {
+                    return (
+                      <PincodeTextInput
+                        jsonData={item}
+                        key={index}
+                        handleData={handleData}
+                        handleFetchPincode={handleFetchPincode}
+                        placeHolder={item.name}
+                        value={location?.postcode}
+                        label={item.label}
+                        displayText={item.name}
+                        maxLength={6}
+                        shouldReturnValue={true}
+                      ></PincodeTextInput>
+                    );
+                  } else if (item.name.trim().toLowerCase() === "city") {
+                    return (
+                      <PrefilledTextInput
+                        jsonData={item}
+                        key={index}
+                        handleData={handleData}
+                        placeHolder={item.name}
+                        value={location?.city}
+                        displayText={item.name}
+                        label={item.label}
+                        isEditable={true}
+                        shouldReturnValue={true}
+                      ></PrefilledTextInput>
+                    );
+                  } else if (item.name.trim().toLowerCase() === "state") {
+                    return (
+                      <PrefilledTextInput
+                        jsonData={item}
+                        key={index}
+                        handleData={handleData}
+                        placeHolder={item.name}
+                        value={location?.state}
+                        label={item.label}
+                        displayText={item.name}
+                        isEditable={false}
+                        shouldReturnValue={true}
+                      ></PrefilledTextInput>
+                    );
+                  } else if (item.name.trim().toLowerCase() === "district") {
+                    return (
+                      <PrefilledTextInput
+                        jsonData={item}
+                        key={index}
+                        handleData={handleData}
+                        placeHolder={item.name}
+                        value={location?.district}
+                        label={item.label}
+                        displayText={item.name}
+                        isEditable={false}
+                        shouldReturnValue={true}
+                      ></PrefilledTextInput>
+                    );
+                  } else if (item.name === "enrollment_date") {
+                    return (
+                      <DisplayOnlyTextInput
+                        key={index}
+                        data={
+                          formValues[index] === null ||
+                          formValues[index] === undefined
+                            ? "No data available"
+                            : formValues[index]
+                        }
+                        title={
+                          item.label == "Date of Registration"
+                            ? t("Date of Registration")
+                            : item.label
+                        }
+                        photo={require("../../../assets/images/eye.png")}
+                      ></DisplayOnlyTextInput>
+                    );
+                  } else if (item?.name?.split("_").includes("mobile")) {
+                    return (
+                      <TextInputRectangularWithPlaceholder
+                        jsonData={item}
+                        placeHolder={
+                          formFields?.[index]?.label == "Name"
+                            ? t("name")
+                            : formFields?.[index]?.label == "Mobile"
+                            ? t("mobile")
+                            : formFields?.[index]?.label == "Email"
+                            ? t("Email")
+                            : formFields?.[index]?.label == "DOB"
+                            ? t("DOB")
+                            : formFields?.[index]?.label == "Gender"
+                            ? t("Gender")
+                            : formFields?.[index]?.label == "Pincode"
+                            ? t("Pincode")
+                            : formFields?.[index]?.label == "State"
+                            ? t("State")
+                            : formFields?.[index]?.label == "District"
+                            ? t("District")
+                            : formFields?.[index]?.label == "City"
+                            ? t("City")
+                            : formFields?.[index]?.label == "Aadhaar"
+                            ? t("Aadhar")
+                            : formFields?.[index]?.label == "Pan"
+                            ? t("Pan")
+                            : formFields?.[index]?.label == "Salesteam Name"
+                            ? t("Salesteam Name")
+                            : formFields?.[index]?.label == "Salesteam Mobile"
+                            ? t("Salesteam Mobile")
+                            : formFields?.[index]?.label == "Dealer Name"
+                            ? t("Dealer Name")
+                            : formFields?.[index]?.label == "Dealer Mobile"
+                            ? t("Dealer Mobile")
+                            : formFields?.[index]?.label ==
+                              "Date of Registration"
+                            ? t("Date of Registration")
+                            : formFields?.[index]?.label
+                        }
+                        pressedSubmit={pressedSubmit}
+                        key={index}
+                        handleData={handleData}
+                        label={item.label}
+                        title={item.name}
+                        value={
+                          formValues[index] != undefined
+                            ? formValues[index]
+                            : ""
+                        }
+                      ></TextInputRectangularWithPlaceholder>
+                    );
+                  } else {
+                    console.log("inside else asjdasdabs", item.name)
+                    return (
+                      <TextInputRectangularWithPlaceholder
+                        jsonData={item}
+                        placeHolder={
+                          formFields?.[index]?.label == "Name"
+                            ? t("name")
+                            : formFields?.[index]?.label == "Mobile"
+                            ? t("mobile")
+                            : formFields?.[index]?.label == "Email "
+                            ? t("Email")
+                            : formFields?.[index]?.label == "DOB"
+                            ? t("DOB")
+                            : formFields?.[index]?.label == "Gender"
+                            ? t("Gender")
+                            : formFields?.[index]?.label == "Pincode"
+                            ? t("Pincode")
+                            : formFields?.[index]?.label == "State"
+                            ? t("State")
+                            : formFields?.[index]?.label == "District"
+                            ? t("District")
+                            : formFields?.[index]?.label == "City"
+                            ? t("City")
+                            : formFields?.[index]?.label == "Aadhaar"
+                            ? t("Aadhar")
+                            : formFields?.[index]?.label == "Pan"
+                            ? t("Pan")
+                            : formFields?.[index]?.label == "Salesteam Name"
+                            ? t("Salesteam Name")
+                            : formFields?.[index]?.label == "Salesteam Mobile"
+                            ? t("Salesteam Mobile")
+                            : formFields?.[index]?.label == "Dealer Name"
+                            ? t("Dealer Name")
+                            : formFields?.[index]?.label == "Dealer Mobile"
+                            ? t("Dealer Mobile")
+                            : formFields?.[index]?.label ==
+                              "Date of Registration"
+                            ? t("Date of Registration")
+                            : formFields?.[index]?.label
+                        }
+                        pressedSubmit={pressedSubmit}
+                        key={index}
+                        handleData={handleData}
+                        label={item.label}
+                        title={item.name}
+                        value={
+                          formValues[index] != undefined
+                            ? formValues[index]
+                            : ""
+                        }
+                      ></TextInputRectangularWithPlaceholder>
+                    );
+                  }
+                } else if (item.type === "date") {
                   return (
-                    <DisplayOnlyTextInput
+                    <InputDateProfile
+                      label={formFields?.[index]?.label}
                       key={index}
-                      data={
-                        formValues[index] === null ||
-                        formValues[index] === undefined
-                          ? "No data available"
-                          : formValues[index]
-                      }
-                      title={
-                        item.label == "Aadhaar" ? t("Aadhaar") : item.label
-                      }
-                      photo={require("../../../assets/images/eye.png")}
-                    ></DisplayOnlyTextInput>
-                  );
-                } else if (item.name === "pan") {
-                  return (
-                    <DisplayOnlyTextInput
-                      key={index}
-                      data={
-                        formValues[index] === null ||
-                        formValues[index] === undefined
-                          ? "No data available"
-                          : formValues[index]
-                      }
-                      title={item.label == "Pan" ? t("Pan") : item.label}
-                      photo={require("../../../assets/images/eye.png")}
-                    ></DisplayOnlyTextInput>
-                  );
-                } else if (item.name === "name") {
-                  return (
-                    <DisplayOnlyTextInput
-                      key={index}
-                      data={
-                        formValues[index] === null ||
-                        formValues[index] === undefined
-                          ? "No data available"
-                          : formValues[index]
-                      }
-                      title={item.label == "Name" ? t("name") : item.label}
-                      photo={require("../../../assets/images/eye.png")}
-                    ></DisplayOnlyTextInput>
-                  );
-                } else if (item.name === "mobile") {
-                  return (
-                    <DisplayOnlyTextInput
-                      key={index}
-                      data={
-                        formValues[index] === null ||
-                        formValues[index] === undefined
-                          ? "No data available"
-                          : formValues[index]
-                      }
-                      title={item.label == "Mobile" ? t("mobile") : item.label}
-                      photo={require("../../../assets/images/eye.png")}
-                    ></DisplayOnlyTextInput>
-                  );
-                }
-                else if ((item.name).trim().toLowerCase() === "pincode"   ) {
-                 
-                  return (
-                    <PincodeTextInput
-                      jsonData={item}
-                      key={index}
-                      handleData={handleData}
-                      handleFetchPincode={handleFetchPincode}
-                      placeHolder={item.name}
-                      value={location?.postcode}
-                      label={item.label}
-                      displayText = {item.name}
-                      maxLength={6}
-                      shouldReturnValue = {true}
-                    ></PincodeTextInput>
-                  )
-                }
-
-                else if ((item.name).trim().toLowerCase() === "city" ) {
-
-                  return (
-                    <PrefilledTextInput
-                      jsonData={item}
-                      key={index}
-                      handleData={handleData}
-                      placeHolder={item.name}
-                      value={location?.city}
-                      displayText = {item.name}
-                      label={item.label}
-                      isEditable={true}
-                      shouldReturnValue = {true}
-                    ></PrefilledTextInput>
-                  )
-
-                }
-                else if ((item.name).trim().toLowerCase() === "state"  ) {
-                  return (
-                    <PrefilledTextInput
-                      jsonData={item}
-                      key={index}
-                      handleData={handleData}
-                      placeHolder={item.name}
-                      value={location?.state}
-                      label={item.label}
-                      displayText = {item.name}
-                      isEditable={false}
-                      shouldReturnValue = {true}
-                    ></PrefilledTextInput>
-                  )
-                }
-                else if ((item.name).trim().toLowerCase() === "district"  ) {
-
-                  return (
-                    <PrefilledTextInput
-                      jsonData={item}
-                      key={index}
-                      handleData={handleData}
-                      placeHolder={item.name}
-                      value={location?.district}
-                      label={item.label}
-                      displayText = {item.name}
-                      isEditable={false}
-                      shouldReturnValue = {true}
-                    ></PrefilledTextInput>
-                  )
-
-
-
-                }
-                else if (item.name === "enrollment_date") {
-                  return (
-                    <DisplayOnlyTextInput
-                      key={index}
-                      data={
-                        formValues[index] === null ||
-                        formValues[index] === undefined
-                          ? "No data available"
-                          : formValues[index]
-                      }
-                      title={
-                        item.label == "Date of Registration"
-                          ? t("Date of Registration")
-                          : item.label
-                      }
-                      photo={require("../../../assets/images/eye.png")}
-                    ></DisplayOnlyTextInput>
-                  );
-                } else if (item?.name?.split("_").includes("mobile")) {
-                  return (
-                    <TextInputRectangularWithPlaceholder
-                      jsonData={item}
-                      placeHolder={
-                        formFields?.[index]?.label == "Name"
-                          ? t("name")
-                          : formFields?.[index]?.label == "Mobile"
-                          ? t("mobile")
-                          : formFields?.[index]?.label == "Email"
-                          ? t("Email")
-                          : formFields?.[index]?.label == "DOB"
-                          ? t("DOB")
-                          : formFields?.[index]?.label == "Gender"
-                          ? t("Gender")
-                          : formFields?.[index]?.label == "Pincode"
-                          ? t("Pincode")
-                          : formFields?.[index]?.label == "State"
-                          ? t("State")
-                          : formFields?.[index]?.label == "District"
-                          ? t("District")
-                          : formFields?.[index]?.label == "City"
-                          ? t("City")
-                          : formFields?.[index]?.label == "Aadhaar"
-                          ? t("Aadhar")
-                          : formFields?.[index]?.label == "Pan"
-                          ? t("Pan")
-                          : formFields?.[index]?.label == "Salesteam Name"
-                          ? t("Salesteam Name")
-                          : formFields?.[index]?.label == "Salesteam Mobile"
-                          ? t("Salesteam Mobile")
-                          : formFields?.[index]?.label == "Dealer Name"
-                          ? t("Dealer Name")
-                          : formFields?.[index]?.label == "Dealer Mobile"
-                          ? t("Dealer Mobile")
-                          : formFields?.[index]?.label == "Date of Registration"
-                          ? t("Date of Registration")
-                          : formFields?.[index]?.label
-                      }
-                      pressedSubmit={pressedSubmit}
-                      key={index}
-                      handleData={handleData}
-                      label={item.label}
+                      data={dayjs(formValues[index]).format("DD-MMM-YYYY")}
                       title={item.name}
-                      value={
-                        formValues[index] != undefined ? formValues[index] : ""
-                      }
-                    ></TextInputRectangularWithPlaceholder>
-                  );
-                } else {
-                  return (
-                    <TextInputRectangularWithPlaceholder
-                      jsonData={item}
-                      placeHolder={
-                        formFields?.[index]?.label == "Name"
-                          ? t("name")
-                          : formFields?.[index]?.label == "Mobile"
-                          ? t("mobile")
-                          : formFields?.[index]?.label == "Email"
-                          ? t("Email")
-                          : formFields?.[index]?.label == "DOB"
-                          ? t("DOB")
-                          : formFields?.[index]?.label == "Gender"
-                          ? t("Gender")
-                          : formFields?.[index]?.label == "Pincode"
-                          ? t("Pincode")
-                          : formFields?.[index]?.label == "State"
-                          ? t("State")
-                          : formFields?.[index]?.label == "District"
-                          ? t("District")
-                          : formFields?.[index]?.label == "City"
-                          ? t("City")
-                          : formFields?.[index]?.label == "Aadhaar"
-                          ? t("Aadhar")
-                          : formFields?.[index]?.label == "Pan"
-                          ? t("Pan")
-                          : formFields?.[index]?.label == "Salesteam Name"
-                          ? t("Salesteam Name")
-                          : formFields?.[index]?.label == "Salesteam Mobile"
-                          ? t("Salesteam Mobile")
-                          : formFields?.[index]?.label == "Dealer Name"
-                          ? t("Dealer Name")
-                          : formFields?.[index]?.label == "Dealer Mobile"
-                          ? t("Dealer Mobile")
-                          : formFields?.[index]?.label == "Date of Registration"
-                          ? t("Date of Registration")
-                          : formFields?.[index]?.label
-                      }
-                      pressedSubmit={pressedSubmit}
-                      key={index}
                       handleData={handleData}
-                      label={item.label}
+                    ></InputDateProfile>
+                  );
+                } else if (item.type === "select") {
+                  return (
+                    <ProfileDropDown
+                      key={index}
                       title={item.name}
-                      value={
-                        formValues[index] != undefined ? formValues[index] : ""
-                      }
-                      
-                    ></TextInputRectangularWithPlaceholder>
+                      header={item.label}
+                      value={formValues[index]}
+                      data={item.options}
+                      handleData={handleData}
+                    ></ProfileDropDown>
                   );
                 }
-              } else if (item.type === "date") {
-                return (
-                  <InputDateProfile
-                    label={formFields?.[index]?.label}
-                    key={index}
-                    data={dayjs(formValues[index]).format("DD-MMM-YYYY")}
-                    title={item.name}
-                    handleData={handleData}
-                  ></InputDateProfile>
-                );
-              } else if (item.type === "select") {
-                return (
-                  <ProfileDropDown
-                    key={index}
-                    title={item.name}
-                    header={item.label}
-                    value={formValues[index]}
-                    data={item.options}
-                    handleData={handleData}
-                  ></ProfileDropDown>
-                );
-              }
-            })}
+              })}
         </ScrollView>
 
         {!isClicked && (
@@ -872,14 +951,14 @@ const EditProfile = ({ navigation, route }) => {
               style={{
                 height: 40,
                 width: 200,
-                backgroundColor: ternaryThemeColor,
+                backgroundColor: "#FFF8E7",
                 borderRadius: 4,
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
               <PoppinsTextMedium
-                style={{ color: "white", fontWeight: "700", fontSize: 16 }}
+                style={{ color: "black", fontWeight: "700", fontSize: 16 }}
                 content={t("Update Profile")}
               ></PoppinsTextMedium>
             </TouchableOpacity>
@@ -891,6 +970,35 @@ const EditProfile = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  selectedText: {
+    color: "maroon",
+    fontWeight: "bold",
+  },
+  bottomHighlight: {
+    marginTop: 4,
+    height: 2,
+    width: "100%",
+    backgroundColor: "maroon",
+  },
+  container: {
+    paddingVertical: 10,
+    width: "100%",
+    borderBottomWidth: 4,
+    borderColor: "#DFE5EA",
+  },
+  optionContainer: {
+    paddingHorizontal: 16,
+    alignItems: "center",
+  },
+  optionText: {
+    color: "grey",
+    fontSize: 16,
+  },
+  containerWrapper: {
+    height: "100%",
+    width: "100%",
+    flex: 1,
+  },
   centeredView: {
     flex: 1,
     justifyContent: "center",

@@ -651,7 +651,7 @@ const VerifyOtp = ({ navigation, route }) => {
   };
 
   return (
-    <LinearGradient colors={["#F0F8F6", "#F0F8F6"]} style={styles.container}>
+    <ScrollView contentContainerStyle={{backgroundColor:"#F0F8F6",alignItems:'center'}} style={styles.container}>
       <View
         style={{
           width: "100%",
@@ -736,7 +736,6 @@ const VerifyOtp = ({ navigation, route }) => {
         )}
       </View>
 
-      <ScrollView contentContainerStyle={{ flex: 1 }} style={{ width: "100%" }}>
         <View style={{ alignItems: "center", justifyContent: "center" }}>
           <Image
             style={{ height: 160, width: 160, resizeMode: "contain" }}
@@ -748,7 +747,7 @@ const VerifyOtp = ({ navigation, route }) => {
           color={"white"}
         ></OtpInput>
 
-        <View style={{  flexDirection:'row', justifyContent:'space-around' }}>
+        <View style={{  flexDirection:'row', justifyContent:'space-around',marginBottom:50 }}>
         
           <View style={{ alignItems: "center", justifyContent: "center",flexDirection:'row' }}>
             <Text style={{ color: "black", marginTop: 10 ,fontSize:14}}>
@@ -791,27 +790,9 @@ const VerifyOtp = ({ navigation, route }) => {
             </Text>
           </View>
         </View>
-        <View
-          style={{
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "center",
-            position: "absolute",
-            bottom: 30,
-            width: "100%",
-          }}
-        >
-          {/* {otp && (
-            <ButtonNavigateArrow
-              handleOperation={verifyOtp}
-              backgroundColor={buttonThemeColor}
-              style={{ color: 'white', fontSize: 16 }}
-              content="Verify"></ButtonNavigateArrow>
-          )} */}
-        </View>
-      </ScrollView>
+        
       <SocialBottomBar/>
-    </LinearGradient>
+    </ScrollView>
   );
 };
 
@@ -819,7 +800,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    alignItems: "center",
   },
   semicircle: {
     position: "absolute",

@@ -7,15 +7,16 @@ const SocialBottomBar = () => {
     return (
         <View
         style={{
-          position: "absolute",
+          // position: "absolute",
           width: "100%",
-          bottom: 0,
+          // bottom: 0,
           height: 50,
           borderTopColor: "#B6202D",
           borderTopWidth: 1,
           alignItems: "center",
           justifyContent:'center',
           flexDirection: "row",
+          marginTop:10
         }}
       >
         <TouchableOpacity onPress={()=>{}} style={{ flexDirection: "row", marginLeft: 20,marginTop:5 }}>

@@ -294,7 +294,8 @@ const OtpLogin = ({ navigation, route }) => {
     setAlert(false);
   };
   return (
-    <LinearGradient colors={["#F0F8F6", "#F0F8F6"]} style={styles.container}>
+    <ScrollView contentContainerStyle={{}} style={{ width: "100%" }}>
+
       <View
         style={{
           width: "100%",
@@ -376,7 +377,6 @@ const OtpLogin = ({ navigation, route }) => {
           openModal={alert}
         ></AlertModal>
       )}
-      <ScrollView contentContainerStyle={{ flex: 1 }} style={{ width: "93%" }}>
         <KeyboardAvoidingView>
           <View
             style={{
@@ -482,7 +482,6 @@ const OtpLogin = ({ navigation, route }) => {
             />
           )}
         </View>
-      </ScrollView>
       {/* {registrationRequired && (
           <View style={{ position: "absolute", right: 20, top: 10 }}>
             <ButtonNavigate
@@ -513,7 +512,8 @@ const OtpLogin = ({ navigation, route }) => {
           </View>
         )} */}
         <SocialBottomBar/>
-    </LinearGradient>
+        </ScrollView>
+
   );
 };
 

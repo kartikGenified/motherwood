@@ -102,8 +102,9 @@ const Profile = ({ navigation }) => {
 
   useEffect(() => {
     if (getFormData) {
+      console.log("Form Fields", JSON.stringify(getFormData));
+
       if (getFormData.body.length !== 0) {
-        console.log("Form Fields", JSON.stringify(getFormData));
 
         const filteredData = Object.values(getFormData.body.template).filter(
           (item, index) => {
@@ -422,7 +423,7 @@ const Profile = ({ navigation }) => {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: ternaryThemeColor,
+            backgroundColor: "#FFF8E7",
             borderBottomWidth: 0.3,
             borderColor: "white",
             paddingBottom: 40,
@@ -464,15 +465,18 @@ const Profile = ({ navigation }) => {
           )}
           <View
             style={{
-              alignItems: "flex-start",
+              alignItems: "center",
               justifyContent: "center",
               width: 140,
-              height: 100,
+              height: 140,
               marginLeft: 10,
+              backgroundColor:'white',
+              borderRadius:70
+            
             }}
           >
             <PoppinsText
-              style={{ color: "white", fontSize: 20 }}
+              style={{ color: "black", fontSize: 20 }}
               content={name}
             ></PoppinsText>
             {membership && (
@@ -489,7 +493,7 @@ const Profile = ({ navigation }) => {
                 ></Image>
                 <TouchableOpacity onPress={showSuccessModal}>
                   <PoppinsTextMedium
-                    style={{ color: "white", fontSize: 14 }}
+                    style={{ color: "black", fontSize: 14 }}
                     content={membership}
                   ></PoppinsTextMedium>
                 </TouchableOpacity>
@@ -509,7 +513,7 @@ const Profile = ({ navigation }) => {
                 ></Image>
 
                 <PoppinsTextMedium
-                  style={{ color: "white" }}
+                  style={{ color: "black" }}
                   content="Account Verified"
                 ></PoppinsTextMedium>
 
@@ -541,7 +545,7 @@ const Profile = ({ navigation }) => {
               marginLeft: 50,
             }}
           >
-            {/* <TouchableOpacity
+            <TouchableOpacity
               onPress={() => {
                 navigation.navigate("EditProfile", {
                   formFields: formFields,
@@ -561,7 +565,7 @@ const Profile = ({ navigation }) => {
               }}
             >
               <Edit name="edit" size={20} color={ternaryThemeColor}></Edit>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 deleteID();
@@ -650,7 +654,7 @@ const Profile = ({ navigation }) => {
         style={{
           height: 50,
           width: "100%",
-          backgroundColor: ternaryThemeColor,
+          backgroundColor: "#FFF8E7",
           alignItems: "flex-start",
           justifyContent: "center",
           flexDirection: "row",
