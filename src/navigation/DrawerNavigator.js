@@ -490,7 +490,7 @@ const CustomDrawer = () => {
       <View
         style={{
           width: "100%",
-          height: 145,
+          height: 175,
           backgroundColor: secondaryThemeColor,
           alignItems: "center",
           justifyContent: "center",
