@@ -89,6 +89,9 @@ const DashboardMenuBox=(props)=>{
         else if(data.toLowerCase() === "point transfer"){
             navigation.navigate('PointsTransfer')
         }
+        else if(data.toLowerCase() === "media gallary" || data.toLowerCase() === "media gallery" ){
+            navigation.navigate('MediaGallery')
+        }
     }
 
     return(

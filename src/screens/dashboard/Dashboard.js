@@ -68,6 +68,8 @@ import {
 
 import PointBox from "../../components/organisms/PointBox";
 import { useCurrentDateTime } from "../../hooks/customHooks/useDate";
+import RewardBox from "../../components/molecules/RewardBox";
+import RewardBoxDashboard from "../../components/molecules/RewardBoxDashboard";
 
 const Dashboard = ({ navigation }) => {
   const [dashboardItems, setDashboardItems] = useState();
@@ -127,10 +129,10 @@ const Dashboard = ({ navigation }) => {
 
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
-  )
+  );
   const secondaryThemeColor = useSelector(
     (state) => state.apptheme.secondaryThemeColor
-  )
+  );
 
   const gifUri = Image.resolveAssetSource(
     require("../../../assets/gif/loaderNew.gif")
@@ -260,7 +262,6 @@ const Dashboard = ({ navigation }) => {
 
       getAppCampaign(token);
     };
-
     getToken();
   }, []);
 
@@ -467,9 +468,6 @@ const Dashboard = ({ navigation }) => {
   const getMembership = async () => {
     const credentials = await Keychain.getGenericPassword();
     if (credentials) {
-      // console.log(
-      //   'Credentials successfully loaded for user ' + credentials?.username
-      // );
       const token = credentials?.username;
       getActiveMembershipFunc(token);
     }
@@ -599,18 +597,23 @@ const Dashboard = ({ navigation }) => {
               />
             )}
           </View>
+       
 
           <View
             style={{
               width: "90%",
               marginBottom: 20,
-              flexDirection:'row',
-              justifyContent:'space-between'
-
+              flexDirection: "row",
+              justifyContent: "space-between",
             }}
           >
-            <View style={{ flexDirection: "row", alignItems: "center" ,marginHorizontal:20}}>
-
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginHorizontal: 20,
+              }}
+            >
               <View
                 style={{
                   backgroundColor: "white",
@@ -632,12 +635,17 @@ const Dashboard = ({ navigation }) => {
               </Text>
             </View>
 
-            <TouchableOpacity style={{ flexDirection:'row', marginTop:13}}>
-              <Image source={require("../../screens/../../assets/images/info_white.png")}></Image>
-              <PoppinsTextLeftMedium style={{color:ternaryThemeColor, fontWeight:'600'}} content={t("Earn Badge")}></PoppinsTextLeftMedium>
+            <TouchableOpacity style={{ flexDirection: "row", marginTop: 13 }}>
+              <Image
+                source={require("../../screens/../../assets/images/info_white.png")}
+              ></Image>
+              <PoppinsTextLeftMedium
+                style={{ color: ternaryThemeColor, fontWeight: "600" }}
+                content={t("Earn Badge")}
+              ></PoppinsTextLeftMedium>
             </TouchableOpacity>
-            
           </View>
+
 
           {(userData?.user_type).toLowerCase() !== "dealer" ? (
             (userData?.user_type).toLowerCase() !== "sales" ? (
@@ -656,11 +664,7 @@ const Dashboard = ({ navigation }) => {
           ) : (
             <></>
           )}
-          {/* <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{ paddingLeft: 10, paddingRight: 10, paddingBottom: 4 }}>
-            <DashboardDataBox header="Total Points"  data="5000" image={require('../../../assets/images/coin.png')} ></DashboardDataBox>
-          <DashboardDataBox header="Total Points"  data="5000" image={require('../../../assets/images/coin.png')} ></DashboardDataBox>
 
-          </ScrollView> */}
           {dashboardData && !userPointIsLoading && (
             <DashboardMenuBox
               requiresLocation={requiresLocation}

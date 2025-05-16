@@ -77,7 +77,7 @@ const RewardBox = () => {
                 }
 
                 {
-                  userPointData && <RewardSquare amount={Math.floor(userPointData.body.point_earned)} color="#F0FCE7" image={require('../../../assets/images/current_point.png')} title={t("Current Points")}></RewardSquare>
+                  userPointData && <RewardSquare amount={Math.floor(userPointData.body.point_earned ? userPointData.body.point_earned : 0)} color="#F0FCE7" image={require('../../../assets/images/current_point.png')} title={t("Current Points")}></RewardSquare>
                 }
                 {
                     userData && (userData?.user_type)?.toLowerCase() == 'distributor' && userPointData  && <RewardSquare amount={userPointData.body.point_earned} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("earned points")}></RewardSquare>
@@ -86,10 +86,10 @@ const RewardBox = () => {
                     workflow?.includes("Points On Product") && userPointData && <RewardSquare amount={userPointData.body.point_redeemed} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("redeemed points")}></RewardSquare>
                 }
                     {
-                  <RewardSquare amount={Math.floor(userPointData?.body.transfer_points)} color="#DCF0FF" image={require('../../../assets/images/transferable.png')} title={t("Transferable points")}></RewardSquare>
+                  <RewardSquare amount={Math.floor(userPointData?.body.transfer_points ? userPointData?.body.transfer_points : 0)} color="#DCF0FF" image={require('../../../assets/images/transferable.png')} title={t("Transferable points")}></RewardSquare>
                 }
                   {
-                  <RewardSquare amount={Math.floor(userPointData?.body.point_balance)} color="#FFFCCF" image={require('../../../assets/images/balance_black.png')} title={t("balance points")}></RewardSquare>
+                  <RewardSquare amount={Math.floor(userPointData?.body.point_balance ? userPointData?.body.point_balance : 0)} color="#FFFCCF" image={require('../../../assets/images/balance_black.png')} title={t("balance points")}></RewardSquare>
                 }
             
                 {
