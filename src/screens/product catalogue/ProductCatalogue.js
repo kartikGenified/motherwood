@@ -21,6 +21,7 @@ import { useProductCatalogueMutation } from '../../apiServices/productCatalogue/
 import Pdf from 'react-native-pdf';
 import FastImage from 'react-native-fast-image';
 import { useTranslation } from 'react-i18next';
+import TopHeader from '../../components/topBar/TopHeader';
 
 const ProductCatalogue = ({navigation}) => {
     const [catalogueData, setCatalogueData] = useState()
@@ -121,41 +122,12 @@ const height = Dimensions.get('window').height
         alignItems: 'center',
         justifyContent: 'flex-start',
         width: '100%',
-        backgroundColor: ternaryThemeColor,
+        backgroundColor:'white',
         height: '100%',
       }}>
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          width: '100%',
-          marginTop: 10,
-          height: '10%',
-          marginLeft: 20,
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-              marginLeft: 10,
-            }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content={t("Product Catalogue")}
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: '700',
-            color: 'white',
-          }}></PoppinsTextMedium>
-      </View>
+
+        <TopHeader title={"E-Catalogue"}></TopHeader>
+     
       <ScrollView style={{width:'100%',height:'90%'}}>
 
       
@@ -165,11 +137,11 @@ const height = Dimensions.get('window').height
           borderTopLeftRadius: 30,
           backgroundColor: 'white',
           minHeight:height-100,
-          marginTop: 10,
+
           alignItems: 'center',
           justifyContent: 'flex-start',
           width: '100%',
-          paddingBottom: 40,
+
         }}>
         <View
           style={{

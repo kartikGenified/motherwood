@@ -41,7 +41,6 @@ const MenuItems = (props) => {
     <View
       accessibilityLabel={String(props.index)}
       style={{
-  
         width: 110,
         margin: 6,
       }}

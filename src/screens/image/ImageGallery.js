@@ -11,6 +11,7 @@ import Right from 'react-native-vector-icons/AntDesign'
 import FastImage from 'react-native-fast-image';
 import DataNotFound from '../data not found/DataNotFound';
 import { useTranslation } from 'react-i18next';
+import TopHeader from '../../components/topBar/TopHeader';
 
 const ImageGallery = ({navigation}) => {
   const [imageData, setImageData] = useState({})
@@ -136,52 +137,22 @@ setIndexImage(indexImage +1)
         backgroundColor: ternaryThemeColor,
         height: '100%',
       }}>
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          width: '100%',
-          marginTop: 10,
-          height: '4%',
-          marginLeft: 20,
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-              marginLeft: 10,
-            }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content={t("Image Gallery")}
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: '700',
-            color: 'white',
-          }}></PoppinsTextMedium>
-      </View>
+
+        <TopHeader title={"Photo Gallery"}></TopHeader>
+   
       <ScrollView style={{width:'100%',height:'90%'}}>
 
-      
+
       <View
         style={{
-          borderTopRightRadius: 30,
-          borderTopLeftRadius: 30,
+
           backgroundColor: 'white',
-          minHeight:height-50,
-          marginTop: 20,
+          minHeight:height,
+
           alignItems: 'center',
           justifyContent: 'flex-start',
           width: '100%',
-          paddingBottom: 40,
+
           
           
         }}>

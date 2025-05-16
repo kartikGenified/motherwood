@@ -3,13 +3,13 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 // create a component
-const SocialBottomBar = () => {
+const SocialBottomBar = ({showRelative}) => {
     return (
         <View
         style={{
-          // position: "absolute",
+          position: showRelative ? "relative" : "absolute",
           width: "100%",
-          // bottom: 0,
+          bottom: 0,
           height: 50,
           borderTopColor: "#B6202D",
           borderTopWidth: 1,

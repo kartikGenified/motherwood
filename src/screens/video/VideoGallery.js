@@ -9,6 +9,7 @@ import dayjs from 'dayjs'
 import FastImage from 'react-native-fast-image';
 import DataNotFound from '../data not found/DataNotFound';
 import { useTranslation } from 'react-i18next';
+import TopHeader from '../../components/topBar/TopHeader';
 
 const VideoGallery = ({ navigation }) => {
   const [videoData, setVideoData] = useState([])
@@ -91,38 +92,7 @@ const VideoGallery = ({ navigation }) => {
         backgroundColor: ternaryThemeColor,
         height: '100%',
       }}>
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          width: '100%',
-          marginTop: 10,
-          height: '10%',
-          marginLeft: 20,
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-              marginLeft: 10,
-            }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content={t("Videos")}
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: '700',
-            color: 'white',
-          }}></PoppinsTextMedium>
-      </View>
+        <TopHeader title={"VideoGallery"}></TopHeader>
       <ScrollView style={{ width: '100%', height: '90%',backgroundColor:'white' }}>
 
 
