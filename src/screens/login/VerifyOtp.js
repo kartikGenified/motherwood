@@ -651,7 +651,7 @@ const VerifyOtp = ({ navigation, route }) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{backgroundColor:"#F0F8F6",alignItems:'center'}} style={styles.container}>
+    <ScrollView contentContainerStyle={{backgroundColor:"#F0F8F6",alignItems:'center', height:'100%'}} style={styles.container}>
       <View
         style={{
           width: "100%",
