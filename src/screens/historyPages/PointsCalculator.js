@@ -70,6 +70,8 @@ const PointsCalculator = () => {
     return productRows.reduce((sum, row) => sum + parseInt(row.qty || 0), 0);
   }, [productRows]);
 
+  console.log("priddd", productRows)
+
   const totalPoints = useMemo(() => {
     return productRows.reduce(
       (sum, row) => sum + parseInt(row.qty || 0) * row.points,

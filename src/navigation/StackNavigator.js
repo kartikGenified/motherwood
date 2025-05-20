@@ -97,6 +97,7 @@ import PointsTransfer from "../screens/dashmenu/PointsTransfer";
 import PointsTransferNext from "../screens/dashmenu/PointsTransferNext";
 import PointsTransferSuccess from "../screens/dashmenu/PointTransferSuccess";
 import MediaGallery from "../screens/media/MediaGallery";
+import RewardMenu from "../screens/redeem/RewardMenu";
 
 const Stack = createNativeStackNavigator();
 
@@ -785,6 +786,13 @@ const StackNavigator = () => {
           }}
           name="RegisterUser"
           component={RegisterUser}
+        ></Stack.Screen>
+             <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="RewardMenu"
+          component={RewardMenu}
         ></Stack.Screen>
         <Stack.Screen
           options={{
