@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Keyboard,
   Text,
-  BackHandler,
   Platform,
 } from "react-native";
 import { useGetLoginOtpMutation } from "../../apiServices/login/otpBased/SendOtpApi";

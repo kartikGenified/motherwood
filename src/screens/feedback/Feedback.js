@@ -113,7 +113,7 @@ const Feedback = ({ navigation }) => {
   }, [addFeedbackData, addFeedbackError]);
 
   return (
-    <View style={[styles.container, { backgroundColor: ternaryThemeColor }]}>
+    <View style={[styles.container, { backgroundColor: 'white' }]}>
       {/* Navigator */}
       <View
         style={{

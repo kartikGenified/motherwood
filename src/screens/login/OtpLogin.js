@@ -294,7 +294,7 @@ const OtpLogin = ({ navigation, route }) => {
     setAlert(false);
   };
   return (
-    <ScrollView contentContainerStyle={{}} style={{ width: "100%" }}>
+    <ScrollView contentContainerStyle={{height:'100%'}} style={{ width: "100%" }}>
 
       <View
         style={{

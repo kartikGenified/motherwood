@@ -13,7 +13,11 @@ import BottomNavigator from "./BottomNavigator";
 import RedeemRewardHistory from "../screens/historyPages/RedeemRewardHistory";
 import AddBankAccountAndUpi from "../screens/payments/AddBankAccountAndUpi";
 import Profile from "../screens/profile/Profile";
-import { DrawerActions, useIsFocused, useNavigation } from "@react-navigation/native";
+import {
+  DrawerActions,
+  useIsFocused,
+  useNavigation,
+} from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useGetAppDashboardDataMutation } from "../apiServices/dashboard/AppUserDashboardApi";
@@ -32,6 +36,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import ErrorModal from "../components/modals/ErrorModal";
 import VersionCheck from "react-native-version-check";
 import { useTranslation } from "react-i18next";
+import Edit from "react-native-vector-icons/Entypo";
 
 const Drawer = createDrawerNavigator();
 const CustomDrawer = () => {
@@ -55,10 +60,10 @@ const CustomDrawer = () => {
   const getTermsData = useSelector((state) => state.termsPolicy.terms);
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
-  )
+  );
   const secondaryThemeColor = useSelector(
     (state) => state.apptheme.secondaryThemeColor
-  )
+  );
   const primaryThemeColor = useSelector(
     (state) => state.apptheme.primaryThemeColor
   )
@@ -67,7 +72,7 @@ const CustomDrawer = () => {
   const userData = useSelector((state) => state.appusersdata.userData);
   const kycData = useSelector((state) => state.kycDataSlice.kycData);
 
-  console.log("drawer data tabs", drawerData,kycData);
+  console.log("drawer data tabs", drawerData, kycData);
 
   const [
     getFAQ,
@@ -103,7 +108,7 @@ const CustomDrawer = () => {
     },
   ] = useGetActiveMembershipMutation();
 
-  const focused = useIsFocused()
+  const focused = useIsFocused();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -229,12 +234,11 @@ const CustomDrawer = () => {
         >
           {/* <SvgUri width={40} height={40} uri={image}></SvgUri> */}
           {/* <Icon size={size} name="bars" color={ternaryThemeColor}></Icon> */}
-     
-            <Image
-              style={{ height: 20, width: 20, resizeMode: "contain" }}
-              source={{ uri: image }}
-            ></Image>
-        
+
+          <Image
+            style={{ height: 20, width: 20, resizeMode: "contain" }}
+            source={{ uri: image }}
+          ></Image>
         </View>
 
         <View
@@ -282,11 +286,9 @@ const CustomDrawer = () => {
                 navigation.navigate("ReferAndEarn");
               } else if (props.title.toLowerCase() === "warranty list") {
                 navigation.navigate("WarrantyHistory");
-              } 
-              else if (props.title.toLowerCase() === "complaint list") {
+              } else if (props.title.toLowerCase() === "complaint list") {
                 navigation.navigate("QueryList");
-              } 
-              else if (props.title.toLowerCase() === "help and support") {
+              } else if (props.title.toLowerCase() === "help and support") {
                 navigation.navigate("HelpAndSupport");
               } else if (props.title.toLowerCase() === "product catalogue") {
                 navigation.navigate("ProductCatalogue");
@@ -295,13 +297,9 @@ const CustomDrawer = () => {
                 props.title.toLowerCase() === "videos"
               ) {
                 navigation.navigate("VideoGallery");
-              } 
-              else if (
-                props.title.toLowerCase() === "update password" 
-              ) {
+              } else if (props.title.toLowerCase() === "update password") {
                 navigation.navigate("UpdatePassword");
-              } 
-              else if (props.title.toLowerCase() === "gallery") {
+              } else if (props.title.toLowerCase() === "gallery") {
                 navigation.navigate("ImageGallery");
               } else if (
                 props.title.substring(0, 4).toLowerCase() === "scan" &&
@@ -321,11 +319,9 @@ const CustomDrawer = () => {
                 navigation.navigate("ScanAndRedirectToWarranty");
               } else if (props.title.toLowerCase() === "scan list") {
                 navigation.navigate("PointHistory");
-              } 
-              else if (props.title.toLowerCase() === "coupons") {
+              } else if (props.title.toLowerCase() === "coupons") {
                 navigation.navigate("RedeemCoupons");
-              } 
-              else if (props.title.toLowerCase() === "add user") {
+              } else if (props.title.toLowerCase() === "add user") {
                 navigation.navigate("ListUsers");
               } else if (props.title.toLowerCase() === "query list") {
                 navigation.navigate("QueryList");
@@ -494,81 +490,132 @@ const CustomDrawer = () => {
       <View
         style={{
           width: "100%",
-          height: 125,
+          height: 175,
           backgroundColor: secondaryThemeColor,
-          flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
         {profileImage ? (
-          <Image
+          <View
             style={{
               height: 60,
               width: 60,
-              borderRadius: 30,
-              marginLeft: 10,
-              position: "absolute",
-              left: 4,
-              resizeMode: "contain",
-            }}
-            source={{ uri: profileImage }}
-          ></Image>
-        ) : (
-          <View
-            style={{
-              height:60,
-              width:60,
               paddingHorizontal: 10,
               paddingVertical: 10,
               borderRadius: 30,
-              marginLeft: 10,
-              borderWidth:2,
-              borderColor:ternaryThemeColor,
+              borderWidth: 2,
+              borderColor: ternaryThemeColor,
               backgroundColor: "white",
-              alignItems:'center',
-              justifyContent:'center',
-
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Image
+              style={{
+                height: 58,
+                width: 58,
+                borderRadius:30,
+                resizeMode: "contain",
+              }}
+              source={{ uri: profileImage }}
+            ></Image>
+          </View>
+        ) : (
+          <View
+            style={{
+              height: 60,
+              width: 60,
+              paddingHorizontal: 10,
+              paddingVertical: 10,
+              borderRadius: 30,
+              borderWidth: 2,
+              borderColor: ternaryThemeColor,
+              backgroundColor: "white",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
             <Image
               style={{
                 height: 30,
                 width: 30,
-                resizeMode:'contain'
+                resizeMode: "contain",
               }}
               source={require("../../assets/images/userGrey.png")}
             ></Image>
           </View>
         )}
-        <View
-          style={{ justifyContent: "center", marginLeft: 50, width: "50%" }}
-        >
+        <View>
+          <View style={{ flexDirection: "row" }}>
+            <PoppinsTextMedium
+              style={{
+                marginTop: 10,
+                fontSize: 17,
+                color: "black",
+                fontWeight: "bold",
+              }}
+              content={userData?.name}
+            ></PoppinsTextMedium>
+            {/* <Image style={{height:25, width:25, marginTop:5, marginLeft:5}} source={require("../../assets/images/editWhite.png")}></Image> */}
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Profile");
+              }}
+              style={{
+                height: 23,
+                width: 23,
+                borderWidth: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 20,
+                marginTop: 10,
+                marginLeft: 10,
+              }}
+            >
+              <Edit name="edit" size={12} color={"black"}></Edit>
+            </TouchableOpacity>
+          </View>
+          <PoppinsTextMedium
+            style={{ color: "black" }}
+            content={"MWEDKSKD"}
+          ></PoppinsTextMedium>
+        </View>
 
- 
-
-          {!Object.values(kycData).includes(false) ? <View style={{ flexDirection: 'row', marginTop: 4 }}>
-  
-
-          </View> :
-            <View style={{ flexDirection: 'row', marginTop: 4 }}>
+        <View style={{ justifyContent: "center", marginLeft: 50 }}>
+          {!Object.values(kycData).includes(false) ? (
+            <View style={{ flexDirection: "row", marginTop: 4 }}></View>
+          ) : (
+            <View style={{ flexDirection: "row", marginTop: 4 }}>
               <View
                 style={{
                   height: 22,
                   width: 80,
                   borderRadius: 20,
-                  backgroundColor: 'white',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
+                  backgroundColor: "white",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexDirection: "row",
                   marginTop: 2,
-                }}>
-                <Image style={{ height: 10, width: 10, resizeMode: 'contain' }} source={require('../../assets/images/cancel.png')}></Image>
-                <Text style={{ marginLeft: 4, color: 'black', fontSize: 10, fontWeight: '500' }}>KYC Status</Text>
+                }}
+              >
+                <Image
+                  style={{ height: 10, width: 10, resizeMode: "contain" }}
+                  source={require("../../assets/images/cancel.png")}
+                ></Image>
+                <Text
+                  style={{
+                    marginLeft: 4,
+                    color: "black",
+                    fontSize: 10,
+                    fontWeight: "500",
+                  }}
+                >
+                  KYC Status
+                </Text>
               </View>
-
             </View>
-          }
+          )}
         </View>
         <PoppinsTextMedium
           content={`Version : ${currentVersion}`}
@@ -600,7 +647,7 @@ const CustomDrawer = () => {
             );
           })}
 
-    {/* {
+        {/* {
       userData?.user_type == "distributor" &&
       <DrawerItems
           // key={index}
@@ -611,7 +658,7 @@ const CustomDrawer = () => {
         ></DrawerItems>
 
     } */}
-  
+
         {/* My Program Starting */}
         {/* <View
           style={{

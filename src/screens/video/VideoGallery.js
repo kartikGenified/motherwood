@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Image, ScrollView, Dimensions, Linking } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, ScrollView, Dimensions, Linking, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import { useGetAppVideoMutation } from '../../apiServices/video/VideoApi';
 import * as Keychain from 'react-native-keychain';
 import Logo from 'react-native-vector-icons/AntDesign'
-import dayjs from 'dayjs'
+import moment from 'moment';
 import FastImage from 'react-native-fast-image';
 import DataNotFound from '../data not found/DataNotFound';
 import { useTranslation } from 'react-i18next';
+import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium';
+import TopHeader from '../../components/topBar/TopHeader';
 
 const VideoGallery = ({ navigation }) => {
   const [videoData, setVideoData] = useState([])
@@ -17,11 +19,10 @@ const VideoGallery = ({ navigation }) => {
   )
     ? useSelector(state => state.apptheme.ternaryThemeColor)
     : 'grey';
+  const {t} = useTranslation()
   const height = Dimensions.get('window').height
 
-  const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loaderNew.gif')).uri;
-  
-  const {t} = useTranslation()
+  const gifUri = Image.resolveAssetSource(require('../../../assets/assets/gif/loader.gif')).uri;
 
 
   const [appVideoFunc, {
@@ -60,22 +61,45 @@ const VideoGallery = ({ navigation }) => {
     }
   }, [appVideoData, appVideoError])
 
+
+
+  
+
   const VideoComp = (props) => {
     const video = props.video
     const title = props.title
     const type = props.type
     const date = props.date
+
+    const extractVideoId = (url) => {
+      const match = url.match(
+        /(?:youtu\.be\/|youtube\.com\/(?:.*v=|embed\/|v\/))([^?&]+)/ 
+      );
+      return match ? match[1] : null;
+    };
+  
+    const videoId = extractVideoId(video);
+    const thumbnailUrl = videoId 
+      ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` 
+      : require("../../../assets/images/youtube.png"); // Fallback image
+
+      
     return (
-      <TouchableOpacity onPress={() => { Linking.openURL(video) }} style={{ height: 180, width: '40%', borderRadius: 10, backgroundColor: 'white', elevation: 10, margin: 10, alignItems: 'center', justifyContent: 'flex-end' }}>
-        <View style={{ width: '100%', backgroundColor: "#DDDDDD", alignItems: "center", justifyContent: 'center', height: '40%' }}>
-          <Logo name="youtube" size={60} color="red"></Logo>
+      <TouchableOpacity onPress={() => { Linking.openURL(video) }} style={{ height: 400, width: '90%', borderRadius: 10, backgroundColor: 'white',  marginTop:20}}>
+        <View style={{ width: '100%', backgroundColor: "white", alignItems: "center", justifyContent: 'center', height: '50%' }}>
+
+        <Image style={{position:'absolute', height:80,width:80,zIndex:1}} source={require('../../../assets/images/playButton.png')}></Image>
+
+        <Image style={{ height: "100%", width: "100%", borderTopLeftRadius: 10, borderTopRightRadius: 10 }} 
+          source={{ uri: thumbnailUrl }} />
+
         </View>
 
-        <View style={{ backgroundColor: 'black', width: '100%', alignItems: 'flex-start', height: '60%', justifyContent: "center",padding:4 }}>
-          <PoppinsTextMedium style={{ color: 'white', fontSize: 13, marginLeft: 8 }} content={`${t("Title")} : ${title.substring(0, 16)}`}></PoppinsTextMedium>
-          <PoppinsTextMedium style={{ color: 'white', fontSize: 13, marginLeft: 8 }} content={`${t("Type")} : ${type}`}></PoppinsTextMedium>
-          <PoppinsTextMedium style={{ color: 'white', fontSize: 13, marginBottom: 6, marginLeft: 8 }} content={`${t("Date")} : ${dayjs(date).format("DD MMM YYYY")}`}></PoppinsTextMedium>
+        <View style={{ backgroundColor: 'white', width: '100%', justifyContent: "center",padding:4, flexWrap:'wrap', borderBottomLeftRadius:10,borderBottomRightRadius:10,shadowColor:'black', shadowOffset:{height:100,width:100},elevation:5 }}>
+          <View style={{ marginBottom:10,width:'100%',alignItems:'center', }}>
+          <PoppinsTextMedium style={{ color: 'black', fontSize: 24, marginLeft: 8, marginTop:5,width:250 }} content={`${title}`}></PoppinsTextMedium>
 
+          </View>
         </View>
 
       </TouchableOpacity>
@@ -91,58 +115,24 @@ const VideoGallery = ({ navigation }) => {
         backgroundColor: ternaryThemeColor,
         height: '100%',
       }}>
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          width: '100%',
-          marginTop: 10,
-          height: '10%',
-          marginLeft: 20,
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-              marginLeft: 10,
-            }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content={t("Videos")}
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: '700',
-            color: 'white',
-          }}></PoppinsTextMedium>
-      </View>
-      <ScrollView style={{ width: '100%', height: '90%',backgroundColor:'white' }}>
+      <TopHeader title={"Corporate Film"}></TopHeader>
+      <ScrollView contentContainerStyle={{height:'100%'}} style={{ width: '100%', height: '100%' }}>
 
 
         <View
           style={{
-            borderTopRightRadius: 30,
-            borderTopLeftRadius: 30,
+            // borderTopRightRadius: 30,
+            // borderTopLeftRadius: 30,
             backgroundColor: 'white',
-            minHeight: 500,
-            marginTop: 10,
-            alignItems: 'flex-start',
-            justifyContent: 'center',
-            width: '100%',
-            paddingBottom: 40,
+            // minHeight: 650,
+            flex:1,
             flexDirection: "row",
             flexWrap: 'wrap',
-            paddingTop:10
+            justifyContent:'center'
+
           }}>
 
-          {appVideoIsLoading &&
+          {/* {appVideoIsLoading ?
             <FastImage
               style={{ width: 100, height: 100, alignSelf: 'center', marginTop: '50%' }}
               source={{
@@ -150,14 +140,17 @@ const VideoGallery = ({ navigation }) => {
                 priority: FastImage.priority.normal,
               }}
               resizeMode={FastImage.resizeMode.contain}
-            /> 
-          }
+            /> :
+            appVideoData?.body?.length===0 && <DataNotFound></DataNotFound>
+          } */}
 
           {
             videoData != undefined && videoData.length > 0 && videoData.map((item, index) => {
               return (
-               
+
                   <VideoComp key={item.id} title={item.title} type={item.type} video={item.link} date={item.updated_at}></VideoComp> 
+                  
+
                 
               )
             })
@@ -165,10 +158,7 @@ const VideoGallery = ({ navigation }) => {
             
           }
 
-{
-                 videoData == undefined && videoData.length == 0 &&
-                 <DataNotFound></DataNotFound> 
-          }
+
 
 
         </View>

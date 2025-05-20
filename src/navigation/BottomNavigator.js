@@ -109,136 +109,25 @@ function BottomNavigator({ navigation }) {
             alignItems: "center",
             justifyContent: "center",
             width: "100%",
-            backgroundColor: "#F7F7F7",
+            height:1,
+
           }}
         >
-          <Wave style={{ top: 10 }} width={100}></Wave>
+
           <View
             style={{
               alignItems: "center",
               justifyContent: "center",
               flexDirection: "row",
-              height: 60,
+              height: 0,
               backgroundColor: "white",
               width: "100%",
             }}
           >
             {  console.log("workflow", workflow, )}
-            {(userData?.user_type).toLowerCase() !== "distributor" &&
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("GiftCatalogue");
-              }}
-              style={{ alignItems: "center", position: "absolute", left: 30 }}
-            >
-              <Gift name="gift" size={24} color={ternaryThemeColor}></Gift>
-              <PoppinsTextMedium
-                style={{
-                  marginTop: 4,
-                  fontSize: 12,
-                  fontWeight: platformFontWeight,
-                  color: "black",
-                }}
-                content={t("Gift Catalogue")}
-              ></PoppinsTextMedium>
-            </TouchableOpacity>}
-
-            {(userData?.user_type).toLowerCase() !== "sales" && (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Passbook");
-                }}
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  position:userData?.user_type == 'distributor' ? 'relative' : 'absolute',
-                  right:userData?.user_type == 'distributor' ? 0 : 30
-                }}
-              >
-                  <Book name="book" size={24} color={ternaryThemeColor}></Book>
-
-                <Tooltip
-                  isVisible={step3}
-                  content={
-                    <View style={{ alignItems: "center" }}>
-                      <Text
-                        style={{
-                          color: "black",
-                          textAlign: "center",
-                          marginBottom: 10,
-                          fontWeight: "bold",
-                        }}
-                      >
-                       Click on passbook to check points
-                      </Text>
-                      <View style={{ flexDirection: "row" }}>
-                        <TouchableOpacity
-                          style={{
-                            backgroundColor: ternaryThemeColor,
-                            paddingVertical: 5,
-                            paddingHorizontal: 15,
-                            borderRadius: 5,
-                            marginRight: 12,
-                          }}
-                          onPress={() => handlePrevStep()}
-                        >
-                          <Text style={{ color: "white" }}>Prev</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                          style={{
-                            backgroundColor: "lightgray",
-                            paddingVertical: 5,
-                            paddingHorizontal: 15,
-                            borderRadius: 5,
-                          }}
-                          onPress={() => handleNextStep()}
-                        >
-                          <Text style={{ color: "black" }}>Next</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  }
-                  placement="top"
-                  animated={true}
-                  onClose={() => setStep3(false)}
-                  tooltipStyle={{ borderRadius: 30 }}
-                  contentStyle={{ backgroundColor: "white", minHeight: 100, borderWidth:2, borderRadius:10, borderColor:ternaryThemeColor }}
-                >
-
-                  <PoppinsTextMedium
-                    style={{
-                      marginTop: 4,
-                      fontSize: 12,
-                      fontWeight: platformFontWeight,
-                      color: "black",
-                    }}
-                    content={t("passbook")}
-                  ></PoppinsTextMedium>
-                </Tooltip>
-              </TouchableOpacity>
-            )}
-
-            {(userData?.user_type).toLowerCase() == "sales" && (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("ProductCatalogue");
-                }}
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  position: "absolute",
-                  right: 20,
-                }}
-              >
-                <BookOpen
-                  name="open-book"
-                  size={24}
-                  color={ternaryThemeColor}
-                ></BookOpen>
- <PoppinsTextMedium style={{marginTop:4,fontSize:12,fontWeight:platformFontWeight,color:'black'}} content={t("Product Catalogue")}></PoppinsTextMedium>
-              </TouchableOpacity>
-            )}
+       
+       
+       
           </View>
         </View>
       )}

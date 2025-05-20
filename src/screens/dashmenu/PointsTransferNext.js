@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  Platform,
 } from "react-native";
 import TopHeader from "../../components/topBar/TopHeader";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
@@ -19,13 +20,24 @@ import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 import { use } from "i18next";
 import { useSelector } from "react-redux";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import ConfirmationModal from "../../components/modals/ConfirmationModal";
+import { useNavigation } from "@react-navigation/native";
+import { usePointTransferMutation } from "../../apiServices/pointsTransfer/pointTransfer";
+import Geolocation from "@react-native-community/geolocation";
+import ErrorModal from "../../components/modals/ErrorModal";
 
-const PointsTransferNext = () => {
+
+const PointsTransferNext = (params) => {
   const [token, setToken] = useState();
   const [data, setData] = useState();
   const [selected, setSelected] = useState();
   const [point, setPoint] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [error, setError] = useState(false);
+  const [message, setMessage] = useState("")
 
+  const userDetails = params.route.params.userDetails;
+  console.log("userDetails", userDetails);
   const [productRows, setProductRows] = useState([
     { selected: null, qty: 1, points: 0 },
   ]);
@@ -44,6 +56,18 @@ const PointsTransferNext = () => {
     },
   ] = useGetProductListMutation();
 
+  const [
+    getPointTransferFunc,
+    {
+      data: getPointTransferData,
+      error: getPointTransferError,
+      isLoading: getPointTransferIsLoading,
+      isError: getPointTransferIsError,
+    },
+  ] = usePointTransferMutation();
+
+  const navigation = useNavigation();
+
   useEffect(() => {
     const getToken = async () => {
       const credentials = await Keychain.getGenericPassword();
@@ -52,6 +76,25 @@ const PointsTransferNext = () => {
     };
     getToken();
   }, []);
+
+  useEffect(() => {
+    if (getPointTransferData) {
+      console.log("getPointTransferData", getPointTransferData);
+      navigation.replace("PointsTransferSuccess");
+    } else {
+      if (getPointTransferError){
+        setModalVisible(false);
+        setTimeout(()=>{
+          setError(true);
+        },1300)
+        console.log("getPointTransferError", getPointTransferError);
+        setMessage(getPointTransferError?.data?.message)
+      } 
+     
+      console.log("getPointTransferError", getPointTransferError);
+      setMessage(getPointTransferError?.data?.message)
+    }
+  }, [getPointTransferData, getPointTransferError]);
 
   useEffect(() => {
     if (productListData) {
@@ -80,6 +123,7 @@ const PointsTransferNext = () => {
   }, [productRows]);
 
   const handleProductChange = (rowIndex, selectedProduct) => {
+    console.log("OnProductChange", selectedProduct);
     const userType = userData?.user_type;
     const points =
       userType === "retailer"
@@ -93,8 +137,9 @@ const PointsTransferNext = () => {
         : 0;
 
     const updatedRows = [...productRows];
-    updatedRows[rowIndex].selected = selectedProduct;
+    updatedRows[rowIndex].selected = selectedProduct?.value?.product_code;
     updatedRows[rowIndex].points = points;
+
     setProductRows(updatedRows);
   };
 
@@ -119,12 +164,43 @@ const PointsTransferNext = () => {
   };
 
   const handleAddRow = () => {
+    console.log("productRow", productRows);
     setProductRows((prev) => [...prev, { selected: null, qty: 1, points: 0 }]);
+  };
+
+  const OnYesClick = () => {
+    let lat = ''
+    let lon = ''
+    console.log("ProductRows", productRows);
+    const rowsData = productRows.map((item) => {
+      return {
+        skuCode: item.selected,
+        quantity: item.qty,
+      };
+    });
+
+    Geolocation.getCurrentPosition((position) => {
+      lat = position.coords.latitude;
+      lon = position.coords.longitude;
+      console.log(`Latitude: ${lat}, Longitude: ${lon}`);
+    });
+
+    const requestData = {
+      platform: Platform.OS.toUpperCase(),
+      lat: lat ? lat : 5,
+      log: lon ? lon : 5,
+      orderIntent: "sell",
+      customerCode: userDetails?.user_id,
+      rows: rowsData,
+    };
+
+    console.log("requestDataaa", requestData);
+    getPointTransferFunc({ token, requestData });
   };
 
   return (
     <View style={styles.container}>
-      <TopHeader title={"Point Calculator"} />
+      <TopHeader title={"Points Transfer"} />
       {productRows.map((row, index) => (
         <UiList
           key={index}
@@ -191,19 +267,50 @@ const PointsTransferNext = () => {
         </View>
       </View>
 
+      <ConfirmationModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        title="Are You Sure You Want To Tranfer These Points?"
+        imageSource={require("../../../assets/images/alertIcon.png")}
+        leftButtonText="Don't Do it!"
+        rightButtonText="Yes, I am sure!"
+        onLeftPress={() => {
+          console.log("Yes Pressed");
+          setModalVisible(false);
+        }}
+        onRightPress={() => {
+          console.log("No Pressed");
+          OnYesClick();
+        }}
+      />
+
+      {error && (
+        <ErrorModal
+          warning={true}
+          modalClose={() => {
+            setError(false);
+          }}
+          message={message}
+          openModal={error}
+        ></ErrorModal>
+      )}
+
       {/* Button */}
       <TouchableOpacity
         onPress={() => {
+          // setModalVisible(true);
+          navigation.navigate("PointsTransferSuccess",{
 
+          })
         }}
         style={{
-          alignSelf:'center',
+          alignSelf: "center",
           backgroundColor: "black",
           marginHorizontal: 20,
-          position:'absolute', 
-          bottom:65,
+          position: "absolute",
+          bottom: 65,
           height: 60,
-          width:'95%',
+          width: "95%",
           marginTop: 30,
           alignItems: "center",
           justifyContent: "center",

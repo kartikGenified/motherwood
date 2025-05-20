@@ -34,6 +34,7 @@ import hideUserFromLogin from "../../utils/hideUserFromLogin";
 import FastImage from "react-native-fast-image";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import { useIsFocused } from "@react-navigation/native";
 
 const SelectUser = ({ navigation }) => {
   const [listUsers, setListUsers] = useState();
@@ -56,6 +57,7 @@ const SelectUser = ({ navigation }) => {
     (state) => state.apptheme.ternaryThemeColor
   );
 
+  const isFocused = useIsFocused(); // Track if screen is focused
   const icon = useSelector((state) => state.apptheme.icon);
 
   const otpLogin = useSelector((state) => state.apptheme.otpLogin);
@@ -92,28 +94,25 @@ const SelectUser = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
+    if (!isFocused) return;
+  
     const backAction = () => {
-      Alert.alert(t("Exit App"), t("Are you sure you want to exit?"), [
-        {
-          text: t("Cancel"),
-          onPress: () => null,
-          style: "cancel",
-        },
-        { text: t("Exit"), onPress: () => BackHandler.exitApp() },
+      Alert.alert("Exit App", "Are you sure you want to exit?", [
+        { text: "Cancel", onPress: () => null, style: "cancel" },
+        { text: "Exit", onPress: () => BackHandler.exitApp() },
       ]);
       return true;
     };
-
+  
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       backAction
     );
-
+  
     return () => {
-      backHandler.remove(); // Clean up the listener
+      backHandler.remove();
     };
-  }, []);
-
+  }, [isFocused]);
 
   useEffect(() => {
     if (getUsersData) {

@@ -68,6 +68,9 @@ import {
 
 import PointBox from "../../components/organisms/PointBox";
 import { useCurrentDateTime } from "../../hooks/customHooks/useDate";
+import RewardBox from "../../components/molecules/RewardBox";
+import RewardBoxDashboard from "../../components/molecules/RewardBoxDashboard";
+import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 
 const Dashboard = ({ navigation }) => {
   const [dashboardItems, setDashboardItems] = useState();
@@ -76,6 +79,7 @@ const Dashboard = ({ navigation }) => {
   const [CampainVideoVisible, setCmpainVideoVisible] = useState(true);
   const [logoutStatus, setLogoutStatus] = useState(false);
   const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
+  const [membershipModal, setMemberShipModal] = useState(false);
   const [membership, setMembership] = useState();
   const [scanningDetails, seScanningDetails] = useState();
   const [notifModal, setNotifModal] = useState(false);
@@ -127,10 +131,10 @@ const Dashboard = ({ navigation }) => {
 
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
-  )
+  );
   const secondaryThemeColor = useSelector(
     (state) => state.apptheme.secondaryThemeColor
-  )
+  );
 
   const gifUri = Image.resolveAssetSource(
     require("../../../assets/gif/loaderNew.gif")
@@ -260,7 +264,6 @@ const Dashboard = ({ navigation }) => {
 
       getAppCampaign(token);
     };
-
     getToken();
   }, []);
 
@@ -467,9 +470,6 @@ const Dashboard = ({ navigation }) => {
   const getMembership = async () => {
     const credentials = await Keychain.getGenericPassword();
     if (credentials) {
-      // console.log(
-      //   'Credentials successfully loaded for user ' + credentials?.username
-      // );
       const token = credentials?.username;
       getActiveMembershipFunc(token);
     }
@@ -598,24 +598,35 @@ const Dashboard = ({ navigation }) => {
                 }}
               />
             )}
+            <PlatinumModal
+              isVisible={membershipModal}
+              onClose={() => {
+                setMemberShipModal(false);
+              }}
+              getActiveMembershipData={getActiveMembershipData}
+            />
           </View>
 
           <View
             style={{
               width: "90%",
               marginBottom: 20,
-              flexDirection:'row',
-              justifyContent:'space-between'
-
+              flexDirection: "row",
+              justifyContent: "space-between",
             }}
           >
-            <View style={{ flexDirection: "row", alignItems: "center" ,marginHorizontal:20}}>
-
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginHorizontal: 10,
+              }}
+            >
               <View
                 style={{
                   backgroundColor: "white",
-                  width: 40,
-                  height: 40,
+                  width: 30,
+                  height: 30,
                   borderRadius: 20,
                   alignItems: "center",
                   justifyContent: "center",
@@ -623,20 +634,35 @@ const Dashboard = ({ navigation }) => {
                 }}
               >
                 <Image
-                  style={{ height: 20, width: 20 }}
+                  style={{ height: 14, width: 14 }}
                   source={require("../../../assets/images/userGrey.png")}
                 ></Image>
               </View>
-              <Text style={{ color: "black", marginLeft: 5 }}>
+              <Text
+                style={{ color: "#1A1818", marginLeft: 5, fontWeight: "bold" }}
+              >
                 {userData?.name}
               </Text>
             </View>
 
-            <TouchableOpacity style={{ flexDirection:'row', marginTop:13}}>
-              <Image source={require("../../screens/../../assets/images/info_white.png")}></Image>
-              <PoppinsTextLeftMedium style={{color:ternaryThemeColor, fontWeight:'600'}} content={t("Earn Badge")}></PoppinsTextLeftMedium>
+            <TouchableOpacity
+              onPress={() => {
+                setMemberShipModal(true);
+              }}
+              style={{ flexDirection: "row", marginTop: 13 }}
+            >
+              <Image
+                source={require("../../screens/../../assets/images/info_white.png")}
+              ></Image>
+              <PoppinsTextLeftMedium
+                style={{
+                  color: ternaryThemeColor,
+                  fontWeight: "600",
+                  fontSize: 17,
+                }}
+                content={t("Earn Badge")}
+              ></PoppinsTextLeftMedium>
             </TouchableOpacity>
-            
           </View>
 
           {(userData?.user_type).toLowerCase() !== "dealer" ? (
@@ -656,11 +682,11 @@ const Dashboard = ({ navigation }) => {
           ) : (
             <></>
           )}
-          {/* <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{ paddingLeft: 10, paddingRight: 10, paddingBottom: 4 }}>
-            <DashboardDataBox header="Total Points"  data="5000" image={require('../../../assets/images/coin.png')} ></DashboardDataBox>
-          <DashboardDataBox header="Total Points"  data="5000" image={require('../../../assets/images/coin.png')} ></DashboardDataBox>
 
-          </ScrollView> */}
+
+            <RewardBoxDashboard />
+
+
           {dashboardData && !userPointIsLoading && (
             <DashboardMenuBox
               requiresLocation={requiresLocation}
@@ -689,6 +715,7 @@ const Dashboard = ({ navigation }) => {
               flexDirection: "row",
               width: "100%",
               height: 100,
+              marginBottom:40,
               backgroundColor: "white",
               alignItems: "center",
               justifyContent: "space-evenly",
@@ -712,6 +739,7 @@ const Dashboard = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
+      <SocialBottomBar backgroundColor={"white"}/>
     </View>
   );
 };
