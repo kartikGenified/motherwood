@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import TopHeader from "../../components/topBar/TopHeader";
 import { useGetOrderDetailsByTypeMutation } from "../../apiServices/order/orderApi";
 
-const PointHistory = ({ navigation }) => {
+const TransferedPointHistory = ({ navigation }) => {
   const [displayList, setDisplayList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const points = 100;
@@ -105,7 +105,7 @@ const PointHistory = ({ navigation }) => {
       //   const endDate = dayjs(end).format("YYYY-MM-DD")
       const data = {
         token:token,
-        type:"received_point"
+        type:"transfer_point"
       }
 
       getOrderDetailsByTypeFunc(data);
@@ -126,7 +126,7 @@ const PointHistory = ({ navigation }) => {
       //   const endDate = dayjs(end).format("YYYY-MM-DD")
       const data = {
         token:token,
-        type:"received_point"
+        type:"transfer_point"
       }
 
       getOrderDetailsByTypeFunc(data);
@@ -627,7 +627,7 @@ const PointHistory = ({ navigation }) => {
         height: "100%",
       }}
     >
-      <TopHeader title={"Received Points Summary"} />
+      <TopHeader title={"Transfered Points Summary"} />
 
       <View
         style={{
@@ -728,4 +728,4 @@ const PointHistory = ({ navigation }) => {
 
 const styles = StyleSheet.create({});
 
-export default PointHistory;
+export default TransferedPointHistory;

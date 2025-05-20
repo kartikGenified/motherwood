@@ -95,6 +95,10 @@ import FeedbackOptions from '../screens/feedback/FeedbackOptions';
 import PointsCalculator from '../screens/historyPages/PointsCalculator';
 import PointsTransfer from '../screens/dashmenu/PointsTransfer';
 import PointsTransferNext from '../screens/dashmenu/PointsTransferNext';
+import OrderDetails from '../screens/historyDetails/OrderDetails';
+import TransferedPointHistory from '../screens/historyPages/TransferedPointHistory';
+import ExtraPointHistory from '../screens/historyPages/ExtraPointHistory';
+import KycMotherhood from '../screens/verification/KycMotherhood';
 
 
 
@@ -110,6 +114,27 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="Splash" component={Splash}></Stack.Screen>
+                
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="OrderDetails" component={OrderDetails}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="KycMotherhood" component={KycMotherhood}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="TransferedPointHistory" component={TransferedPointHistory}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="ExtraPointHistory" component={ExtraPointHistory}></Stack.Screen>
                 <Stack.Screen options={
                     {
                         headerShown: false

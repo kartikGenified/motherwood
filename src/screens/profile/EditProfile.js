@@ -37,7 +37,7 @@ import PrefilledTextInput from "../../components/atoms/input/PrefilledTextInput"
 const EditProfile = ({ navigation, route }) => {
   const [changedFormValues, setChangedFormValues] = useState([]);
   const [hasManualkyc, setHasManualKyc] = useState(false);
-  const [renderData, setRenderData] = useState()
+  const [renderData, setRenderData] = useState([])
   const [pressedSubmit, setPressedSubmit] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [profileImage, setProfileImage] = useState(route.params?.savedImage);
@@ -159,8 +159,37 @@ const EditProfile = ({ navigation, route }) => {
     })
 
     console.log("jdjbschbhabshds",tempppp)
+    setTimeout(() => {
     setRenderData(tempppp)
+      
+    }, 100);
   },[selectedIndex])
+  useEffect(()=>{
+
+    console.log("selected index changed",selectedIndex)
+    const tempppp =formFields
+    .filter((item) => {
+      const name = item.name?.trim()?.toLowerCase();
+      console.log(
+        "isLocationStageField",
+        isLocationStageField(name),
+        item,
+        formFields,
+        selectedIndex
+      );
+      return selectedIndex === 0
+        ? !isLocationStageField(name)
+        :selectedIndex === 1 ?
+         isLocationStageField(name): []
+    })
+
+    console.log("jdjbschbhabshds",tempppp)
+
+    setTimeout(() => {
+      setRenderData(tempppp)
+        
+      }, 100);
+  },[])
 
   useEffect(() => {
     if (uploadImageData) {
@@ -655,11 +684,12 @@ const EditProfile = ({ navigation, route }) => {
       >
         {console.log("form value", formFields)}
         {/* data goes here */}
+        <TopBar options={options} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{ width: "90%" }}
         >
-          <TopBar options={options} />
+          
       {console.log("karthik render data", renderData)}
           {
             renderData &&
@@ -807,40 +837,40 @@ const EditProfile = ({ navigation, route }) => {
                       <TextInputRectangularWithPlaceholder
                         jsonData={item}
                         placeHolder={
-                          formFields?.[index]?.label == "Name"
+                          item.label == "Name"
                             ? t("name")
-                            : formFields?.[index]?.label == "Mobile"
+                            : item.label == "Mobile"
                             ? t("mobile")
-                            : formFields?.[index]?.label == "Email"
+                            : item.label == "Email"
                             ? t("Email")
-                            : formFields?.[index]?.label == "DOB"
+                            : item.label == "DOB"
                             ? t("DOB")
-                            : formFields?.[index]?.label == "Gender"
+                            : item.label == "Gender"
                             ? t("Gender")
-                            : formFields?.[index]?.label == "Pincode"
+                            : item.label == "Pincode"
                             ? t("Pincode")
-                            : formFields?.[index]?.label == "State"
+                            : item.label == "State"
                             ? t("State")
-                            : formFields?.[index]?.label == "District"
+                            : item.label == "District"
                             ? t("District")
-                            : formFields?.[index]?.label == "City"
+                            : item.label == "City"
                             ? t("City")
-                            : formFields?.[index]?.label == "Aadhaar"
+                            : item.label == "Aadhaar"
                             ? t("Aadhar")
-                            : formFields?.[index]?.label == "Pan"
+                            : item.label == "Pan"
                             ? t("Pan")
-                            : formFields?.[index]?.label == "Salesteam Name"
+                            : item.label == "Salesteam Name"
                             ? t("Salesteam Name")
-                            : formFields?.[index]?.label == "Salesteam Mobile"
+                            : item.label == "Salesteam Mobile"
                             ? t("Salesteam Mobile")
-                            : formFields?.[index]?.label == "Dealer Name"
+                            : item.label == "Dealer Name"
                             ? t("Dealer Name")
-                            : formFields?.[index]?.label == "Dealer Mobile"
+                            : item.label == "Dealer Mobile"
                             ? t("Dealer Mobile")
-                            : formFields?.[index]?.label ==
+                            : item.label ==
                               "Date of Registration"
                             ? t("Date of Registration")
-                            : formFields?.[index]?.label
+                            : item.label
                         }
                         pressedSubmit={pressedSubmit}
                         key={index}
@@ -860,40 +890,40 @@ const EditProfile = ({ navigation, route }) => {
                       <TextInputRectangularWithPlaceholder
                         jsonData={item}
                         placeHolder={
-                          formFields?.[index]?.label == "Name"
+                          item.label == "Name"
                             ? t("name")
-                            : formFields?.[index]?.label == "Mobile"
+                            : item.label == "Mobile"
                             ? t("mobile")
-                            : formFields?.[index]?.label == "Email "
+                            : item.label == "Email "
                             ? t("Email")
-                            : formFields?.[index]?.label == "DOB"
+                            : item.label == "DOB"
                             ? t("DOB")
-                            : formFields?.[index]?.label == "Gender"
+                            : item.label == "Gender"
                             ? t("Gender")
-                            : formFields?.[index]?.label == "Pincode"
+                            : item.label == "Pincode"
                             ? t("Pincode")
-                            : formFields?.[index]?.label == "State"
+                            : item.label == "State"
                             ? t("State")
-                            : formFields?.[index]?.label == "District"
+                            : item.label == "District"
                             ? t("District")
-                            : formFields?.[index]?.label == "City"
+                            : item.label == "City"
                             ? t("City")
-                            : formFields?.[index]?.label == "Aadhaar"
+                            : item.label == "Aadhaar"
                             ? t("Aadhar")
-                            : formFields?.[index]?.label == "Pan"
+                            : item.label == "Pan"
                             ? t("Pan")
-                            : formFields?.[index]?.label == "Salesteam Name"
+                            : item.label == "Salesteam Name"
                             ? t("Salesteam Name")
-                            : formFields?.[index]?.label == "Salesteam Mobile"
+                            : item.label == "Salesteam Mobile"
                             ? t("Salesteam Mobile")
-                            : formFields?.[index]?.label == "Dealer Name"
+                            : item.label == "Dealer Name"
                             ? t("Dealer Name")
-                            : formFields?.[index]?.label == "Dealer Mobile"
+                            : item.label == "Dealer Mobile"
                             ? t("Dealer Mobile")
-                            : formFields?.[index]?.label ==
+                            : item.label ==
                               "Date of Registration"
                             ? t("Date of Registration")
-                            : formFields?.[index]?.label
+                            : item.label
                         }
                         pressedSubmit={pressedSubmit}
                         key={index}

@@ -62,8 +62,7 @@ const Passbook = ({ navigation }) => {
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   )
-    ? useSelector((state) => state.apptheme.ternaryThemeColor)
-    : "grey";
+    
 
   const secondaryThemeColor = useSelector(
     (state) => state.apptheme.secondaryThemeColor
@@ -179,7 +178,14 @@ const Passbook = ({ navigation }) => {
       console.log("navigateToPages", data);
       if (data === "Scanned History") {
         navigation.navigate("ScannedHistory");
-      } else if (data === "Points History") {
+      }
+      else if (data === "Points History Extra") {
+        navigation.navigate("ExtraPointHistory");
+      }
+      else if (data === "Points History Transfered") {
+        navigation.navigate("TransferedPointHistory");
+      }
+      else if (data === "Points History") {
         navigation.navigate("PointHistory");
       } else if (data === "Redeemed History") {
         navigation.navigate("RedeemedHistory");
@@ -225,7 +231,7 @@ const Passbook = ({ navigation }) => {
             borderRadius: 4,
             borderColor: ternaryThemeColor,
             borderWidth: 1,
-            marginLeft: 10,
+            // marginLeft: 10,
           }}
         >
           <Image
@@ -238,7 +244,7 @@ const Passbook = ({ navigation }) => {
             width: 210,
             alignItems: "flex-start",
             justifyContent: "center",
-            marginLeft: 14,
+            marginLeft: 10,
           }}
         >
           <PoppinsText
@@ -254,7 +260,7 @@ const Passbook = ({ navigation }) => {
           onPress={() => {
             navigateToPages(title);
           }}
-          style={{marginLeft:30, borderWidth:1,padding:8,borderRadius:20,borderColor:ternaryThemeColor}}
+          style={{marginLeft:10, borderWidth:1,padding:8,borderRadius:20,borderColor:ternaryThemeColor}}
 
         >
           <Image
@@ -502,7 +508,7 @@ const Passbook = ({ navigation }) => {
             {
               <NavigateTO
                 visibleTitle={t("Transferred Points Summary")}
-                title={"Points History"}
+                title={"Points History Transfered"}
                 discription={t("list of points redeemed by you")}
                 image={require("../../../assets/images/coinStack.png")}
               ></NavigateTO>
@@ -511,7 +517,7 @@ const Passbook = ({ navigation }) => {
 {
               <NavigateTO
                 visibleTitle={t("Wallet Points Summary")}
-                title={"Points History"}
+                title={"Points History Extra"}
                 discription={t("list of points redeemed by you")}
                 image={require("../../../assets/images/coinStack.png")}
               ></NavigateTO>

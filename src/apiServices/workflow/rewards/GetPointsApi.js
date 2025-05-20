@@ -100,7 +100,22 @@ export const GetForms = baseApi.injectEndpoints({
         };
       },
     }),
+    orderHistoryDetails: builder.mutation({
+      query: params => {
+        console.log('orderHistoryDetails', params);
+        return {
+          method: 'get',
+          url: `/api/tenant/orders/orderDetails/${params.id}`,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + params.token,
+            slug: slug,
+          },
+        };
+      },
+    }),
   }),
+  
 });
 
-export const {useAllUserPointsEntryMutation,useCheckUserPointMutation,useFetchUserPointsHistoryMutation,useFetchUserPointsMutation,useUserPointsEntryMutation,useCashPerPointMutation,usePreviousTransactionsMutation} = GetForms;
+export const {useAllUserPointsEntryMutation,useCheckUserPointMutation,useFetchUserPointsHistoryMutation,useFetchUserPointsMutation,useUserPointsEntryMutation,useCashPerPointMutation,usePreviousTransactionsMutation,useOrderHistoryDetailsMutation} = GetForms;

@@ -26,7 +26,7 @@ const MenuItems = (props) => {
 
   const image = props.image;
   const content = props.content;
-  const platformFontSize = Platform.OS === "ios" ? 10 : 12;
+  const platformFontSize = Platform.OS === "ios" ? 8 : 10;
   const platformFontWeight = Platform.OS === "ios" ? "500" : "600";
 
   const { t } = useTranslation();
@@ -41,9 +41,7 @@ const MenuItems = (props) => {
     <View
       accessibilityLabel={String(props.index)}
       style={{
-  
-        width: 110,
-        margin: 6,
+        margin:4
       }}
     >
       <TouchableOpacity
@@ -51,8 +49,7 @@ const MenuItems = (props) => {
           handlePress();
         }}
         style={{
-          height:90,
-          width: 110,
+          width: 96,
           borderRadius:5,
           borderWidth:1,
           borderColor:ternaryThemeColor,
@@ -60,6 +57,7 @@ const MenuItems = (props) => {
           alignItems: "center",
           justifyContent: "center",
           opacity: 1,
+          paddingBottom:4
         }}
       >
         <Image

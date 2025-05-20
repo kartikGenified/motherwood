@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import TopHeader from "../../components/topBar/TopHeader";
 import { useGetOrderDetailsByTypeMutation } from "../../apiServices/order/orderApi";
 
-const PointHistory = ({ navigation }) => {
+const ExtraPointHistory = ({ navigation }) => {
   const [displayList, setDisplayList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const points = 100;
@@ -95,43 +95,44 @@ const PointHistory = ({ navigation }) => {
     require("../../../assets/gif/noData.gif")
   ).uri;
   let startDate, endDate;
-  useEffect(() => {
-    (async () => {
-      const credentials = await Keychain.getGenericPassword();
-      const token = credentials.username;
-      //   const startDate = dayjs(start).format(
-      //     "YYYY-MM-DD"
-      //   )
-      //   const endDate = dayjs(end).format("YYYY-MM-DD")
-      const data = {
-        token:token,
-        type:"received_point"
-      }
+  // useEffect(() => {
+  //   (async () => {
+  //     const credentials = await Keychain.getGenericPassword();
+  //     const token = credentials.username;
+  //     //   const startDate = dayjs(start).format(
+  //     //     "YYYY-MM-DD"
+  //     //   )
+  //     //   const endDate = dayjs(end).format("YYYY-MM-DD")
+  //     const data = {
+  //       token:token,
+  //       type:"transfer_point"
+  //     }
 
-      getOrderDetailsByTypeFunc(data);
-    })();
-  }, []);
+  //     getOrderDetailsByTypeFunc(data);
+  //   })();
+  // }, []);
 
   useEffect(() => {
     fetchPoints();
+    getRegistrationPoints()
   }, []);
 
-  const fetchPointHistoryData = (start, end) => {
-    (async () => {
-      const credentials = await Keychain.getGenericPassword();
-      const token = credentials.username;
-      //   const startDate = dayjs(start).format(
-      //     "YYYY-MM-DD"
-      //   )
-      //   const endDate = dayjs(end).format("YYYY-MM-DD")
-      const data = {
-        token:token,
-        type:"received_point"
-      }
+  // const fetchPointHistoryData = (start, end) => {
+  //   (async () => {
+  //     const credentials = await Keychain.getGenericPassword();
+  //     const token = credentials.username;
+  //     //   const startDate = dayjs(start).format(
+  //     //     "YYYY-MM-DD"
+  //     //   )
+  //     //   const endDate = dayjs(end).format("YYYY-MM-DD")
+  //     const data = {
+  //       token:token,
+  //       type:"transfer_point"
+  //     }
 
-      getOrderDetailsByTypeFunc(data);
-    })();
-  };
+  //     getOrderDetailsByTypeFunc(data);
+  //   })();
+  // };
   const fetchPoints = async () => {
     const credentials = await Keychain.getGenericPassword();
     const token = credentials.username;
@@ -160,7 +161,7 @@ const PointHistory = ({ navigation }) => {
       if (getPointSharingData.success) {
         setIsLoading(false);
 
-        // setDisplayList(getPointSharingData.body.orders);
+        setDisplayList(getPointSharingData.body.data);
       }
     } else if (getPointSharingError) {
       console.log("getPointSharingError", getPointSharingError);
@@ -216,7 +217,7 @@ const PointHistory = ({ navigation }) => {
     const params = {
       token: token,
       id: String(userData.id),
-      cause: cause,
+      cause: "exceptOrder",
     };
     getPointSharingFunc(params);
   };
@@ -240,37 +241,7 @@ const PointHistory = ({ navigation }) => {
           borderColor: "grey",
         }}
       >
-        {registrationRequired.includes(userData.user_type) && (
-          <TouchableOpacity
-            onPress={() => {
-              (async () => {
-                const credentials = await Keychain.getGenericPassword();
-                const token = credentials.username;
-
-                const params = {
-                  token: token,
-                  userId: userId,
-                };
-                fetchUserPointsHistoryFunc(params);
-              })();
-              fetchPoints();
-              setType("regular");
-            }}
-            style={{
-              height: "100%",
-              width: 120,
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: type === "regular" ? "#DDDDDD" : "white",
-            }}
-          >
-            {/* <PoppinsTextMedium content="Regular Points" style={{color:'black',fontWeight:'700',fontSize:14}}></PoppinsTextMedium> */}
-            <PoppinsTextMedium
-              content={t("regular points")}
-              style={{ color: "black", fontWeight: "700", fontSize: 14 }}
-            ></PoppinsTextMedium>
-          </TouchableOpacity>
-        )}
+       
         {registrationRequired.includes(userData.user_type) && (
           <TouchableOpacity
             onPress={() => {
@@ -480,7 +451,7 @@ const PointHistory = ({ navigation }) => {
           content="Orders Overview"
         ></PoppinsTextMedium>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             setOpenBottomModal(!openBottomModal), setMessage("BOTTOM MODAL");
           }}
@@ -490,7 +461,7 @@ const PointHistory = ({ navigation }) => {
             style={{ height: 22, width: 22, resizeMode: "contain" }}
             source={require("../../../assets/images/settings.png")}
           ></Image>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         {openBottomModal && (
           <FilterModal
@@ -575,11 +546,11 @@ const PointHistory = ({ navigation }) => {
       style={{
         alignItems: "flex-start",
         justifyContent: "flex-start",
-        width:'90%',
+        width:'94%',
         borderBottomWidth:1,
-        paddingBottom:10,
+        paddingBottom:14,
         flexDirection:'row',
-        paddingTop:10
+        paddingTop:14
       }}
     >
       
@@ -587,16 +558,16 @@ const PointHistory = ({ navigation }) => {
         <View style={{width:'80%', alignItems:'flex-start' ,justifyContent:'flex-start'}}>
         <PoppinsTextMedium
           style={{ fontWeight: "800", fontSize: 13, color: "black" }}
-          content={`${t("Order No")} : ${orderNumber}`}
+          content={`${t("Product Name")} : ${item.product_name }`}
         ></PoppinsTextMedium>
         <View style={{flexDirection :'row', marginTop:3}}>
                  <PoppinsTextMedium
-          style={{ fontWeight: "400", fontSize: 12, color: "black" }}
-          content={`${t("Total SKU")} : ${sku}`}
+          style={{ fontWeight: "400", fontSize: 11, color: "black" }}
+          content={`${t("Amount")} : ${item.amount}`}
         ></PoppinsTextMedium>
              <PoppinsTextMedium
-          style={{ fontWeight: "400", fontSize: 12, color: "black" }}
-          content={`${t(" | Quantity")} : ${quantity}`}
+          style={{ fontWeight: "400", fontSize: 11, color: "black" }}
+          content={`${t(" | Product Code")} : ${item.product_code}`}
         ></PoppinsTextMedium>
 
         </View>
@@ -627,7 +598,7 @@ const PointHistory = ({ navigation }) => {
         height: "100%",
       }}
     >
-      <TopHeader title={"Received Points Summary"} />
+      <TopHeader title={"Wallet Summary"} />
 
       <View
         style={{
@@ -728,4 +699,4 @@ const PointHistory = ({ navigation }) => {
 
 const styles = StyleSheet.create({});
 
-export default PointHistory;
+export default ExtraPointHistory;

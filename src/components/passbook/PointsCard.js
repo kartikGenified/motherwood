@@ -62,7 +62,7 @@ const fetchPoints = async () => {
         }}
       >
         <Image
-          style={{ height: 42, width:42, resizeMode: "contain" }}
+          style={{ height: 38, width:38, resizeMode: "contain" }}
           source={image}
         ></Image>
         <View style={{ alignItems: "center" }}>
@@ -72,12 +72,12 @@ const fetchPoints = async () => {
               textAlign: "center",
               marginTop: 5,
               fontSize: 16,
-
+              fontWeight:'700'
             }}
             content={points}
           ></PoppinsTextLeftMedium>
           <PoppinsTextMedium
-            style={{ color: "white", textAlign: "center", fontSize: 15 }}
+            style={{ color: "white", textAlign: "center", fontSize: 13, fontWeight:'600' }}
             content={title}
           ></PoppinsTextMedium>
         </View>
@@ -96,9 +96,10 @@ const fetchPoints = async () => {
           flexDirection: "row",
           borderBottomWidth: 0.5,
           borderBottomColor: "red",
+          alignItems:'flex-start'
         }}
       >
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row",alignItems:'center', justifyContent:'center',marginTop:30 }}>
           <View
             style={{
               height: 50,
@@ -106,8 +107,7 @@ const fetchPoints = async () => {
               borderRadius: 25,
               backgroundColor: "white",
               borderRadius: 25,
-              marginHorizontal: 20,
-              marginTop:30,
+              marginHorizontal: 10,
               alignItems: "center",
               justifyContent: "center",
             }}
@@ -117,32 +117,29 @@ const fetchPoints = async () => {
               source={require("../../../assets/images/userGrey.png")}
             ></Image>
           </View>
-          <View style={{ justifyContent: "center", marginBottom: 30 }}>
+          <View style={{ justifyContent: "center" }}>
             <PoppinsTextLeftMedium
-              style={{ color: "white", fontSize: 20, fontWeight: "800" }}
+              style={{ color: "white", fontSize: 18, fontWeight: "800" }}
               content={userData?.name}
             ></PoppinsTextLeftMedium>
-            <PoppinsTextLeftMedium
-              style={{ color: "white", fontSize: 17 }}
-              content={"MMWHDKk"}
-            ></PoppinsTextLeftMedium>
+           
           </View>
         </View>
 
         <View>
           <Image
-            style={{ height: 40, width: 100, marginTop: 30, marginRight: 20 }}
+            style={{ height: 40, width: 100, marginTop: 30, marginRight: 10,resizeMode:'contain' }}
             source={require("../../../assets/images/motherwood_white_logo.png")}
           ></Image>
           <View
             style={{ flexDirection: "row", marginTop: 20, marginRight: 20 }}
           >
             <Image
-              style={{ height: 20, width: 20, marginRight: 5, marginTop: 3 }}
+              style={{ height: 16, width: 16, marginRight: 5, marginTop: 3 }}
               source={require("../../../assets/images/info_white.png")}
             ></Image>
             <PoppinsTextLeftMedium
-              style={{ color: "white", fontSize: 18 }}
+              style={{ color: "white", fontSize: 16 }}
               content={"Earn Badge"}
             ></PoppinsTextLeftMedium>
           </View>
