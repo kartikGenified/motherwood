@@ -25,7 +25,7 @@ const [timer, setTimer] = useState(3)
        }
     // setValue()
     console.log("tempRandom",tempRandom)
-    }, 1);
+    }, 1000);
 
     setTimeout(() => {
         clearInterval(intervalID)

@@ -775,6 +775,7 @@ const VerifyOtp = ({ navigation, route }) => {
               justifyContent: "center",
               alignItems: "center",
               marginTop: 4,
+              marginLeft:6
             }}
           >
             <Image
@@ -791,7 +792,7 @@ const VerifyOtp = ({ navigation, route }) => {
           </View>
         </View>
         
-      <SocialBottomBar/>
+      <SocialBottomBar showRelative={true}/>
     </ScrollView>
   );
 };

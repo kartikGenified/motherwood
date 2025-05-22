@@ -61,13 +61,11 @@ const Verification = ({ navigation }) => {
   // const userData = useSelector(state=>)
   const userData = useSelector((state) => state.appusersdata.userData);
   const kycData = useSelector((state) => state.kycDataSlice.kycData);
-  console.log("dahjsgydfghgvwqhbbcjbqwhghcv", kycData);
 
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   )
-    ? useSelector((state) => state.apptheme.ternaryThemeColor)
-    : "grey";
+    
   console.log("kyc options ", kycData, kycOptions);
   const manualApproval = useSelector((state) => state.appusers.manualApproval);
 

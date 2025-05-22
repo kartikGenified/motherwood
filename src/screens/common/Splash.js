@@ -124,6 +124,7 @@ const Splash = ({ navigation }) => {
   // const [isAlreadyIntroduced, setIsAlreadyIntroduced] = useState(null);
   // const [gotLoginData, setGotLoginData] = useState()
   const isConnected = useSelector((state) => state.internet.isConnected);
+  const allApiArray = ["getAppThemeData", "getTermsData", "getPolicyData", "getWorkflowData", "getDashboardData", "getAppMenuData", "getFormData", "getBannerData", "getUsersData"]
 
   // const gifUri = Image.resolveAssetSource(
   //   require("../../../assets/gif/SplashMotherWood.png")
@@ -429,7 +430,8 @@ const Splash = ({ navigation }) => {
     if (minVersionSupport) {
       if (sessionData) 
       {
-        console.log("api call status in splash screen", apiCallStatus);
+        console.log("api call status in splash screen", apiCallStatus,sessionData);
+
          if(apiCallStatus.includes("getAppThemeData") && apiCallStatus.includes("getTermsData") && apiCallStatus.includes("getPolicyData") && apiCallStatus.includes("getWorkflowData") && apiCallStatus.includes("getDashboardData") && apiCallStatus.includes("getAppMenuData") && apiCallStatus.includes("getFormData") && apiCallStatus.includes("getBannerData") && apiCallStatus.includes("getUsersData"))
         {
           navigation.reset({
@@ -439,10 +441,17 @@ const Splash = ({ navigation }) => {
         }
         else
         {
-          navigation.reset({
-            index: "0",
-            routes: [{ name: "SelectUser" }],
-          });
+          const logFailedAPi =async()=>{
+            const missingApis = allApiArray.filter(api => !apiCallStatus.includes(api));
+            console.log("failed api",missingApis)
+          }
+          logFailedAPi().then(()=>{
+            navigation.reset({
+              index: "0",
+              routes: [{ name: "SelectUser" }],
+            });
+          })
+          
         }
       }
       else

@@ -147,9 +147,13 @@ const OtpLogin = ({ navigation, route }) => {
     if (sendOtpData) {
       console.log("sendOtpData", sendOtpData);
       if (sendOtpData?.success === true && mobile.length === 10) {
-        if (Object.keys(getNameData?.body).length != 0) {
-          navigation.navigate("VerifyOtp", { ...navigationParams, isExisting:true });
+        if(getNameData)
+        {
+          if (Object.keys(getNameData?.body).length != 0) {
+            navigation.navigate("VerifyOtp", { ...navigationParams, isExisting:true });
+          }
         }
+        
       } else {
         console.log("Trying to open error modal");
       }
@@ -511,7 +515,7 @@ const OtpLogin = ({ navigation, route }) => {
             ></ButtonNavigate>
           </View>
         )} */}
-        <SocialBottomBar/>
+        <SocialBottomBar showRelative={true}/>
         </ScrollView>
 
   );

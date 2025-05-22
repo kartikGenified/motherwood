@@ -288,7 +288,7 @@ const SelectUser = ({ navigation }) => {
             {/* <PoppinsTextMedium style={{color:'black',fontSize:12,marginTop:20,marginBottom:10}} content="Designed and developed by Genefied"></PoppinsTextMedium> */}
           </ScrollView>
 
-          <SocialBottomBar></SocialBottomBar>
+          <SocialBottomBar showRelative={true}></SocialBottomBar>
         </LinearGradient>
       ) : (
         //   <ImageBackground

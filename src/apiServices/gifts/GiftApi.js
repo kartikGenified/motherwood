@@ -21,9 +21,25 @@ export const GiftApi = baseApi.injectEndpoints({
       
           fetchGiftCatalogueByUserTypeAndCatalogueType: builder.mutation({
             query: (params) => {
+              console.log("paramstype",params)
               return {
                 method: "GET",
                 url: `api/tenant/giftCatalogue/userType?type=${params.type}`,
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + params.token,
+                  slug: slug,
+                },
+              };
+            },
+          }),
+
+          fetchGiftCatalogueforRedeemGift: builder.mutation({
+            query: (params) => {
+              console.log("paramstype",params)
+              return {
+                method: "GET",
+                url: `api/tenant/giftCatalogue/user-and-type?type=${params.type}`,
                 headers: {
                   "Content-Type": "application/json",
                   Authorization: "Bearer " + params.token,
@@ -50,5 +66,5 @@ export const GiftApi = baseApi.injectEndpoints({
 });
 
 
-export const {useFetchAllGiftMutation,useFetchGiftByIdMutation,useFetchGiftCatalogueByUserTypeAndCatalogueTypeMutation} = GiftApi
+export const {useFetchAllGiftMutation,useFetchGiftByIdMutation,useFetchGiftCatalogueByUserTypeAndCatalogueTypeMutation, useFetchGiftCatalogueforRedeemGiftMutation} = GiftApi
 

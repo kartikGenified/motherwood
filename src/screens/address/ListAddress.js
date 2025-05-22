@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  Text,
+} from "react-native";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Plus from "react-native-vector-icons/AntDesign";
 import PoppinsText from "../../components/electrons/customFonts/PoppinsText";
 import {
@@ -13,19 +20,22 @@ import PoppinsTextLeftMedium from "../../components/electrons/customFonts/Poppin
 import { useIsFocused } from "@react-navigation/native";
 import { addAddress } from "../../../redux/slices/redemptionAddressSlice";
 import { useTranslation } from "react-i18next";
-const ListAddress = ({ navigation ,route}) => {
+const ListAddress = ({ navigation, route }) => {
   const [selectedIndex, setSelectedIndex] = useState();
   const [selectedAddress, setSelectedAddress] = useState();
   const [addressList, setAddressList] = useState();
-  const focused = useIsFocused()
-  const dispatch = useDispatch()
-  const {t} = useTranslation()
-  const schemeType = route.params?.schemeType
-  const schemeID = route.params?.schemeID
+  const focused = useIsFocused();
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const schemeType = route.params?.schemeType;
+  const schemeID = route.params?.schemeID;
+  const type = route.params.type
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
+  );
+  const secondaryThemeColor = useSelector(
+    state => state.apptheme.secondaryThemeColor,
   )
-   
   const [
     getAllAddressFunc,
     { data: getAllAddressData, error: getAllAddressError },
@@ -39,10 +49,9 @@ const ListAddress = ({ navigation ,route}) => {
   const setAddress = (data) => {
     console.log("Selected", data);
     setSelectedIndex(data.index);
-    setSelectedAddress(data)
+    setSelectedAddress(data);
     // setSelectedAddress(data)
-    dispatch(addAddress(data))
-
+    dispatch(addAddress(data));
   };
   useEffect(() => {
     const getToken = async () => {
@@ -71,7 +80,7 @@ const ListAddress = ({ navigation ,route}) => {
       }
     };
     getToken();
-  }, [deleteAddressData,focused]);
+  }, [deleteAddressData, focused]);
   useEffect(() => {
     if (deleteAddressData) {
       console.log("deleteAddressData", deleteAddressData);
@@ -104,7 +113,7 @@ const ListAddress = ({ navigation ,route}) => {
         );
         const token = credentials.username;
         const params = { token: token, data: data };
-        console.log("address json",params)
+        console.log("address json", params);
         deleteAddressFunc(params);
       }
     };
@@ -161,7 +170,7 @@ const ListAddress = ({ navigation ,route}) => {
 
   //     myPromise.then(function () {
   //       props.setAddress(addressJson)
-        
+
   //     }, function () {
   //       console.log("Promise failed");
   //     });
@@ -196,7 +205,7 @@ const ListAddress = ({ navigation ,route}) => {
   //       >
   //         <TouchableOpacity
   //           onPress={() => {
-            
+
   //             setSelectedAddress(!selected);
   //           }}
   //           style={{
@@ -288,28 +297,28 @@ const ListAddress = ({ navigation ,route}) => {
       state,
       country,
       pincode,
-      id: props.data.id
+      id: props.data.id,
     };
-  
+
     const toggleSelection = () => {
       props.setAddress(addressJson);
-     
+
       setSelected(!selected); // If you want to toggle selection, uncomment this and remove 'selected' state
     };
-  
+
     const deleteAddress = () => {
       props.deleteAddress(props?.data);
     };
-  
-    console.log("Address data from address component",props.data);
+
+    console.log("Address data from address component", props.data);
     return (
       <View
         style={{
           alignItems: "center",
           justifyContent: "center",
           width: "90%",
-          borderWidth: 1,
-          borderColor: "#DDDDDD",
+          // borderBottomWidth: 1,
+          // borderColor: "#DDDDDD",
           borderRadius: 10,
           flexDirection: "row",
           paddingTop: 10,
@@ -346,7 +355,7 @@ const ListAddress = ({ navigation ,route}) => {
             )}
           </TouchableOpacity>
         </View>
-  
+
         {/* Address Details */}
         <View
           style={{
@@ -356,27 +365,58 @@ const ListAddress = ({ navigation ,route}) => {
           }}
         >
           <PoppinsTextLeftMedium
-            style={{ color: "black", fontSize: 16, marginLeft: 10 }}
+            style={{
+              color: "black",
+              fontSize: 16,
+              marginLeft: 10,
+              marginTop: 10,
+              fontWeight: "600",
+            }}
             content={`${t("Address")} : ${address}`}
           />
-          <PoppinsTextMedium
-            style={{ color: "black", fontSize: 16, marginLeft: 10 }}
+          <PoppinsTextLeftMedium
+            style={{
+              color: "black",
+              fontSize: 16,
+              marginLeft: 10,
+              marginTop: 20,
+              fontWeight: "600",
+            }}
             content={`${t("City")} : ${city}`}
           />
-          <PoppinsTextMedium
-            style={{ color: "black", fontSize: 16, marginLeft: 10 }}
+          <PoppinsTextLeftMedium
+            style={{
+              color: "black",
+              fontSize: 16,
+              marginLeft: 10,
+              marginTop: 20,
+              fontWeight: "600",
+            }}
             content={`${t("District")} : ${district}`}
           />
-          <PoppinsTextMedium
-            style={{ color: "black", fontSize: 16, marginLeft: 10 }}
+          <PoppinsTextLeftMedium
+            style={{
+              color: "black",
+              fontSize: 16,
+              marginLeft: 10,
+              marginTop: 20,
+              fontWeight: "600",
+            }}
             content={`${t("State")} : ${state}`}
           />
-          <PoppinsTextMedium
-            style={{ color: "black", fontSize: 16, marginLeft: 10 }}
+          <PoppinsTextLeftMedium
+            style={{
+              color: "black",
+              fontSize: 16,
+              marginLeft: 10,
+              marginBottom: 10,
+              marginTop: 20,
+              fontWeight: "600",
+            }}
             content={`${t("Pincode")} : ${pincode}`}
           />
         </View>
-  
+
         {/* Delete Button */}
         <View
           style={{
@@ -405,8 +445,7 @@ const ListAddress = ({ navigation ,route}) => {
       </View>
     );
   };
-  
-  
+
   return (
     <View
       style={{
@@ -414,7 +453,7 @@ const ListAddress = ({ navigation ,route}) => {
         justifyContent: "flex-start",
         height: "100%",
         width: "100%",
-        backgroundColor: ternaryThemeColor,
+        backgroundColor: secondaryThemeColor,
         flex: 1,
       }}
     >
@@ -450,7 +489,7 @@ const ListAddress = ({ navigation ,route}) => {
             marginLeft: 10,
             fontSize: 16,
             fontWeight: "700",
-            color: "white",
+            color: "black",
           }}
         ></PoppinsTextMedium>
       </View>
@@ -463,30 +502,101 @@ const ListAddress = ({ navigation ,route}) => {
           backgroundColor: "white",
         }}
       >
-        <ScrollView 
-        contentContainerStyle={{alignItems:"center",justifyContent:'center'}}
-        style={{width:'100%'}}>
-        {addressList &&
-          addressList.map((item, index) => {
-            return (
-              <AddressComponent
-                key ={index}
-                data={item}
-                deleteAddress={deleteAddress}
-                isSelected={item.status}
-                selectedIndex={selectedIndex}
-                setAddress={setAddress}
-                address={item.address}
-                city={item.city}
-                state={item.state}
-                district={item.district}
-                pincode={item.pincode}
-                country="India"
-                index={index}
-              ></AddressComponent>
-            );
-          })}
-          </ScrollView>
+        <ScrollView
+          contentContainerStyle={{
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          style={{ width: "100%" }}
+        >
+          {
+            getAllAddressData?.body?.[0] &&
+            <View
+            style={{
+              backgroundColor: "#D6D4D4",
+              height: 120,
+              width: "90%",
+              borderTopLeftRadius: 15,
+              borderTopRightRadius: 15,
+              alignItems: "center",
+              marginTop: 30,
+              justifyContent: "center",
+              padding: 30,
+            }}
+          >
+            <Text style={{ textAlign: "center", fontSize: 18, color: "black", fontWeight:'700' }}>
+              Would you like to deliver to the same address ?
+            </Text>
+          </View>
+            
+          }
+      
+          {addressList &&
+            addressList.map((item, index) => {
+              return (
+                <AddressComponent
+                  key={index}
+                  data={item}
+                  deleteAddress={deleteAddress}
+                  isSelected={item.status}
+                  selectedIndex={selectedIndex}
+                  setAddress={setAddress}
+                  address={item.address}
+                  city={item.city}
+                  state={item.state}
+                  district={item.district}
+                  pincode={item.pincode}
+                  country="India"
+                  index={index}
+                ></AddressComponent>
+              );
+            })}
+        {getAllAddressData?.body?.[0] &&
+          <View style={{ flexDirection: "row", width: "90%", marginTop: 20 ,justifyContent:'center'}}>
+          <View
+            style={{
+              borderTopWidth: 1,
+              borderColor: "#DDDDDD",
+              width: "35%",
+              marginTop:20
+            }}
+          ></View>
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor:'#DDDDDD',
+              height: 50,
+              width: 50,
+              borderRadius:25,
+
+              alignItems: "center",
+              justifyContent: "center",
+
+            }}
+          >
+            <Text style={{fontSize:18, color:'black', fontWeight:'800'}}>OR</Text>
+          </View>
+          
+          <View
+            style={{
+              borderTopWidth: 1,
+              borderColor: "#DDDDDD",
+              width: "35%",
+              marginTop:20
+            }}
+          ></View>
+        </View>
+        }
+
+        {getAllAddressData?.body?.[0] &&
+          <TouchableOpacity onPress={()=>{
+            navigation.navigate("AddAddress",{type:type});
+          }} style={{marginTop:20, paddingHorizontal:40, backgroundColor:ternaryThemeColor, borderRadius:30,paddingVertical:10}}>
+            <Text style={{color:'white', fontSize:18}}>Add New Address</Text>
+          </TouchableOpacity>
+        }
+        
+        </ScrollView>
       </View>
       <View
         style={{
@@ -495,21 +605,38 @@ const ListAddress = ({ navigation ,route}) => {
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "white",
-          paddingTop: 30,
+
         }}
       >
-        <TouchableOpacity style={{height:40,width:120,backgroundColor:ternaryThemeColor,alignItems:'center',justifyContent:'center',borderRadius:4,position:'absolute',left:20}} onPress={()=>{
-          if(selectedAddress){
-            navigation.replace('OtpVerification',{type:"Gift",schemeType:schemeType,schemeID:schemeID})
-          }
-          else{
-            alert(t("Please select an address first"))
-          }
-        }}>
-          <PoppinsTextMedium style={{fontSize:18,color:'white',fontWeight:'700'}} content={t("Select")}></PoppinsTextMedium>
-
+        <TouchableOpacity
+          style={{
+            height: 50,
+            width: 300,
+            backgroundColor: "#000000",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 30,
+          }}
+          onPress={() => {
+            if (selectedAddress) {
+              navigation.replace("OtpVerification", {
+                type: type ? "DreamGift" : "Gift",
+                schemeType: schemeType,
+                schemeID: schemeID,
+              });
+            } else {
+              alert(t("Please select an address first"));
+            }
+          }}
+        >
+          <PoppinsTextMedium
+            style={{ fontSize: 18, color: "white", fontWeight: "700" }}
+            content={t("Submit")}
+          ></PoppinsTextMedium>
         </TouchableOpacity>
-        <View
+        {
+          (addressList && !addressList.length > 0) &&
+          <View
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -520,25 +647,28 @@ const ListAddress = ({ navigation ,route}) => {
         >
           <PoppinsText
             content={t("Add Address")}
-            style={{ color: ternaryThemeColor, fontSize: 16 }}
+            style={{ color: "#D5B60B", fontSize: 14 }}
           ></PoppinsText>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("AddAddress");
+              navigation.navigate("AddAddress",{type:type});
             }}
             style={{
-              backgroundColor: "#DDDDDD",
-              height: 40,
-              width: 40,
-              borderRadius: 20,
+              backgroundColor:'white',
+              height: 55,
+              width: 55,
+              elevation:1,
+              borderRadius:30,
               alignItems: "center",
               justifyContent: "center",
               marginLeft: 10,
             }}
           >
-            <Plus name="pluscircle" size={30} color={ternaryThemeColor}></Plus>
+            <Plus name="pluscircle" size={30} color={"#D5B60B"}></Plus>
           </TouchableOpacity>
         </View>
+        }
+     
       </View>
     </View>
   );

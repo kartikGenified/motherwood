@@ -39,14 +39,12 @@ const CartList = ({ navigation, route }) => {
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
   )
-    ? useSelector(state => state.apptheme.ternaryThemeColor)
-    : 'grey';
+    
 
   const secondaryThemeColor = useSelector(
     state => state.apptheme.secondaryThemeColor,
   )
-    ? useSelector(state => state.apptheme.secondaryThemeColor)
-    : '#FFB533';
+    
   const userData = useSelector(state => state.appusersdata.userData);
   const schemeType = route.params?.schemeType
   const schemeID = route.params?.schemeID
@@ -320,15 +318,14 @@ const CartList = ({ navigation, route }) => {
           //   navigation.navigate('CartList');
         }}
         style={{
-          height: 120,
+          height: 80,
           width: '90%',
           alignItems: 'center',
-          justifyContent: 'flex-start',
+          justifyContent: 'center',
           borderWidth: 0.6,
           borderColor: '#EEEEEE',
           backgroundColor: '#FFFFFF',
-          margin: 10,
-          marginTop: 10,
+          paddingTop:10,
           elevation: 4,
           borderRadius: 10
         }}>
@@ -343,7 +340,7 @@ const CartList = ({ navigation, route }) => {
           }}>
           <View
             style={{
-              height: 50,
+              height: '100%',
               width: 60,
               alignItems: 'center',
               justifyContent: 'center',
@@ -351,36 +348,24 @@ const CartList = ({ navigation, route }) => {
               borderColor: '#DDDDDD',
               backgroundColor: 'white',
               marginLeft: 20,
-              top: 14,
+              
             }}>
             <Image
-              style={{ height: 46, width: 56, resizeMode: 'center' }}
+              style={{ height: 56, width: 56, resizeMode: 'center' }}
               source={{ uri: image }}></Image>
           </View>
-          <LinearGradient
-            style={{
-              height: 30,
-              padding: 4,
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              borderRadius: 4,
-              position: 'absolute',
-              right: 60,
-            }}
-            colors={['#FF9100', '#E4C52B']}>
+          
             <Image
               style={{ height: 20, width: 20, resizeMode: 'contain' }}
               source={require('../../../assets/images/coin.png')}></Image>
             <PoppinsTextMedium
               style={{
                 fontSize: 12,
-                color: 'white',
+                color: 'black',
                 fontWeight: '700',
                 marginLeft: 10,
               }}
               content={`${t("Points")} : ${points}`}></PoppinsTextMedium>
-          </LinearGradient>
           <TouchableOpacity
             onPress={() => {
               handleDelete(props.data);
@@ -409,7 +394,7 @@ const CartList = ({ navigation, route }) => {
             marginTop: 4,
           }}>
           <PoppinsTextMedium
-            style={{ color: 'black', fontSize: 11, width: '90%', marginLeft: 4 }}
+            style={{ color: 'black', fontSize: 13, width: '90%', marginLeft: 4, fontWeight:'700' }}
             content={product}></PoppinsTextMedium>
           <View
             style={{
@@ -419,7 +404,7 @@ const CartList = ({ navigation, route }) => {
               marginLeft: 4,
             }}>
             <PoppinsTextMedium
-              style={{ color: '#919191', fontSize: 11, width: '90%' }}
+              style={{ color: '#919191', fontSize: 13, width: '90%' , fontWeight:'700'}}
               content={category}></PoppinsTextMedium>
           </View>
         </View>
@@ -432,7 +417,7 @@ const CartList = ({ navigation, route }) => {
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
-        backgroundColor: ternaryThemeColor,
+        backgroundColor: secondaryThemeColor,
         height: '100%',
 
 
@@ -486,7 +471,7 @@ const CartList = ({ navigation, route }) => {
               marginLeft: 10,
               fontSize: 16,
               fontWeight: '700',
-              color: 'white',
+              color: 'black',
             }}></PoppinsTextMedium>
         </View>
       </View>
