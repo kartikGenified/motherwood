@@ -7,6 +7,7 @@ import {
   Keyboard,
   Text,
   Platform,
+  ScrollView,
 } from "react-native";
 import { useGetLoginOtpMutation } from "../../apiServices/login/otpBased/SendOtpApi";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
@@ -61,6 +62,10 @@ const OtpVerification = ({ navigation, route }) => {
   const redemptionFrom = useSelector(
     (state) => state.redemptionData.redemptionFrom
   );
+  const secondaryThemeColor = useSelector(
+    state => state.apptheme.secondaryThemeColor,
+  )
+
   const dispatch = useDispatch();
   console.log(
     "Point conversion and cash conversion data",
@@ -486,11 +491,13 @@ const OtpVerification = ({ navigation, route }) => {
         backgroundColor: "white",
       }}
     >
+      <ScrollView style={{width:'100%'}} contentContainerStyle={{alignItems: "center",
+        justifyContent: "flex-start",}}>
       <View
         style={{
           height: "10%",
           width: "100%",
-          backgroundColor: ternaryThemeColor,
+          backgroundColor: secondaryThemeColor,
           alignItems: "center",
           justifyContent: "flex-start",
           flexDirection: "row",
@@ -511,7 +518,7 @@ const OtpVerification = ({ navigation, route }) => {
         </TouchableOpacity>
 
         <PoppinsTextMedium
-          style={{ fontSize: 20, color: "#ffffff", marginLeft: 10 }}
+          style={{ fontSize: 20, color: "black", marginLeft: 10 }}
           content={t("Verify OTP")}
         ></PoppinsTextMedium>
 
@@ -533,22 +540,7 @@ const OtpVerification = ({ navigation, route }) => {
           ></MessageModal>
         )}
       </View>
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          backgroundColor: ternaryThemeColor,
-          padding: 20,
-          marginBottom: 60,
-          marginTop: 20,
-        }}
-      >
-        <PoppinsTextMedium
-          style={{ color: "white", fontSize: 16 }}
-          content={t("OTP has been sent to your registered mobile number")}
-        ></PoppinsTextMedium>
-      </View>
+      
       <TextInputRectangularWithPlaceholder
         placeHolder="Mobile No"
         handleData={getMobile}
@@ -556,6 +548,11 @@ const OtpVerification = ({ navigation, route }) => {
         editable={false}
         value={userData.mobile}
       ></TextInputRectangularWithPlaceholder>
+
+        <PoppinsTextMedium
+          content={t("Enter the 6-digit OTP received on your Registered Mobile Number "+userData.mobile)}
+          style={{ color: "black", fontSize: 20, fontWeight: "600",width:'90%' }}
+        ></PoppinsTextMedium>
 
       <View
         style={{
@@ -565,6 +562,7 @@ const OtpVerification = ({ navigation, route }) => {
         }}
       >
         <OtpInput
+         type="bottomLine"
           getOtpFromComponent={getOtpFromComponent}
           color={"white"}
         ></OtpInput>
@@ -616,14 +614,67 @@ const OtpVerification = ({ navigation, route }) => {
           </View>
         </View>
       </View>
+
+      <View style={{height:1,width:'90%',backgroundColor:"black",marginTop:50,marginBottom:20}}></View>
+      <View style={{backgroundColor:"#F8F8F8", alignItems:'flex-start', justifyContent:'center',borderRadius:10,paddingBottom:20, width:'90%'}}>
+      <Text style={{ color: "#171717", marginTop: 10,fontSize:18,fontWeight:'700' }}>
+              {t("Delivery Address")}?
+      </Text>
+      <View style={{height:1,width:'90%',backgroundColor:'#DDDDDD',marginTop:10}}>
+      </View>
+      <View style={{alignItems:'center',justifyContent:'flex-start',flexDirection:'row',width:'80%'}}>
+      <Text style={{ color: "#171717", marginTop: 10 }}>
+        Address :
+      </Text>
+      <Text style={{ color: "#171717", marginTop: 10,marginLeft:4 }}>
+        {address?.address}
+      </Text>
+      </View>
+      
+      <View style={{alignItems:'center',justifyContent:'flex-start',flexDirection:'row',width:'100%'}}>
+      <Text style={{ color: "#171717", marginTop: 10 }}>
+        Pincode :
+      </Text>
+      <Text style={{ color: "#171717", marginTop: 10,marginLeft:4 }}>
+        {address?.pincode}
+      </Text>
+      </View>
+      
+      <View style={{alignItems:'center',justifyContent:'flex-start',flexDirection:'row',width:'100%'}}>
+      <Text style={{ color: "#171717", marginTop: 10 }}>
+        State :
+      </Text>
+      <Text style={{ color: "#171717", marginTop: 10,marginLeft:4 }}>
+        {address?.state}
+      </Text>
+      </View>
+      <View style={{alignItems:'center',justifyContent:'flex-start',flexDirection:'row',width:'100%'}}>
+      <Text style={{ color: "#171717", marginTop: 10 }}>
+        City :
+      </Text>
+      <Text style={{ color: "#171717", marginTop: 10,marginLeft:4 }}>
+        {address?.city}
+      </Text>
+      </View>
+     
+      <View style={{alignItems:'center',justifyContent:'flex-start',flexDirection:'row',width:'100%'}}>
+      <Text style={{ color: "#171717", marginTop: 10 }}>
+        District :
+      </Text>
+      <Text style={{ color: "#171717", marginTop: 10,marginLeft:4 }}>
+        {address?.district}
+      </Text>
+      </View>
+      
+      
+      </View>
       {showRedeemButton && (
         <View
           style={{
             alignItems: "center",
             justifyContent: "center",
             width: "100%",
-            position: "absolute",
-            bottom: 20,
+           
           }}
         >
           <TouchableOpacity
@@ -632,20 +683,21 @@ const OtpVerification = ({ navigation, route }) => {
             }}
             style={{
               height: 50,
-              width: 140,
+              width: 240,
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: ternaryThemeColor,
-              borderRadius: 4,
+              backgroundColor: "black",
+              borderRadius: 20,
             }}
           >
             <PoppinsTextMedium
-              content={t("redeem")}
+              content={t("Submit")}
               style={{ color: "white", fontSize: 20, fontWeight: "700" }}
             ></PoppinsTextMedium>
           </TouchableOpacity>
         </View>
       )}
+      </ScrollView>
     </View>
   );
 };

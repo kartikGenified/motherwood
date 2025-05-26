@@ -722,7 +722,7 @@ const RedeemGifts = ({ navigation, route }) => {
                 style={{
                   height: 40,
                   width: "80%",
-                  backgroundColor: "#D5B60B",
+                  backgroundColor: "black",
                   borderRadius: 20,
                   marginTop: 10,
                   marginBottom: 10,

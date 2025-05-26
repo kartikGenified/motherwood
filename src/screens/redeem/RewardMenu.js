@@ -17,7 +17,7 @@ const RewardMenu = ({navigation}) => {
                 <TouchableOpacity style={{alignItems:'center',width:'90%'}} onPress={()=>{navigation.navigate('RedeemGifts',{schemeType : "yearly"})}}> 
                 <Image style={{height:150, width:'100%',borderRadius:20,resizeMode:'contain'}} source={require("../../../assets/images/redeemBox.png")}></Image>
                 </TouchableOpacity>
-                <TouchableOpacity style={{alignItems:'center',width:'90%'}} onPress={()=>{}}> 
+                <TouchableOpacity style={{alignItems:'center',width:'90%'}} onPress={()=>{navigation.navigate('RedeemCashback')}}> 
                 <Image style={{height:150, width:'100%', marginTop:20,borderRadius:20,resizeMode:'contain'}} source={require("../../../assets/images/cashbackBox.png")}></Image>
 
                 </TouchableOpacity>

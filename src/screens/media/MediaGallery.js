@@ -22,7 +22,7 @@ const MediaGallery = () => {
         navigateTo:"ImageGallery"
     },
     {
-        title:"E-Catalue",
+        title:"E-Catalogues",
         image: require("../../../assets/images/eCatalogue.png"),
         navigateTo:"ProductCatalogue"
     },
@@ -44,6 +44,8 @@ const MediaGallery = () => {
         <TopHeader title={"Media Gallery"}></TopHeader>
         
         <FlatList
+        contentContainerStyle={{alignItems:'center',justifyContent:'center'}}
+        style={{width:'90%'}}
         data={galleryArr}
         key={(item)=>{item.title}}
         numColumns={2}
@@ -51,9 +53,11 @@ const MediaGallery = () => {
             return(
                 <TouchableOpacity onPress={()=>{
                     navigation.navigate(item.navigateTo)
-                }} style={{ borderWidth:1, borderRadius:10,height:160, width:160,borderColor:ternaryThemeColor,alignItems:'center',justifyContent:'center',marginHorizontal:20, marginVertical:20}}>
-                <Image style={{width:80,resizeMode:'contain', marginBottom:30}} source={item.image}></Image>
-                <View style={{backgroundColor:ternaryThemeColor,position:'absolute',bottom:0,width:'100%',height:40,alignItems:'center', justifyContent:'center',borderBottomRightRadius:10, borderBottomLeftRadius:10}}>
+                }} style={{ borderWidth:1, borderRadius:10,height:140, width:'44%',borderColor:ternaryThemeColor,alignItems:'center',justifyContent:'center',margin:10}}>
+                <View style={{height:'70%',width:'100%',alignItems:'center',justifyContent:'center'}}>
+                <Image style={{width:'80%',resizeMode:'contain', height:'50%'}} source={item.image}></Image>
+                </View>
+                <View style={{backgroundColor:ternaryThemeColor,width:'100%',height:'30%',alignItems:'center', justifyContent:'center',borderBottomRightRadius:10, borderBottomLeftRadius:10}}>
                 <PoppinsTextMedium style={{color:'white',fontSize:18}} content={item.title}></PoppinsTextMedium>
 
                 </View>

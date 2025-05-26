@@ -14,7 +14,7 @@ import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTex
 import { useCheckActiveSchemeMutation,useCheckAllSchemeMutation } from "../../apiServices/scheme/GetSchemeApi";
 import * as Keychain from "react-native-keychain";
 import Logo from "react-native-vector-icons/AntDesign";
-import dayjs from 'dayjs'
+import moment from "moment";
 import DatePicker from "react-native-date-picker";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
 export default function Scheme({ navigation }) {
@@ -477,7 +477,7 @@ export default function Scheme({ navigation }) {
           }}
         >
           <PoppinsTextMedium
-            content={`Start Date ${dayjs(selectedDataStart).format("MM/YYYY")}`}
+            content={`Start Date ${moment(selectedDataStart).format("MM/YYYY")}`}
             style={{ width: "60%", fontSize: 16, fontWeight: "700" }}
           ></PoppinsTextMedium>
           <TouchableOpacity
@@ -525,7 +525,7 @@ export default function Scheme({ navigation }) {
           }}
         >
           <PoppinsTextMedium
-            content={`End Date ${dayjs(selectedDataEnd).format("MM/YYYY")}`}
+            content={`End Date ${moment(selectedDataEnd).format("MM/YYYY")}`}
             style={{ width: "60%", fontSize: 16, fontWeight: "700" }}
           ></PoppinsTextMedium>
           <TouchableOpacity
@@ -628,37 +628,7 @@ export default function Scheme({ navigation }) {
              
             }}
           >
-            <TouchableOpacity
-              disabled = {!props.data.states?.includes(location.state)}
-              onPress={() => {
-                if((new Date(props.data.redeem_start).getTime() <= new Date().getTime()) && (new Date().getTime() <= new Date(props.data.redeem_end).getTime()))
-                {
-                  navigation.navigate("RedeemGifts",{
-                    schemeType:'quaterly',
-                    schemeGiftCatalogue:props.data?.gift_catalogue,
-                    schemeID:props.data?.id
-                  })
-                }
-                else { 
-                  console.log("redemption window is not open", new Date(props.data.redeem_start).getTime(), new Date().getTime(), )
-                  alert(`${t("Redemption window will start at")} ${props.data.redeem_start} ${t("and will end at")} ${props.data.redeem_end}`)
-                }
-                
-              }}
-              style={{
-                height: 40,
-                width: "90%",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: props.data.states?.includes(location.state) ? "#D4B01C" : "#D5D4D3",
-                borderRadius: 20,
-              }}
-            >
-              <PoppinsTextMedium
-                content="Redeem"
-                style={{ color: props.data.states?.includes(location.state)? "white" : 'black', fontWeight: "800", fontSize: 15 }}
-              ></PoppinsTextMedium>
-            </TouchableOpacity>
+           
             <TouchableOpacity
               onPress={() => { navigation.navigate("PdfComponent", { pdf: props.data?.pdf })}}
               style={{

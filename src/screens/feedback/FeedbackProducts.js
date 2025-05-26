@@ -24,12 +24,18 @@ import { useTranslation } from "react-i18next";
 import FastImage from "react-native-fast-image";
 import { clientOfficialName } from "../../utils/HandleClientSetup";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
-const Feedback = ({ navigation }) => {
+import { useGetProductListMutation } from "../../apiServices/product/getProducts";
+import BottomModal from "../../components/modals/BottomModal";
+import Close from "react-native-vector-icons/Ionicons";
+
+const FeedbackProducts = ({ navigation }) => {
   //states
   const [starCount, setStarCount] = useState(0);
   const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
+  const [data, setData] = useState();
+  const [modal, setModal] = useState(false);
   const userData = useSelector((state) => state.appusersdata.userData);
 
   const userName = useSelector((state) => state.appusersdata.name);
@@ -50,6 +56,16 @@ const Feedback = ({ navigation }) => {
   );
 
   const [
+    productListFunc,
+    {
+      data: productListData,
+      error: productListError,
+      isLoading: productListIsLoading,
+      isError: productListIsError,
+    },
+  ] = useGetProductListMutation();
+
+  const [
     addFeedbackFunc,
     {
       data: addFeedbackData,
@@ -58,6 +74,28 @@ const Feedback = ({ navigation }) => {
       isLoading: addFeedbackIsLoading,
     },
   ] = useAddFeedbackMutation();
+
+  useEffect(() => {
+    if (productListData) {
+      setData(productListData?.body?.products);
+    } else {
+      if (productListError) console.log("productListError", productListError);
+    }
+  }, [productListData, productListError]);
+
+  const handleSearch = (s) => {
+    if (s.length > 2) {
+      const data = {
+        token: token,
+        body: {
+          limit: 10,
+          offset: 0,
+          name: s,
+        },
+      };
+      productListFunc(data);
+    }
+  };
 
   const onStarRatingPress = (rating) => {
     setStarCount(rating);
@@ -112,9 +150,46 @@ const Feedback = ({ navigation }) => {
     }
   }, [addFeedbackData, addFeedbackError]);
 
+  const modalClose = () => {
+    setModal(false);
+  };
+
+  const Comp = () => {
+    return (
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+        }}
+      >
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "row",
+          }}
+        >
+          <PoppinsTextMedium
+            style={{ fontSize: 16, color: "black" }}
+          ></PoppinsTextMedium>
+          <Close name="close" size={17} color="#ffffff" />
+        </View>
+      </View>
+    );
+  };
+
   return (
-    <View style={[styles.container, { backgroundColor: 'white' }]}>
+    <View style={[styles.container, { backgroundColor: "white" }]}>
       {/* Navigator */}
+      <BottomModal
+        modalClose={modalClose}
+        message={message}
+        canGoBack={true}
+        openModal={modal}
+        // handleFilter={handleFilter}
+        comp={Comp}
+      ></BottomModal>
       <View
         style={{
           height: 70,
@@ -157,66 +232,111 @@ const Feedback = ({ navigation }) => {
       </View>
       {/* navigator */}
 
-      <ScrollView contentContainerStyle={{ height: "100%", width: "100$" }}>
-        <View style={{ backgroundColor: "#ffffff", flex: 1, height: "100%" }}>
-          <View style={styles.marginTopTen}>
-            <Image
-              style={styles.feedbackImage}
-              source={require("../../../assets/images/feedback_illustrator.png")}
-            />
-          </View>
+      <ScrollView
+        contentContainerStyle={{
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <View style={styles.marginTopTen}>
+          <Image
+            style={styles.feedbackImage}
+            source={require("../../../assets/images/feedback_illustrator.png")}
+          />
+        </View>
+        <TouchableOpacity
+          style={{
+            height: 50,
+            width: "90%",
+            alignItems: "center",
+            justifyContent: "space-around",
+            borderColor: "#DDDDDD",
+            borderWidth: 1,
+            flexDirection: "row",
+            borderRadius: 10,
+          }}
+        >
+          <PoppinsTextMedium
+            style={{ color: "black", fontWeight: "600", marginRight: 30 }}
+            content={"Select Products"}
+          ></PoppinsTextMedium>
+          <Image
+            style={{ height: 20, width: 20, resizeMode: "contain" }}
+            source={require("../../../assets/images/arrowDown.png")}
+          />
+        </TouchableOpacity>
 
-          <TouchableOpacity style={{backgroundColor:'#FFF8E7',height:100, marginHorizontal:30, borderRadius:10, borderWidth:1, borderColor:ternaryThemeColor, borderStyle:'dotted',alignItems:'center',justifyContent:'center'}}>
-            <Image style={{height:40,width:60,resizeMode:'contain'}} source={require("../../../assets/images/camera_red.png")}></Image>
-            <PoppinsTextMedium style={{marginTop:10, color:'black'}} content={"Upload Image"}></PoppinsTextMedium>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#FFF8E7",
+            height: 100,
+            marginHorizontal: 30,
+            borderRadius: 10,
+            borderWidth: 1,
+            borderColor: ternaryThemeColor,
+            borderStyle: "dotted",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "90%",
+            marginTop: 20,
+          }}
+        >
+          <Image
+            style={{ height: 40, width: 60, resizeMode: "contain" }}
+            source={require("../../../assets/images/camera_red.png")}
+          ></Image>
+          <PoppinsTextMedium
+            style={{ marginTop: 10, color: "black" }}
+            content={"Upload Image"}
+          ></PoppinsTextMedium>
+        </TouchableOpacity>
 
-          <View>
-            <View style={{ alignItems: "center" }}>
-              <View>
-                <PoppinsTextMedium
-                  style={{
-                    marginRight: 10,
-                    fontSize: 16,
-                    color: "#000",
-                    marginLeft: 30,
-                    fontWeight:'600',
-                    marginTop: 20,
-                  }}
-                  content={t(`how would you rate ${clientOfficialName} App`)}
-                ></PoppinsTextMedium>
-              </View>
+        <View>
+          <View style={{ alignItems: "center" }}>
+            <View>
+              <PoppinsTextMedium
+                style={{
+                  marginRight: 10,
+                  fontSize: 16,
+                  color: "#000",
+                  marginLeft: 30,
+                  fontWeight: "600",
+                  marginTop: 20,
+                }}
+                content={t(`how would you rate ${clientOfficialName} App`)}
+              ></PoppinsTextMedium>
+            </View>
 
-              <View style={styles.StarRating}>
-                <StarRating
-                  disabled={false}
-                  maxStars={5}
-                  rating={starCount}
-                  selectedStar={(rating) => onStarRatingPress(rating)}
-                  fullStarColor={"gold"}
-                  starSize={40}
-                />
-              </View>
-              <View>
-                <PoppinsTextMedium
-                  style={{
-                    marginRight: 10,
-                    fontSize: 16,
-                    color: "#58585a",
-                    marginLeft: 30,
-                  }}
-                  content={t("Describe your experience")}
-                ></PoppinsTextMedium>
-              </View>
+            <View style={styles.StarRating}>
+              <StarRating
+                disabled={false}
+                maxStars={5}
+                rating={starCount}
+                selectedStar={(rating) => onStarRatingPress(rating)}
+                fullStarColor={"gold"}
+                starSize={40}
+              />
+            </View>
+            <View>
+              <PoppinsTextMedium
+                style={{
+                  marginRight: 10,
+                  fontSize: 16,
+                  color: "#58585a",
+                  marginLeft: 30,
+                }}
+                content={t("Describe your experience")}
+              ></PoppinsTextMedium>
             </View>
           </View>
+        </View>
 
-          <View>
-            <FeedbackTextArea
-              onFeedbackChange={handleFeedbackChange}
-              placeholder={t("Type Something Here...")}
-            />
-          </View>
+        <View style={{ width: "100%" }}>
+          <FeedbackTextArea
+            onFeedbackChange={handleFeedbackChange}
+            placeholder={t("Type Something Here...")}
+          />
 
           <View style={{ marginHorizontal: "5%" }}>
             <ButtonWithPlane
@@ -235,7 +355,7 @@ const Feedback = ({ navigation }) => {
         user={userData.name}
         onClose={hideSuccessModal}
       />
-          {/* <SocialBottomBar/> */}
+      {/* <SocialBottomBar/> */}
       {addFeedbackIsLoading && (
         <FastImage
           style={{
@@ -290,13 +410,12 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   marginTopTen: {
-    marginTop: 20,
     alignItems: "center",
     justifyContent: "center",
   },
   feedbackImage: {
     height: 160,
-    width: "90%",
+    width: 300,
     resizeMode: "contain",
   },
   feedbackText: {
@@ -311,4 +430,4 @@ const styles = StyleSheet.create({
   FeedbackStars: {},
 });
 
-export default Feedback;
+export default FeedbackProducts;

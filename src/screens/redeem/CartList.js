@@ -318,15 +318,15 @@ const CartList = ({ navigation, route }) => {
           //   navigation.navigate('CartList');
         }}
         style={{
-          height: 80,
+          height: 90,
           width: '90%',
           alignItems: 'center',
           justifyContent: 'center',
-          borderWidth: 0.6,
+          borderWidth: 1,
           borderColor: '#EEEEEE',
           backgroundColor: '#FFFFFF',
           paddingTop:10,
-          elevation: 4,
+          elevation: 1,
           borderRadius: 10
         }}>
         <View
@@ -344,14 +344,11 @@ const CartList = ({ navigation, route }) => {
               width: 60,
               alignItems: 'center',
               justifyContent: 'center',
-              borderWidth: 0.4,
-              borderColor: '#DDDDDD',
-              backgroundColor: 'white',
-              marginLeft: 20,
+              marginLeft: 10,
               
             }}>
             <Image
-              style={{ height: 56, width: 56, resizeMode: 'center' }}
+              style={{ height: 60, width: 60, resizeMode: 'center' }}
               source={{ uri: image }}></Image>
           </View>
           
@@ -402,6 +399,7 @@ const CartList = ({ navigation, route }) => {
               justifyContent: 'center',
               marginTop: 4,
               marginLeft: 4,
+              marginBottom:8
             }}>
             <PoppinsTextMedium
               style={{ color: '#919191', fontSize: 13, width: '90%' , fontWeight:'700'}}

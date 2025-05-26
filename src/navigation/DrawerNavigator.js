@@ -271,7 +271,10 @@ const CustomDrawer = () => {
                 navigation.navigate("WhatsNew");
               } else if (props.title.toLowerCase() === "rewards") {
                 navigation.navigate("RedeemRewardHistory");
-              } else if (props.title.toLowerCase() === "gift catalogue") {
+              } else if (props.title.toLowerCase() === "events") {
+                navigation.navigate("Events");
+              }
+              else if (props.title.toLowerCase() === "gift catalogue") {
                 navigation.navigate("GiftCatalogue");
               } else if (
                 props.title.toLowerCase() === "bank details" ||
@@ -280,8 +283,8 @@ const CustomDrawer = () => {
                 navigation.navigate("BankAccounts");
               } else if (props.title.toLowerCase() === "profile") {
                 navigation.navigate("Profile");
-              } else if (props.title.toLowerCase() === "feedback") {
-                navigation.navigate("Feedback");
+              } else if (props.title.toLowerCase() === "feedback selection") {
+                navigation.navigate("FeedbackSelection");
               } else if (props.title.toLowerCase() === "refer and earn") {
                 navigation.navigate("ReferAndEarn");
               } else if (props.title.toLowerCase() === "warranty list") {
@@ -313,7 +316,7 @@ const CustomDrawer = () => {
                       })
                     : navigation.navigate("QrCodeScanner")
                   : navigation.navigate("QrCodeScanner");
-              } else if (props.title.toLowerCase() === "aqualite scheme") {
+              } else if (props.title.toLowerCase() === "scheme") {
                 navigation.navigate("Scheme");
               } else if (props.title.toLowerCase() === "store locator") {
                 navigation.navigate("ScanAndRedirectToWarranty");
@@ -325,7 +328,13 @@ const CustomDrawer = () => {
                 navigation.navigate("ListUsers");
               } else if (props.title.toLowerCase() === "query list") {
                 navigation.navigate("QueryList");
-              } else if (props.title.toLowerCase() === "share app") {
+              } else if (props.title.toLowerCase() === "about motherwood") {
+               
+              }
+              else if (props.title.toLowerCase() === "motherwood program name") {
+                
+              }
+              else if (props.title.toLowerCase() === "share app") {
                 const options = {
                   title: "Share APP",
                   url: shareAppLink,
@@ -646,6 +655,41 @@ const CustomDrawer = () => {
               </View>
             );
           })}
+          <DrawerItems
+          // key={index}
+          title={"Events"}
+          image={""}
+          size={20}
+          eye={true}
+        ></DrawerItems>
+        <DrawerItems
+          // key={index}
+          title={"About Motherwood"}
+          image={""}
+          size={20}
+          eye={true}
+        ></DrawerItems>
+        <DrawerItems
+          // key={index}
+          title={"Scheme"}
+          image={""}
+          size={20}
+          eye={true}
+        ></DrawerItems>
+        <DrawerItems
+          // key={index}
+          title={"Motherwood Program Name"}
+          image={""}
+          size={20}
+          eye={true}
+        ></DrawerItems>
+        <DrawerItems
+          // key={index}
+          title={"Feedback Selection"}
+          image={""}
+          size={20}
+          eye={true}
+        ></DrawerItems>
 
         {/* {
       userData?.user_type == "distributor" &&

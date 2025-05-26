@@ -100,6 +100,10 @@ import TransferedPointHistory from '../screens/historyPages/TransferedPointHisto
 import ExtraPointHistory from '../screens/historyPages/ExtraPointHistory';
 import KycMotherhood from '../screens/verification/KycMotherhood';
 import RewardMenu from '../screens/redeem/RewardMenu';
+import MediaGallery from '../screens/media/MediaGallery';
+import Events from '../screens/media/Events';
+import FeedbackSelection from '../screens/feedback/FeedbackSelection';
+import FeedbackProducts from '../screens/feedback/FeedbackProducts';
 
 
 
@@ -120,13 +124,32 @@ const StackNavigator = () => {
                     {
                         headerShown: false
                     }
+                } name="MediaGallery" component={MediaGallery}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="Events" component={Events}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
                 } name="KycMotherhood" component={KycMotherhood}></Stack.Screen>
                 <Stack.Screen options={
                     {
                         headerShown: false
                     }
                 } name="RewardMenu" component={RewardMenu}></Stack.Screen>
-                
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="FeedbackProducts" component={FeedbackProducts}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="FeedbackSelection" component={FeedbackSelection}></Stack.Screen>
                 <Stack.Screen options={
                     {
                         headerShown: false

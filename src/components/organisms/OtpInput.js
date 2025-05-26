@@ -14,6 +14,7 @@ import SocialBottomBar from '../socialBar/SocialBottomBar';
 const CELL_COUNT = 6;
 
 const OtpInput = (propData) => {
+  const type = propData.type
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   
@@ -59,8 +60,8 @@ const OtpInput = (propData) => {
             onLayout={getCellOnLayoutHandler(index)}
             key={index}
             style={[styles.cellRoot, isFocused && {...styles.focusCell,borderBlockColor:primaryThemeColor,
-            borderWidth: 2,},{borderBottomColor: "black",
-            borderWidth: 1,}]}>
+            },{borderBottomColor: "black",
+            borderBottomWidth: 1, borderWidth:type ? 0 :1}]}>
             <Text style={{...styles.cellText, color: buttonThemeColor,}}>
               {symbol || (isFocused ? <Cursor /> : null)}
             </Text>

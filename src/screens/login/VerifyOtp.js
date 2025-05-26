@@ -553,7 +553,7 @@ const VerifyOtp = ({ navigation, route }) => {
           ]}
           onPress={modalClose}
         >
-          <Close name="close" size={17} color="#ffffff" />
+          <Close name="close" size={17} color="red" />
         </TouchableOpacity>
       </View>
     );
