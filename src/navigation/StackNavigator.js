@@ -104,6 +104,8 @@ import MediaGallery from '../screens/media/MediaGallery';
 import Events from '../screens/media/Events';
 import FeedbackSelection from '../screens/feedback/FeedbackSelection';
 import FeedbackProducts from '../screens/feedback/FeedbackProducts';
+import DreamGift from '../screens/dreamGift/DreamGift';
+import DreamGiftDetails from '../screens/dreamGift/DreamGiftDetails';
 
 
 
@@ -594,6 +596,16 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="Genuinity" component={Genuinity}></Stack.Screen>
+                       <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="DreamGift" component={DreamGift}></Stack.Screen>
+                        <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="DreamGiftDetails" component={DreamGiftDetails}></Stack.Screen>
                 <Stack.Screen options={
                     {
                         headerShown: false
