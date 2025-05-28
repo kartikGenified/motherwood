@@ -10,6 +10,8 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
+  TextInput,
+  FlatList
 } from "react-native";
 import { useSelector } from "react-redux";
 import FeedbackTextArea from "../../components/modals/feedback/FeedbackTextArea";
@@ -17,7 +19,7 @@ import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTex
 import ButtonWithPlane from "../../components/atoms/buttons/ButtonWithPlane";
 import StarRating from "react-native-star-rating";
 import FeedbackModal from "../../components/modals/feedback/FeedbackModal";
-import { useAddFeedbackMutation } from "../../apiServices/feedbackApi/FeedbackApi";
+import { useAddFeedbackMutation, useGetProductFeedbackMutation } from "../../apiServices/feedbackApi/FeedbackApi";
 import * as Keychain from "react-native-keychain";
 import ErrorModal from "../../components/modals/ErrorModal";
 import { useTranslation } from "react-i18next";
@@ -27,14 +29,23 @@ import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import { useGetProductListMutation } from "../../apiServices/product/getProducts";
 import BottomModal from "../../components/modals/BottomModal";
 import Close from "react-native-vector-icons/Ionicons";
+import Search from "react-native-vector-icons/AntDesign";
+import Cross from "react-native-vector-icons/Entypo"
+import { useUploadSingleFileMutation } from "../../apiServices/imageApi/imageApi";
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import { Image as RNCompressor } from "react-native-compressor"; // Import for compression
+
+
 
 const FeedbackProducts = ({ navigation }) => {
   //states
   const [starCount, setStarCount] = useState(0);
+  const [image, setImage] = useState();
   const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
-  const [data, setData] = useState();
+  const [uploadedImage, setUploadedImage] = useState()
+  const [productData, setProductData] = useState()
   const [modal, setModal] = useState(false);
   const userData = useSelector((state) => state.appusersdata.userData);
 
@@ -55,15 +66,7 @@ const FeedbackProducts = ({ navigation }) => {
     (state) => state.apptheme.secondaryThemeColor
   );
 
-  const [
-    productListFunc,
-    {
-      data: productListData,
-      error: productListError,
-      isLoading: productListIsLoading,
-      isError: productListIsError,
-    },
-  ] = useGetProductListMutation();
+  
 
   const [
     addFeedbackFunc,
@@ -73,29 +76,69 @@ const FeedbackProducts = ({ navigation }) => {
       isError: addFeedbackIsError,
       isLoading: addFeedbackIsLoading,
     },
-  ] = useAddFeedbackMutation();
+  ] = useGetProductFeedbackMutation();
+
+  const [
+    uploadImageFunc,
+    {
+      data: uploadImageData,
+      error: uploadImageError,
+      isLoading: uploadImageIsLoading,
+      isError: uploadImageIsError,
+    },
+  ] = useUploadSingleFileMutation();
 
   useEffect(() => {
-    if (productListData) {
-      setData(productListData?.body?.products);
-    } else {
-      if (productListError) console.log("productListError", productListError);
-    }
-  }, [productListData, productListError]);
+    if (uploadImageData) {
+      
+      console.log("uploadImageData",uploadImageData)
+      setUploadedImage(uploadImageData?.body.fileLink)
+    } else if(uploadImageError) {
+      console.log("uploadImageError",uploadImageError)
 
-  const handleSearch = (s) => {
-    if (s.length > 2) {
-      const data = {
-        token: token,
-        body: {
-          limit: 10,
-          offset: 0,
-          name: s,
-        },
-      };
-      productListFunc(data);
     }
+  }, [uploadImageData, uploadImageError]);
+
+
+  const handleOpenImageGallery = async () => {
+    const result = await launchImageLibrary();
+    if (!result.assets || !result.assets[0]) return;
+
+    const selectedImage = result.assets[0];
+    setImage(selectedImage);
+
+    // Compress the image
+    const compressedImageUri = await RNCompressor.compress(selectedImage.uri, {
+      compressionMethod: "auto",
+      quality: 0.5, // Set quality (0-1) for lossy compression
+      maxWidth: 1080, // Optional: specify max width
+      maxHeight: 1080, // Optional: specify max height
+    });
+
+    const imageDataTemp = {
+      uri: compressedImageUri,
+      name: selectedImage.fileName || "compressed_image",
+      type: selectedImage.type || "image/jpeg",
+    };
+
+    const uploadFile = new FormData();
+    uploadFile.append("image", imageDataTemp);
+
+    const getToken = async () => {
+      const credentials = await Keychain.getGenericPassword();
+      const token = credentials.username;
+      uploadImageFunc({ body: uploadFile, token: token });
+    };
+
+    getToken();
   };
+
+  
+  const handleCompResp=(data)=>{
+    console.log("seleted product data", data)
+    setProductData(data)
+  }
+  
 
   const onStarRatingPress = (rating) => {
     setStarCount(rating);
@@ -126,6 +169,9 @@ const FeedbackProducts = ({ navigation }) => {
         platform_id: "1",
         platform: Platform.OS,
         name: userName,
+        product_code:productData.product_code,
+        product_name:productData.name,
+        image:uploadedImage
       },
     };
     if (feedback != "" && starCount != 0) {
@@ -154,13 +200,94 @@ const FeedbackProducts = ({ navigation }) => {
     setModal(false);
   };
 
-  const Comp = () => {
+  const Comp = (props) => {
+    console.log("component mounted")
+
+    const handleSelectedProductsComp=(data)=>{
+      console.log("inside comp", data)
+      props.handleCompResp(data)
+    }
+
+    const SearchComp=(props) => {
+    const [data, setData] = useState();
+      const [
+        productListFunc,
+        {
+          data: productListData,
+          error: productListError,
+          isLoading: productListIsLoading,
+          isError: productListIsError,
+        },
+      ] = useGetProductListMutation();
+
+      useEffect(() => {
+        if (productListData) {
+          console.log("productListData", JSON.stringify(productListData))
+          setData(productListData?.body?.products);
+        } else {
+          if (productListError) console.log("productListError", JSON.stringify(productListError));
+        }
+      }, [productListData, productListError]);
+
+      const handleSearch = async(s) => {
+        const credentials = await Keychain.getGenericPassword();
+        if (credentials) {
+          console.log(
+            'Credentials successfully loaded for user ' + credentials.username
+          );
+          const token = credentials.username
+        if (s.length > 2) {
+          const data = {
+            token: token,
+            body: {
+              limit: 10,
+              offset: 0,
+              name: s,
+            },
+          };
+          productListFunc(data);
+        }
+      }
+      };
+
+      return(
+        <View style={{alignItems:'center', justifyContent:'center',width:'100%',marginTop:30}}>
+        <View style={{alignItems:'center', justifyContent:'center', width:'90%', borderWidth:1, borderColor:'#DDDDDD',backgroundColor:'#F1F1F1',flexDirection:'row'}}>
+          <Search size={30} color={"grey"} name="search1"></Search>
+          <TextInput onChangeText={(text)=>{
+            handleSearch(text)
+          }} placeholder="Search" style={{height:50, width:'70%', alignItems:'center', justifyContent:'center'}}></TextInput>
+          <Cross size={30} color={"grey"} name="circle-with-cross"></Cross>
+        </View>
+        {data &&
+          <FlatList
+          style={{width:'100%'}}
+          data={data}
+          renderItem={({item}) => {
+            console.log("flatlist items",item)
+            return(
+            <TouchableOpacity onPress={()=>{
+              props.handleSelectedProducts(item)
+            }} style={{alignItems:'flex-start', justifyContent:'center',width:'100%',margin:4}}>
+              <PoppinsTextMedium style={{color:"black", fontSize:16, fontWeight:'700',marginLeft:20}} content={item?.name}></PoppinsTextMedium>
+            </TouchableOpacity>
+            )
+            
+          }}
+          keyExtractor={item => item.id}
+        />
+        }
+        </View>
+      )
+    }
+    
     return (
       <View
         style={{
           alignItems: "center",
           justifyContent: "center",
           width: "100%",
+          
         }}
       >
         <View
@@ -168,16 +295,25 @@ const FeedbackProducts = ({ navigation }) => {
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "row",
+            height:50,
+            width:'100%'
+
           }}
         >
           <PoppinsTextMedium
-            style={{ fontSize: 16, color: "black" }}
+          content="Select Product"
+            style={{ fontSize: 18, color: "black", position:'absolute', left:40 }}
           ></PoppinsTextMedium>
-          <Close name="close" size={17} color="#ffffff" />
+          <TouchableOpacity onPress={()=>{setModal(false)}} style={{position:'absolute', right:10,top:10}}>
+          <Close  name="close" size={40} color="red" />
+          </TouchableOpacity>
         </View>
+        <SearchComp handleSelectedProducts={handleSelectedProductsComp}></SearchComp>
       </View>
     );
   };
+
+
 
   return (
     <View style={[styles.container, { backgroundColor: "white" }]}>
@@ -187,8 +323,8 @@ const FeedbackProducts = ({ navigation }) => {
         message={message}
         canGoBack={true}
         openModal={modal}
-        // handleFilter={handleFilter}
         comp={Comp}
+        handleCompResp={handleCompResp}
       ></BottomModal>
       <View
         style={{
@@ -227,7 +363,7 @@ const FeedbackProducts = ({ navigation }) => {
             left: 60,
             fontWeight: "bold",
           }}
-          content={t("Feedback For App")}
+          content={t("Feedback For Product")}
         ></PoppinsTextMedium>
       </View>
       {/* navigator */}
@@ -246,6 +382,9 @@ const FeedbackProducts = ({ navigation }) => {
           />
         </View>
         <TouchableOpacity
+        onPress={()=>{
+          setModal(true)
+        }}
           style={{
             height: 50,
             width: "90%",
@@ -266,8 +405,16 @@ const FeedbackProducts = ({ navigation }) => {
             source={require("../../../assets/images/arrowDown.png")}
           />
         </TouchableOpacity>
-
+          {uploadedImage && 
+           <Image
+           style={{ height: 200, width: 200, resizeMode: "contain",marginTop:20 }}
+           source={{uri:uploadedImage}}
+         ></Image>
+          }
         <TouchableOpacity
+        onPress={()=>{
+          handleOpenImageGallery()
+        }}
           style={{
             backgroundColor: "#FFF8E7",
             height: 100,

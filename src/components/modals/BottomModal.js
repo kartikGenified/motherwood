@@ -16,6 +16,7 @@ const BottomModal = (props) => {
   const CompGstin = props.compGstin;
   const CompBankAccount = props.compBankAccount;
   const CompUpiAccount = props.compUpiAccount
+  const Comps = props.comp
   const canGoBack = props.canGoBack;
   console.log("canGoBack", canGoBack, props.openModal, type, CompAadhaar);
 
@@ -27,13 +28,18 @@ const BottomModal = (props) => {
   } else if (type === "gstin") {
     Comp = CompGstin;
   }
-  else if (type === "bank")
-  {
+  else if (type === "bank"){
     Comp = CompBankAccount
   }
-  else if (type === "upi")
-  {
+  else if (type === "upi"){
     Comp = CompUpiAccount
+  }
+  else{
+    Comp = Comps
+  }
+
+  const handleCompResp=(data)=>{
+    props.handleCompResp(data)
   }
 
   useEffect(() => {
@@ -68,7 +74,7 @@ const BottomModal = (props) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <ScrollView style={{width:'100%'}} contentContainerStyle={{alignItems:'center',justifyContent:'center'}}>
-            {Comp && <Comp handleFilter={handleFilter}></Comp>}
+            {Comp && <Comp handleCompResp={handleCompResp} handleFilter={handleFilter}></Comp>}
             </ScrollView>
           </View>
         </View>

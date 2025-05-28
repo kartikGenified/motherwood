@@ -486,7 +486,7 @@ const CustomDrawer = () => {
         alignItems: "center",
         justifyContent: "center",
         width: "100%",
-        height: "auto",
+        
       }}
     >
       {error && (
@@ -638,8 +638,8 @@ const CustomDrawer = () => {
         ></PoppinsTextMedium>
       </View>
       <ScrollView
-        contentContainerStyle={{ width: "100%", height: "100%" }}
-        style={{ width: "100%", height: "100%" }}
+        contentContainerStyle={{ width: "100%", paddingBottom:30}}
+        style={{ width: "100%" }}
       >
         {drawerData !== undefined &&
           drawerData.app_menu.map((item, index) => {
@@ -662,13 +662,7 @@ const CustomDrawer = () => {
           size={20}
           eye={true}
         ></DrawerItems>
-        <DrawerItems
-          // key={index}
-          title={"About Motherwood"}
-          image={""}
-          size={20}
-          eye={true}
-        ></DrawerItems>
+        
         <DrawerItems
           // key={index}
           title={"Scheme"}
@@ -999,8 +993,7 @@ const CustomDrawer = () => {
             justifyContent: "center",
             width: "100%",
             alignItems: "center",
-            position: "absolute",
-            bottom: 62,
+            marginBottom:50
           }}
           onPress={() => {
             handleLogout();
@@ -1014,8 +1007,6 @@ const CustomDrawer = () => {
             style={{
               color: "white",
               fontSize: 10,
-              position: "absolute",
-              bottom: 2,
             }}
             content="Designed and developed by Genefied"
           ></PoppinsTextLeftMedium>

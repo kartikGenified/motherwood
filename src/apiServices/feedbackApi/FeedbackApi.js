@@ -30,7 +30,23 @@ export const FeedbackApi = baseApi.injectEndpoints({
         };
       },
     }),
+
+    
+
+    getProductFeedback: builder.mutation({
+      query({params}) {
+        return {
+          method: 'POST',
+          url: `/api/app/productFeedback/add`,
+          headers: {
+            Authorization: 'Bearer ' + params.token,
+            slug: slug,
+          },
+          body: params.body,
+        };
+      },
+    }),
   }),
 });
 
-export const {useAddFeedbackMutation, useGetFeedbackMutation} = FeedbackApi;
+export const {useAddFeedbackMutation, useGetFeedbackMutation, useGetProductFeedbackMutation} = FeedbackApi;

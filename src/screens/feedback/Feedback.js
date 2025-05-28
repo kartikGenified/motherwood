@@ -24,15 +24,22 @@ import { useTranslation } from "react-i18next";
 import FastImage from "react-native-fast-image";
 import { clientOfficialName } from "../../utils/HandleClientSetup";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import { useUploadSingleFileMutation } from "../../apiServices/imageApi/imageApi";
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import { Image as RNCompressor } from "react-native-compressor"; // Import for compression
 const Feedback = ({ navigation }) => {
   //states
   const [starCount, setStarCount] = useState(0);
+  const [image, setImage] = useState();
   const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
+  const [uploadedImage, setUploadedImage] = useState()
+
   const userData = useSelector((state) => state.appusersdata.userData);
 
   const userName = useSelector((state) => state.appusersdata.name);
+
   const gifUri = Image.resolveAssetSource(
     require("../../../assets/gif/loaderNew.gif")
   ).uri;
@@ -48,6 +55,15 @@ const Feedback = ({ navigation }) => {
   const secondaryThemeColor = useSelector(
     (state) => state.apptheme.secondaryThemeColor
   );
+  const [
+    uploadImageFunc,
+    {
+      data: uploadImageData,
+      error: uploadImageError,
+      isLoading: uploadImageIsLoading,
+      isError: uploadImageIsError,
+    },
+  ] = useUploadSingleFileMutation();
 
   const [
     addFeedbackFunc,
@@ -58,6 +74,51 @@ const Feedback = ({ navigation }) => {
       isLoading: addFeedbackIsLoading,
     },
   ] = useAddFeedbackMutation();
+
+  useEffect(() => {
+    if (uploadImageData) {
+      
+      console.log("uploadImageData",uploadImageData)
+      setUploadedImage(uploadImageData?.body.fileLink)
+    } else if(uploadImageError) {
+      console.log("uploadImageError",uploadImageError)
+
+    }
+  }, [uploadImageData, uploadImageError]);
+
+
+  const handleOpenImageGallery = async () => {
+    const result = await launchImageLibrary();
+    if (!result.assets || !result.assets[0]) return;
+
+    const selectedImage = result.assets[0];
+    setImage(selectedImage);
+
+    // Compress the image
+    const compressedImageUri = await RNCompressor.compress(selectedImage.uri, {
+      compressionMethod: "auto",
+      quality: 0.5, // Set quality (0-1) for lossy compression
+      maxWidth: 1080, // Optional: specify max width
+      maxHeight: 1080, // Optional: specify max height
+    });
+
+    const imageDataTemp = {
+      uri: compressedImageUri,
+      name: selectedImage.fileName || "compressed_image",
+      type: selectedImage.type || "image/jpeg",
+    };
+
+    const uploadFile = new FormData();
+    uploadFile.append("image", imageDataTemp);
+
+    const getToken = async () => {
+      const credentials = await Keychain.getGenericPassword();
+      const token = credentials.username;
+      uploadImageFunc({ body: uploadFile, token: token });
+    };
+
+    getToken();
+  };
 
   const onStarRatingPress = (rating) => {
     setStarCount(rating);
@@ -88,6 +149,7 @@ const Feedback = ({ navigation }) => {
         platform_id: "1",
         platform: Platform.OS,
         name: userName,
+        image:uploadedImage
       },
     };
     if (feedback != "" && starCount != 0) {
@@ -165,6 +227,13 @@ const Feedback = ({ navigation }) => {
               source={require("../../../assets/images/feedback_illustrator.png")}
             />
           </View>
+
+          {uploadedImage && 
+           <Image
+           style={{ height: 200, width: 200, resizeMode: "contain",marginTop:20 }}
+           source={{uri:uploadedImage}}
+         ></Image>
+          }
 
           <TouchableOpacity style={{backgroundColor:'#FFF8E7',height:100, marginHorizontal:30, borderRadius:10, borderWidth:1, borderColor:ternaryThemeColor, borderStyle:'dotted',alignItems:'center',justifyContent:'center'}}>
             <Image style={{height:40,width:60,resizeMode:'contain'}} source={require("../../../assets/images/camera_red.png")}></Image>

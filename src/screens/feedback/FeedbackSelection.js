@@ -46,7 +46,7 @@ const FeedbackSelection = ({navigation}) => {
         <View>
             <TopHeader title={"Feedback/Ratings"}></TopHeader>
             <View style={{alignItems:'center', justifyContent:'center',marginTop:40}}>
-            <Selector image={require('../../../assets/images/feedbackApp.png')} navigate="FeedbackApp" title="Feedback For App"/>
+            <Selector image={require('../../../assets/images/feedbackApp.png')} navigate="Feedback" title="Feedback For App"/>
             <Selector image={require('../../../assets/images/feedbackProducts.png')} navigate="FeedbackProducts" title="Feedback For Product"/>
             </View>
         </View>
