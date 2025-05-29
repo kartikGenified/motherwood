@@ -14,15 +14,17 @@ import PoppinsTextLeftMedium from "../../components/electrons/customFonts/Poppin
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import { useGetNameMutation } from "../../apiServices/login/GetNameByMobile";
 import { useNavigation } from "@react-navigation/native";
-import { getUserDetails, useGetUserDetailsMutation } from "../../apiServices/pointsTransfer/getUserDetails";
+import {
+  getUserDetails,
+  useGetUserDetailsMutation,
+} from "../../apiServices/pointsTransfer/getUserDetails";
 import * as Keychain from "react-native-keychain";
-
 
 // for userSearch
 const PointsTransfer = () => {
   const navigation = useNavigation();
   const [mobile, setMobile] = useState();
-const [token, setToken] = useState()
+  const [token, setToken] = useState();
   const [
     getNameFunc,
     {
@@ -39,28 +41,27 @@ const [token, setToken] = useState()
     } else {
       console.log("getNameError", getNameError);
     }
-  }, [getNameData,getNameError]);
+  }, [getNameData, getNameError]);
 
   useEffect(() => {
     const getToken = async () => {
       const credentials = await Keychain.getGenericPassword();
       const token = credentials.username;
-      setToken(token)
+      setToken(token);
     };
 
     getToken();
   }, []);
 
   useEffect(() => {
-    console.log("mobileData", mobile)
+    console.log("mobileData", mobile);
     if (mobile && mobile.length == 10) {
-
-     const requestData = {
+      const requestData = {
         mobile: mobile,
         orderIntent: "sell",
       };
 
-      getNameFunc({token, requestData});
+      getNameFunc({ token, requestData });
     }
   }, [mobile]);
 
@@ -146,108 +147,113 @@ const [token, setToken] = useState()
       </View>
 
       {/* Detail Box */}
-      {
-        getNameData?.body &&
+      {getNameData?.body && (
         <View
-        style={{
-          marginHorizontal: 20,
-          backgroundColor: "#F4F4F4",
-          borderWidth: 1,
-          borderColor: "#B6202D",
-          marginTop: 20,
-          padding: 15,
-          borderRadius: 10,
-        }}
-      >
-        <View style={{ flexDirection: "row" }}>
-          <PoppinsTextLeftMedium
-            style={{ color: "black", fontSize: 23 }}
-            content={"Name :"}
-          ></PoppinsTextLeftMedium>
-          <PoppinsTextLeftMedium
-            style={{ color: "black", fontSize: 23 }}
-            content={getNameData?.body?.name}
-          ></PoppinsTextLeftMedium>
-        </View>
-        <View style={{ flexDirection: "row" }}>
-          <PoppinsTextLeftMedium
-            style={{ color: "black", fontSize: 23 }}
-            content={"ID :"}
-          ></PoppinsTextLeftMedium>
-          <PoppinsTextLeftMedium
-            style={{ color: "black", fontSize: 23 }}
-            content={getNameData?.body?.user_id}
-
-          ></PoppinsTextLeftMedium>
-        </View>
-
-        <View style={{ flexDirection: "row" }}>
-          <PoppinsTextLeftMedium
-            style={{ color: "black", fontSize: 23 }}
-            content={"Type :"}
-          ></PoppinsTextLeftMedium>
-          <PoppinsTextLeftMedium
-            style={{ color: "black", fontSize: 23 }}
-            content={getNameData?.body?.user_type}
-          ></PoppinsTextLeftMedium>
-        </View>
-
-        <View style={{ flexDirection: "row" }}>
-          <PoppinsTextLeftMedium
-            style={{ color: "black", fontSize: 23 }}
-            content={"State :"}
-          ></PoppinsTextLeftMedium>
-          <PoppinsTextLeftMedium
-            style={{ color: "black", fontSize: 23 }}
-            content={getNameData?.body?.state}
-          ></PoppinsTextLeftMedium>
-        </View>
-
-        <View style={{ flexDirection: "row" }}>
-          <PoppinsTextLeftMedium
-            style={{ color: "black", fontSize: 23 }}
-            content={"City :"}
-          ></PoppinsTextLeftMedium>
-          <PoppinsTextLeftMedium
-            style={{ color: "black", fontSize: 23 }}
-            content={getNameData?.body?.city}
-          ></PoppinsTextLeftMedium>
-        </View>
-      </View>
-      }
-
-      {
-        (! getNameData?.body) &&
-        <View style={{alignItems:'center', justifyContent:'center', height:300}}>
-          <PoppinsTextMedium style={{color:'black', fontSize:20}} content={getNameError?.data?.message}></PoppinsTextMedium>
+          style={{
+            marginHorizontal: 20,
+            backgroundColor: "#F4F4F4",
+            borderWidth: 1,
+            borderColor: "#B6202D",
+            marginTop: 20,
+            padding: 15,
+            borderRadius: 10,
+          }}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <PoppinsTextLeftMedium
+              style={{ color: "black", fontSize: 23 }}
+              content={"Name :"}
+            ></PoppinsTextLeftMedium>
+            <PoppinsTextLeftMedium
+              style={{ color: "black", fontSize: 23 }}
+              content={getNameData?.body?.name}
+            ></PoppinsTextLeftMedium>
           </View>
-      }
+          <View style={{ flexDirection: "row" }}>
+            <PoppinsTextLeftMedium
+              style={{ color: "black", fontSize: 23 }}
+              content={"ID :"}
+            ></PoppinsTextLeftMedium>
+            <PoppinsTextLeftMedium
+              style={{ color: "black", fontSize: 23 }}
+              content={getNameData?.body?.user_id}
+            ></PoppinsTextLeftMedium>
+          </View>
 
+          <View style={{ flexDirection: "row" }}>
+            <PoppinsTextLeftMedium
+              style={{ color: "black", fontSize: 23 }}
+              content={"Type :"}
+            ></PoppinsTextLeftMedium>
+            <PoppinsTextLeftMedium
+              style={{ color: "black", fontSize: 23 }}
+              content={getNameData?.body?.user_type}
+            ></PoppinsTextLeftMedium>
+          </View>
+
+          <View style={{ flexDirection: "row" }}>
+            <PoppinsTextLeftMedium
+              style={{ color: "black", fontSize: 23 }}
+              content={"State :"}
+            ></PoppinsTextLeftMedium>
+            <PoppinsTextLeftMedium
+              style={{ color: "black", fontSize: 23 }}
+              content={getNameData?.body?.state}
+            ></PoppinsTextLeftMedium>
+          </View>
+
+          <View style={{ flexDirection: "row" }}>
+            <PoppinsTextLeftMedium
+              style={{ color: "black", fontSize: 23 }}
+              content={"City :"}
+            ></PoppinsTextLeftMedium>
+            <PoppinsTextLeftMedium
+              style={{ color: "black", fontSize: 23 }}
+              content={getNameData?.body?.city}
+            ></PoppinsTextLeftMedium>
+          </View>
+        </View>
+      )}
+
+      {!getNameData?.body && (
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            height: 300,
+          }}
+        >
+          <PoppinsTextMedium
+            style={{ color: "black", fontSize: 20 }}
+            content={getNameError?.data?.message}
+          ></PoppinsTextMedium>
+        </View>
+      )}
 
       {/* Button */}
-      {
-        getNameData?.body &&
+      {getNameData?.body && (
         <TouchableOpacity
-        onPress={()=>{
-          navigation.navigate("PointsTransferNext", {userDetails: getNameData?.body})
-        }}
-        style={{
-          backgroundColor: "black",
-          marginHorizontal: 20,
-          height: 65,
-          marginTop: 30,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 10,
-        }}
-      >
-        <PoppinsTextLeftMedium
-          style={{ color: "white", fontSize: 23, fontWeight: "bold" }}
-          content="NEXT"
-        ></PoppinsTextLeftMedium>
-      </TouchableOpacity>
-      }
-
+          onPress={() => {
+            navigation.navigate("PointsTransferNext", {
+              userDetails: getNameData?.body,
+            });
+          }}
+          style={{
+            backgroundColor: "black",
+            marginHorizontal: 20,
+            height: 65,
+            marginTop: 30,
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 10,
+          }}
+        >
+          <PoppinsTextLeftMedium
+            style={{ color: "white", fontSize: 23, fontWeight: "bold" }}
+            content="NEXT"
+          ></PoppinsTextLeftMedium>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

@@ -13,7 +13,7 @@ const InputDate = (props) => {
   const [selected, setSelected] = useState(false);
 
   const { data, title, minDate } = props;
-
+  const required = props.required
   useEffect(() => {
     // Format the current date and send it to the parent component
     const formattedDate = dayjs(date).format('YYYY/MM/DD');
@@ -40,10 +40,11 @@ const InputDate = (props) => {
       ) : (
         <PoppinsTextMedium style={styles.text} content={data === null ? "Please select date" : dayjs(date).format('YYYY/MM/DD')} />
       )}
+
+      <Text style={{color:'black', marginLeft:"30%"}}>{props?.jsonData?.label} {required ? '*' : ''}</Text>
       <View style={styles.icon}>
         <DateIcon name="date-range" color="#DDDDDD" size={30} />
       </View>
-      <Text style={{color:'black', marginLeft:"50%"}}>{props?.jsonData?.label}</Text>
       <DatePicker
         modal
         open={open}

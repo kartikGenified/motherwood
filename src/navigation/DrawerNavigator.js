@@ -268,7 +268,7 @@ const CustomDrawer = () => {
                 // Drawer.navigate("Passbook")
                 navigation.dispatch(DrawerActions.closeDrawer());
               } else if (props.title.toLowerCase() === "media") {
-                navigation.navigate("WhatsNew");
+                navigation.navigate("MediaGallery");
               } else if (props.title.toLowerCase() === "rewards") {
                 navigation.navigate("RedeemRewardHistory");
               } else if (props.title.toLowerCase() === "events") {

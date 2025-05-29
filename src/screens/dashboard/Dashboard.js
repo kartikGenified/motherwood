@@ -120,6 +120,7 @@ const Dashboard = ({ navigation }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.appusersdata.userId);
   const userData = useSelector((state) => state.appusersdata.userData);
+  console.log("user data in dashboard is here", userData)
   const pointSharingData = useSelector(
     (state) => state.pointSharing.pointSharing
   );

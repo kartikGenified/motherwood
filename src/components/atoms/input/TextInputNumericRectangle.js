@@ -7,6 +7,7 @@ import PoppinsTextLeftMedium from "../../electrons/customFonts/PoppinsTextLeftMe
 const TextInputNumericRectangle = (props) => {
   const [value, setValue] = useState(props.value);
   const placeHolder = props.placeHolder;
+  console.log("placeholder TextInputNumericRectangle",placeHolder)
   const maxLength = props.maxLength;
   const label = props.label;
   const required =

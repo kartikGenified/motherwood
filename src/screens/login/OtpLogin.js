@@ -115,7 +115,7 @@ const OtpLogin = ({ navigation, route }) => {
   const registrationRequired = route?.params?.registrationRequired;
   console.log("registrationRequiredotpLogin", registrationRequired);
   const width = Dimensions.get("window").width;
-  
+  var pattern=/^(0|[+91]{3})?[7-9][0-9]{9}$/;
   const navigationParams = {
     needsApproval: needsApproval,
     user_type_id: user_type_id,
@@ -259,7 +259,14 @@ const OtpLogin = ({ navigation, route }) => {
           if (mobile?.length == 10) {
             if (registrationRequired) {
               const params = { mobile: mobile, name: mobile, user_type_id: user_type_id, user_type: user_type,type:'registration' }
+              if(mobile.match(pattern))
+            {
               sendOtpFuncReg(params)
+            }
+            else{
+            setError(true);
+            setMessage(t("Please enter correct 10 digit mobile number"));
+            }
             } 
           } else {
             setError(true);
@@ -269,7 +276,16 @@ const OtpLogin = ({ navigation, route }) => {
         else{
           console.log("haa aara hai",mobile, name, user_type, user_type_id )
           if (mobile?.length == 10) {
-            sendOtpFunc({ mobile, name, user_type, user_type_id });
+            if(mobile.match(pattern))
+            {
+              sendOtpFunc({ mobile, name, user_type, user_type_id });
+            }
+            else
+            {
+            setError(true);
+            setMessage(t("Please enter correct 10 digit mobile number"));
+            }
+            
             console.log("haa aara hai2")
 
           }
@@ -284,7 +300,15 @@ const OtpLogin = ({ navigation, route }) => {
           setMessage(t("Please enter your 10 digit mobile number"));
         } else if (name == undefined || name == "") {
           const params = { mobile: mobile, name: mobile, user_type_id: user_type_id, user_type: user_type,type:'registration' }
-          sendOtpFuncReg(params)
+          if(mobile.match(pattern))
+            {
+              sendOtpFuncReg(params)
+            }
+            else{
+            setError(true);
+            setMessage(t("Please enter correct 10 digit mobile number"));
+            }
+          
         }
       }
     } else {

@@ -18,6 +18,7 @@ export const GetForms = baseApi.injectEndpoints({
         }),
         getFormAccordingToAppUserType :builder.mutation({
             query: (params) => {
+                console.log("getFormAccordingToAppUserType", params)
                 return {
                     method: 'GET',
                     url: `api/admin/vendorTheme/form/${slug}/${params.AppUserType}`,

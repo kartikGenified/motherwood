@@ -12,8 +12,9 @@ export const getUsersDataCachedDispatch = async (dispatch, getUsersData) => {
       id: item.user_type_id,
     };
   });
-  console.log("getUsersData", appUsers, appUsersData);
   dispatch(setAppUsers(appUsers));
   dispatch(setAppUsersData(appUsersData));
+  console.log("getUsersData", appUsers, appUsersData);
+
   await dispatch(setApiCallStatus("getUsersData"));
 };

@@ -58,6 +58,10 @@ const DashboardMenuBox=(props)=>{
         else if(data.toLowerCase() === "kyc"){
             navigation.navigate("KycMotherhood")
         }
+        else if(data.toLowerCase() === "media"){
+            navigation.navigate("MediaGallery")
+        }
+        
         else if(data.toLowerCase() === "bank details" || data.toLowerCase() === "bank account"){
             navigation.navigate('BankAccounts')
         }
@@ -89,7 +93,7 @@ const DashboardMenuBox=(props)=>{
         else if(data.toLowerCase() === "point calculator"){
             navigation.navigate('PointsCalculator')
         }
-        else if(data.toLowerCase() === "point transfer"){
+        else if(data.toLowerCase() === "points transfer"){
             navigation.navigate('PointsTransfer')
         }
         else if(data.toLowerCase() === "media gallary" || data.toLowerCase() === "media gallery" ){

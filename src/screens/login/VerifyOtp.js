@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Text,
+  BackHandler,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { BaseUrl } from "../../utils/BaseUrl";
@@ -68,6 +69,7 @@ import { storeData } from "../../utils/apiCachingLogic";
 import { useIsFocused } from "@react-navigation/native";
 import { useVerifyOtpForNormalUseMutation } from "../../apiServices/otp/VerifyOtpForNormalUseApi";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import { useGetLoginOtpForVerificationMutation } from "../../apiServices/otp/GetOtpApi";
 
 const VerifyOtp = ({ navigation, route }) => {
   console.log("ndjnjeddnjcndncd", route.params);
@@ -79,14 +81,20 @@ const VerifyOtp = ({ navigation, route }) => {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [timer, setTimer] = useState(60);
+  const [openModalWithBorder, setModalWithBorder] = useState(false);
 
   const timeOutCallback = useCallback(
     () => setTimer((currTimer) => currTimer - 1),
     []
   );
 
+useEffect(()=>{
+  setMobile(route.params.mobile)
+},[route.params.mobile])
+  
+
+
   //modal
-  const [openModalWithBorder, setModalWithBorder] = useState(false);
 
   const focused = useIsFocused();
 
@@ -211,6 +219,12 @@ const VerifyOtp = ({ navigation, route }) => {
     },
   ] = useGetWorkflowMutation();
 
+  const [sendOtpFuncReg, {
+    data: sendOtpDataReg,
+    error: sendOtpErrorReg,
+    isLoading: sendOtpIsLoaReg
+  }] = useGetLoginOtpForVerificationMutation()
+
   const [
     verifyLoginOtpFunc,
     {
@@ -247,6 +261,8 @@ const VerifyOtp = ({ navigation, route }) => {
 
   // console.log("Navigation Params are", route.params.navigationParams)
   const navigationParams = route?.params;
+  const isExisting = navigationParams.isExisting
+  console.log("navigationParamsdsasghdas",navigationParams)
   //   const needsApproval = route.params.navigationParams.needsApproval;
   //   const userType = route.params.navigationParams.userType;
   //   const userId = route.params.navigationParams.userId;
@@ -256,6 +272,32 @@ const VerifyOtp = ({ navigation, route }) => {
   const { t } = useTranslation();
 
   const width = Dimensions.get("window").width;
+
+
+  useEffect(() => {
+    const handleBackPress = () => {
+      navigation.navigate("OtpLogin", {
+        needsApproval: navigationParams?.needsApproval,
+        userType: navigationParams?.user_type,
+        userId: navigationParams?.user_type_id,
+        registrationRequired: navigationParams?.registrationRequired,
+      }); // Navigate back when back button is pressed
+      return true; // Prevent default back press behavior
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBackPress
+    );
+    
+    return () => {
+      // Ensure backHandler exists and remove the listener
+      // console.log("unmounting compionent sajkdahjsdhsaghd")
+
+      if (backHandler) {
+        BackHandler.addEventListener("hardwareBackPress", () => false);
+      }
+    };
+  }, [focused, dispatch]);
 
   // retrieving data from api calls--------------------------
 
@@ -280,6 +322,17 @@ const VerifyOtp = ({ navigation, route }) => {
     };
     fetchPolicies();
   }, []);
+
+  useEffect(() => {
+    if (sendOtpDataReg) {
+      console.log("sendOtpDataReg", sendOtpDataReg);
+      setModalWithBorder(true);
+          
+    } else if (sendOtpErrorReg) {
+      console.log("errReg", sendOtpErrorReg);
+      
+    }
+  }, [sendOtpDataReg, sendOtpErrorReg]);
 
   useEffect(() => {
     if (getAppMenuData) {
@@ -381,7 +434,6 @@ const VerifyOtp = ({ navigation, route }) => {
     if (openModalWithBorder == true)
       setTimeout(() => {
         console.log("running2");
-        modalWithBorderClose();
       }, 2000);
   }, [success, openModalWithBorder]);
 
@@ -490,8 +542,18 @@ const VerifyOtp = ({ navigation, route }) => {
   const modalWithBorderClose = () => {
     setModalWithBorder(false);
     setMessage("");
-    // navigation.reset({ index: '0', routes: [{ name: 'Dashboard' }] })
-    navigation.reset({ index: "0", routes: [{ name: "Dashboard" }] });
+    console.log("firmodalWithBorderClosenavigationparams", navigationParams)
+    if(navigationParams?.isExisting)
+    {
+      navigation.reset({ index: "0", routes: [{ name: "Dashboard" }] });
+    }
+    else{
+      navigation.reset({ index: "0", routes: [{
+        name: "BasicInfo",
+        params: navigationParams, // your JSON object
+      },] });
+
+    }
   };
 
   const ModalContent = () => {
@@ -551,7 +613,7 @@ const VerifyOtp = ({ navigation, route }) => {
               right: -10,
             },
           ]}
-          onPress={modalClose}
+          onPress={modalWithBorderClose}
         >
           <Close name="close" size={17} color="red" />
         </TouchableOpacity>
@@ -637,13 +699,14 @@ const VerifyOtp = ({ navigation, route }) => {
         otp: otp,
         user_type_id: user_type_id,
         user_type: user_type,
-        type: "register",
+        type:'registration'
       };
-      verifyOtpFunc(params);
+      sendOtpFuncReg(params);
     }
   };
 
   const saveToken = async (data) => {
+    console.log("saving token to keychain", data)
     const token = data;
     const password = "17dec1998";
 
@@ -670,7 +733,7 @@ const VerifyOtp = ({ navigation, route }) => {
             flexDirection: "row",
           }}
         >
-          {/* <TouchableOpacity
+          <TouchableOpacity
             style={{ height: 50, alignItems: "center", justifyContent: 'center', position: "absolute", left: 10, top: 20 }}
             onPress={() => {
               navigation.goBack();
@@ -678,7 +741,7 @@ const VerifyOtp = ({ navigation, route }) => {
             <Image
               style={{ height: 20, width: 20, resizeMode: 'contain' }}
               source={require('../../../assets/images/blackBack.png')}></Image>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
           <Image
             style={{
               height: 220,
