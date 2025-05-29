@@ -298,10 +298,8 @@ const PointsTransferNext = (params) => {
       {/* Button */}
       <TouchableOpacity
         onPress={() => {
-          // setModalVisible(true);
-          navigation.navigate("PointsTransferSuccess",{
-
-          })
+          setModalVisible(true);
+      
         }}
         style={{
           alignSelf: "center",
@@ -379,7 +377,7 @@ const UiList = ({
               borderRadius: 7,
             }}
           >
-            1.7
+            {data?.find((item) => item.product_code === selected)?.thickness || "N/A"}
           </Text>
         </View>
       </View>
