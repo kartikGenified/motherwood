@@ -20,20 +20,14 @@ import {
   useGetUserDetailsMutation,
 } from "../../apiServices/pointsTransfer/getUserDetails";
 import * as Keychain from "react-native-keychain";
-<<<<<<< HEAD
-=======
 import { useFetchUserPointsMutation } from "../../apiServices/workflow/rewards/GetPointsApi";
 import { useSelector } from "react-redux";
->>>>>>> 91ad32aea4a6e4399cef4ee553f0cd4261682134
 
 // for userSearch
 const PointsTransfer = () => {
   const navigation = useNavigation();
   const [mobile, setMobile] = useState();
-<<<<<<< HEAD
-=======
   const id = useSelector((state) => state.appusersdata.id);
->>>>>>> 91ad32aea4a6e4399cef4ee553f0cd4261682134
   const [token, setToken] = useState();
   const [
     getNameFunc,
@@ -45,15 +39,6 @@ const PointsTransfer = () => {
     },
   ] = useGetUserDetailsMutation();
 
-<<<<<<< HEAD
-  useEffect(() => {
-    if (getNameData) {
-      console.log("getUSerDetails", getNameData);
-    } else {
-      console.log("getNameError", getNameError);
-    }
-  }, [getNameData, getNameError]);
-=======
   const [
     userPointFunc,
     {
@@ -63,15 +48,12 @@ const PointsTransfer = () => {
       isError: userPointIsError,
     },
   ] = useFetchUserPointsMutation();
->>>>>>> 91ad32aea4a6e4399cef4ee553f0cd4261682134
 
   useEffect(() => {
     const getToken = async () => {
       const credentials = await Keychain.getGenericPassword();
       const token = credentials.username;
       setToken(token);
-<<<<<<< HEAD
-=======
 
       const params = {
         userId: id,
@@ -79,15 +61,12 @@ const PointsTransfer = () => {
       };
       console.log("jdkd", params);
       userPointFunc(params);
->>>>>>> 91ad32aea4a6e4399cef4ee553f0cd4261682134
     };
 
     getToken();
   }, []);
 
   useEffect(() => {
-<<<<<<< HEAD
-=======
     if (getNameData) {
       console.log("getUSerDetails", getNameData);
     } else {
@@ -104,7 +83,6 @@ const PointsTransfer = () => {
   }, [userPointData, userPointError]);
 
   useEffect(() => {
->>>>>>> 91ad32aea4a6e4399cef4ee553f0cd4261682134
     console.log("mobileData", mobile);
     if (mobile && mobile.length == 10) {
       const requestData = {
@@ -307,11 +285,7 @@ const PointsTransfer = () => {
           ></PoppinsTextLeftMedium>
         </TouchableOpacity>
       )}
-<<<<<<< HEAD
-    </View>
-=======
     </ScrollView>
->>>>>>> 91ad32aea4a6e4399cef4ee553f0cd4261682134
   );
 };
 
