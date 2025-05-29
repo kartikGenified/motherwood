@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import TopHeader from "../../components/topBar/TopHeader";
 import RewardBox from "../../components/molecules/RewardBox";
@@ -94,7 +95,7 @@ const PointsTransfer = () => {
   }, [mobile]);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <TopHeader title={"Point Transfer"} />
       <RewardBox />
 
@@ -284,7 +285,7 @@ const PointsTransfer = () => {
           ></PoppinsTextLeftMedium>
         </TouchableOpacity>
       )}
-    </View>
+    </ScrollView>
   );
 };
 
