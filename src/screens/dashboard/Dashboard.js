@@ -320,7 +320,7 @@ const Dashboard = ({ navigation }) => {
 
   useEffect(() => {
     if (getActiveMembershipData) {
-      // console.log("getActiveMembershipData", JSON.stringify(getActiveMembershipData))
+      console.log("getActiveMembershipData", JSON.stringify(getActiveMembershipData))
       if (getActiveMembershipData?.success) {
         setMembership(getActiveMembershipData?.body?.tier.name);
       }
