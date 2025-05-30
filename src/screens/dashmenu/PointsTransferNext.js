@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   Platform,
+  ScrollView,
 } from "react-native";
 import TopHeader from "../../components/topBar/TopHeader";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
@@ -199,7 +200,7 @@ const PointsTransferNext = (params) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <TopHeader title={"Points Transfer"} />
       {productRows.map((row, index) => (
         <UiList
@@ -321,7 +322,7 @@ const PointsTransferNext = (params) => {
         ></PoppinsTextLeftMedium>
       </TouchableOpacity>
       <SocialBottomBar />
-    </View>
+    </ScrollView>
   );
 };
 

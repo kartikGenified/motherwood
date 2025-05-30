@@ -351,13 +351,13 @@ const Passbook = ({ navigation }) => {
 
   return (
     <ScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
-      style={{ height: "100%", width: "100%" }}
+      contentContainerStyle={{  }}
+      style={{ width: "100%" }}
     >
       <View
         style={{
           alignItems: "center",
-          height: "100%",
+          height: "93%",
           width: "100%",
           backgroundColor: "white",
         }}
@@ -767,7 +767,7 @@ const Passbook = ({ navigation }) => {
         />
       )}
 
-      <SocialBottomBar/>
+      <SocialBottomBar showRelative ={true}/>
     </ScrollView>
   );
 };

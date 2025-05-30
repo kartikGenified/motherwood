@@ -478,7 +478,7 @@ export default function Scheme({ navigation }) {
         >
           <PoppinsTextMedium
             content={`Start Date ${moment(selectedDataStart).format("MM/YYYY")}`}
-            style={{ width: "60%", fontSize: 16, fontWeight: "700" }}
+            style={{ width: "60%", fontSize: 16, fontWeight: "700", color:'black' }}
           ></PoppinsTextMedium>
           <TouchableOpacity
             style={{
@@ -644,7 +644,7 @@ export default function Scheme({ navigation }) {
             >
               <PoppinsTextMedium
                 content="View"
-                style={{ color: "white", fontWeight: "800", fontSize: 15 }}
+                style={{ color: "black", fontWeight: "800", fontSize: 15 }}
               ></PoppinsTextMedium>
             </TouchableOpacity>
           </View>
@@ -660,7 +660,7 @@ export default function Scheme({ navigation }) {
           }}
         >
           <PoppinsTextMedium
-            style={{ color: "white", fontSize: 16, fontWeight: "700" }}
+            style={{ color: "black", fontSize: 16, fontWeight: "700" }}
             content={name}
           ></PoppinsTextMedium>
 
@@ -677,7 +677,7 @@ export default function Scheme({ navigation }) {
           >
             <PoppinsTextLeftMedium
               style={{
-                color: "white",
+                color: "black",
                 fontSize: 14,
                 fontWeight: "500",
                 width: "70%",
@@ -688,7 +688,7 @@ export default function Scheme({ navigation }) {
             <Text style={{ textAlign: "left" }}></Text>
             <PoppinsTextMedium
               style={{
-                color: "white",
+                color: "black",
                 fontSize: 14,
                 fontWeight: "500",
                 width: "30%",
@@ -707,7 +707,7 @@ export default function Scheme({ navigation }) {
           >
             <PoppinsTextLeftMedium
               style={{
-                color: "white",
+                color: "black",
                 fontSize: 12,
                 fontWeight: "500",
                 
@@ -717,7 +717,7 @@ export default function Scheme({ navigation }) {
             ></PoppinsTextLeftMedium>
             <PoppinsTextMedium
               style={{
-                color: "white",
+                color: "black",
                 fontSize: 12,
                 fontWeight: "500",
                 marginLeft:10
@@ -736,7 +736,7 @@ export default function Scheme({ navigation }) {
           >
             <PoppinsTextLeftMedium
               style={{
-                color: "white",
+                color: "black",
                 fontSize: 12,
                 fontWeight: "500",
                 
@@ -746,7 +746,7 @@ export default function Scheme({ navigation }) {
             ></PoppinsTextLeftMedium>
             <PoppinsTextMedium
               style={{
-                color: "white",
+                color: "black",
                 fontSize: 12,
                 fontWeight: "500",
                 marginLeft:10
@@ -765,7 +765,7 @@ export default function Scheme({ navigation }) {
           >
             <PoppinsTextLeftMedium
               style={{
-                color: "white",
+                color: "black",
                 fontSize: 12,
                 fontWeight: "500",
                 
@@ -775,7 +775,7 @@ export default function Scheme({ navigation }) {
             ></PoppinsTextLeftMedium>
             <PoppinsTextMedium
               style={{
-                color: "white",
+                color: "black",
                 fontSize: 12,
                 fontWeight: "500",
                 marginLeft:10
@@ -794,7 +794,7 @@ export default function Scheme({ navigation }) {
           >
             <PoppinsTextLeftMedium
               style={{
-                color: "white",
+                color: "black",
                 fontSize: 12,
                 fontWeight: "500",
                
@@ -804,7 +804,7 @@ export default function Scheme({ navigation }) {
             ></PoppinsTextLeftMedium>
             <PoppinsTextMedium
               style={{
-                color: "white",
+                color: "black",
                 fontSize: 12,
                 fontWeight: "500",
                 marginLeft:10
@@ -813,18 +813,18 @@ export default function Scheme({ navigation }) {
             ></PoppinsTextMedium>
           </View>
           <View style={{width:'100%',height:40,alignItems:'flex-start',justifyContent:'flex-start',flexDirection:'row',marginTop:10}}>
-          <PoppinsTextMedium content="Applicable States :" style={{color:'white',fontSize:10}}></PoppinsTextMedium>
+          <PoppinsTextMedium content="Applicable States :" style={{color:'black',fontSize:10}}></PoppinsTextMedium>
 
             {props?.data?.states?.map((item,index)=>{
               if(index ==props?.data?.states?.length-1)
               {
                 return(
-                  <PoppinsTextMedium content={`${item} `} style={{color:'white',fontSize:10}}></PoppinsTextMedium>
+                  <PoppinsTextMedium content={`${item} `} style={{color:'black',fontSize:10}}></PoppinsTextMedium>
                 )
               }
               else{
                 return(
-                  <PoppinsTextMedium content={`${item}, `} style={{color:'white',fontSize:10}}></PoppinsTextMedium>
+                  <PoppinsTextMedium content={`${item}, `} style={{color:'black',fontSize:10}}></PoppinsTextMedium>
                 )
               }
               

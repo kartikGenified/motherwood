@@ -90,7 +90,7 @@ const DashboardMenuBox=(props)=>{
         else if(data.toLowerCase() === "report an issue"){
             navigation.navigate('QueryList')
         }
-        else if(data.toLowerCase() === "point calculator"){
+        else if(data.toLowerCase() === "points calculator"){
             navigation.navigate('PointsCalculator')
         }
         else if(data.toLowerCase() === "points transfer"){

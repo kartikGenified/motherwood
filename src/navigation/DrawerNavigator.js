@@ -264,7 +264,11 @@ const CustomDrawer = () => {
                   : navigation.navigate("QrCodeScanner");
               } else if (props.title.toLowerCase() === "passbook") {
                 navigation.navigate("Passbook");
-              } else if (props.title.toLowerCase() === "home") {
+              }
+              else if (props.title.toLowerCase() === "faqs") {
+                navigation.navigate("FAQ");
+              } 
+              else if (props.title.toLowerCase() === "home") {
                 // Drawer.navigate("Passbook")
                 navigation.dispatch(DrawerActions.closeDrawer());
               } else if (props.title.toLowerCase() === "media") {
