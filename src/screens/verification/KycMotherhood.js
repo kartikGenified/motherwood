@@ -636,7 +636,7 @@ const KycMotherhood = ({ navigation }) => {
       if (updateKycStatusData) {
         console.log("updateKycStatusData", updateKycStatusData);
         if (updateKycStatusData.success) {
-          alert("Aadhaar verified successfully");
+          alert("Pan verified successfully");
         }
       } else if (updateKycStatusError) {
         console.log("updateKycStatusError", updateKycStatusError);
