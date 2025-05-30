@@ -72,7 +72,6 @@ import RewardBox from "../../components/molecules/RewardBox";
 import RewardBoxDashboard from "../../components/molecules/RewardBoxDashboard";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import DreamCard from "../../components/dreamComponent/DreamCard";
-import { useSelectedDreamGiftMutation } from "../../apiServices/dreamGift/DreamGiftApi";
 
 const Dashboard = ({ navigation }) => {
   const [dashboardItems, setDashboardItems] = useState();
@@ -543,27 +542,6 @@ const Dashboard = ({ navigation }) => {
     );
   };
 
-  const [dreamGift, setDreamGift] = useState();
-  const [fetchDreamGift, { data: selectedDreamData }] = useSelectedDreamGiftMutation();
-
-  useEffect(() => {
-    const fetchDream = async () => {
-      const credentials = await Keychain.getGenericPassword();
-      const token = credentials.username;
-      const params = { token };
-      fetchDreamGift(params);
-    };
-    fetchDream();
-  }, [focused]);
-
-  useEffect(() => {
-    if (selectedDreamData) {
-      setDreamGift(selectedDreamData?.body?.[0]?.gift);
-    } else {
-      setDreamGift(undefined);
-    }
-  }, [selectedDreamData]);
-
   return (
     <View
       style={{
@@ -707,7 +685,7 @@ const Dashboard = ({ navigation }) => {
             <></>
           )}
 
-
+          
             <RewardBoxDashboard />
 
 
@@ -738,28 +716,8 @@ const Dashboard = ({ navigation }) => {
 
           }
 
-          {/* Show DreamCard if dreamGift is available, otherwise show the add DreamGift card */}
-          {/* {dreamGift ? (
-            <DreamCard dreamGift={dreamGift} />
-          ) : (
-            <View style={{width:'100%',backgroundColor:'white'}}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("DreamGift");
-                }}
-              >
-                <Image
-                  style={{
-                    width: "90%",
-                    alignSelf: "center",
-                    resizeMode: "contain",
-                  }}
-                  source={require("../../../assets/images/DreamCardRed.png")}
-                />
-              </TouchableOpacity>
-            </View>
-          )} */}
-
+          <DreamCard/>
+        
           {userPointIsLoading && (
             <FastImage
               style={{

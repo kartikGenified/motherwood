@@ -52,16 +52,6 @@ const RewardBox = () => {
         <View style={{ padding: 4, width: '100%', borderRadius: 14, elevation: 4, backgroundColor: 'white', height: 170 }}>
 
 
-            {userPointIsLoading &&
-                <FastImage
-                    style={{ width: 100, height: 100, alignSelf: 'center', marginTop: 20 }}
-                    source={{
-                        uri: gifUri, // Update the path to your GIF
-                        priority: FastImage.priority.normal,
-                    }}
-                    resizeMode={FastImage.resizeMode.contain}
-                />
-            }
 
             <ScrollView contentContainerStyle={{ }} style={{width:'100%'   }} showsHorizontalScrollIndicator={false} horizontal={true}>
                 {
