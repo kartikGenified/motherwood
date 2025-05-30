@@ -566,12 +566,12 @@ useEffect(()=>{
         }}
       >
         <View style={{ marginTop: 30, alignItems: "center", maxWidth: "80%" }}>
-          <Icon name="check-circle" size={53} color={ternaryThemeColor} />
+          <Image style={{height:100,width:100,resizeMode:'contain'}} source={require('../../../assets/images/checked.png')}></Image>
           <PoppinsTextMedium
             style={{
               fontSize: 27,
               fontWeight: "600",
-              color: ternaryThemeColor,
+              color: "#71BF8C",
               marginLeft: 5,
               marginTop: 5,
             }}
@@ -581,7 +581,7 @@ useEffect(()=>{
           <ActivityIndicator
             size={"small"}
             animating={true}
-            color={ternaryThemeColor}
+            color={"#71BF8C"}
           />
 
           <View style={{ marginTop: 10, marginBottom: 30 }}>
@@ -615,7 +615,7 @@ useEffect(()=>{
           ]}
           onPress={modalWithBorderClose}
         >
-          <Close name="close" size={17} color="red" />
+          <Close name="close" size={17} color="#71BF8C" />
         </TouchableOpacity>
       </View>
     );

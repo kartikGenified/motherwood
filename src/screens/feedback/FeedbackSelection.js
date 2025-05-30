@@ -32,6 +32,7 @@ const FeedbackSelection = ({navigation}) => {
         const image = props.image
         const title = props.title
         const navigate = props.navigate
+        console.log("sleector" ,navigate)
         return(
             <TouchableOpacity onPress={()=>{
                 navigation.navigate(navigate)

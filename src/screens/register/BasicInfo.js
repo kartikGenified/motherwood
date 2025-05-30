@@ -154,7 +154,7 @@ const BasicInfo = ({ navigation, route }) => {
   );
   const width = Dimensions.get("window").width;
   const height = Dimensions.get("window").height;
-  const locationStage = ["city", "state", "district", "pincode"];
+  const locationStage = ["city", "state", "district", "pincode", "address1"];
   const { t } = useTranslation();
   const gifUri = Image.resolveAssetSource(
     require("../../../assets/gif/loaderNew.gif")
@@ -1186,7 +1186,7 @@ const BasicInfo = ({ navigation, route }) => {
           alignItems: "center",
           justifyContent: "center",
           width: "100%",
-          height: "20%",
+          height: "12%",
         }}
       >
         <TouchableOpacity
@@ -1235,8 +1235,11 @@ const BasicInfo = ({ navigation, route }) => {
             }}
           ></PoppinsTextMedium>
         </View>
-        <ProgressMeter currentStage={formStage - 1}></ProgressMeter>
+       
       </View>
+      <View style={{marginTop:0,width:'100%',marginBottom:20}}>
+        <ProgressMeter currentStage={formStage - 1}></ProgressMeter>
+        </View>
       <ScrollView style={{ width: "100%" }}>
         <View
           style={{
@@ -1255,7 +1258,7 @@ const BasicInfo = ({ navigation, route }) => {
                 fontSize: 18,
                 marginBottom: 40,
               }}
-              content={t("Please Fill The Following Form To Register")}
+              content={formStage == 1 ? t("Just few more things about you") : t("Where do you live/work?")}
             ></PoppinsTextMedium>
           ) : (
             <PoppinsTextMedium
@@ -1282,7 +1285,6 @@ const BasicInfo = ({ navigation, route }) => {
                 if (item.type === "text") {
                   console.log("the user name", userName);
                   if (item.name === "phone" || item.name === "mobile") {
-                    console.log("maaa kaaa phone aya");
                     return (
                       <>
                         <View style={{ flexDirection: "row", flex: 1 }}>

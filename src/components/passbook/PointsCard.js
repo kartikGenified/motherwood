@@ -47,7 +47,7 @@ const fetchPoints = async () => {
 
 
   const IconBox = ({ image, title, points }) => {
-    console.log("mddkkdd",points)
+    console.log("pointsIconBox",points)
     return (
       <View
         style={{
@@ -74,7 +74,7 @@ const fetchPoints = async () => {
               fontSize: 16,
               fontWeight:'700'
             }}
-            content={points}
+            content={points ? points : 0}
           ></PoppinsTextLeftMedium>
           <PoppinsTextMedium
             style={{ color: "white", textAlign: "center", fontSize: 13, fontWeight:'600' }}
@@ -160,22 +160,22 @@ const fetchPoints = async () => {
         >
           <IconBox
             image={require("../../../assets/images/hand_coin_white.png")}
-            points={Math.floor(userPointData?.body.point_earned)}
+            points={isNaN(Math.floor(userPointData?.body.point_earned)) ? '0' : Math.floor(userPointData?.body.point_earned)}
             title={"Recieved Points"}
           ></IconBox>
           <IconBox
             image={require("../../../assets/images/loop_star.png")}
-            points={Math.floor(userPointData?.body?.transfer_points)}
+            points={isNaN(Math.floor(userPointData?.body?.transfer_points)) ? '0' : Math.floor(userPointData?.body?.transfer_points)}
             title={"Transfered Points"}
           ></IconBox>
           <IconBox
             image={require("../../../assets/images/white_coin.png")}
-            points={Math.floor(userPointData?.body?.point_balance)}
+            points={isNaN(Math.floor(userPointData?.body?.point_balance)) ? '0' : Math.floor(userPointData?.body?.point_balance)}
             title={"Wallet Points"}
           ></IconBox>
           <IconBox
             image={require("../../../assets/images/white_gift.png")}
-            points={Math.floor(userPointData?.body?.point_balance)}
+            points={isNaN(Math.floor(userPointData?.body?.point_balance)) ? '0' : Math.floor(userPointData?.body?.point_balance)}
             title={"Redeemed Points"}
           ></IconBox>
         </ScrollView>

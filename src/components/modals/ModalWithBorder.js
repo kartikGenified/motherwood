@@ -44,7 +44,7 @@ const ModalWithBorder = (props) => {
           closeModal()
         }}>
         <View style={styles.centeredView}>
-          <View style={[styles.modalView, { borderWidth: 3, borderColor: ternaryThemeColor, }]}>
+          <View style={[styles.modalView, { borderWidth: 3, borderColor: "#71BF8C", }]}>
             <Comp></Comp>
           </View>
           </View>

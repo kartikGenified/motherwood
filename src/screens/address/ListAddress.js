@@ -29,7 +29,7 @@ const ListAddress = ({ navigation, route }) => {
   const { t } = useTranslation();
   const schemeType = route.params?.schemeType;
   const schemeID = route.params?.schemeID;
-  const type = route.params.type
+  const type = route?.params?.type
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );
