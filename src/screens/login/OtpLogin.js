@@ -83,11 +83,14 @@ const OtpLogin = ({ navigation, route }) => {
   ] = useGetLoginOtpMutation();
 
   //for Registration
-  const [sendOtpFuncReg, {
-    data: sendOtpDataReg,
-    error: sendOtpErrorReg,
-    isLoading: sendOtpIsLoaReg
-  }] = useGetLoginOtpForVerificationMutation()
+  const [
+    sendOtpFuncReg,
+    {
+      data: sendOtpDataReg,
+      error: sendOtpErrorReg,
+      isLoading: sendOtpIsLoaReg,
+    },
+  ] = useGetLoginOtpForVerificationMutation();
 
   const [
     getTermsAndCondition,
@@ -115,14 +118,14 @@ const OtpLogin = ({ navigation, route }) => {
   const registrationRequired = route?.params?.registrationRequired;
   console.log("registrationRequiredotpLogin", registrationRequired);
   const width = Dimensions.get("window").width;
-  var pattern=/^(0|[+91]{3})?[7-9][0-9]{9}$/;
+  var pattern = /^(0|[+91]{3})?[7-9][0-9]{9}$/;
   const navigationParams = {
     needsApproval: needsApproval,
     user_type_id: user_type_id,
     user_type: user_type,
     mobile: mobile,
     name: name ? name : mobile,
-    registrationRequired:registrationRequired
+    registrationRequired: registrationRequired,
   };
   console.log("navigationParams", navigationParams);
 
@@ -147,13 +150,14 @@ const OtpLogin = ({ navigation, route }) => {
     if (sendOtpData) {
       console.log("sendOtpData", sendOtpData);
       if (sendOtpData?.success === true && mobile.length === 10) {
-        if(getNameData)
-        {
+        if (getNameData) {
           if (Object.keys(getNameData?.body).length != 0) {
-            navigation.navigate("VerifyOtp", { ...navigationParams, isExisting:true });
+            navigation.navigate("VerifyOtp", {
+              ...navigationParams,
+              isExisting: true,
+            });
           }
         }
-        
       } else {
         console.log("Trying to open error modal");
       }
@@ -171,9 +175,10 @@ const OtpLogin = ({ navigation, route }) => {
     if (sendOtpDataReg) {
       console.log("sendOtpDataReg", sendOtpDataReg);
       if (sendOtpDataReg?.success === true && mobile.length === 10) {
-          
-          navigation.navigate("VerifyOtp", { ...navigationParams, isExisting:false });
-
+        navigation.navigate("VerifyOtp", {
+          ...navigationParams,
+          isExisting: false,
+        });
       }
       setHideButton(false);
     } else if (sendOtpErrorReg) {
@@ -190,14 +195,11 @@ const OtpLogin = ({ navigation, route }) => {
       console.log("getNameData", getNameData);
       if (getNameData?.success) {
         setName(getNameData?.body.name);
-
       }
     } else if (getNameError) {
       console.log("getNameError", getNameError);
     }
   }, [getNameData, getNameError]);
-
-
 
   const getMobile = (data) => {
     // console.log(data)
@@ -243,53 +245,46 @@ const OtpLogin = ({ navigation, route }) => {
   const navigateToOtp = () => {
     sendOtpFunc({ mobile, name, user_type, user_type_id });
     setHideButton(true);
-
   };
   const handleButtonPress = () => {
-
     if (isChecked) {
       console.log("handleButtonPress", getNameData, isChecked, name, mobile);
-      if (
-        mobile !== undefined &&
-        mobile.length !== 0 
-      ) {
-        if (getNameData && getNameData.message === "Not Found"){
-          console.log("haa jara hai" , mobile, registrationRequired)
-          
+      if (mobile !== undefined && mobile.length !== 0) {
+        if (getNameData && getNameData.message === "Not Found") {
+          console.log("haa jara hai", mobile, registrationRequired);
+
           if (mobile?.length == 10) {
             if (registrationRequired) {
-              const params = { mobile: mobile, name: mobile, user_type_id: user_type_id, user_type: user_type,type:'registration' }
-              if(mobile.match(pattern))
-            {
-              sendOtpFuncReg(params)
+              const params = {
+                mobile: mobile,
+                name: mobile,
+                user_type_id: user_type_id,
+                user_type: user_type,
+                type: "registration",
+              };
+              if (mobile.match(pattern)) {
+                sendOtpFuncReg(params);
+              } else {
+                setError(true);
+                setMessage(t("Please enter correct 10 digit mobile number"));
+              }
             }
-            else{
-            setError(true);
-            setMessage(t("Please enter correct 10 digit mobile number"));
-            }
-            } 
           } else {
             setError(true);
             setMessage(t("Please enter your 10 digit mobile number"));
           }
-        }
-        else{
-          console.log("haa aara hai",mobile, name, user_type, user_type_id )
+        } else {
+          console.log("haa aara hai", mobile, name, user_type, user_type_id);
           if (mobile?.length == 10) {
-            if(mobile.match(pattern))
-            {
+            if (mobile.match(pattern)) {
               sendOtpFunc({ mobile, name, user_type, user_type_id });
+            } else {
+              setError(true);
+              setMessage(t("Please enter correct 10 digit mobile number"));
             }
-            else
-            {
-            setError(true);
-            setMessage(t("Please enter correct 10 digit mobile number"));
-            }
-            
-            console.log("haa aara hai2")
 
-          }
-          else {
+            console.log("haa aara hai2");
+          } else {
             setError(true);
             setMessage(t("Please enter your 10 digit mobile number"));
           }
@@ -299,20 +294,23 @@ const OtpLogin = ({ navigation, route }) => {
           setError(true);
           setMessage(t("Please enter your 10 digit mobile number"));
         } else if (name == undefined || name == "") {
-          const params = { mobile: mobile, name: mobile, user_type_id: user_type_id, user_type: user_type,type:'registration' }
-          if(mobile.match(pattern))
-            {
-              sendOtpFuncReg(params)
-            }
-            else{
+          const params = {
+            mobile: mobile,
+            name: mobile,
+            user_type_id: user_type_id,
+            user_type: user_type,
+            type: "registration",
+          };
+          if (mobile.match(pattern)) {
+            sendOtpFuncReg(params);
+          } else {
             setError(true);
             setMessage(t("Please enter correct 10 digit mobile number"));
-            }
-          
+          }
         }
       }
     } else {
-      setError(true); 
+      setError(true);
       setMessage(t("Please Accept Terms and Condition"));
     }
   };
@@ -322,8 +320,10 @@ const OtpLogin = ({ navigation, route }) => {
     setAlert(false);
   };
   return (
-    <ScrollView contentContainerStyle={{height:'100%'}} style={{ width: "100%" }}>
-
+    <ScrollView
+      contentContainerStyle={{ height: "100%" }}
+      style={{ width: "100%" }}
+    >
       <View
         style={{
           width: "100%",
@@ -405,81 +405,81 @@ const OtpLogin = ({ navigation, route }) => {
           openModal={alert}
         ></AlertModal>
       )}
-        <KeyboardAvoidingView>
-          <View
-            style={{
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: 40,
-            }}
-          >
-            <TextInputInsIdePlaceholder
-              value={mobile}
-              title="mobile"
-              placeHolder="Mobile No"
-              keyboardType="numeric"
-              inputHolder = {"Enter Your Number"}
-              maxLength={10}
-              handleData={getMobile}
-            />
+      <KeyboardAvoidingView>
+        <View
+          style={{
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 40,
+          }}
+        >
+          <TextInputInsIdePlaceholder
+            value={mobile}
+            title="mobile"
+            placeHolder="Mobile No"
+            keyboardType="numeric"
+            inputHolder={"Enter Your Number"}
+            maxLength={10}
+            handleData={getMobile}
+          />
 
-            {/* <TextInputRectangularWithPlaceholder
+          {/* <TextInputRectangularWithPlaceholder
               placeHolder={t("name")}
               handleData={getName}
               value={name}
               specialCharValidation={true}
             ></TextInputRectangularWithPlaceholder> */}
-          </View>
-        </KeyboardAvoidingView>
+        </View>
+      </KeyboardAvoidingView>
 
-        <View
-          style={{
-            width: "100%",
-            // marginTop: 20,
-            marginBottom: 30,
-            marginLeft: 10,
-          }}
-        >
-          <View style={{ flexDirection: "row", marginHorizontal: 24 }}>
-            <Checkbox CheckBoxData={getCheckBoxData} />
-            <TouchableOpacity
-            style={{flexDirection:'row'}}
-              onPress={() => {
-                navigation.navigate("PdfComponent", {
-                  pdf: getTermsData?.body?.data?.[0]?.files[0],
-                });
+      <View
+        style={{
+          width: "100%",
+          // marginTop: 20,
+          marginBottom: 30,
+          marginLeft: 10,
+        }}
+      >
+        <View style={{ flexDirection: "row", marginHorizontal: 24 }}>
+          <Checkbox CheckBoxData={getCheckBoxData} />
+          <TouchableOpacity
+            style={{ flexDirection: "row" }}
+            onPress={() => {
+              navigation.navigate("PdfComponent", {
+                pdf: getTermsData?.body?.data?.[0]?.files[0],
+              });
+            }}
+          >
+            <PoppinsTextLeftMedium
+              content={t("I hearby accept all the ")}
+              style={{
+                color: "#808080",
+
+                marginBottom: 20,
+                fontSize: 14,
+                marginLeft: 8,
+                marginTop: 16,
               }}
-            >
-              <PoppinsTextLeftMedium
-                content={t("I hearby accept all the ")}
-                style={{
-                  color: "#808080",
+            ></PoppinsTextLeftMedium>
+            <PoppinsTextLeftMedium
+              content={t("Terms & Conditions")}
+              style={{
+                color: "#00A79D",
 
-                  marginBottom: 20,
-                  fontSize: 15,
-                  marginLeft: 8,
-                  marginTop: 16,
-                }}
-              ></PoppinsTextLeftMedium>
-                   <PoppinsTextLeftMedium
-                content={t("Terms & Conditions")}
-                style={{
-                  color: "#00A79D",
+                marginBottom: 20,
+                fontSize: 13,
 
-                  marginBottom: 20,
-                  fontSize: 15,
-
-                  marginTop: 16,
-                }}
-              ></PoppinsTextLeftMedium>
-            </TouchableOpacity>
-          </View>
-        <View style={{marginHorizontal:20, marginRight:40}}>
-        <ButtonNavigateArrow
+                marginTop: 16,
+              }}
+            ></PoppinsTextLeftMedium>
+          </TouchableOpacity>
+        </View>
+        <View style={{ marginHorizontal: 20, marginRight: 40 }}>
+          <ButtonNavigateArrow
             success={success}
             handleOperation={handleButtonPress}
-            backgroundColor={ isChecked ? "black" : "#000000"}
+            backgroundColor={isChecked ? "black" : "#000000"}
             style={{ color: "white", fontSize: 16 }}
             isLoading={sendOtpIsLoading}
             content={t("Send OTP")}
@@ -491,25 +491,24 @@ const OtpLogin = ({ navigation, route }) => {
               isChecked && mobile?.length == 10 && name != "" && !hideButton
             }
           ></ButtonNavigateArrow>
-
         </View>
 
-          {sendOtpIsLoading && (
-            <FastImage
-              style={{
-                width: 100,
-                height: 100,
-                alignSelf: "center",
-                marginTop: 10,
-              }}
-              source={{
-                uri: gifUri, // Update the path to your GIF
-                priority: FastImage.priority.normal,
-              }}
-              resizeMode={FastImage.resizeMode.contain}
-            />
-          )}
-        </View>
+        {sendOtpIsLoading && (
+          <FastImage
+            style={{
+              width: 100,
+              height: 100,
+              alignSelf: "center",
+              marginTop: 10,
+            }}
+            source={{
+              uri: gifUri, // Update the path to your GIF
+              priority: FastImage.priority.normal,
+            }}
+            resizeMode={FastImage.resizeMode.contain}
+          />
+        )}
+      </View>
       {/* {registrationRequired && (
           <View style={{ position: "absolute", right: 20, top: 10 }}>
             <ButtonNavigate
@@ -539,9 +538,8 @@ const OtpLogin = ({ navigation, route }) => {
             ></ButtonNavigate>
           </View>
         )} */}
-        <SocialBottomBar showRelative={true}/>
-        </ScrollView>
-
+      <SocialBottomBar  />
+    </ScrollView>
   );
 };
 
