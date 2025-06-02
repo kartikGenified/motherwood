@@ -585,10 +585,10 @@ const PointHistory = ({ navigation }) => {
       
      
         <View style={{width:'80%', alignItems:'flex-start' ,justifyContent:'flex-start'}}>
-        <PoppinsTextMedium
+        <PoppinsTextLeftMedium
           style={{ fontWeight: "800", fontSize: 13, color: "black" }}
           content={`${t("Order No")} : ${orderNumber}`}
-        ></PoppinsTextMedium>
+        ></PoppinsTextLeftMedium>
         <View style={{flexDirection :'row', marginTop:3}}>
                  <PoppinsTextMedium
           style={{ fontWeight: "400", fontSize: 12, color: "black" }}
@@ -606,8 +606,8 @@ const PointHistory = ({ navigation }) => {
         ></PoppinsTextMedium>
         </View>
         
-      <View style={{width:'20%',flexDirection:'row', alignItems:'center', justifyContent:'center', height:'100%'}}>
-        <Image style={{height:25,width:25,resizeMode:'contain'}} source={require('../../../assets/images/coin.png')}></Image>
+      <View style={{width:'20%',flexDirection:'row', alignItems:'center', justifyContent:'center', height:'100%',}}>
+        <Image style={{height:25,width:25,resizeMode:'contain', marginRight:10}} source={require('../../../assets/images/coin.png')}></Image>
       <PoppinsTextMedium
         style={{ fontWeight: "400", fontSize: 14, color: "black" , marginTop:3}}
         content={`+ ${points}`}
@@ -638,7 +638,7 @@ const PointHistory = ({ navigation }) => {
           justifyContent: "space-between",
         }}
       >
-        <View style={{ margin: 20, flexDirection: "row" }}>
+        <View style={{ margin: 20, flexDirection: "row" , marginRight:10}}>
           <Image source={require("../../../assets/images/coin.png")}></Image>
           <View style={{ marginLeft: 10 }}>
             <PoppinsTextLeftMedium

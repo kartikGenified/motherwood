@@ -498,7 +498,7 @@ const Passbook = ({ navigation }) => {
 
             {
               <NavigateTO
-                visibleTitle={t("Recieved Points Summary")}
+                visibleTitle={t("Received Points Summary")}
                 title={"Points History"}
                 discription={t("list of points redeemed by you")}
                 image={require("../../../assets/images/coinStack.png")}

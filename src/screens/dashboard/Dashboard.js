@@ -269,6 +269,14 @@ const Dashboard = ({ navigation }) => {
     getToken();
   }, []);
 
+    useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      return true; // Prevent default behavior (disables back button)
+    });
+
+    return () => backHandler.remove(); // Cleanup on unmount
+  }, []);
+
   useEffect(() => {
     if (getAppCampaignData) {
       console.log("getAppCampaignData", getAppCampaignData);

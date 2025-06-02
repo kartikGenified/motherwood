@@ -79,8 +79,8 @@ const PointsTransferNext = (params) => {
 
   useEffect(() => {
     if (getPointTransferData) {
-      console.log("getPointTransferData", getPointTransferData);
-      navigation.replace("PointsTransferSuccess");
+      console.log("getPointTransferData", JSON.stringify(getPointTransferData));
+      navigation.replace("PointsTransferSuccess", {getPointTransferData});
     } else {
       if (getPointTransferError){
         setModalVisible(false);
