@@ -287,7 +287,19 @@ const CustomDrawer = () => {
                 navigation.navigate("BankAccounts");
               } else if (props.title.toLowerCase() === "profile") {
                 navigation.navigate("Profile");
-              } else if (props.title.toLowerCase() === "feedback selection") {
+              } 
+               else if (props.title.toLowerCase() === "feedback") {
+                navigation.navigate("FeedbackOptions");
+              } 
+                 else if (props.title.toLowerCase() === "points calculator") {
+                navigation.navigate("PointsCalculator");
+              } 
+
+                 else if (props.title.toLowerCase() === "about motherwood") {
+                  Linking.openURL("https://motherwood.in/")
+              } 
+              
+              else if (props.title.toLowerCase() === "feedback selection") {
                 navigation.navigate("FeedbackSelection");
               } else if (props.title.toLowerCase() === "refer and earn") {
                 navigation.navigate("ReferAndEarn");

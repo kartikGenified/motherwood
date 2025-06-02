@@ -210,19 +210,19 @@ const HelpAndSupport = ({ navigation }) => {
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
 
           <TouchableOpacity style={{ marginRight: 20, }} onPress={() => { }}>
-            <Image style={{ height: 40, width: 40, resizeMode: 'cover' }} source={require("../../../assets/images/facebook.png")}></Image>
+            <Image style={{ height: 40, width: 40, resizeMode: 'cover' }} source={require("../../../assets/images/fbCircle.png")}></Image>
           </TouchableOpacity>
 
           <TouchableOpacity style={{ marginRight: 30, }} onPress={() => { }}>
-            <Image style={{ height: 40, width: 40, resizeMode: 'cover' }} source={require("../../../assets/images/instagram.png")}></Image>
+            <Image style={{ height: 40, width: 40, resizeMode: 'cover' }} source={require("../../../assets/images/instaCircle.png")}></Image>
           </TouchableOpacity>
 
           <TouchableOpacity style={{ marginRight: 25, }} onPress={() => { }}>
-            <Image style={{ height: 50, width: 50, resizeMode: 'cover', marginTop: 5 }} source={require("../../../assets/images/youtube.png")}></Image>
+            <Image style={{ height: 40, width: 40, resizeMode: 'cover', marginTop: 5 }} source={require("../../../assets/images/ytCircle.png")}></Image>
           </TouchableOpacity>
 
           <TouchableOpacity style={{ marginRight: 20, }} onPress={() => { }}>
-            <Image style={{ height: 40, width: 40, resizeMode: 'cover' }} source={require("../../../assets/images/linkedin.png")}></Image>
+            <Image style={{ height: 40, width: 40, resizeMode: 'cover' }} source={require("../../../assets/images/linkedinCircle.png")}></Image>
           </TouchableOpacity>
         </View>
 

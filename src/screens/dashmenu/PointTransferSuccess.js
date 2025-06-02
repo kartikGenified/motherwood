@@ -71,7 +71,7 @@ const PointsTransferSuccess = (params) => {
           ></Image>
         </TouchableOpacity> */}
         {/* <PoppinsTextMedium content="Points History" style={{ marginLeft: 10, fontSize: 16, fontWeight: '600', color: '#171717' }}></PoppinsTextMedium> */}
-        <PoppinsTextMedium
+        {/* <PoppinsTextMedium
           content={"Order Details"}
           style={{
             marginLeft: 10,
@@ -79,7 +79,7 @@ const PointsTransferSuccess = (params) => {
             fontWeight: "800",
             color: "#171717",
           }}
-        ></PoppinsTextMedium>
+        ></PoppinsTextMedium> */}
       </View>
 
       <ScrollView>
