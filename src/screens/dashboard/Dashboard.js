@@ -697,6 +697,8 @@ const Dashboard = ({ navigation }) => {
             <RewardBoxDashboard />
 
 
+
+
           {dashboardData && !userPointIsLoading && (
             <DashboardMenuBox
               requiresLocation={requiresLocation}
@@ -704,6 +706,8 @@ const Dashboard = ({ navigation }) => {
               data={dashboardData}
             ></DashboardMenuBox>
           )}
+          <DreamCard/>
+
           {
             <View style={{width:'100%',backgroundColor:'white'}}>
                    <TouchableOpacity
@@ -724,7 +728,6 @@ const Dashboard = ({ navigation }) => {
 
           }
 
-          <DreamCard/>
         
           {userPointIsLoading && (
             <FastImage

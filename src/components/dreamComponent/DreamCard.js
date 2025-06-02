@@ -1,5 +1,5 @@
 //import liraries
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,11 +8,8 @@ import {
   ImageBackground,
   Image,
   Modal,
-  Pressable,
-  Alert
-
 } from "react-native";
-import { useDeleteDreamGiftMutation } from "../../apiServices/dreamGift/DreamGiftApi";
+import { useDeleteDreamGiftMutation, useSelectedDreamGiftMutation } from "../../apiServices/dreamGift/DreamGiftApi";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import * as Keychain from "react-native-keychain";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,14 +23,19 @@ import FastImage from "react-native-fast-image";
 import Delete from 'react-native-vector-icons/MaterialCommunityIcons'
 
 // create a component
-const DreamCard = ({ dreamGift }) => {
+const DreamCard = () => {
+  const [dreamGift, setDreamGift] = useState();
   const [dreamGiftId, setDreamGiftId] = useState();
   const [profilePercentage, setProfilePercentage] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
+  const focused = useIsFocused();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loaderNew.gif')).uri;
-  const ternaryThemeColor = useSelector((state) => state.apptheme.ternaryThemeColor);
+  const ternaryThemeColor = useSelector(
+    (state) => state.apptheme.ternaryThemeColor
+  );
+
   const [
     deleteDreamGiftFunc,
     {
@@ -42,149 +44,174 @@ const DreamCard = ({ dreamGift }) => {
       isLoading: deleteDreamGiftIsLoading,
       isError: deleteDreamGiftIsError
     }
-  ] = useDeleteDreamGiftMutation()
+  ] = useDeleteDreamGiftMutation();
+
+  const [
+    selectedDreamFunc,
+    {
+      data: selectedDreamData,
+      error: selectedDreamError,
+      isLoading: selectedDreamisLoading,
+      isError: selectedDreamIsError,
+    },
+  ] = useSelectedDreamGiftMutation();
 
   useEffect(() => {
-    if (dreamGift) {
-      setDreamGiftId(dreamGift.id);
-      setProfilePercentage(dreamGift.perc || 0);
-      if (dreamGift.is_achieved) {
-        dispatch(setSelectedGift(dreamGift));
+    const fetchPoints = async () => {
+      const credentials = await Keychain.getGenericPassword();
+      const token = credentials.username;
+      const params = {
+        token: token,
+      };
+      selectedDreamFunc(params);
+    };
+    fetchPoints();
+  }, [focused, deleteDreamGiftData]);
+
+  useEffect(() => {
+    if (deleteDreamGiftData) {
+      setModalVisible(false);
+    }
+  }, [deleteDreamGiftData, deleteDreamGiftError]);
+
+  useEffect(() => {
+    if (selectedDreamData) {
+      setDreamGift(selectedDreamData?.body?.[0]?.gift);
+      setDreamGiftId(selectedDreamData?.body[0]?.id);
+      setProfilePercentage(selectedDreamData?.body?.[0]?.perc);
+      
+      if (selectedDreamData?.body[0]?.is_achieved) {
+        dispatch(setSelectedGift(selectedDreamData?.body?.[0]?.gift));
         dispatch(setIsAchieved(true));
       }
     }
-  }, [dreamGift]);
+  }, [selectedDreamData, selectedDreamError]);
 
-  const navigateToredeem = async() => {
-     dispatch(setNavigationFromDreamGift(true));
-      navigation.replace("CartList", {
-          cart: [dreamGift],
-          schemeType: "",
-          schemeID: "",
-        });
+  const navigateToredeem = async () => {
+    dispatch(setNavigationFromDreamGift(true));
+    navigation.replace("CartList", {
+      cart: [dreamGift],
+      schemeType: "",
+      schemeID: "",
+    });
   };
 
-  const hideModal =()=>{
-    setModalVisible(false)
-  }
+  const hideModal = () => {
+    setModalVisible(false);
+  };
 
-  const deleteData=async()=>{
+  const deleteData = async () => {
     const credentials = await Keychain.getGenericPassword();
     const token = credentials.username;
-    const params ={
-      token:token,
-      dreamGiftId:dreamGiftId
-    }
-    deleteDreamGiftFunc(params)
-  }
-
-
-  if (!dreamGift) return null;
+    const params = {
+      token: token,
+      dreamGiftId: dreamGiftId,
+    };
+    deleteDreamGiftFunc(params);
+  };
 
   return (
-    <View style={styles.container}>
-      <Modal
-      animationType="slide"
-      transparent={true}
-      visible={modalVisible && modalVisible}
-      onRequestClose={() => {
-        hideModal()
-      }}
-    >
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <Text
-            style={{
-              color: ternaryThemeColor,
-              fontSize: 24,
-              fontWeight: "600",
-            }}
-          >
-            Delete Current Dream Gift
-          </Text>
-          <Text
-            style={{
-              color: ternaryThemeColor,
-              fontSize: 18,
-              fontWeight: "500",
-              textAlign: "center",
-              marginTop: 30,
-            }}
-          >
-            Are you sure you want to delete current dream gift ?
-          </Text>
-          {!deleteDreamGiftIsLoading && <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-evenly',width:'100%',marginTop:30}}>
-          <TouchableOpacity
-            style={{ height: 36,paddingLeft:10,paddingRight:10, borderRadius: 4,backgroundColor:'grey' }}
-            onPress={() => {
-                hideModal()
-            }}
-          >
-            <Text
-              style={{
-                color: "white",
-                fontSize: 24,
-                fontWeight: "600",
-              }}
-            >
-              Cancel
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ height: 36, paddingLeft:10,paddingRight:10, borderRadius: 4,backgroundColor:'grey' }}
-            onPress={() => {
-                deleteData()
-            }}
-          >
-            <Text
-              style={{
-                color: "white",
-                fontSize: 24,
-                fontWeight: "600",
-              }}
-            >
-              Delete
-            </Text>
-          </TouchableOpacity>
-          </View>}
-          {
-            deleteDreamGiftIsLoading &&  <FastImage
-            style={{ width: 100, height: 100, alignSelf: 'center', marginTop: '60%' }}
-            source={{
-              uri: gifUri, // Update the path to your GIF
-              priority: FastImage.priority.normal
-            }}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-          }
-          {deleteDreamGiftData && deleteDreamGiftData.status==200 &&  <Text
-            style={{
-              color: ternaryThemeColor,
-              fontSize: 16,
-              fontWeight: "500",
-              textAlign: "center",
-              marginTop: 30,
-            }}
-          >
-            Dream gift Deleted Successfully!!
-          </Text>}
-          {
-            deleteDreamGiftIsError && <Text
-            style={{
-              color: ternaryThemeColor,
-              fontSize: 16,
-              fontWeight: "500",
-              textAlign: "center",
-              marginTop: 30,
-            }}
-          >
-            There was a problem in deleting your dream gift.
-          </Text>
-          }
-          
-        </View>
-      </View>
-    </Modal>
+    dreamGift && (
+      <View style={styles.container}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible && modalVisible}
+          onRequestClose={hideModal}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text
+                style={{
+                  color: ternaryThemeColor,
+                  fontSize: 24,
+                  fontWeight: "600",
+                }}
+              >
+                Delete Current Dream Gift
+              </Text>
+              <Text
+                style={{
+                  color: ternaryThemeColor,
+                  fontSize: 18,
+                  fontWeight: "500",
+                  textAlign: "center",
+                  marginTop: 30,
+                }}
+              >
+                Are you sure you want to delete current dream gift ?
+              </Text>
+              {!deleteDreamGiftIsLoading && (
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly', width: '100%', marginTop: 30 }}>
+                  <TouchableOpacity
+                    style={{ height: 36, paddingLeft: 10, paddingRight: 10, borderRadius: 4, backgroundColor: 'grey' }}
+                    onPress={hideModal}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                        fontSize: 24,
+                        fontWeight: "600",
+                      }}
+                    >
+                      Cancel
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{ height: 36, paddingLeft: 10, paddingRight: 10, borderRadius: 4, backgroundColor: 'grey' }}
+                    onPress={deleteData}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                        fontSize: 24,
+                        fontWeight: "600",
+                      }}
+                    >
+                      Delete
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+              {deleteDreamGiftIsLoading && (
+                <FastImage
+                  style={{ width: 100, height: 100, alignSelf: 'center', marginTop: '60%' }}
+                  source={{
+                    uri: gifUri,
+                    priority: FastImage.priority.normal,
+                  }}
+                  resizeMode={FastImage.resizeMode.contain}
+                />
+              )}
+              {deleteDreamGiftData && deleteDreamGiftData.status == 200 && (
+                <Text
+                  style={{
+                    color: ternaryThemeColor,
+                    fontSize: 16,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    marginTop: 30,
+                  }}
+                >
+                  Dream gift Deleted Successfully!!
+                </Text>
+              )}
+              {deleteDreamGiftIsError && (
+                <Text
+                  style={{
+                    color: ternaryThemeColor,
+                    fontSize: 16,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    marginTop: 30,
+                  }}
+                >
+                  There was a problem in deleting your dream gift.
+                </Text>
+              )}
+            </View>
+          </View>
+        </Modal>
         {dreamGift && (
           <View
             style={{
@@ -195,16 +222,15 @@ const DreamCard = ({ dreamGift }) => {
               marginBottom: 20,
             }}
           >
-            <View style={{ borderRadius: 40 ,borderTopLeftRadius:20}}>
+            <View style={{ borderRadius: 40, borderTopLeftRadius: 20 }}>
               <ImageBackground
                 style={{
                   height: 140,
                   width: "100%",
                   flexDirection: "row",
                   borderRadius: 40,
-                  backgroundColor: ternaryThemeColor, // Added background color
                 }}
-                source={require("../../../assets/images/carBackRed.png")}
+            source={require("../../../assets/images/carBackRed.png")}
               >
                 <View style={{ width: "50%", justifyContent: "center" }}>
                   <Image
@@ -214,9 +240,8 @@ const DreamCard = ({ dreamGift }) => {
                       resizeMode: "contain",
                     }}
                     source={{ uri: dreamGift.images[0] }}
-                  ></Image>
+                  />
                 </View>
-
                 <View style={{ width: "50%", alignItems: "center" }}>
                   <Image
                     style={{
@@ -225,7 +250,7 @@ const DreamCard = ({ dreamGift }) => {
                       resizeMode: "contain",
                     }}
                     source={require("../../../assets/images/congratulation.png")}
-                  ></Image>
+                  />
                   <Text
                     style={{ color: "white", fontSize: 12, fontWeight: "500" }}
                   >
@@ -233,14 +258,13 @@ const DreamCard = ({ dreamGift }) => {
                   </Text>
                   <Image
                     style={{
-                      // marginLeft: 10,
                       height: 10,
                       marginTop: 10,
                       width: 20,
                       resizeMode: "contain",
                     }}
                     source={require("../../../assets/images/downArrow.png")}
-                  ></Image>
+                  />
                   <Text
                     style={{
                       color: "white",
@@ -256,14 +280,12 @@ const DreamCard = ({ dreamGift }) => {
                 </View>
               </ImageBackground>
             </View>
-
             <View
               style={{
                 backgroundColor: ternaryThemeColor,
                 height: 100,
                 width: "90%",
-                marginBottom:40
-                // marginTop:40
+                marginBottom: 40,
               }}
             >
               <Text
@@ -277,7 +299,7 @@ const DreamCard = ({ dreamGift }) => {
               >
                 Your Achievements
               </Text>
-              {dreamGift.perc >= 0 && (
+              {profilePercentage >= 0 && (
                 <View style={{ width: 300 }}>
                   <View
                     style={{
@@ -298,8 +320,7 @@ const DreamCard = ({ dreamGift }) => {
                         backgroundColor: "black",
                         borderRadius: 40,
                       }}
-                    ></View>
-
+                    />
                     <View
                       style={{
                         position: "absolute",
@@ -314,14 +335,12 @@ const DreamCard = ({ dreamGift }) => {
                           fontSize: 18,
                         }}
                       >
-                        {dreamGift.point_balance !== undefined && dreamGift.value !== undefined
-                          ? (Number(dreamGift.point_balance) > Number(dreamGift.value)
-                              ? Number(dreamGift.value)
-                              : Number(dreamGift.point_balance))
-                          : 0}
+                        {selectedDreamData?.body?.length > 0 && (Number(selectedDreamData?.body[0]?.point_balance) >
+                          Number(selectedDreamData?.body[0]?.value)
+                          ? Number(selectedDreamData?.body[0]?.value)
+                          : Number(selectedDreamData?.body[0]?.point_balance))}
                       </Text>
                     </View>
-
                     <View
                       style={{
                         position: "absolute",
@@ -336,10 +355,11 @@ const DreamCard = ({ dreamGift }) => {
                           fontSize: 18,
                         }}
                       >
-                        {dreamGift.value !== undefined ? Number(dreamGift.value) : 0}
+                        {selectedDreamData?.body?.length > 0 && (Number(selectedDreamData?.body[0]?.value)
+                          ? Number(selectedDreamData?.body[0]?.value)
+                          : 0)}
                       </Text>
                     </View>
-
                     <View
                       style={[
                         {
@@ -347,32 +367,34 @@ const DreamCard = ({ dreamGift }) => {
                           borderRadius: 10,
                         },
                         {
-                          width: `${Number(dreamGift.perc)}%`,
+                          width: `${Number(profilePercentage)}%`,
                           backgroundColor:
-                            dreamGift.perc == 0 ? "green" : "black",
+                            profilePercentage == 0 ? "green" : "black",
                         },
                       ]}
                     />
-                    {dreamGift.perc && <Text
-                      style={{
-                        color: "white",
-                        marginLeft:
-                          dreamGift.perc < 9
-                            ? -11
-                            : dreamGift.perc >= 4 && dreamGift.perc < 6
-                            ? -18
-                            : -30,
-                        textAlign: "center",
-                        textAlignVertical: "center",
-                        fontSize: 12,
-                      }}
-                    >
-                      {dreamGift.perc && Math.floor(dreamGift.perc) + "%"}
-                    </Text>}
+                    {profilePercentage && (
+                      <Text
+                        style={{
+                          color: "white",
+                          marginLeft:
+                            profilePercentage < 9
+                              ? -11
+                              : profilePercentage >= 4 && profilePercentage < 6
+                                ? -18
+                                : -30,
+                          textAlign: "center",
+                          textAlignVertical: "center",
+                          fontSize: 12,
+                        }}
+                      >
+                        {profilePercentage && Math.floor(profilePercentage) + "%"}
+                      </Text>
+                    )}
                   </View>
                 </View>
               )}
-              {dreamGift.perc == 100 && (
+              {profilePercentage == 100 && (
                 <View style={{ width: "50%" }}>
                   <ConfettiCannon
                     fadeOut={true}
@@ -385,10 +407,8 @@ const DreamCard = ({ dreamGift }) => {
                 </View>
               )}
             </View>
-
-            {/* Fix: Use dreamGift.is_achieved instead of dreamGift.body[0]?.is_achieved */}
-            {dreamGift.is_achieved && (
-              <View style={{ marginBottom: 30, flexDirection:'row' }}>
+            {selectedDreamData?.body[0]?.is_achieved && (
+              <View style={{ marginBottom: 30, flexDirection: 'row' }}>
                 <TouchableOpacity
                   onPress={navigateToredeem}
                   style={{
@@ -404,16 +424,16 @@ const DreamCard = ({ dreamGift }) => {
                 </TouchableOpacity>
               </View>
             )}
-            
-            <TouchableOpacity style={{position:'absolute',right:0,bottom:0}} onPress={()=>{
-                  setModalVisible(!modalVisible)
-                }}>
-                <Delete name="delete-circle" size={40} color={"#DDDDDD"}></Delete>
-                </TouchableOpacity>
+            <TouchableOpacity style={{ position: 'absolute', right: 0, bottom: 0 }} onPress={() => {
+              setModalVisible(!modalVisible)
+            }}>
+              <Delete name="delete-circle" size={40} color={"#DDDDDD"} />
+            </TouchableOpacity>
           </View>
         )}
       </View>
     )
+  );
 };
 
 // define your styles
@@ -429,7 +449,6 @@ const styles = StyleSheet.create({
     margin: 10,
     backgroundColor: "#ECFCFC",
     borderRadius: 20,
-
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
