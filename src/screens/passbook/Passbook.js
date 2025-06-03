@@ -11,7 +11,7 @@ import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTex
 import { useSelector } from "react-redux";
 import PoppinsText from "../../components/electrons/customFonts/PoppinsText";
 import RewardBox from "../../components/molecules/RewardBox";
-import { useGetActiveMembershipMutation, useGetSavedMembershipMutation } from "../../apiServices/membership/AppMembershipApi";
+import { useGetActiveMembershipMutation, useGetMembershipMutation, useGetSavedMembershipMutation } from "../../apiServices/membership/AppMembershipApi";
 import * as Keychain from "react-native-keychain";
 import PlatinumModal from "../../components/platinum/PlatinumModal";
 import { useGetPointSharingDataMutation } from "../../apiServices/pointSharing/pointSharingApi";
@@ -29,6 +29,7 @@ const Passbook = ({ navigation }) => {
   const [pointsOptionEnabled, setPointsOptionEnabled] = useState(false);
   const [PlatinumModalOpen, setPlatinumModal] = useState(false);
   const [listView, setListView] = useState(true);
+  const [membershipModal, setMemberShipModal] = useState(false);
 
   const shouldSharePoints = useSelector(
     (state) => state.pointSharing.shouldSharePoints
@@ -45,6 +46,16 @@ const Passbook = ({ navigation }) => {
       isError: getPointSharingIsError,
     },
   ] = useGetPointSharingDataMutation();
+
+  const [
+    getMemberShipFunc,
+    {
+      data: getMemberShipData,
+      error: getMemberShipError,
+      isLoading: getMemberShipIsLoading,
+      isError: getMemberShipIsError,
+    },
+  ] = useGetMembershipMutation();
 
   const [
     getActiveMembershipFunc,
@@ -119,6 +130,31 @@ const Passbook = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
+    if (getMemberShipData) {
+      console.log("getMemberShipData", JSON.stringify(getMemberShipData))
+      if (getMemberShipData?.success) {
+      }
+    } else if (getMemberShipError) {
+      if (getMemberShipError.status == 401) {
+        const handleLogout = async () => {
+          try {
+            await AsyncStorage.removeItem("loginData");
+            navigation.navigate("Splash");
+            navigation.reset({ index: 0, routes: [{ name: "Splash" }] }); // Navigate to Splash screen
+          } catch (e) {
+            console.log("error deleting loginData", e);
+          }
+        };
+        handleLogout();
+      } else {
+        // setError(true);
+        // setMessage("problem in fetching membership, kindly retry.");
+        console.log("getMemberShipError", getMemberShipError);
+      }
+    }
+  }, [getMemberShipData, getMemberShipError]);
+
+  useEffect(() => {
     if (getPointSharingData) {
       console.log("getPointSharingData", JSON.stringify(getPointSharingData));
     } else if (getPointSharingError) {
@@ -146,7 +182,8 @@ const Passbook = ({ navigation }) => {
         "Credentials successfully loaded for user " + credentials.username
       );
       const token = credentials.username;
-      getActiveMembershipFunc(token);
+      getMemberShipFunc(token);
+      getActiveMembershipFunc(token)
     }
   };
 
@@ -168,6 +205,9 @@ const Passbook = ({ navigation }) => {
       console.log("getActiveMembershipError", getActiveMembershipError);
     }
   }, [getActiveMembershipData, getActiveMembershipError]);
+
+
+  
 
   const NavigateTO = (props) => {
     const title = props.title;
@@ -362,6 +402,14 @@ const Passbook = ({ navigation }) => {
           backgroundColor: "white",
         }}
       >
+
+            <PlatinumModal
+              isVisible={membershipModal}
+              onClose={() => {
+                setMemberShipModal(false);
+              }}
+              getActiveMembershipData={getMemberShipData}
+            />
         {/* coloured header */}
         <View style={{ width: "100%", backgroundColor: secondaryThemeColor }}>
           <View
@@ -396,7 +444,9 @@ const Passbook = ({ navigation }) => {
             ></PoppinsTextMedium>
           </View>
           <View style={{ width: "100%", marginTop: 40 }}>
-            <PointsCard />
+            <PointsCard memberShip={getActiveMembershipData?.body}  setModalVisible={()=>{
+              setMemberShipModal(true)
+            }}/>
           </View>
         </View>
 

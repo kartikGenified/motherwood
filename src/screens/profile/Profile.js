@@ -117,6 +117,8 @@ const Profile = ({ navigation }) => {
 
         setFormFields(filteredData);
         filterNameFromFormFields(filteredData);
+
+        console.log("qwertyboys", filteredData)
       } else {
         console.log("no Form");
         setShowNoDataFoundMessage(true);
@@ -703,7 +705,16 @@ const Profile = ({ navigation }) => {
               }}
             >
               {/* <ProfileData></ProfileData> */}
-              {showProfileData &&
+              {
+                
+                console.log("consoling the formFields in profile", formFields)
+                
+
+              }
+              {
+                console.log("consoling the formValues in profile", formValues)
+              }
+              {/* {showProfileData &&
               
                 formFields.filter((item) => {
                   const name = item.name?.trim()?.toLowerCase();
@@ -797,7 +808,68 @@ const Profile = ({ navigation }) => {
                       ></DisplayOnlyTextInput>
                     );
                   }
-                })}
+                })} */}
+                {showProfileData &&
+  formFields
+    .map((field, index) => ({ field, value: formValues[index] })) // zip fields with values
+    .filter(({ field }) => {
+      const name = field.name?.trim()?.toLowerCase();
+      return selectedIndex === 0 ? !isLocationStageField(name) : isLocationStageField(name);
+    })
+    .map(({ field, value }, index) => {
+      const name = field.name?.toLowerCase();
+      const label = field.label;
+
+      const formattedTitle = (() => {
+        switch (label) {
+          case "Name": return t("name");
+          case "Mobile": return t("mobile");
+          case "Email": return t("Email");
+          case "Gender": return t("Gender");
+          case "DOB": return t("DOB");
+          case "Pincode": return t("Pincode");
+          case "State": return t("State");
+          case "District": return t("District");
+          case "City": return t("City");
+          case "Aadhaar": return t("Aadhar");
+          case "Pan": return t("Pan");
+          case "Salesteam Name": return t("Salesteam Name");
+          case "Salesteam Mobile": return t("Salesteam Mobile");
+          case "Dealer Name": return t("Dealer Name");
+          case "Dealer Mobile": return t("Dealer Mobile");
+          case "Date of Registration": return t("Date of Registration");
+          default: return label;
+        }
+      })();
+
+      if (field.type === "date" || field.type === "Date" || name === "enrollment_date") {
+        return (
+          <DisplayOnlyTextInput
+            key={index}
+            data={
+              value === null || value === undefined
+                ? t("No data available")
+                : dayjs(value).format("DD-MMM-YYYY")
+            }
+            title={formattedTitle}
+            photo={require("../../../assets/images/eye.png")}
+          />
+        );
+      }
+
+      return (
+        <DisplayOnlyTextInput
+          key={index}
+          data={
+            value === null || value === undefined
+              ? t("No data available")
+              : value
+          }
+          title={formattedTitle}
+          photo={require("../../../assets/images/eye.png")}
+        />
+      );
+    })}
             </View>
             {/* ozone specific changes */}
             {userData?.user_type != "sales" && (

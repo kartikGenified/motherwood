@@ -671,7 +671,7 @@ const CustomDrawer = () => {
               </View>
             );
           })}
-          <DrawerItems
+          {/* <DrawerItems
           // key={index}
           title={"Events"}
           image={""}
@@ -699,7 +699,7 @@ const CustomDrawer = () => {
           image={""}
           size={20}
           eye={true}
-        ></DrawerItems>
+        ></DrawerItems> */}
 
         {/* {
       userData?.user_type == "distributor" &&

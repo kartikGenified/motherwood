@@ -221,7 +221,7 @@ const Feedback = ({ navigation }) => {
       </View>
       {/* navigator */}
 
-      <ScrollView contentContainerStyle={{ height: "100%", width: "100$" }}>
+      <ScrollView contentContainerStyle={{ width: "100%" }}>
         <View style={{ backgroundColor: "#ffffff", flex: 1, height: "100%" }}>
           <View style={styles.marginTopTen}>
             <Image

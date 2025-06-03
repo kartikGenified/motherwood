@@ -37,6 +37,7 @@ const DropDownWithSearch = (props) => {
     setShowList(!showList);
   };
   const handleSearch = (s)=>{
+    console.log("searching", s)
     props.handleSearchData(s)
   }
   const SelectableDropDownComponent = (props) => {
@@ -133,12 +134,12 @@ const DropDownWithSearch = (props) => {
                 width: "100%",
                 color:'black',
                 borderColor: "grey",
-                placeholderTextColor: "grey",
               }}
 
               onChangeText={(s) => {
                 handleSearch(s);
               }}
+              placeholderTextColor="grey"
               placeholder="Search"
             ></TextInput>
             {data &&
