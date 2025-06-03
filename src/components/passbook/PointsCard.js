@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component, useEffect } from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ImageBackground } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import PoppinsTextLeftMedium from "../electrons/customFonts/PoppinsTextLeftMedium";
 import PoppinsTextMedium from "../electrons/customFonts/PoppinsTextMedium";
@@ -9,7 +9,7 @@ import * as Keychain from 'react-native-keychain';
 import { useSelector } from "react-redux";
 
 
-const PointsCard = () => {
+const PointsCard = (props) => {
 
   const [userPointFunc, {
     data: userPointData,
@@ -20,7 +20,7 @@ const PointsCard = () => {
 
 const id = useSelector(state => state.appusersdata.id);
 const userData = useSelector((state) => state.appusersdata.userData);
-
+const membership = props.memberShip
 useEffect(() => {
   fetchPoints()
 }, []);
@@ -88,7 +88,7 @@ const fetchPoints = async () => {
 
 
   return (
-    <LinearGradient colors={["#B1202C", "#573B3D"]} style={styles.container}>
+    <LinearGradient colors={membership == null ? ["#B1202C", "#573B3D"] : membership == "silver" ? ['#909090','#B9B9B9'] : membership == 'gold' ? ['#C79935','#A37B24']: membership == "platinum" ? ['#DDDDDD','#B9B9B9'] :[]}  style={styles.container}>
       <View
         style={{
           height: "53%",
@@ -131,7 +131,10 @@ const fetchPoints = async () => {
             style={{ height: 40, width: 100, marginTop: 30, marginRight: 10,resizeMode:'contain' }}
             source={require("../../../assets/images/motherwood_white_logo.png")}
           ></Image>
-          <View
+          <TouchableOpacity
+            onPress={()=>{
+              props.setModalVisible(true)
+            }}
             style={{ flexDirection: "row", marginTop: 20, marginRight: 20 }}
           >
             <Image
@@ -142,7 +145,7 @@ const fetchPoints = async () => {
               style={{ color: "white", fontSize: 16 }}
               content={"Earn Badge"}
             ></PoppinsTextLeftMedium>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
       <View style={{width:'100%',}}>
@@ -191,7 +194,7 @@ const styles = StyleSheet.create({
     width: "97%",
     height: 280,
     alignSelf: "center",
-    borderRadius: 10,
+    borderRadius: 14,
 
   },
 });

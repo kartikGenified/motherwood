@@ -38,6 +38,7 @@ const EditProfile = ({ navigation, route }) => {
   const [changedFormValues, setChangedFormValues] = useState([]);
   const [hasManualkyc, setHasManualKyc] = useState(false);
   const [renderData, setRenderData] = useState([])
+  const [renderValues, setRenderValues] = useState([]);
   const [pressedSubmit, setPressedSubmit] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [profileImage, setProfileImage] = useState(route.params?.savedImage);
@@ -140,56 +141,29 @@ const EditProfile = ({ navigation, route }) => {
     setChangedFormValues(temp);
   }, []);
 
-  useEffect(()=>{
-
-    console.log("selected index changed",selectedIndex)
-    const tempppp =formFields
-    .filter((item) => {
+  useEffect(() => {
+    const filteredFields = formFields.filter((item) => {
       const name = item.name?.trim()?.toLowerCase();
-      console.log(
-        "isLocationStageField",
-        isLocationStageField(name),
-        item,
-        formFields,
-        selectedIndex
-      );
       return selectedIndex === 0
         ? !isLocationStageField(name)
         : isLocationStageField(name);
-    })
-
-    console.log("jdjbschbhabshds",tempppp)
-    setTimeout(() => {
-    setRenderData(tempppp)
-      
-    }, 100);
-  },[selectedIndex])
-  useEffect(()=>{
-
-    console.log("selected index changed",selectedIndex)
-    const tempppp =formFields
-    .filter((item) => {
-      const name = item.name?.trim()?.toLowerCase();
-      console.log(
-        "isLocationStageField",
-        isLocationStageField(name),
-        item,
-        formFields,
-        selectedIndex
+    });
+  
+    const filteredValues = filteredFields.map((filteredItem) => {
+      const originalIndex = formFields.findIndex(
+        (item) => item.name === filteredItem.name
       );
-      return selectedIndex === 0
-        ? !isLocationStageField(name)
-        :selectedIndex === 1 ?
-         isLocationStageField(name): []
-    })
+      return formValues[originalIndex];
+    });
+  
+    // Update both renderData (filtered fields) and aligned values
+    setRenderData(filteredFields);
+    setRenderValues(filteredValues); // <- Create a new state for this
 
-    console.log("jdjbschbhabshds",tempppp)
-
-    setTimeout(() => {
-      setRenderData(tempppp)
-        
-      }, 100);
-  },[])
+    console.log("bhassad mach gai idhar", filteredFields, filteredValues)
+  }, [selectedIndex, formFields, formValues]);
+  
+ 
 
   useEffect(() => {
     if (uploadImageData) {
@@ -691,6 +665,8 @@ const EditProfile = ({ navigation, route }) => {
         >
           
       {console.log("karthik render data", renderData)}
+      {console.log("karthik render values", renderValues)}
+
           {
             renderData &&
             renderData
@@ -702,10 +678,10 @@ const EditProfile = ({ navigation, route }) => {
                       <DisplayOnlyTextInput
                         key={index}
                         data={
-                          formValues[index] === null ||
-                          formValues[index] === undefined
+                          renderValues[index] === null ||
+                          renderValues[index] === undefined
                             ? "No data available"
-                            : formValues[index]
+                            : renderValues[index]
                         }
                         title={
                           item.label == "Aadhaar" ? t("Aadhaar") : item.label
@@ -718,10 +694,10 @@ const EditProfile = ({ navigation, route }) => {
                       <DisplayOnlyTextInput
                         key={index}
                         data={
-                          formValues[index] === null ||
-                          formValues[index] === undefined
+                          renderValues[index] === null ||
+                          renderValues[index] === undefined
                             ? "No data available"
-                            : formValues[index]
+                            : renderValues[index]
                         }
                         title={item.label == "Pan" ? t("Pan") : item.label}
                         photo={require("../../../assets/images/eye.png")}
@@ -732,10 +708,10 @@ const EditProfile = ({ navigation, route }) => {
                       <DisplayOnlyTextInput
                         key={index}
                         data={
-                          formValues[index] === null ||
-                          formValues[index] === undefined
+                          renderValues[index] === null ||
+                          renderValues[index] === undefined
                             ? "No data available"
-                            : formValues[index]
+                            : renderValues[index]
                         }
                         title={item.label == "Name" ? t("name") : item.label}
                         photo={require("../../../assets/images/eye.png")}
@@ -746,10 +722,10 @@ const EditProfile = ({ navigation, route }) => {
                       <DisplayOnlyTextInput
                         key={index}
                         data={
-                          formValues[index] === null ||
-                          formValues[index] === undefined
+                          renderValues[index] === null ||
+                          renderValues[index] === undefined
                             ? "No data available"
-                            : formValues[index]
+                            : renderValues[index]
                         }
                         title={
                           item.label == "Mobile" ? t("mobile") : item.label
@@ -819,10 +795,10 @@ const EditProfile = ({ navigation, route }) => {
                       <DisplayOnlyTextInput
                         key={index}
                         data={
-                          formValues[index] === null ||
-                          formValues[index] === undefined
+                          renderValues[index] === null ||
+                          renderValues[index] === undefined
                             ? "No data available"
-                            : formValues[index]
+                            : renderValues[index]
                         }
                         title={
                           item.label == "Date of Registration"
@@ -878,8 +854,8 @@ const EditProfile = ({ navigation, route }) => {
                         label={item.label}
                         title={item.name}
                         value={
-                          formValues[index] != undefined
-                            ? formValues[index]
+                          renderValues[index] != undefined
+                            ? renderValues[index]
                             : ""
                         }
                       ></TextInputRectangularWithPlaceholder>
@@ -931,8 +907,8 @@ const EditProfile = ({ navigation, route }) => {
                         label={item.label}
                         title={item.name}
                         value={
-                          formValues[index] != undefined
-                            ? formValues[index]
+                          renderValues[index] != undefined
+                            ? renderValues[index]
                             : ""
                         }
                       ></TextInputRectangularWithPlaceholder>
@@ -941,10 +917,10 @@ const EditProfile = ({ navigation, route }) => {
                 } else if (item.type === "date") {
                   return (
                     <InputDateProfile
-                      label={formFields?.[index]?.label}
+                      label={item?.label}
                       key={index}
-                      data={dayjs(formValues[index]).format("DD-MMM-YYYY")}
-                      title={item.name}
+                      data={dayjs(renderValues[index]).format("DD-MMM-YYYY")}
+                      title={item?.name}
                       handleData={handleData}
                     ></InputDateProfile>
                   );
@@ -954,7 +930,7 @@ const EditProfile = ({ navigation, route }) => {
                       key={index}
                       title={item.name}
                       header={item.label}
-                      value={formValues[index]}
+                      value={renderValues[index]}
                       data={item.options}
                       handleData={handleData}
                     ></ProfileDropDown>
