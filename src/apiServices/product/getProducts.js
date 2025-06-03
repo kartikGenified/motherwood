@@ -17,7 +17,31 @@ export const getProductApi = baseApi.injectEndpoints({
         };
       },
     }),
+    getProductCategoryList: builder.query({
+      query: ({ token }) => ({
+        method: "GET",
+        url: "/api/app/subcategory",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+          slug: slug,
+        },
+      }),
+    }),
+    getProductsByCategory: builder.mutation({
+      query: ({ token, categoryId }) => (
+        console.log("categoryIdandtoken", categoryId,token),
+        {
+        method: "GET",
+        url: `/api/app/product/${categoryId}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+          slug: slug,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetProductListMutation } = getProductApi;
+export const { useGetProductListMutation, useGetProductCategoryListQuery, useGetProductsByCategoryMutation } = getProductApi;

@@ -14,7 +14,12 @@ import PoppinsTextLeftMedium from "../../components/electrons/customFonts/Poppin
 import DropDownRegistration from "../../components/atoms/dropdown/DropDownRegistration";
 import DropDownWithSearch from "../../components/atoms/dropdown/DropDownWithSearch";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
-import { useGetProductListMutation } from "../../apiServices/product/getProducts";
+import {
+  useGetProductListMutation,
+  useGetProductCategoryListQuery,
+  useGetProductsByCategoryQuery,
+  useGetProductsByCategoryMutation,
+} from "../../apiServices/product/getProducts";
 import * as Keychain from "react-native-keychain";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 import { use } from "i18next";
@@ -26,7 +31,6 @@ import { usePointTransferMutation } from "../../apiServices/pointsTransfer/point
 import Geolocation from "@react-native-community/geolocation";
 import ErrorModal from "../../components/modals/ErrorModal";
 
-
 const PointsTransferNext = (params) => {
   const [token, setToken] = useState();
   const [data, setData] = useState();
@@ -34,27 +38,27 @@ const PointsTransferNext = (params) => {
   const [point, setPoint] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [error, setError] = useState(false);
-  const [message, setMessage] = useState("")
+  const [message, setMessage] = useState("");
+  const [thickness, setTickness] = useState("")
+  const [thicknessOptions, setThicknessOptions] = useState([])
 
   const userDetails = params.route.params.userDetails;
   console.log("userDetails", userDetails);
   const [productRows, setProductRows] = useState([
-    { selected: null, qty: 1, points: 0 },
+    { category: null, thickness: null, qty: 1, points: 0 },
   ]);
 
-  const [uiListArr, setUiListArr] = useState([0]); // Start with one row
+  const [uiListArr, setUiListArr] = useState([0]); 
 
   const userData = useSelector((state) => state.appusersdata.userData);
 
-  const [
-    productListFunc,
-    {
-      data: productListData,
-      error: productListError,
-      isLoading: productListIsLoading,
-      isError: productListIsError,
-    },
-  ] = useGetProductListMutation();
+
+
+  const {
+    data: productCategoryData,
+    error: productCategoryError,
+    isLoading: productCategoryIsLoading,
+  } = useGetProductCategoryListQuery({ token });
 
   const [
     getPointTransferFunc,
@@ -65,6 +69,15 @@ const PointsTransferNext = (params) => {
       isError: getPointTransferIsError,
     },
   ] = usePointTransferMutation();
+
+  const [
+    getProductsByCategory,
+    {
+      data: productsByCategoryData,
+      error: productsByCategoryError,
+      isLoading: productsByCategoryIsLoading,
+    },
+  ] = useGetProductsByCategoryMutation();
 
   const navigation = useNavigation();
 
@@ -80,29 +93,48 @@ const PointsTransferNext = (params) => {
   useEffect(() => {
     if (getPointTransferData) {
       console.log("getPointTransferData", JSON.stringify(getPointTransferData));
-      navigation.replace("PointsTransferSuccess", {getPointTransferData});
+      navigation.replace("PointsTransferSuccess", { getPointTransferData });
     } else {
-      if (getPointTransferError){
+      if (getPointTransferError) {
         setModalVisible(false);
-        setTimeout(()=>{
+        setTimeout(() => {
           setError(true);
-        },1300)
+        }, 1300);
         console.log("getPointTransferError", getPointTransferError);
-        setMessage(getPointTransferError?.data?.message)
-      } 
-     
+        setMessage(getPointTransferError?.data?.message);
+      }
+
       console.log("getPointTransferError", getPointTransferError);
-      setMessage(getPointTransferError?.data?.message)
+      setMessage(getPointTransferError?.data?.message);
     }
   }, [getPointTransferData, getPointTransferError]);
 
   useEffect(() => {
-    if (productListData) {
-      setData(productListData?.body?.products);
+    if (productCategoryData) {
+      console.log("prodyuct Cat", productCategoryData);
+      const formattedData = productCategoryData.body?.map((item) => ({
+        name: item.name,
+        id: item.id,
+      }));
+
+      setData(formattedData);
     } else {
-      if (productListError) console.log("productListError", productListError);
+      if (productCategoryError)
+        console.log("productCategoryError", productCategoryError);
     }
-  }, [productListData, productListError]);
+  }, [productCategoryData, productCategoryError]);
+
+  useEffect(() => {
+    if (productsByCategoryData) {
+      console.log("productsByCategoryData", JSON.stringify(productsByCategoryData));
+      setThicknessOptions(
+        productsByCategoryData.body.data.map((item) => ({...item, name: item.classification, pName: item.name}))
+      );
+    }
+    if (productsByCategoryError) {
+      console.log("productsByCategoryError", productsByCategoryError);
+    }
+  }, [productsByCategoryData, productsByCategoryError]);
 
   const handleQtyChange = (rowIndex, qty) => {
     const updatedRows = [...productRows];
@@ -110,7 +142,6 @@ const PointsTransferNext = (params) => {
     setProductRows(updatedRows);
   };
 
-  // Calculate total qty and points
   const totalQty = useMemo(() => {
     return productRows.reduce((sum, row) => sum + parseInt(row.qty || 0), 0);
   }, [productRows]);
@@ -138,9 +169,11 @@ const PointsTransferNext = (params) => {
 
     const updatedRows = [...productRows];
     updatedRows[rowIndex].selected = selectedProduct?.value?.product_code;
+    
     updatedRows[rowIndex].points = points;
 
     setProductRows(updatedRows);
+    console.log("productRows", productRows);
   };
 
   const deleteRow = (index) => {
@@ -150,31 +183,65 @@ const PointsTransferNext = (params) => {
   };
 
   const handleSearch = (s) => {
-    if (s.length > 2) {
-      const data = {
-        token: token,
-        body: {
-          limit: 10,
-          offset: 0,
-          name: s,
-        },
-      };
-      productListFunc(data);
+    if (s != "") {
+      if (s.length > 1) {
+        const filteredData = data.filter((item) =>
+          item.name.toLowerCase().includes(s.toLowerCase())
+        );
+        setData(filteredData);
+      }
+    } else {
+      setData(
+        productCategoryData?.body?.map((item) => ({
+          name: item.name,
+          id: item.master_id,
+        }))
+      );
     }
   };
 
   const handleAddRow = () => {
-    console.log("productRow", productRows);
-    setProductRows((prev) => [...prev, { selected: null, qty: 1, points: 0 }]);
+    setProductRows((prev) => [...prev, { category: null, thickness: null, qty: 1, points: 0 }]);
+  };
+
+  const handleCategoryChange = (rowIndex, selectedCategory) => {
+    if (selectedCategory) {
+      getProductsByCategory({
+        token,
+        categoryId: selectedCategory?.value?.id || selectedCategory?.id,
+      });
+      const updatedRows = [...productRows];
+      updatedRows[rowIndex].category = selectedCategory;
+      updatedRows[rowIndex].thickness = null; 
+      updatedRows[rowIndex].points = 0;
+      setProductRows(updatedRows);
+    }
+  }
+
+  const handleThicknessChange = (rowIndex, selectedThickness) => {
+    const updatedRows = [...productRows];
+    updatedRows[rowIndex].thickness = selectedThickness;
+    if (selectedThickness) {
+      const userType = userData?.user_type;
+      let points = 0;
+      if (userType === "retailer") points = selectedThickness.retailer_points;
+      else if (userType === "distributor") points = selectedThickness.distributor_points;
+      else if (userType === "oem") points = selectedThickness.oem_points;
+      else if (userType === "contractor") points = selectedThickness.contractor_points;
+      updatedRows[rowIndex].points = points;
+    } else {
+      updatedRows[rowIndex].points = 0;
+    }
+    setProductRows(updatedRows);
   };
 
   const OnYesClick = () => {
-    let lat = ''
-    let lon = ''
+    let lat = "";
+    let lon = "";
     console.log("ProductRows", productRows);
     const rowsData = productRows.map((item) => {
       return {
-        skuCode: item.selected,
+        skuCode: item.thickness?.product_code,
         quantity: item.qty,
       };
     });
@@ -206,6 +273,7 @@ const PointsTransferNext = (params) => {
           key={index}
           index={index}
           data={data}
+          thicknessOptions={thicknessOptions}
           handleSearch={handleSearch}
           selected={row.selected}
           qty={row.qty}
@@ -213,7 +281,10 @@ const PointsTransferNext = (params) => {
             deleteRow(index);
           }}
           onProductChange={(selected) => handleProductChange(index, selected)}
+          onCategoryChange={(selected) => handleCategoryChange(index, selected)}
+          onThicknessChange={(selected) => handleThicknessChange(index, selected)}
           onQtyChange={(qty) => handleQtyChange(index, qty)}
+          row={row}
         />
       ))}
 
@@ -299,7 +370,6 @@ const PointsTransferNext = (params) => {
       <TouchableOpacity
         onPress={() => {
           setModalVisible(true);
-      
         }}
         style={{
           alignSelf: "center",
@@ -328,12 +398,16 @@ const PointsTransferNext = (params) => {
 const UiList = ({
   index,
   data,
+  thicknessOptions,
   handleSearch,
   selected,
   qty,
   onProductChange,
+  onCategoryChange,
   onQtyChange,
   onDeleteRow,
+  onThicknessChange,
+  row,
 }) => {
   return (
     <View
@@ -352,14 +426,13 @@ const UiList = ({
         <View style={{ width: 180 }}>
           <DropDownWithSearch
             handleSearchData={(t) => handleSearch(t)}
-            handleData={(data) => onProductChange(data)}
+            handleData={(data) => onCategoryChange(data)}
             placeholder={"Select Product"}
             data={data}
-            defaultValue={selected}
+            value={row.category}
           />
         </View>
       </View>
-
       <View>
         <View
           style={{ width: 100, alignItems: "center", justifyContent: "center" }}
@@ -368,21 +441,17 @@ const UiList = ({
             style={{ color: "black", fontWeight: "bold" }}
             content={"Thickness"}
           />
-          <Text
-            style={{
-              marginTop: 15,
-              backgroundColor: "#F1F1F1",
-              paddingHorizontal: 20,
-              paddingVertical: 10,
-              color:'black',
-              borderRadius: 7,
-            }}
-          >
-            {data?.find((item) => item.product_code === selected)?.thickness || "N/A"}
-          </Text>
+          <View style={{ width: 90 }}>
+            <DropDownWithSearch
+              handleSearchData={(t) => handleSearch(t)}
+              handleData={(data) => onThicknessChange(data)}
+              placeholder={"select"}
+              data={thicknessOptions}
+              value={row.thickness}
+            />
+          </View>
         </View>
       </View>
-
       <View>
         <PoppinsTextMedium
           style={{ color: "black", fontWeight: "bold" }}
