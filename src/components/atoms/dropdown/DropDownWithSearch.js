@@ -124,7 +124,7 @@ const DropDownWithSearch = (props) => {
       </TouchableOpacity>
 
       {showList && (
-        <ScrollView style={{ width: "100%", maxHeight: 400 }}>
+        <ScrollView style={{ width: "100%", maxHeight: 300 }}>
           <View
             style={{
               alignItems: "center",

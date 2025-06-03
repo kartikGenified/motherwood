@@ -200,6 +200,25 @@ const PointsTransferNext = (params) => {
     }
   };
 
+    const handleThicknessSearch = (s) => {
+    if (s !== "") {
+      if (s.length > 0) {
+        const filteredData = (productsByCategoryData?.body?.data || [])
+          .map((item) => ({...item, name: item.classification, pName: item.name }))
+          .filter((item) => item.name.toLowerCase().includes(s.toLowerCase()));
+        setThicknessOptions(filteredData);
+      }
+    } else {
+      setThicknessOptions(
+        (productsByCategoryData?.body?.data || []).map((item) => ({
+          ...item,
+          name: item.classification,
+          pName: item.name,
+        }))
+      );
+    }
+  };
+
   const handleAddRow = () => {
     setProductRows((prev) => [...prev, { category: null, thickness: null, qty: 1, points: 0 }]);
   };
@@ -275,6 +294,7 @@ const PointsTransferNext = (params) => {
           data={data}
           thicknessOptions={thicknessOptions}
           handleSearch={handleSearch}
+           handleThicknessSearch={handleThicknessSearch}
           selected={row.selected}
           qty={row.qty}
           onDeleteRow={(index) => {
@@ -318,8 +338,8 @@ const PointsTransferNext = (params) => {
         <View
           style={{ flexDirection: "row", alignItems: "center", marginLeft: 20 }}
         >
-          <Text style={{ color: "white", fontSize: 20 }}>Total Qty : </Text>
-          <Text style={{ color: "white", fontSize: 20 }}>{totalQty}</Text>
+   <Text style={{ color: "white", fontSize: 16 }}>Total Qty : </Text>
+          <Text style={{ color: "white", fontSize: 16 }}>{totalQty}</Text>
         </View>
 
         <View
@@ -329,12 +349,12 @@ const PointsTransferNext = (params) => {
             marginRight: 20,
           }}
         >
-          <Text style={{ color: "white", fontSize: 20 }}>Total Points : </Text>
+          <Text style={{ color: "white", fontSize: 16 }}>Total Points : </Text>
           <Image
             style={{ height: 20, width: 20, marginHorizontal: 5 }}
             source={require("../../../assets/images/coin.png")}
           />
-          <Text style={{ color: "white", fontSize: 20 }}>{totalPoints}</Text>
+          <Text style={{ color: "white", fontSize: 16 }}>{totalPoints}</Text>
         </View>
       </View>
 
@@ -401,6 +421,7 @@ const UiList = ({
   thicknessOptions,
   handleSearch,
   selected,
+  handleThicknessSearch,
   qty,
   onProductChange,
   onCategoryChange,
@@ -415,7 +436,7 @@ const UiList = ({
         flexDirection: "row",
         justifyContent: "space-around",
         marginTop: 20,
-        marginHorizontal: 20,
+        marginHorizontal: 10,
       }}
     >
       <View>
@@ -423,7 +444,7 @@ const UiList = ({
           style={{ color: "black", fontWeight: "bold" }}
           content={"Product/ SKU"}
         />
-        <View style={{ width: 180 }}>
+        <View style={{ width: 180, marginRight: 10 }}>
           <DropDownWithSearch
             handleSearchData={(t) => handleSearch(t)}
             handleData={(data) => onCategoryChange(data)}
@@ -435,7 +456,12 @@ const UiList = ({
       </View>
       <View>
         <View
-          style={{ width: 100, alignItems: "center", justifyContent: "center" }}
+                   style={{
+            width: 90,
+            alignItems: "center",
+            justifyContent: "center",
+            marginRight: 10,
+          }}
         >
           <PoppinsTextLeftMedium
             style={{ color: "black", fontWeight: "bold" }}
@@ -443,7 +469,7 @@ const UiList = ({
           />
           <View style={{ width: 90 }}>
             <DropDownWithSearch
-              handleSearchData={(t) => handleSearch(t)}
+                handleSearchData={(t) => handleThicknessSearch(t)}
               handleData={(data) => onThicknessChange(data)}
               placeholder={"select"}
               data={thicknessOptions}
