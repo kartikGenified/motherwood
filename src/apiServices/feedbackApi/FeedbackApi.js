@@ -3,16 +3,16 @@ import { slug } from '../../utils/Slug';
 export const FeedbackApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     addFeedback: builder.mutation({
-      query: params => {
-        console.log(params.body)
+      query: ({token, body}) => {
+        console.log(body)
         return {
           method: 'POST',
           url: `/api/app/feedback/add`,
           headers: {
-            Authorization: 'Bearer ' + params.token,
+            Authorization: 'Bearer ' + token,
             slug: slug,
           },
-          body: params.body,
+          body: body,
         };
       },
     }),
@@ -34,15 +34,15 @@ export const FeedbackApi = baseApi.injectEndpoints({
     
 
     getProductFeedback: builder.mutation({
-      query({params}) {
+      query({token, body}) {
         return {
           method: 'POST',
-          url: `/api/app/productFeedback/add`,
+          url: `/api/app/feedback/add`,
           headers: {
-            Authorization: 'Bearer ' + params.token,
+            Authorization: 'Bearer ' + token,
             slug: slug,
           },
-          body: params.body,
+          body: body,
         };
       },
     }),
