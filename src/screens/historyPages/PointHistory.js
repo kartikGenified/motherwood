@@ -638,12 +638,12 @@ const PointHistory = ({ navigation }) => {
           justifyContent: "space-between",
         }}
       >
-        <View style={{ margin: 20, flexDirection: "row" }}>
+        {getOrderDetailsByTypeData &&<View style={{ margin: 20, flexDirection: "row" }}>
           <Image source={require("../../../assets/images/coin.png")}></Image>
-          <View style={{ marginLeft: 10 }}>
+           <View style={{ marginLeft: 10 }}>
             <PoppinsTextLeftMedium
               style={{ fontSize: 18, color: "black", fontWeight: "800" }}
-              content={"1600"}
+              content={getOrderDetailsByTypeData?.body?.totalPoints}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontWeight: "600", fontSize: 16 }}
@@ -651,11 +651,15 @@ const PointHistory = ({ navigation }) => {
             ></PoppinsTextLeftMedium>
           </View>
 
-        <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:140,marginLeft:20}} onPress={()=>{}}>
+        <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:140,marginLeft:20}} onPress={()=>{
+            navigation.navigate('PointsTransfer')
+
+        }}>
             {/* <Image source={require("../")}></Image> */}
             <PoppinsTextMedium style={{color:'white', fontSize:16, fontWeight:'bold'}} content={"Points Transfer"}></PoppinsTextMedium>
         </TouchableOpacity>
         </View>
+}
       </View>
 
       <Header></Header>

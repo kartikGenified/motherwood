@@ -277,6 +277,7 @@ const PointsTransfer = () => {
             alignItems: "center",
             justifyContent: "center",
             borderRadius: 10,
+            marginBottom:10
           }}
         >
           <PoppinsTextLeftMedium

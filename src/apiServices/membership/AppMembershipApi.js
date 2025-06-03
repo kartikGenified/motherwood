@@ -45,7 +45,20 @@ export const AppMembershipApi = baseApi.injectEndpoints({
     };
     },
     }),
+    getSavedMembership: builder.mutation({
+        query: (token) => {
+        return {
+        method: "POST",
+        url: `/api/app/membership/active`,
+        headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+        slug: slug,
+        },
+        };
+        },
+        }),
     }),
    });
    
-   export const { useGetActiveMembershipMutation,useGetMembershipMutation,useGetOzoneActiveMembershipMutation} = AppMembershipApi;
+   export const { useGetActiveMembershipMutation,useGetMembershipMutation,useGetOzoneActiveMembershipMutation,useGetSavedMembershipMutation} = AppMembershipApi;

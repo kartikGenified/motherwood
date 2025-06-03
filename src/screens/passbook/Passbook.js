@@ -11,7 +11,7 @@ import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTex
 import { useSelector } from "react-redux";
 import PoppinsText from "../../components/electrons/customFonts/PoppinsText";
 import RewardBox from "../../components/molecules/RewardBox";
-import { useGetActiveMembershipMutation } from "../../apiServices/membership/AppMembershipApi";
+import { useGetActiveMembershipMutation, useGetSavedMembershipMutation } from "../../apiServices/membership/AppMembershipApi";
 import * as Keychain from "react-native-keychain";
 import PlatinumModal from "../../components/platinum/PlatinumModal";
 import { useGetPointSharingDataMutation } from "../../apiServices/pointSharing/pointSharingApi";
@@ -54,7 +54,7 @@ const Passbook = ({ navigation }) => {
       isLoading: getActiveMembershipIsLoading,
       isError: getActiveMembershipIsError,
     },
-  ] = useGetActiveMembershipMutation();
+  ] = useGetSavedMembershipMutation();
 
   const [pointSharing, setPointSharing] = useState(false);
   const colors = ["blue", "red", "green"];
@@ -498,9 +498,9 @@ const Passbook = ({ navigation }) => {
 
             {
               <NavigateTO
-                visibleTitle={t("Recieved Points Summary")}
+                visibleTitle={t("Received Points Summary")}
                 title={"Points History"}
-                discription={t("list of points redeemed by you")}
+                // discription={t("list of points redeemed by you")}
                 image={require("../../../assets/images/coinStack.png")}
               ></NavigateTO>
             }
@@ -509,7 +509,7 @@ const Passbook = ({ navigation }) => {
               <NavigateTO
                 visibleTitle={t("Transferred Points Summary")}
                 title={"Points History Transfered"}
-                discription={t("list of points redeemed by you")}
+                // discription={t("list of points redeemed by you")}
                 image={require("../../../assets/images/coinStack.png")}
               ></NavigateTO>
             }
@@ -518,7 +518,7 @@ const Passbook = ({ navigation }) => {
               <NavigateTO
                 visibleTitle={t("Wallet Points Summary")}
                 title={"Points History Extra"}
-                discription={t("list of points redeemed by you")}
+                // discription={t("list of points redeemed by you")}
                 image={require("../../../assets/images/coinStack.png")}
               ></NavigateTO>
             }
@@ -531,7 +531,7 @@ const Passbook = ({ navigation }) => {
                 <NavigateTO
                   visibleTitle={t("redeemed history")}
                   title="Redeemed History"
-                  discription={t("list of products redeemed by you")}
+                  // discription={t("list of products redeemed by you")}
                   image={require("../../../assets/images/redeemed_icon.png")}
                 ></NavigateTO>
               )}
@@ -539,7 +539,7 @@ const Passbook = ({ navigation }) => {
               <NavigateTO
                 visibleTitle={t("cashback history")}
                 title="Cashback History"
-                discription={t("list of cashback claimed by you")}
+                // discription={t("list of cashback claimed by you")}
                 image={require("../../../assets/images/cashbackBlack.png")}
               ></NavigateTO>
             )}
@@ -554,7 +554,7 @@ const Passbook = ({ navigation }) => {
               <NavigateTO
                 visibleTitle={t("warranty history")}
                 title={"Warranty History"}
-                discription={t("list of warranty claimed by you")}
+                // discription={t("list of warranty claimed by you")}
                 image={require("../../../assets/images/warranty_icon.png")}
               ></NavigateTO>
             )}
@@ -564,7 +564,7 @@ const Passbook = ({ navigation }) => {
               <NavigateTO
                 visibleTitle={t("cashback history")}
                 title="Cashback History"
-                discription={t("list of cashback claimed by you")}
+                // discription={t("list of cashback claimed by you")}
                 image={require("../../../assets/images/cashbackBlack.png")}
               ></NavigateTO>
             )}
@@ -582,7 +582,7 @@ const Passbook = ({ navigation }) => {
                 <NavigateTO
                   visibleTitle={t("shared point history")}
                   title="Shared Point History"
-                  discription=" list of shared points recieved by you"
+                  // discription=" list of shared points recieved by you"
                   image={require("../../../assets/images/shared_point.png")}
                 ></NavigateTO>
               )}

@@ -548,10 +548,13 @@ useEffect(()=>{
       navigation.reset({ index: "0", routes: [{ name: "Dashboard" }] });
     }
     else{
-      navigation.reset({ index: "0", routes: [{
-        name: "BasicInfo",
-        params: navigationParams, // your JSON object
-      },] });
+     
+        navigation.reset({ index: "0", routes: [{
+          name: "BasicInfo",
+          params: navigationParams, // your JSON object
+        },] });
+      
+      
 
     }
   };
@@ -637,13 +640,30 @@ useEffect(()=>{
     if (value.length === 6) {
       setOtp(value);
       console.log("From Verify Otp", value);
+
     }
   };
 
   useEffect(() => {
     if (otp.length === 6) {
       // setOtp(value);
-      verifyOtp();
+      if(navigationParams?.otp)
+      {
+        if(navigationParams?.otp == otp)
+        {
+          navigation.reset({ index: "0", routes: [{
+            name: "BasicInfo",
+            params: navigationParams, // your JSON object
+          },] });
+        }
+        else{
+          setError(true)
+          setMessage("Kindly Enter the correct OTP")
+        }
+      }
+      else{
+        verifyOtp();
+      }
       // console.log('From Verify Otp', value);
     }
   }, [otp]);
@@ -714,7 +734,12 @@ useEffect(()=>{
   };
 
   return (
-    <ScrollView contentContainerStyle={{backgroundColor:"#F0F8F6",alignItems:'center', height:'100%'}} style={styles.container}>
+    <KeyboardAvoidingView
+    style={{ flex: 1 }}
+    behavior={Platform.OS === "ios" ? "padding" : undefined}
+  >
+    <View style={{ flex: 1 }}>
+    <ScrollView contentContainerStyle={{backgroundColor:"#F0F8F6",alignItems:'center'}} style={styles.container}>
       <View
         style={{
           width: "100%",
@@ -855,8 +880,10 @@ useEffect(()=>{
           </View>
         </View>
         
-      <SocialBottomBar showRelative={true}/>
+        <SocialBottomBar showRelative={true}/>
     </ScrollView>
+    </View>
+    </KeyboardAvoidingView>
   );
 };
 

@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import TopHeader from "../../components/topBar/TopHeader";
 import { useGetOrderDetailsByTypeMutation } from "../../apiServices/order/orderApi";
 
-const TransferedPointHistory = ({ navigation }) => {
+const TransferredPointHistory = ({ navigation }) => {
   const [displayList, setDisplayList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const points = 100;
@@ -627,7 +627,7 @@ const TransferedPointHistory = ({ navigation }) => {
         height: "100%",
       }}
     >
-      <TopHeader title={"Transfered Points Summary"} />
+      <TopHeader title={"Transferred Points Summary"} />
 
       <View
         style={{
@@ -638,24 +638,28 @@ const TransferedPointHistory = ({ navigation }) => {
           justifyContent: "space-between",
         }}
       >
-        <View style={{ margin: 20, flexDirection: "row" }}>
+         {getOrderDetailsByTypeData &&<View style={{ margin: 10, flexDirection: "row" }}>
           <Image source={require("../../../assets/images/coin.png")}></Image>
-          <View style={{ marginLeft: 10 }}>
+           <View style={{ marginLeft: 10 }}>
             <PoppinsTextLeftMedium
               style={{ fontSize: 18, color: "black", fontWeight: "800" }}
-              content={"1600"}
+              content={getOrderDetailsByTypeData?.body?.totalPoints}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
-              style={{ color: "black", fontWeight: "600", fontSize: 16 }}
-              content={"Recieved Points"}
+              style={{ color: "black", fontWeight: "600", fontSize: 14 }}
+              content={"Transferred Points"}
             ></PoppinsTextLeftMedium>
           </View>
 
-        <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:140,marginLeft:20}} onPress={()=>{}}>
+        <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:140,marginLeft:20}} onPress={()=>{
+            navigation.navigate('PointsTransfer')
+
+        }}>
             {/* <Image source={require("../")}></Image> */}
             <PoppinsTextMedium style={{color:'white', fontSize:16, fontWeight:'bold'}} content={"Points Transfer"}></PoppinsTextMedium>
         </TouchableOpacity>
         </View>
+}
       </View>
 
       <Header></Header>
@@ -728,4 +732,4 @@ const TransferedPointHistory = ({ navigation }) => {
 
 const styles = StyleSheet.create({});
 
-export default TransferedPointHistory;
+export default TransferredPointHistory;

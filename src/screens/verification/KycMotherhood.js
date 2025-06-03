@@ -63,6 +63,8 @@ const KycMotherhood = ({ navigation }) => {
       isError: listAccountIsError,
     },
   ] = useListAccountsMutation();
+  
+  
 
   useEffect(() => {
     const refetchData = async () => {
@@ -85,12 +87,15 @@ const KycMotherhood = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
+
+    console.log("firstlistAccountData",JSON.stringify(listAccountData))
+
     listAccountData &&
       listAccountData?.body.map((item, index) => {
-        if (!Object.keys(item.bene_details).includes("upi_id")) {
+        if (Object.keys(item.bene_details).includes("upi_id")) {
           setUpiVerified(true);
         }
-        if (!Object.keys(item.bene_details).includes("bank_account")) {
+        if (Object.keys(item.bene_details).includes("bank_account")) {
           setBankAccountVerified(true);
         }
       });
@@ -175,7 +180,7 @@ const KycMotherhood = ({ navigation }) => {
             dob: formattedDate,
           };
           setVerifiedAadharDetails(aadhar_details);
-
+          setModal(false)
           console.log("SUCCESS AADHAAR");
 
           setAadhaarVerified(true);
@@ -621,7 +626,7 @@ const KycMotherhood = ({ navigation }) => {
           // setName(verifyPanData.body.registered_name)
           // setPan(verifyPanData.body.pan)
           console.log("SUCCESS PAN");
-
+          setModal(false)
           setPanVerified(true);
         }
       }
@@ -950,9 +955,12 @@ const KycMotherhood = ({ navigation }) => {
 
     useEffect(() => {
       if (verifyGstData) {
+        
         console.log("verifyGstData", verifyGstData);
         if (verifyGstData.success) {
           setGstVerified(true);
+          setModal(false)
+
         }
       }
       if (verifyGstError) {
@@ -1860,26 +1868,31 @@ const KycMotherhood = ({ navigation }) => {
           handlePress={handleAadhaarCompPress}
           image={require("../../../assets/images/aadhaarkyc.png")}
           title="Aadhaar"
+          verified = {kycData?.aadhar}
         ></KycComp>
         <KycComp
           handlePress={handlePanCompPress}
           image={require("../../../assets/images/pankyc.png")}
           title="PAN Card"
+          verified = {kycData?.pan}
         ></KycComp>
         <KycComp
           handlePress={handleGstinCompPress}
           image={require("../../../assets/images/gstinkyc.png")}
           title="GSTIN"
+          verified = {kycData?.gstin}
         ></KycComp>
         <KycComp
           handlePress={handleBankAccountCompPress}
           image={require("../../../assets/images/bankaccount.png")}
           title="Add Bank Account"
+          verified = {bankAccountVerified}
         ></KycComp>
         <KycComp
           handlePress={handleUpiCompPress}
           image={require("../../../assets/images/upi.png")}
           title="Add UPI"
+          verified={upiVerified}
         ></KycComp>
       </ScrollView>
     </View>
