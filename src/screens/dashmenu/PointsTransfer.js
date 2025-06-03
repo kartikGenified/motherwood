@@ -152,6 +152,7 @@ const PointsTransfer = () => {
         <TextInput
           onChangeText={setMobile}
           placeholder="99999999999"
+          placeholderTextColor={"#808080"}
           maxLength={10}
           style={{
             height: 70,
@@ -161,6 +162,7 @@ const PointsTransfer = () => {
             marginHorizontal: 20,
             borderRadius: 10,
             fontSize: 20,
+            color:'black',
             paddingLeft: 20,
           }}
         ></TextInput>

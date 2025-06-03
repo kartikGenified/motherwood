@@ -585,10 +585,10 @@ const TransferredPointHistory = ({ navigation }) => {
       
      
         <View style={{width:'80%', alignItems:'flex-start' ,justifyContent:'flex-start'}}>
-        <PoppinsTextMedium
+        <PoppinsTextLeftMedium
           style={{ fontWeight: "800", fontSize: 13, color: "black" }}
           content={`${t("Order No")} : ${orderNumber}`}
-        ></PoppinsTextMedium>
+        ></PoppinsTextLeftMedium>
         <View style={{flexDirection :'row', marginTop:3}}>
                  <PoppinsTextMedium
           style={{ fontWeight: "400", fontSize: 12, color: "black" }}

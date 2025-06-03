@@ -131,7 +131,9 @@ const DropDownWithSearch = (props) => {
               style={{
                 backgroundColor: "white",
                 width: "100%",
+                color:'black',
                 borderColor: "grey",
+                placeholderTextColor: "grey",
               }}
 
               onChangeText={(s) => {

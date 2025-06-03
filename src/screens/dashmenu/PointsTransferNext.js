@@ -8,7 +8,6 @@ import {
   TextInput,
   Image,
   Platform,
-  ScrollView,
 } from "react-native";
 import TopHeader from "../../components/topBar/TopHeader";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
@@ -80,8 +79,8 @@ const PointsTransferNext = (params) => {
 
   useEffect(() => {
     if (getPointTransferData) {
-      console.log("getPointTransferData", getPointTransferData);
-      navigation.replace("PointsTransferSuccess");
+      console.log("getPointTransferData", JSON.stringify(getPointTransferData));
+      navigation.replace("PointsTransferSuccess", {getPointTransferData});
     } else {
       if (getPointTransferError){
         setModalVisible(false);
@@ -200,7 +199,7 @@ const PointsTransferNext = (params) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <TopHeader title={"Points Transfer"} />
       {productRows.map((row, index) => (
         <UiList
@@ -322,7 +321,7 @@ const PointsTransferNext = (params) => {
         ></PoppinsTextLeftMedium>
       </TouchableOpacity>
       <SocialBottomBar />
-    </ScrollView>
+    </View>
   );
 };
 
@@ -375,6 +374,7 @@ const UiList = ({
               backgroundColor: "#F1F1F1",
               paddingHorizontal: 20,
               paddingVertical: 10,
+              color:'black',
               borderRadius: 7,
             }}
           >

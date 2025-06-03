@@ -556,10 +556,10 @@ const ExtraPointHistory = ({ navigation }) => {
       
      
         <View style={{width:'80%', alignItems:'flex-start' ,justifyContent:'flex-start'}}>
-        <PoppinsTextMedium
+        <PoppinsTextLeftMedium
           style={{ fontWeight: "800", fontSize: 13, color: "black" }}
           content={`${t("Product Name")} : ${item.product_name }`}
-        ></PoppinsTextMedium>
+        ></PoppinsTextLeftMedium>
         <View style={{flexDirection :'row', marginTop:3}}>
                  <PoppinsTextMedium
           style={{ fontWeight: "400", fontSize: 11, color: "black" }}

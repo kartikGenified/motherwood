@@ -269,6 +269,14 @@ const Dashboard = ({ navigation }) => {
     getToken();
   }, []);
 
+    useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      return true; // Prevent default behavior (disables back button)
+    });
+
+    return () => backHandler.remove(); // Cleanup on unmount
+  }, []);
+
   useEffect(() => {
     if (getAppCampaignData) {
       console.log("getAppCampaignData", getAppCampaignData);
@@ -690,6 +698,8 @@ const Dashboard = ({ navigation }) => {
             <RewardBoxDashboard />
 
 
+
+
           {dashboardData && !userPointIsLoading && (
             <DashboardMenuBox
               requiresLocation={requiresLocation}
@@ -697,6 +707,8 @@ const Dashboard = ({ navigation }) => {
               data={dashboardData}
             ></DashboardMenuBox>
           )}
+          <DreamCard/>
+
           {
             <View style={{width:'100%',backgroundColor:'white'}}>
                    <TouchableOpacity
@@ -717,7 +729,6 @@ const Dashboard = ({ navigation }) => {
 
           }
 
-          <DreamCard/>
         
           {userPointIsLoading && (
             <FastImage

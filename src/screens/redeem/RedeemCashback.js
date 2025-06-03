@@ -456,7 +456,7 @@ const [checkBeforeRedeem, {
            <View style={{width:'50%',alignItems:'center',justifyContent:'center'}}>
           <PoppinsText
           style={{fontSize: 24, color: 'black', marginTop: 20}}
-          content={points}></PoppinsText>
+          content={points ? points : 0}></PoppinsText>
         <PoppinsTextMedium
           content={t("Available Points")}
           style={{
@@ -475,7 +475,7 @@ const [checkBeforeRedeem, {
          {redemptionFrom!="Wallet"  ? <View style={{width:'50%',alignItems:'center',justifyContent:'center'}}>
           <PoppinsText
           style={{fontSize: 24, color: 'black', marginTop: 20}}
-          content={getWalletBalanceData?.body?.cashback_balance}></PoppinsText>
+          content={getWalletBalanceData?.body?.cashback_balance ? getWalletBalanceData?.body?.cashback_balance : 0}></PoppinsText>
         <PoppinsTextMedium
           content={t("Wallet Balance")}
           style={{
@@ -551,7 +551,7 @@ const [checkBeforeRedeem, {
                 fontWeight: '600',
                 fontSize: 14,
               }}></PoppinsTextMedium>
-           <TextInput value={pointsConversion + ""} style={{color:'black',height:50, fontWeight:'bold', fontSize:14,width:'50%'}} onChangeText={(text)=>{setPointsConversion(text),dispatch(setPointConversionF(text))}} placeholder='Enter Points'></TextInput>
+           <TextInput keyboardType="number-pad" value={pointsConversion + ""} style={{color:'black',height:50, fontWeight:'bold', fontSize:14,width:'50%'}} onChangeText={(text)=>{setPointsConversion(text),dispatch(setPointConversionF(text))}} placeholder='Enter Points'></TextInput>
           </View>
           <Image
             style={{height: 24, width: 24, resizeMode: 'contain', right: 12}}
@@ -562,7 +562,7 @@ const [checkBeforeRedeem, {
               alignItems: 'center',
               justifyContent: 'center',
               borderColor: '#DDDDDD',
-              height:60
+              height:80
             }}>
             <PoppinsTextMedium
               content={t("Cash")}
@@ -612,7 +612,7 @@ const [checkBeforeRedeem, {
               marginBottom: 20,
               position: 'absolute',
               left: 0,
-              top: 4,
+              top: 2,
             }}></PoppinsTextMedium>
         </View>
       </View> 
