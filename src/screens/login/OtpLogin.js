@@ -118,7 +118,7 @@ const OtpLogin = ({ navigation, route }) => {
   const registrationRequired = route?.params?.registrationRequired;
   console.log("registrationRequiredotpLogin", registrationRequired);
   const width = Dimensions.get("window").width;
-  var pattern = /^(0|[+91]{3})?[7-9][0-9]{9}$/;
+  var pattern = /^(0|[+91]{3})?[6-9][0-9]{9}$/;
   const navigationParams = {
     needsApproval: needsApproval,
     user_type_id: user_type_id,
@@ -148,7 +148,7 @@ const OtpLogin = ({ navigation, route }) => {
 
   useEffect(() => {
     if (sendOtpData) {
-      console.log("sendOtpData", sendOtpData);
+      console.log("sendOtpData", sendOtpData,getNameData);
       if (sendOtpData?.success === true && mobile.length === 10) {
         if (getNameData) {
           if (Object.keys(getNameData?.body).length != 0) {
@@ -178,6 +178,7 @@ const OtpLogin = ({ navigation, route }) => {
         navigation.navigate("VerifyOtp", {
           ...navigationParams,
           isExisting: false,
+          otp:sendOtpDataReg?.body?.otp
         });
       }
       setHideButton(false);
@@ -321,7 +322,7 @@ const OtpLogin = ({ navigation, route }) => {
   };
   return (
     <ScrollView
-      contentContainerStyle={{ height: "100%" }}
+      contentContainerStyle={{}}
       style={{ width: "100%" }}
     >
       <View
@@ -538,7 +539,10 @@ const OtpLogin = ({ navigation, route }) => {
             ></ButtonNavigate>
           </View>
         )} */}
-      <SocialBottomBar  />
+        <View style={{marginTop:30}}>
+        <SocialBottomBar showRelative={true}/>
+
+        </View>
     </ScrollView>
   );
 };

@@ -16,7 +16,7 @@ import ProgressBar from '../../components/miscellaneous/ProgressBar';
 import RedeemRewardDataBoxWithoutImage from '../../components/molecules/RedeemRewardDataBoxWithoutImage';
 import { useFetchUserPointsMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
 import PlatinumModal from '../../components/platinum/PlatinumModal';
-import { useGetActiveMembershipMutation } from '../../apiServices/membership/AppMembershipApi';
+import { useGetActiveMembershipMutation, useGetMembershipMutation } from '../../apiServices/membership/AppMembershipApi';
 import { t } from 'i18next';
 
 const RedeemRewardHistory = ({navigation}) => {
@@ -73,7 +73,8 @@ const RedeemRewardHistory = ({navigation}) => {
         error: getActiveMembershipError,
         isLoading: getActiveMembershipIsLoading,
         isError: getActiveMembershipIsError
-      }] = useGetActiveMembershipMutation()
+      }] = useGetMembershipMutation()
+      
     const [fetchCashbackEnteriesFunc,{
         data:fetchCashbackEnteriesData,
         error:fetchCashbackEnteriesError,

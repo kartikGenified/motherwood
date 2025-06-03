@@ -40,7 +40,7 @@ import {
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
 import { setQrIdList } from "../../../redux/slices/qrCodeDataSlice";
 import CampaignVideoModal from "../../components/modals/CampaignVideoModal";
-import { useGetActiveMembershipMutation } from "../../apiServices/membership/AppMembershipApi";
+import { useGetActiveMembershipMutation, useGetMembershipMutation } from "../../apiServices/membership/AppMembershipApi";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import PlatinumModal from "../../components/platinum/PlatinumModal";
 import { useFetchAllQrScanedListMutation } from "../../apiServices/qrScan/AddQrApi";
@@ -153,7 +153,7 @@ const Dashboard = ({ navigation }) => {
       isLoading: getActiveMembershipIsLoading,
       isError: getActiveMembershipIsError,
     },
-  ] = useGetActiveMembershipMutation();
+  ] = useGetMembershipMutation();
 
   const [
     getAppCampaign,
@@ -329,7 +329,7 @@ const Dashboard = ({ navigation }) => {
     if (getActiveMembershipData) {
       console.log("getActiveMembershipData", JSON.stringify(getActiveMembershipData))
       if (getActiveMembershipData?.success) {
-        setMembership(getActiveMembershipData?.body?.tier.name);
+        setMembership(getActiveMembershipData?.body?.tier?.name);
       }
     } else if (getActiveMembershipError) {
       if (getActiveMembershipError.status == 401) {
@@ -481,6 +481,7 @@ const Dashboard = ({ navigation }) => {
     const credentials = await Keychain.getGenericPassword();
     if (credentials) {
       const token = credentials?.username;
+      console.log("getActiveMembershipFunc token",token)
       getActiveMembershipFunc(token);
     }
   };
