@@ -14,25 +14,30 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 const DropDownWithSearch = (props) => {
-  const [selected, setSelected] = useState(props.header);
   const [showList, setShowList] = useState(false);
-  const [topMargin, setTopMargin] = useState(0);
   const { t } = useTranslation();
-
   const data = props.data;
   const placeholder = props.placeholder;
+  const value = props.value;
 
-
-  const name = props.title;
-  console.log("Options", data);
+  // Find the label to display from value (for array of objects)
+  let displayLabel = placeholder;
+  if (value) {
+    if (typeof value === 'object') {
+      displayLabel = value.name || value.label || placeholder;
+    } else {
+      // value is primitive, find object in data
+      const found = Array.isArray(data) ? data.find(item => (item.value || item.name) === value) : null;
+      displayLabel = found?.name || found?.label || value;
+    }
+  }
 
   const handleSelect = (data, item) => {
-    setSelected(data);
     setShowList(false);
-    let tempJsonData = { ...props.jsonData, value: item ? item : data };
-    console.log(tempJsonData);
-    props.handleData(tempJsonData);
+    // Call parent handler with the selected item (object or primitive)
+    props.handleData(item ? item : data);
   };
+  
   const handleOpenList = () => {
     setShowList(!showList);
   };
@@ -99,11 +104,10 @@ const DropDownWithSearch = (props) => {
             position: "absolute",
             left: 10,
             top: 10,
-            color: "black",
             textTransform: "capitalize",
           }}
         >
-          {t(selected ? selected : placeholder)}
+          {t(displayLabel)}
         </Text>
         <Image
           style={{
@@ -112,14 +116,14 @@ const DropDownWithSearch = (props) => {
             resizeMode: "contain",
             position: "absolute",
             right: 10,
-            top: 10,
+            top: 15,
           }}
           source={require("../../../../assets/images/arrowDown.png")}
         ></Image>
       </TouchableOpacity>
 
       {showList && (
-        <ScrollView style={{ width: "100%", minHeight: 100 }}>
+        <ScrollView style={{ width: "100%", maxHeight: 400 }}>
           <View
             style={{
               alignItems: "center",

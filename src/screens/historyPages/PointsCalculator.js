@@ -13,7 +13,11 @@ import PoppinsTextLeftMedium from "../../components/electrons/customFonts/Poppin
 import DropDownRegistration from "../../components/atoms/dropdown/DropDownRegistration";
 import DropDownWithSearch from "../../components/atoms/dropdown/DropDownWithSearch";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
-import { useGetProductListMutation } from "../../apiServices/product/getProducts";
+import {
+  useGetProductListMutation,
+  useGetProductCategoryListQuery,
+  useGetProductsByCategoryMutation,
+} from "../../apiServices/product/getProducts";
 import * as Keychain from "react-native-keychain";
 import { useSelector } from "react-redux";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
@@ -21,26 +25,23 @@ import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 const PointsCalculator = () => {
   const [token, setToken] = useState();
   const [data, setData] = useState();
-  const [selected, setSelected] = useState();
-  const [point, setPoint] = useState(0);
-
+  const [thicknessOptions, setThicknessOptions] = useState([]);
   const [productRows, setProductRows] = useState([
-    { selected: null, qty: 1, points: 0 },
+    { category: null, thickness: null, qty: 1, points: 0 },
   ]);
-
-  const [uiListArr, setUiListArr] = useState([0]); // Start with one row
-
   const userData = useSelector((state) => state.appusersdata.userData);
 
-  const [
-    productListFunc,
-    {
-      data: productListData,
-      error: productListError,
-      isLoading: productListIsLoading,
-      isError: productListIsError,
-    },
-  ] = useGetProductListMutation();
+  const {
+    data: productCategoryData,
+    error: productCategoryError,
+    isLoading: productCategoryIsLoading,
+  } = useGetProductCategoryListQuery({ token });
+
+  const [getProductsByCategory, {
+    data: productsByCategoryData,
+    error: productsByCategoryError,
+    isLoading: productsByCategoryIsLoading,
+  }] = useGetProductsByCategoryMutation();
 
   useEffect(() => {
     const getToken = async () => {
@@ -52,12 +53,27 @@ const PointsCalculator = () => {
   }, []);
 
   useEffect(() => {
-    if (productListData) {
-      setData(productListData?.body?.products);
+    if (productCategoryData) {
+      const formattedData = productCategoryData.body?.map((item) => ({
+        name: item.name,
+        id: item.id,
+      }));
+      setData(formattedData);
     } else {
-      if (productListError) console.log("productListError", productListError);
+      if (productCategoryError) console.log("productCategoryError", productCategoryError);
     }
-  }, [productListData, productListError]);
+  }, [productCategoryData, productCategoryError]);
+
+  useEffect(() => {
+    if (productsByCategoryData) {
+      setThicknessOptions(
+        productsByCategoryData.body.data.map((item) => ({ ...item, name: item.classification, pName: item.name }))
+      );
+    }
+    if (productsByCategoryError) {
+      console.log("productsByCategoryError", productsByCategoryError);
+    }
+  }, [productsByCategoryData, productsByCategoryError]);
 
   const handleQtyChange = (rowIndex, qty) => {
     const updatedRows = [...productRows];
@@ -65,12 +81,9 @@ const PointsCalculator = () => {
     setProductRows(updatedRows);
   };
 
-  // Calculate total qty and points
   const totalQty = useMemo(() => {
     return productRows.reduce((sum, row) => sum + parseInt(row.qty || 0), 0);
   }, [productRows]);
-
-  console.log("priddd", productRows)
 
   const totalPoints = useMemo(() => {
     return productRows.reduce(
@@ -79,22 +92,39 @@ const PointsCalculator = () => {
     );
   }, [productRows]);
 
-  const handleProductChange = (rowIndex, selectedProduct) => {
-    const userType = userData?.user_type;
-    const points =
-      userType === "retailer"
-        ? selectedProduct.value.retailer_points
-        : userType === "distributor"
-        ? selectedProduct.value.distributor_points
-        : userType === "oem"
-        ? selectedProduct.value.oem_points
-        : userType === "contractor"
-        ? selectedProduct.value.contractor_points
-        : 0;
+  const handleCategoryChange = (rowIndex, selectedCategory) => {
+    if (selectedCategory) {
+      getProductsByCategory({
+        token,
+        categoryId: selectedCategory?.value?.id || selectedCategory?.id,
+      });
+      const updatedRows = [...productRows];
+      updatedRows[rowIndex].category = selectedCategory;
+      updatedRows[rowIndex].thickness = null; 
+      updatedRows[rowIndex].points = 0;
+      setProductRows(updatedRows);
+    }
+  };
 
+  const handleThicknessChange = (rowIndex, selectedThickness) => {
     const updatedRows = [...productRows];
-    updatedRows[rowIndex].selected = selectedProduct;
-    updatedRows[rowIndex].points = points;
+    updatedRows[rowIndex].thickness = selectedThickness;
+    if (selectedThickness) {
+      const userType = userData?.user_type;
+      let points = 0;
+      if (userType === "retailer") {
+        points = selectedThickness.retailer_points;
+      } else if (userType === "distributor") {
+        points = selectedThickness.distributor_points;
+      } else if (userType === "oem") {
+        points = selectedThickness.oem_points;
+      } else if (userType === "contractor") {
+        points = selectedThickness.contractor_points;
+      }
+      updatedRows[rowIndex].points = points;
+    } else {
+      updatedRows[rowIndex].points = 0;
+    }
     setProductRows(updatedRows);
   };
 
@@ -105,21 +135,28 @@ const PointsCalculator = () => {
   };
 
   const handleSearch = (s) => {
-    if (s.length > 2) {
-      const data = {
-        token: token,
-        body: {
-          limit: 10,
-          offset: 0,
-          name: s,
-        },
-      };
-      productListFunc(data);
+    if (s !== "") {
+      if (s.length > 1) {
+        const filteredData = (productCategoryData?.body || []).map((item) => ({
+          name: item.name,
+          id: item.id,
+        })).filter((item) =>
+          item.name.toLowerCase().includes(s.toLowerCase())
+        );
+        setData(filteredData);
+      }
+    } else {
+      setData(
+        (productCategoryData?.body || []).map((item) => ({
+          name: item.name,
+          id: item.id,
+        }))
+      );
     }
   };
 
   const handleAddRow = () => {
-    setProductRows((prev) => [...prev, { selected: null, qty: 1, points: 0 }]);
+    setProductRows((prev) => [...prev, { category: null, thickness: null, qty: 1, points: 0 }]);
   };
 
   return (
@@ -130,17 +167,16 @@ const PointsCalculator = () => {
           key={index}
           index={index}
           data={data}
+          thicknessOptions={thicknessOptions}
           handleSearch={handleSearch}
-          selected={row.selected}
           qty={row.qty}
-          onDeleteRow={(index) => {
-            deleteRow(index);
-          }}
-          onProductChange={(selected) => handleProductChange(index, selected)}
+          onDeleteRow={() => deleteRow(index)}
+          onCategoryChange={(selected) => handleCategoryChange(index, selected)}
+          onThicknessChange={(selected) => handleThicknessChange(index, selected)}
           onQtyChange={(qty) => handleQtyChange(index, qty)}
+          row={row}
         />
       ))}
-
       <TouchableOpacity
         style={{
           height: 40,
@@ -156,7 +192,6 @@ const PointsCalculator = () => {
       >
         <Text style={{ color: "white", fontSize: 18 }}>+ Add Product</Text>
       </TouchableOpacity>
-
       <View
         style={{
           backgroundColor: "#B6202D",
@@ -174,7 +209,6 @@ const PointsCalculator = () => {
           <Text style={{ color: "white", fontSize: 20 }}>Total Qty : </Text>
           <Text style={{ color: "white", fontSize: 20 }}>{totalQty}</Text>
         </View>
-
         <View
           style={{
             flexDirection: "row",
@@ -198,12 +232,14 @@ const PointsCalculator = () => {
 const UiList = ({
   index,
   data,
+  thicknessOptions,
   handleSearch,
-  selected,
   qty,
-  onProductChange,
-  onQtyChange,
   onDeleteRow,
+  onCategoryChange,
+  onThicknessChange,
+  onQtyChange,
+  row,
 }) => {
   return (
     <View
@@ -221,15 +257,14 @@ const UiList = ({
         />
         <View style={{ width: 180 }}>
           <DropDownWithSearch
-            handleSearchData={(t) => handleSearch(t)}
-            handleData={(data) => onProductChange(data)}
+            handleSearchData={handleSearch}
+            handleData={onCategoryChange}
             placeholder={"Select Product"}
             data={data}
-            defaultValue={selected}
+            value={row.category}
           />
         </View>
       </View>
-
       <View>
         <View
           style={{ width: 100, alignItems: "center", justifyContent: "center" }}
@@ -238,20 +273,17 @@ const UiList = ({
             style={{ color: "black", fontWeight: "bold" }}
             content={"Thickness"}
           />
-          <Text
-            style={{
-              marginTop: 15,
-              backgroundColor: "#F1F1F1",
-              paddingHorizontal: 20,
-              paddingVertical: 10,
-              borderRadius: 7,
-            }}
-          >
-            1.7
-          </Text>
+          <View style={{ width: 90 }}>
+            <DropDownWithSearch
+              handleSearchData={(t) => handleSearch(t)}
+              handleData={(data) => onThicknessChange(data)}
+              placeholder={"select"}
+              data={thicknessOptions}
+              value={row.thickness}
+            />
+          </View>
         </View>
       </View>
-
       <View>
         <PoppinsTextMedium
           style={{ color: "black", fontWeight: "bold" }}
@@ -272,9 +304,7 @@ const UiList = ({
         />
       </View>
       <TouchableOpacity
-        onPress={() => {
-          onDeleteRow(index);
-        }}
+        onPress={onDeleteRow}
       >
         <Image
           style={{ height: 30, width: 30, marginTop: 37, marginLeft: 20 }}
