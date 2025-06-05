@@ -63,7 +63,10 @@ const DashboardMenuBox = (props) => {
       navigation.navigate("EnableLocationScreen", { navigateTo: "Scheme" });
     } else if (data.toLowerCase() === "kyc") {
       navigation.navigate("KycMotherhood");
-    } else if (data.toLowerCase() === "media") {
+    }else if (data.toLowerCase() === "points history") {
+      navigation.navigate("PointHistory");
+    }
+     else if (data.toLowerCase() === "media") {
       navigation.navigate("MediaGallery");
     } else if (
       data.toLowerCase() === "bank details" ||

@@ -115,7 +115,7 @@ const HelpAndSupport = ({ navigation }) => {
           marginTop: 50,
           borderWidth: 1,
           borderRadius: 40,
-          borderColor: "#B7202C",
+          borderColor: ternaryThemeColor,
           justifyContent: "center",
           paddingHorizontal: 30,
         }}
@@ -161,7 +161,7 @@ const HelpAndSupport = ({ navigation }) => {
           marginTop: 20,
           borderWidth: 1,
           borderRadius: 40,
-          borderColor: "#B7202C",
+          borderColor: ternaryThemeColor,
           justifyContent: "center",
           paddingHorizontal: 30,
         }}
@@ -201,10 +201,10 @@ const HelpAndSupport = ({ navigation }) => {
         </View>
       </View>
 
-      <View style={{ height: 70, backgroundColor: '#B6202D', width: '90%', marginTop: 30, borderRadius: 35, alignItems: 'center', flexDirection: 'row' }}>
+      <TouchableOpacity onPress={()=>{navigation.navigate("FAQ")}} style={{ height: 70, backgroundColor: ternaryThemeColor, width: '90%', marginTop: 30, borderRadius: 35, alignItems: 'center', flexDirection: 'row' }}>
         <Image style={{ height: 30, width: 30, resizeMode: 'contain', marginLeft: 20 }} source={require("../../../assets/images/faq_white.png")}></Image>
         <PoppinsTextLeftMedium style={{ color: "white", fontSize: 24, fontWeight: '600', marginHorizontal: 20 }} content={"FAQs"}></PoppinsTextLeftMedium>
-      </View>
+      </TouchableOpacity>
 
       <View>
         <PoppinsTextMedium style={{ color: "black", fontSize: 24, fontWeight: '800', marginHorizontal: 20, marginTop: 20 }} content={"Social Media"}></PoppinsTextMedium>

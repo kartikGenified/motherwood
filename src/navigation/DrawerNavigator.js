@@ -271,11 +271,21 @@ const CustomDrawer = () => {
               }
               else if (props.title.toLowerCase() === "faqs") {
                 navigation.navigate("FAQ");
-              } 
+              } else if (props.title.toLowerCase() === "kyc") {
+                // Drawer.navigate("Passbook")
+                navigation.navigate("KycMotherhood");
+              }
+              
+              else if (props.title.toLowerCase() === "redeem") {
+                // Drawer.navigate("Passbook")
+                navigation.navigate("RewardMenu");
+              }
               else if (props.title.toLowerCase() === "home") {
                 // Drawer.navigate("Passbook")
                 navigation.dispatch(DrawerActions.closeDrawer());
               } else if (props.title.toLowerCase() === "media") {
+                navigation.navigate("MediaGallery");
+              }else if (props.title.toLowerCase() === "media gallery") {
                 navigation.navigate("MediaGallery");
               } else if (props.title.toLowerCase() === "rewards") {
                 navigation.navigate("RedeemRewardHistory");

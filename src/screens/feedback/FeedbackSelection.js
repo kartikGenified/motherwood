@@ -27,7 +27,13 @@ import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import TopHeader from "../../components/topBar/TopHeader";
 
 const FeedbackSelection = ({navigation}) => {
-
+    const ternaryThemeColor = useSelector(
+        (state) => state.apptheme.ternaryThemeColor
+      )
+        
+      const secondaryThemeColor = useSelector(
+        (state) => state.apptheme.secondaryThemeColor
+      );
     const Selector=(props)=>{
         const image = props.image
         const title = props.title
@@ -36,7 +42,7 @@ const FeedbackSelection = ({navigation}) => {
         return(
             <TouchableOpacity onPress={()=>{
                 navigation.navigate(navigate)
-            }} style={{height:180,width:'80%', alignItems:'center',justifyContent:'center',borderWidth:2,borderColor:'#B6202D',borderRadius:20,margin:20}}>
+            }} style={{height:180,width:'80%', alignItems:'center',justifyContent:'center',borderWidth:2,borderColor:ternaryThemeColor,borderRadius:20,margin:20}}>
                 <Image style={{height:90,width:90,resizeMode:'contain'}} source={image}></Image>
                 <PoppinsTextMedium style={{color:'#525252',fontSize:16,marginTop:20}} content={title}></PoppinsTextMedium>
             </TouchableOpacity>

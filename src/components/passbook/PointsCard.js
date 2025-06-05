@@ -1,5 +1,5 @@
 //import liraries
-import React, { Component, useEffect } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ImageBackground } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import PoppinsTextLeftMedium from "../electrons/customFonts/PoppinsTextLeftMedium";
@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 
 
 const PointsCard = (props) => {
-
+const [isTertiary, setIsTertiary] = useState(false)
   const [userPointFunc, {
     data: userPointData,
     error: userPointError,
@@ -22,6 +22,10 @@ const id = useSelector(state => state.appusersdata.id);
 const userData = useSelector((state) => state.appusersdata.userData);
 const membership = props?.memberShip?.toLowerCase()
 useEffect(() => {
+  if( (userData.user_type).toLowerCase() == 'carpenter' ||  (userData.user_type).toLowerCase() == 'contractor' ||  (userData.user_type).toLowerCase() == 'oem' ||  (userData.user_type).toLowerCase() == 'directoem')
+ {
+  setIsTertiary(true)
+ }
   fetchPoints()
 }, []);
 
@@ -32,6 +36,8 @@ useEffect(() => {
   else if (userPointError) {
       console.log("userPointError", userPointError)
   }
+
+
 
 }, [userPointData, userPointError])
 
@@ -88,7 +94,7 @@ const fetchPoints = async () => {
 
 
   return (
-    <LinearGradient colors={membership == null ? ["#B1202C", "#573B3D"] : membership == "silver" ? ['#909090','#B9B9B9'] : membership == 'gold' ? ['#C79935','#A37B24']: membership == "platinum" ? ['#DDDDDD','#B9B9B9'] :[]}  style={styles.container}>
+    <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={membership == null ? isTertiary ? ["#315855","#315855","#1B7C76","#00A79D"] : ["#B1202C", "#573B3D"] : membership == "silver" ? ['#909090','#B9B9B9'] : membership == 'gold' ? ['#C79935','#A37B24']: membership == "platinum" ? ['#DDDDDD','#B9B9B9'] :[]}  style={styles.container}>
       <View
         style={{
           height: "53%",

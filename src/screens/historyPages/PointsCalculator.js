@@ -31,7 +31,14 @@ const PointsCalculator = () => {
     { category: null, thickness: null, qty: 1, points: 0 },
   ]);
   const userData = useSelector((state) => state.appusersdata.userData);
+  const ternaryThemeColor = useSelector(
+    (state) => state.apptheme.ternaryThemeColor
+  )
+    
 
+  const secondaryThemeColor = useSelector(
+    (state) => state.apptheme.secondaryThemeColor
+  );
   const {
     data: productCategoryData,
     error: productCategoryError,
@@ -266,7 +273,7 @@ const PointsCalculator = () => {
       </TouchableOpacity>
       <View
         style={{
-          backgroundColor: "#B6202D",
+          backgroundColor: ternaryThemeColor,
           width: "100%",
           height: 60,
           position: "absolute",
