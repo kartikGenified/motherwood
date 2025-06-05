@@ -370,7 +370,7 @@ const CustomDrawer = () => {
             }}
           >
             {/* {console.log("props.title", props.title)} */}
-            <Text style={{ color: primaryThemeColor, fontSize: 15 }}>
+            <Text style={{ color: ternaryThemeColor, fontSize: 15 }}>
               {props.title == "Passbook"
                 ? `${t("Passbook")}`
                 : props.title == "My Profile"

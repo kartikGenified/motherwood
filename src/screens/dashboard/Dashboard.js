@@ -72,6 +72,7 @@ import RewardBox from "../../components/molecules/RewardBox";
 import RewardBoxDashboard from "../../components/molecules/RewardBoxDashboard";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import DreamCard from "../../components/dreamComponent/DreamCard";
+import { setSecondaryThemeColor, setTernaryThemeColor } from "../../../redux/slices/appThemeSlice";
 
 const Dashboard = ({ navigation }) => {
   const [dashboardItems, setDashboardItems] = useState();
@@ -119,6 +120,13 @@ const Dashboard = ({ navigation }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.appusersdata.userId);
   const userData = useSelector((state) => state.appusersdata.userData);
+  if((userData.user_type).toLowerCase() == 'contractor' || (userData.user_type).toLowerCase() == 'carpenter' || (userData.user_type).toLowerCase() == 'oem' || (userData.user_type).toLowerCase() == 'directoem')
+      {
+        console.log("dispatching new user themes according to user types")
+        dispatch(setTernaryThemeColor("#00A79D"))
+        
+        dispatch(setSecondaryThemeColor("#F0F8F6"))
+      }
   console.log("user data in dashboard is here", userData)
   const pointSharingData = useSelector(
     (state) => state.pointSharing.pointSharing

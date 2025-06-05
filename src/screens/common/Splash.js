@@ -259,6 +259,12 @@ const Splash = ({ navigation }) => {
       const parsedLoginData = JSON.parse(loginData);
       console.log("setSessionDataparsedLoginData",parsedLoginData)
       setSessionData(parsedLoginData);
+      if((parsedLoginData.user_type).toLowerCase() == 'contractor' || (parsedLoginData.user_type).toLowerCase() == 'carpenter' || (parsedLoginData.user_type).toLowerCase() == 'oem' || (parsedLoginData.user_type).toLowerCase() == 'directoem')
+      {
+        console.log("dispatching new user themes according to user types")
+        dispatch(setTernaryThemeColor("#F0F8F6"))
+        dispatch(setSecondaryThemeColor("#00A79D"))
+      }
       dispatch(setAppUserId(parsedLoginData.user_type_id));
       dispatch(setAppUserName(parsedLoginData.name));
       dispatch(setAppUserType(parsedLoginData.user_type));
@@ -789,7 +795,7 @@ const Splash = ({ navigation }) => {
     if (getAppThemeData) {
       console.log("getAppThemeData", JSON.stringify(getAppThemeData?.body));
       storeData("getAppThemeData", getAppThemeData);
-      getAppThemeCachedDispatch(dispatch, getAppThemeData);
+      getAppThemeCachedDispatch(dispatch, getAppThemeData, sessionData);
     } else if (getAppThemeError) {
       console.log("getAppThemeError", getAppThemeError)
     }

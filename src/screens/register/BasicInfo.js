@@ -59,6 +59,7 @@ import { useGetAppUsersDataMutation } from "../../apiServices/appUsers/AppUsersA
 import { getUsersDataCachedDispatch } from "../../../redux/dispatches/getUsersDataCachedDispatch";
 import { setUserData } from "../../../redux/slices/appUserDataSlice";
 import SelectFromRadio from "../../components/organisms/SelectFromRadio";
+import { setPrimaryThemeColor, setSecondaryThemeColor } from "../../../redux/slices/appThemeSlice";
 
 const BasicInfo = ({ navigation, route }) => {
   const [userName, setUserName] = useState();
@@ -613,6 +614,7 @@ const BasicInfo = ({ navigation, route }) => {
             console.log("Error while saving loginData", e)
           }
         };
+       
         storeData(registerUserData?.body)
         setMessage(t("Thank you for joining Motherwood Loyalty program"));
         setModalTitle(t("Greetings"));
@@ -785,6 +787,7 @@ const BasicInfo = ({ navigation, route }) => {
   console.log("responseArray", responseArray);
   const modalClose = () => {
     setError(false);
+    setSuccess(false);
   };
 
   const getLocationFromPinCode = (pin) => {

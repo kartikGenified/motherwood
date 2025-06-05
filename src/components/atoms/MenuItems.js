@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import {
   View,
   StyleSheet,
@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { FAB } from "react-native-paper";
 
 const MenuItems = (props) => {
+  const [isTertiary, setIsTertiary] = useState(false)
   const colorShades = useSelector((state) => state.apptheme.colorShades);
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
@@ -23,11 +24,19 @@ const MenuItems = (props) => {
   const secondaryThemeColor = useSelector(
     (state) => state.apptheme.secondaryThemeColor
   )
+  const userData = useSelector(state => state.appusersdata.userData)
 
   const image = props.image;
   const content = props.content;
   const platformFontSize = Platform.OS === "ios" ? 8 : 10;
   const platformFontWeight = Platform.OS === "ios" ? "500" : "600";
+  
+  useEffect(()=>{
+    if((userData.user_type).toLowerCase() == 'contractor' || (userData.user_type).toLowerCase() == 'carpenter' || (userData.user_type).toLowerCase() == 'oem' || (userData.user_type).toLowerCase() == 'directoem')
+      {
+        setIsTertiary(true)
+      }
+  },[])
 
   const { t } = useTranslation();
   // console.log("menu item images", image)
@@ -85,7 +94,7 @@ const MenuItems = (props) => {
         style={{
           width: 80,
           marginTop: 6,
-          color: ternaryThemeColor,
+          color:  !isTertiary ? ternaryThemeColor : "#00A79D",
           fontSize: platformFontSize,
           fontWeight: platformFontWeight,
         }}

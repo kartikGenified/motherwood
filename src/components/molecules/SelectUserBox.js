@@ -5,7 +5,8 @@ import { SvgUri } from 'react-native-svg';
 import { useIsFocused } from '@react-navigation/native';
 import Dashboard from '../../screens/dashboard/Dashboard';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
+import { setPrimaryThemeColor, setSecondaryThemeColor, setTernaryThemeColor } from '../../../redux/slices/appThemeSlice';
 
 
 const SelectUserBox = (props) => {
@@ -20,6 +21,7 @@ const SelectUserBox = (props) => {
     // console.log(image)
     const color = props.color
     const otpLogin = props.otpLogin
+    const dispatch = useDispatch()
     // const passwordLogin = props.passwordLogin
     // const autoApproval = props.autoApproval
     const manualApproval = props.manualApproval
@@ -64,6 +66,12 @@ const SelectUserBox = (props) => {
     }
 
     const handleNavigation=(needsApproval,registrationRequired)=>{
+
+        if((props.content).toLowerCase() == 'contractor' || (props.content).toLowerCase() == 'carpenter' || (props.content).toLowerCase() == 'oem' || (props.content).toLowerCase() == 'directoem')
+      {
+        dispatch(setTernaryThemeColor("#F0F8F6"))
+        dispatch(setSecondaryThemeColor("#00A79D"))
+      }
         console.log("Needs Approval",needsApproval)
         if(otpLogin.includes(props.content)
         ){

@@ -12,7 +12,7 @@ export const getAppThemeCachedDispatch=async(dispatch, getAppThemeData)=>{
       console.log(
         "dispatching locaion setup data",
         getAppThemeData?.body?.location
-      );
+      )
       await dispatch(
         setPrimaryThemeColor(getAppThemeData?.body?.theme?.color_shades["600"])
       );
