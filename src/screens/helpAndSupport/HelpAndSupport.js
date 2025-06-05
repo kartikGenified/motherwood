@@ -130,7 +130,7 @@ const HelpAndSupport = ({ navigation }) => {
             }}
             source={require("../../../assets/images/mail_red.png")}
           ></Image>
-          <View style={{}}>
+          <TouchableOpacity onPress={()=>{Linking.openURL(`mailto:${supportMail}`)}} style={{}}>
             <PoppinsTextLeftMedium
               style={{
                 fontSize: 17,
@@ -150,7 +150,7 @@ const HelpAndSupport = ({ navigation }) => {
               }}
               content={supportMail ? supportMail : "customercare@motherwood.in"}
             ></PoppinsTextLeftMedium>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
       {/* phone */}
@@ -176,7 +176,9 @@ const HelpAndSupport = ({ navigation }) => {
             }}
             source={require("../../../assets/images/phone_red.png")}
           ></Image>
-          <View>
+          <TouchableOpacity onPress={()=>{
+            Linking.openURL(`tel:${supportMobile}`)
+          }}>
             <PoppinsTextLeftMedium
               style={{
                 fontSize: 20,
@@ -195,7 +197,7 @@ const HelpAndSupport = ({ navigation }) => {
               }}
               content={supportMobile ? supportMobile : ""}
             ></PoppinsTextLeftMedium>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
 

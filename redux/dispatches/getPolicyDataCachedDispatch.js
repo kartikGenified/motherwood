@@ -3,7 +3,7 @@ import { setPolicy } from "../slices/termsPolicySlice";
 
 
 export const getPolicyDataCachedDispatch=async(dispatch,getPolicyData)=>{
-    console.log("getPolicyDataCachedDispatch",getPolicyData)
+    console.log("getPolicyDataCachedDispatch",JSON.stringify(getPolicyData),getPolicyData?.body?.data?.[0]?.files?.[0])
     await dispatch(setPolicy(getPolicyData?.body?.data?.[0]?.files?.[0]))
     await  dispatch(setApiCallStatus("getPolicyData"))
 

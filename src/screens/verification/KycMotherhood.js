@@ -15,7 +15,7 @@ import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTex
 import { useTranslation } from "react-i18next";
 import BottomModal from "../../components/modals/BottomModal";
 import { useVerifyGstMutation } from "../../apiServices/verification/GstinVerificationApi";
-import { useUpdateKycStatusMutation } from "../../apiServices/kyc/KycStatusApi";
+import { useGetkycStatusMutation, useUpdateKycStatusMutation } from "../../apiServices/kyc/KycStatusApi";
 import {
   useSendAadharOtpMutation,
   useVerifyAadharMutation,
@@ -30,16 +30,21 @@ import RectanglarUnderlinedTextInput from "../../components/atoms/input/Rectangl
 import RectangularUnderlinedDropDown from "../../components/atoms/dropdown/RectangularUnderlinedDropDown";
 import { useAddBankDetailsMutation } from "../../apiServices/bankAccount/AddBankAccount";
 import TextInputRectangularWithPlaceholder from "../../components/atoms/input/TextInputRectangularWithPlaceholder";
-
+import { setKycData } from "../../../redux/slices/userKycStatusSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from "@react-navigation/native";
 const KycMotherhood = ({ navigation }) => {
   const [modalContent, setModalContent] = useState();
   const [modal, setModal] = useState(false);
   const [kycArray, setKycArray] = useState([]);
+  const [panVerified, setPanVerified] = useState(false)
+  const [aadharVerified, setAadharVerified] = useState(false)
+  const [gstinVerified, setGstinVerified] = useState(false)
   const [upiVerified, setUpiVerified] = useState(false);
   const [bankAccountVerified, setBankAccountVerified] = useState(false);
   const [verifiedArray, setVerifiedArray] = useState([])
   const inpref = useRef(null);
-
+  const focused = useIsFocused()
   const kycData = useSelector((state) => state.kycDataSlice.kycData);
     console.log("kycData data final",kycData)
   const dispatch = useDispatch();
@@ -64,7 +69,69 @@ const KycMotherhood = ({ navigation }) => {
     },
   ] = useListAccountsMutation();
   
-  
+  const [
+    getKycStatusFunc,
+    {
+      data: getKycStatusData,
+      error: getKycStatusError,
+      isLoading: getKycStatusIsLoading,
+      isError: getKycStatusIsError,
+    },
+  ] = useGetkycStatusMutation();
+
+  useEffect(() => {
+    const fetchOnPageActive = async () => {
+      try {
+        // Retrieve the credentials
+        const credentials = await Keychain.getGenericPassword();
+        if (credentials) {
+          // console.log(
+          //   'Credentials successfully loaded for user ' + credentials?.username
+          // );
+          const token = credentials?.username;
+          console.log("token from dashboard getKycStatusFunc ", token)
+          
+          token && getKycStatusFunc(token);
+          
+        } else {
+          // console.log('No credentials stored');
+        }
+      } catch (error) {
+        // console.log("Keychain couldn't be accessed!", error);
+      }
+    };
+    
+      fetchOnPageActive();
+      console.log("uyghjcghjasvhjfbjkhgqwgfjgcqwjkbjkckj")
+  }, [focused, modal,panVerified,aadharVerified,gstinVerified]);
+
+  useEffect(() => {
+    if (getKycStatusData) {
+      console.log("getKycStatusData", getKycStatusData);
+      if (getKycStatusData?.success) {
+        dispatch(setKycData(getKycStatusData?.body));
+      }
+    } else if (getKycStatusError) {
+      console.log("getKycStatusError", getKycStatusError);
+
+      if (getKycStatusError.status == 401) {
+        const handleLogout = async () => {
+          try {
+            await AsyncStorage.removeItem("loginData");
+            navigation.navigate("Splash");
+            navigation.reset({ index: 0, routes: [{ name: "Splash" }] }); // Navigate to Splash screen
+          } catch (e) {
+            console.log("error deleting loginData", e);
+          }
+        };
+        handleLogout();
+      } else {
+        setError(true);
+        setMessage("Can't get KYC status kindly retry after sometime.");
+      }
+      // console.log("getKycStatusError", getKycStatusError)
+    }
+  }, [getKycStatusData, getKycStatusError]);
 
   useEffect(() => {
     const refetchData = async () => {
@@ -155,16 +222,21 @@ const KycMotherhood = ({ navigation }) => {
       },
     ] = useVerifyAadharMutation();
 
+    
+
     useEffect(() => {
       if (updateKycStatusData) {
         console.log("updateKycStatusData", updateKycStatusData);
         if (updateKycStatusData.success) {
-          alert("Aadhaar verified successfully");
+          setModal(false)
+          setAadhaarVerified(true)
         }
       } else if (updateKycStatusError) {
         console.log("updateKycStatusError", updateKycStatusError);
       }
     }, [updateKycStatusData, updateKycStatusError]);
+
+    
 
     useEffect(() => {
       if (verifyAadharData) {
@@ -180,7 +252,6 @@ const KycMotherhood = ({ navigation }) => {
             dob: formattedDate,
           };
           setVerifiedAadharDetails(aadhar_details);
-          setModal(false)
           console.log("SUCCESS AADHAAR");
 
           setAadhaarVerified(true);
@@ -626,7 +697,6 @@ const KycMotherhood = ({ navigation }) => {
           // setName(verifyPanData.body.registered_name)
           // setPan(verifyPanData.body.pan)
           console.log("SUCCESS PAN");
-          setModal(false)
           setPanVerified(true);
         }
       }
@@ -641,7 +711,8 @@ const KycMotherhood = ({ navigation }) => {
       if (updateKycStatusData) {
         console.log("updateKycStatusData", updateKycStatusData);
         if (updateKycStatusData.success) {
-          alert("Pan verified successfully");
+          setModal(false)
+          setPanVerified(true)
         }
       } else if (updateKycStatusError) {
         console.log("updateKycStatusError", updateKycStatusError);
@@ -679,7 +750,6 @@ const KycMotherhood = ({ navigation }) => {
             borderWidth: 1,
             borderColor: ternaryThemeColor, // Make sure "ternaryThemeColor" is defined
             borderRadius: 5,
-            flexWrap: "wrap",
             alignItems: "flex-start",
             justifyContent: "center",
             padding: 10,
@@ -959,7 +1029,6 @@ const KycMotherhood = ({ navigation }) => {
         console.log("verifyGstData", verifyGstData);
         if (verifyGstData.success) {
           setGstVerified(true);
-          setModal(false)
 
         }
       }
@@ -974,6 +1043,7 @@ const KycMotherhood = ({ navigation }) => {
         console.log("updateKycStatusData", updateKycStatusData);
         if (updateKycStatusData.success) {
             setModal(false)
+            setGstVerified(true)
         }
       } else if (updateKycStatusError) {
         console.log("updateKycStatusError", updateKycStatusError);

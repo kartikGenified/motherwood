@@ -862,7 +862,7 @@ const RedeemGifts = ({ navigation, route }) => {
               top: 10,
               fontSize: 13,
               fontWeight: "300",
-              color: "white",
+              color: "black",
             }}
           ></PoppinsTextMedium>
         </View>

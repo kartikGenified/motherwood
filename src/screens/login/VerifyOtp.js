@@ -299,6 +299,16 @@ useEffect(()=>{
     };
   }, [focused, dispatch]);
 
+  //modal close
+  useEffect(() => {
+    console.log("running");
+    if (openModalWithBorder == true)
+      setTimeout(() => {
+        console.log("running2");
+        modalWithBorderClose();
+      }, 2000);
+  }, [success, openModalWithBorder]);
+
   // retrieving data from api calls--------------------------
 
   useEffect(() => {

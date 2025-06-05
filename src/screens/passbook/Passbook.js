@@ -92,7 +92,7 @@ const Passbook = ({ navigation }) => {
   );
   const name = userData.name;
   const membership =
-    getActiveMembershipData && getActiveMembershipData.body?.tier.name;
+    getActiveMembershipData && getActiveMembershipData.body?.tier?.name;
 
   const getOptionsAccordingToWorkflow = () => {
     if (workflowProgram?.includes("Warranty")) {
@@ -444,7 +444,7 @@ const Passbook = ({ navigation }) => {
             ></PoppinsTextMedium>
           </View>
           <View style={{ width: "100%", marginTop: 40 }}>
-            <PointsCard memberShip={getActiveMembershipData?.body}  setModalVisible={()=>{
+            <PointsCard memberShip={getActiveMembershipData?.body?.tier?.name}  setModalVisible={()=>{
               setMemberShipModal(true)
             }}/>
           </View>
@@ -555,7 +555,8 @@ const Passbook = ({ navigation }) => {
               ></NavigateTO>
             }
 
-            {
+{
+            (userData.user_type).toLowerCase()!='carpenter' && (userData.user_type).toLowerCase()!='contractor' && (userData.user_type).toLowerCase()!='oem' && (userData.user_type).toLowerCase()!='directoem' && 
               <NavigateTO
                 visibleTitle={t("Transferred Points Summary")}
                 title={"Points History Transfered"}
@@ -576,7 +577,7 @@ const Passbook = ({ navigation }) => {
             {/* ozone change */}
             {/* {userData.user_type !== "dealer" && neededHistory.includes("scanned") &&  <NavigateTO visibleTitle={t("scanned history")} title={"Scanned History"} discription={t('list of products scanned by you')} image={require('../../../assets/images/scannedHistory.png')}></NavigateTO>} */}
 
-            {(userData?.user_type).toLowerCase() != "distributor" &&
+            {
               neededHistory.includes("redeemed") && (
                 <NavigateTO
                   visibleTitle={t("redeemed history")}
@@ -745,13 +746,14 @@ const Passbook = ({ navigation }) => {
                   image={require("../../../assets/images/coinStack.png")}
                 ></GridVIew>
               )}
-                        { (
+                       {
+            (userData.user_type).toLowerCase()!='carpenter' && (userData.user_type).toLowerCase()!='contractor' && (userData.user_type).toLowerCase()!='oem' && (userData.user_type).toLowerCase()!='directoem' && 
                 <GridVIew
                   title={t("Transferred Points Summary")}
                   discription=" list of points redeemed by you"
                   image={require("../../../assets/images/coinStack.png")}
                 ></GridVIew>
-              )}
+              }
                            { (
                 <GridVIew
                   title={t("Wallet Points Summary")}
@@ -762,7 +764,7 @@ const Passbook = ({ navigation }) => {
               {/* ozone change */}
 
               {/* {userData.user_type !== "dealer" && <GridVIew title={t("scanned history")} discription="" image={require('../../../assets/images/scannedHistory.png')}></GridVIew>} */}
-              {(userData?.user_type).toLowerCase() != "distributor" && (
+              { (
                 <GridVIew
                   title={t("redeemed history")}
                   discription=" list of products redeemed by you"

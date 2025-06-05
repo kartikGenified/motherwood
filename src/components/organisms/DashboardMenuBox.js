@@ -18,6 +18,8 @@ const DashboardMenuBox = (props) => {
   const navigation = props.navigation;
   const width = Dimensions.get("window").width;
   const requiresLocation = props.requiresLocation;
+  const getAboutData = useSelector((state) => state.termsPolicy.about);
+  const getDetailsData = useSelector((state) => state.termsPolicy.details);
   const handleMenuItemPress = (data) => {
     if (data.substring(0, 4).toLowerCase() === "scan") {
       Platform.OS == "android"
@@ -100,7 +102,18 @@ const DashboardMenuBox = (props) => {
       Linking.openURL("https://motherwood.in/");
     } else if (data.toLowerCase() === "points transfer") {
       navigation.navigate("PointsTransfer");
-    } else if (
+    }else if (data.toLowerCase() === "about motherwood") {
+      navigation.navigate("PdfComponent", { pdf: getAboutData })
+
+    } 
+    else if (data.toLowerCase() === "motherwood program name") {
+      navigation.navigate("PdfComponent", { pdf: getDetailsData })
+
+    } 
+    else if (data.toLowerCase() === "points transfer") {
+      navigation.navigate("PointsTransfer");
+    }
+    else if (
       data.toLowerCase() === "media gallary" ||
       data.toLowerCase() === "media gallery"
     ) {

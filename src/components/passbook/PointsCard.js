@@ -20,7 +20,7 @@ const PointsCard = (props) => {
 
 const id = useSelector(state => state.appusersdata.id);
 const userData = useSelector((state) => state.appusersdata.userData);
-const membership = props.memberShip
+const membership = props?.memberShip?.toLowerCase()
 useEffect(() => {
   fetchPoints()
 }, []);

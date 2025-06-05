@@ -650,14 +650,17 @@ const TransferredPointHistory = ({ navigation }) => {
               content={"Transferred Points"}
             ></PoppinsTextLeftMedium>
           </View>
-
-        <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:140,marginLeft:20}} onPress={()=>{
-            navigation.navigate('PointsTransfer')
-
-        }}>
-            {/* <Image source={require("../")}></Image> */}
-            <PoppinsTextMedium style={{color:'white', fontSize:16, fontWeight:'bold'}} content={"Points Transfer"}></PoppinsTextMedium>
-        </TouchableOpacity>
+          {
+            (userData.user_type).toLowerCase()!='carpenter' && (userData.user_type).toLowerCase()!='contractor' && (userData.user_type).toLowerCase()!='oem' && (userData.user_type).toLowerCase()!='directoem' && 
+            <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:140,marginLeft:20}} onPress={()=>{
+              navigation.navigate('PointsTransfer')
+  
+          }}>
+              {/* <Image source={require("../")}></Image> */}
+              <PoppinsTextMedium style={{color:'white', fontSize:16, fontWeight:'bold'}} content={"Points Transfer"}></PoppinsTextMedium>
+          </TouchableOpacity>
+          }
+        
         </View>
 }
       </View>

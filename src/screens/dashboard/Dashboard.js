@@ -394,6 +394,7 @@ const Dashboard = ({ navigation }) => {
     let eligibleUser = "";
     let percentage;
     let index;
+    
     for (var i = 0; i < values.length; i++) {
       if (values[i].includes(userData?.user_type)) {
         eligibleUser = keys[i];

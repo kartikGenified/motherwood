@@ -252,7 +252,7 @@ const DreamCard = () => {
                     source={require("../../../assets/images/congratulation.png")}
                   />
                   <Text
-                    style={{ color: "white", fontSize: 12, fontWeight: "500" }}
+                    style={{ color: "black", fontSize: 12, fontWeight: "500" }}
                   >
                     Your Dream Gift
                   </Text>
@@ -267,7 +267,7 @@ const DreamCard = () => {
                   />
                   <Text
                     style={{
-                      color: "white",
+                      color: "black",
                       fontSize: 13,
                       width: "60%",
                       fontWeight: "bold",

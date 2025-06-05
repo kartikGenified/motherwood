@@ -49,7 +49,7 @@ export const AppMembershipApi = baseApi.injectEndpoints({
         query: (token) => {
         return {
         method: "POST",
-        url: `/api/app/membership/active`,
+        url: `/api/app/membership/saved`,
         headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,

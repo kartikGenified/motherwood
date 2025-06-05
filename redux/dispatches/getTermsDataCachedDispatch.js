@@ -1,5 +1,5 @@
 import { setApiCallStatus } from "../slices/splashApiCallsSlice";
-import { setTerms } from "../slices/termsPolicySlice";
+import { setTerms} from "../slices/termsPolicySlice";
 
 export const getTermsDataCachedDispatch=async(dispatch, getTermsData)=>{
     console.log("getTermsDataCachedDispatch",getTermsData)

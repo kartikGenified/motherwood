@@ -114,7 +114,7 @@ const RedeemRewardHistory = ({navigation}) => {
     useEffect(() => {
         if (getActiveMembershipData) {
           console.log("getActiveMembershipData", JSON.stringify(getActiveMembershipData))
-          setMemberShip(getActiveMembershipData.body?.tier.name)
+          setMemberShip(getActiveMembershipData.body?.tier?.name)
         }
         else if (getActiveMembershipError) {
           console.log("getActiveMembershipError", getActiveMembershipError)

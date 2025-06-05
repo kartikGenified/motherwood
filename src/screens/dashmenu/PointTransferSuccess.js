@@ -299,7 +299,6 @@ const PointsTransferSuccess = (params) => {
           contentContainerStyle={{
             flexDirection: "column",
             paddingBottom: 40,
-            width: "95%",
           }}
           style={{
             marginTop: 30,

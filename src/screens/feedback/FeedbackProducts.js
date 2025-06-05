@@ -292,6 +292,39 @@ const FeedbackProducts = ({ navigation }) => {
     setModal(false);
   };
 
+  const handleSearchThickness=(s)=>{
+    if (s != "") {
+      if (s.length > 1) {
+        const filteredData = thicknessOptions.filter((item) =>
+          item.name.toLowerCase().includes(s.toLowerCase())
+        );
+        setThicknessOptions(filteredData);
+      }
+    } else {
+      setThicknessOptions(
+        productsByCategoryData.body.data.map((item) => ({ ...item, name: item.classification, pName: item.name }))
+      );
+    }
+  }
+
+  const handleSearchCategory = (s) => {
+    if (s != "") {
+      if (s.length > 1) {
+        const filteredData = categoryOptions.filter((item) =>
+          item.name.toLowerCase().includes(s.toLowerCase())
+        );
+        setCategoryOptions(filteredData);
+      }
+    } else {
+      setCategoryOptions(
+        productCategoryData?.body?.map((item) => ({
+          name: item.name,
+          id: item.master_id,
+        }))
+      );
+    }
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: "white" }]}>
       {/* Navigator */}
@@ -362,6 +395,7 @@ const FeedbackProducts = ({ navigation }) => {
         <View style={{ width: '90%', marginTop: 20 }}>
           <PoppinsTextMedium style={{ color: 'black', fontWeight: '600', marginBottom: 5, fontSize:16 }} content={"Select Category"} />
           <DropDownWithSearch
+            handleSearchData={(t) => handleSearchCategory(t)}
             data={categoryOptions}
             value={category}
             handleData={handleCategoryChange}
@@ -371,6 +405,7 @@ const FeedbackProducts = ({ navigation }) => {
         <View style={{ width: '90%', marginTop: 10 , marginBottom:10}}>
           <PoppinsTextMedium style={{ color: 'black', fontWeight: '600', marginBottom: 5 , fontSize:16, marginTop:10}} content={"Select Thickness"} />
           <DropDownWithSearch
+            handleSearchData={(t) => handleSearchThickness(t)}
             data={thicknessOptions}
             value={thickness}
             handleData={handleThicknessChange}

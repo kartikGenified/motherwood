@@ -58,6 +58,10 @@ const CustomDrawer = () => {
   const drawerData = useSelector((state) => state.drawerData.drawerData);
   const getPolicyData = useSelector((state) => state.termsPolicy.policy);
   const getTermsData = useSelector((state) => state.termsPolicy.terms);
+  const getAboutData = useSelector((state) => state.termsPolicy.about);
+  const getDetailsData = useSelector((state) => state.termsPolicy.details);
+
+
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );
@@ -345,10 +349,10 @@ const CustomDrawer = () => {
               } else if (props.title.toLowerCase() === "query list") {
                 navigation.navigate("QueryList");
               } else if (props.title.toLowerCase() === "about motherwood") {
-               
+                navigation.navigate("PdfComponent", { pdf: getAboutData })
               }
               else if (props.title.toLowerCase() === "motherwood program name") {
-                
+                navigation.navigate("PdfComponent", { pdf: getDetailsData })
               }
               else if (props.title.toLowerCase() === "share app") {
                 const options = {
@@ -608,7 +612,7 @@ const CustomDrawer = () => {
         </View>
 
         <View style={{ justifyContent: "center", marginLeft: 50 }}>
-          {!Object.values(kycData).includes(false) ? (
+          {/* {!Object.values(kycData).includes(false) ? (
             <View style={{ flexDirection: "row", marginTop: 4 }}></View>
           ) : (
             <View style={{ flexDirection: "row", marginTop: 4 }}>
@@ -640,7 +644,7 @@ const CustomDrawer = () => {
                 </Text>
               </View>
             </View>
-          )}
+          )} */}
         </View>
         <PoppinsTextMedium
           content={`Version : ${currentVersion}`}

@@ -80,7 +80,7 @@ import {
   setWarrantyFormId,
 } from "../../../redux/slices/formSlice";
 import { useFetchLegalsMutation } from "../../apiServices/fetchLegal/FetchLegalApi";
-import { setPolicy, setTerms } from "../../../redux/slices/termsPolicySlice";
+import { setPolicy, setTerms,setAbout,setDetails } from "../../../redux/slices/termsPolicySlice";
 import { useGetAppMenuDataMutation } from "../../apiServices/dashboard/AppUserDashboardMenuAPi.js";
 import { setDrawerData } from "../../../redux/slices/drawerDataSlice";
 import * as Keychain from "react-native-keychain";
@@ -211,6 +211,28 @@ const Splash = ({ navigation }) => {
   ] = useFetchLegalsMutation();
 
   const [
+    getAboutMotherwoodFunc,
+    {
+      data: getAboutMotherwoodData,
+      error: getAboutMotherwoodError,
+      isLoading: getAboutMotherwoodIsLoading,
+      isError: getAboutMotherwoodIsError,
+    },
+  ] = useFetchLegalsMutation();
+
+  const [
+    getDetailsFunc,
+    {
+      data: getDetailsData,
+      error: getDetailsError,
+      isLoading: getDetailsIsLoading,
+      isError: getDetailsIsError,
+    },
+  ] = useFetchLegalsMutation();
+
+  
+
+  const [
     getMinVersionSupportFunc,
     {
       data: getMinVersionSupportData,
@@ -323,6 +345,23 @@ const Splash = ({ navigation }) => {
         } else {
           fetchPolicies();
         }
+
+
+        const fetchAbout = async () => {
+          const params = {
+            type: "about",
+          };
+          getAboutMotherwoodFunc(params);
+        };
+        fetchAbout()
+
+        const fetchDetails = async () => {
+          const params = {
+            type: "details",
+          };
+          getDetailsFunc(params);
+        };
+        fetchDetails()
       };
       asyncFunc();
     }
@@ -427,46 +466,35 @@ const Splash = ({ navigation }) => {
 
   // navigating to respective screens
   useEffect(() => {
-    if (minVersionSupport) {
-      if (sessionData) 
-      {
-        console.log("api call status in splash screen", apiCallStatus,sessionData);
-
-         if(apiCallStatus.includes("getAppThemeData") && apiCallStatus.includes("getTermsData") && apiCallStatus.includes("getPolicyData") && apiCallStatus.includes("getWorkflowData") && apiCallStatus.includes("getDashboardData") && apiCallStatus.includes("getAppMenuData") && apiCallStatus.includes("getFormData") && apiCallStatus.includes("getBannerData") && apiCallStatus.includes("getUsersData"))
-        {
-          navigation.reset({
-            index: "0",
-            routes: [{ name: "Dashboard" }],
-          });
-        }
-        else
-        {
-          const logFailedAPi =async()=>{
-            const missingApis = allApiArray.filter(api => !apiCallStatus.includes(api));
-            console.log("failed api",missingApis)
-          }
-          logFailedAPi().then(()=>{
-            navigation.reset({
-              index: "0",
-              routes: [{ name: "SelectUser" }],
-            });
-          })
-          
-        }
-      }
-      else
-      {
-        console.log("api call status in splash screen", apiCallStatus);
-        if(apiCallStatus.includes("getAppThemeData") && apiCallStatus.includes("getTermsData") && apiCallStatus.includes("getPolicyData") && apiCallStatus.length==3)
-        {
-          navigation.reset({
-            index: "0",
-            routes: [{ name: "SelectUser" }],
-          });
-        }
+    let fallbackTimer;
+    console.log("session data", sessionData)
+  
+    if (sessionData) {
+      const allApisComplete = areAllApisComplete(apiCallStatus, allApiArray);
+  
+      if (allApisComplete) {
+        navigation.reset({ index: 0, routes: [{ name: "Dashboard" }] });
+      } else {
+        fallbackTimer = setTimeout(() => {
+          const missingApis = allApiArray.filter(api => !apiCallStatus?.includes(api));
+          console.log("Timeout: Missing APIs:", missingApis);
+  
+          navigation.reset({ index: 0, routes: [{ name: "SelectUser" }] });
+        }, 4000); // wait for all async calls (4 sec)
       }
     }
-  }, [apiCallStatus, minVersionSupport, sessionData]);
+    else{
+      fallbackTimer = setTimeout(() => {
+        const missingApis = allApiArray.filter(api => !apiCallStatus?.includes(api));
+        console.log("Timeout: Missing APIs:", missingApis);
+
+        navigation.reset({ index: 0, routes: [{ name: "SelectUser" }] });
+      }, 4000); // wait for all async calls (4 sec)
+    }
+  
+    return () => clearTimeout(fallbackTimer);
+  }, [apiCallStatus, sessionData]);
+  
 
   
   useEffect(() => {
@@ -478,6 +506,24 @@ const Splash = ({ navigation }) => {
       // console.log("gettermserror", getTermsError)
     }
   }, [getTermsData, getTermsError]);
+
+  useEffect(() => {
+    if (getAboutMotherwoodData) {
+      console.log("getAboutMotherwoodData", getAboutMotherwoodData.body.data?.[0]?.files[0]);
+      dispatch(setAbout(getAboutMotherwoodData.body.data?.[0]?.files[0]))
+    } else if (getAboutMotherwoodError) {
+      console.log("getAboutMotherwoodError", getAboutMotherwoodError)
+    }
+  }, [getAboutMotherwoodData, getAboutMotherwoodError]);
+
+  useEffect(() => {
+    if (getDetailsData) {
+      console.log("getDetailsData", getDetailsData.body.data?.[0]?.files[0]);
+      dispatch(setDetails(getDetailsData.body.data?.[0]?.files[0]))
+    } else if (getDetailsError) {
+      console.log("getDetailsError", getDetailsError)
+    }
+  }, [getDetailsData, getDetailsError]);
 
   // removing session data in case of session expired
   const removerTokenData = async () => {
@@ -518,6 +564,7 @@ const Splash = ({ navigation }) => {
   // getting policy data and saving it in redux store
   useEffect(() => {
     if (getPolicyData) {
+      console.log("getPolicyData hello",getPolicyData)
       getPolicyDataCachedDispatch(dispatch, getPolicyData);
       storeData("getPolicyData", getPolicyData);
     } else if (getPolicyError) {
@@ -761,6 +808,9 @@ const Splash = ({ navigation }) => {
     }
   }, [responseTime, connected]);
   //---------------------------------------
+  const areAllApisComplete = (apiCallStatus, allApiArray) => {
+    return allApiArray.every(api => apiCallStatus?.includes(api));
+  };
 
   const modalClose = () => {
     setError(false);

@@ -202,7 +202,7 @@ const navigation = useNavigation()
           }}
           source={require("../../../assets/images/congratulation.png")}
         ></Image>
-        <Text style={{ color: "white", fontSize: 27, fontWeight: "500" }}>
+        <Text style={{ color: "black", fontSize: 27, fontWeight: "500" }}>
           Your Dream Gift
         </Text>
         <Image
@@ -217,7 +217,7 @@ const navigation = useNavigation()
         ></Image>
         <Text
           style={{
-            color: "white",
+            color: "black",
             fontSize: 29,
             width:'60%',
             fontWeight: "bold",

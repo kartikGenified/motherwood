@@ -118,7 +118,7 @@ const OrderDetails = (params) => {
 
       <ScrollView>
         <View style={{ alignItems: "center", width: "100%" }}>
-          <View
+          {/* <View
             style={{
               height: 60,
               width: 240,
@@ -142,9 +142,9 @@ const OrderDetails = (params) => {
               Status :{" "}
             </Text>
             <Text style={{ fontSize: 18, marginLeft: 4, color: "black",fontWeight:'500' }}>
-              {item.status == 1 ? "Success" : item.status == 0 ? "Pending" :item.status == 2 ? "Rejected" : ""}
+              {item.status == "1" ? "Success" : item.status == "0" ? "Pending" :item.status == "2" ? "Rejected" : ""}
             </Text>
-          </View>
+          </View> */}
           <View style={{ flexDirection: "row", marginTop: 20 }}>
             <Text style={{ fontSize: 22, marginTop: 7, color: "black" }}>
               Points :{" "}

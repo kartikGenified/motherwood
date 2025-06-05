@@ -66,6 +66,8 @@ const SelectUser = ({ navigation }) => {
   // console.log(useSelector(state => state.apptheme.passwordLogin))
   const manualApproval = useSelector((state) => state.appusers.manualApproval);
   const autoApproval = useSelector((state) => state.appusers.autoApproval);
+  const apiCallStatus = useSelector((state) => state.splashApi.apiCallStatus);
+    console.log("select user screen apicall status", apiCallStatus)
   const registrationRequired = useSelector(
     (state) => state.appusers.registrationRequired
   );

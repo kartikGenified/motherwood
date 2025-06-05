@@ -5,6 +5,7 @@ export const KycStatusApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
     getkycStatus: builder.mutation({
     query: (token) => {
+      console.log("KycStatusApiqwerty",token)
     return {
     method: "GET",
     url: `/api/app/kyc`,

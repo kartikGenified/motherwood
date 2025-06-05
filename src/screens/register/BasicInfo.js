@@ -22,9 +22,7 @@ import {
   useGetFormMutation,
 } from "../../apiServices/workflow/GetForms";
 import ButtonOval from "../../components/atoms/buttons/ButtonOval";
-import {
-  useRegisterUserByBodyMutation,
-} from "../../apiServices/register/UserRegisterApi";
+import { useRegisterUserByBodyMutation } from "../../apiServices/register/UserRegisterApi";
 import TextInputAadhar from "../../components/atoms/input/TextInputAadhar";
 import TextInputPan from "../../components/atoms/input/TextInputPan";
 import TextInputGST from "../../components/atoms/input/TextInputGST";
@@ -60,7 +58,7 @@ import { storeData } from "../../utils/apiCachingLogic";
 import { useGetAppUsersDataMutation } from "../../apiServices/appUsers/AppUsersApi";
 import { getUsersDataCachedDispatch } from "../../../redux/dispatches/getUsersDataCachedDispatch";
 import { setUserData } from "../../../redux/slices/appUserDataSlice";
-
+import SelectFromRadio from "../../components/organisms/SelectFromRadio";
 
 const BasicInfo = ({ navigation, route }) => {
   const [userName, setUserName] = useState();
@@ -100,7 +98,7 @@ const BasicInfo = ({ navigation, route }) => {
   const [mappedUserData, setMappedUserData] = useState();
   const [showDistributorInput, setShowDistributorInput] = useState(false);
   const [mobileVerified, setMobileVerified] = useState();
-  const [token, setToken] = useState()
+  const [token, setToken] = useState();
   const timeOutCallback = useCallback(
     () => setTimer((currTimer) => currTimer - 1),
     []
@@ -380,7 +378,6 @@ const BasicInfo = ({ navigation, route }) => {
     fetchPolicies();
 
     getUsers();
-
   }, []);
 
   useEffect(() => {
@@ -404,17 +401,13 @@ const BasicInfo = ({ navigation, route }) => {
     }
   }, [getTermsData, getTermsError]);
 
-
-  useEffect(()=>{
-
-
-    if(token)
-    {
-    console.log("inside useEffect ashdashdvas", token)
+  useEffect(() => {
+    if (token) {
+      console.log("inside useEffect ashdashdvas", token);
 
       getAppMenuFunc(token);
-      getBannerFunc(token)
-      getDashboardFunc(token)
+      getBannerFunc(token);
+      getDashboardFunc(token);
       getWorkflowFunc({
         userId: userTypeId,
         token: token,
@@ -422,8 +415,7 @@ const BasicInfo = ({ navigation, route }) => {
       const form_type = "2";
       getFormProtFunc({ form_type: form_type, token: token });
     }
-    
-  },[token])
+  }, [token]);
 
   useEffect(() => {
     if (getPolicyData) {
@@ -609,18 +601,22 @@ const BasicInfo = ({ navigation, route }) => {
 
   useEffect(() => {
     if (registerUserData) {
-      console.log(
-        "data after submitting form",
-        registerUserData,
-        
-      );
+      console.log("data after submitting form", registerUserData);
       if (registerUserData.success) {
-        setToken(registerUserData?.body?.token)
+        setToken(registerUserData?.body?.token);
         setSuccess(true);
+        const storeData = async (value) => {
+          try {
+            const jsonValue = JSON.stringify(value);
+            await AsyncStorage.setItem('loginData', jsonValue);
+          } catch (e) {
+            console.log("Error while saving loginData", e)
+          }
+        };
+        storeData(registerUserData?.body)
         setMessage(t("Thank you for joining Motherwood Loyalty program"));
         setModalTitle(t("Greetings"));
         dispatch(setUserData(registerUserData?.body));
-
       }
       setHideButton(false);
 
@@ -634,7 +630,6 @@ const BasicInfo = ({ navigation, route }) => {
     }
   }, [registerUserData, registerUserError]);
 
-  
   useEffect(() => {
     if (sendOtpData) {
       console.log("sendOtpData", sendOtpData);
@@ -697,10 +692,10 @@ const BasicInfo = ({ navigation, route }) => {
   const handleChildComponentData = (data) => {
     console.log("handleChildComponentData data", data);
     // setOtpVisible(true)
-    if ((data.label).toLowerCase() == "dealer_name") {
+    if (data.label.toLowerCase() == "dealer_name") {
       setMappedUserData(data.data);
     }
-    if ((data.label).toLowerCase() === "map_user_type") {
+    if (data.label.toLowerCase() === "map_user_type") {
       setMappedUserType(data.value);
     }
     if ((data?.name).toLowerCase() === "name") {
@@ -754,7 +749,7 @@ const BasicInfo = ({ navigation, route }) => {
       }
     }
 
-    if ((data.name).toLowerCase() == "dealer_name") {
+    if (data.name.toLowerCase() == "dealer_name") {
       if (data.value == "Other") {
         setShowDistributorInput(true);
       } else {
@@ -1235,11 +1230,10 @@ const BasicInfo = ({ navigation, route }) => {
             }}
           ></PoppinsTextMedium>
         </View>
-       
       </View>
-      <View style={{marginTop:0,width:'100%',marginBottom:20}}>
+      <View style={{ marginTop: 0, width: "100%", marginBottom: 20 }}>
         <ProgressMeter currentStage={formStage - 1}></ProgressMeter>
-        </View>
+      </View>
       <ScrollView style={{ width: "100%" }}>
         <View
           style={{
@@ -1258,7 +1252,11 @@ const BasicInfo = ({ navigation, route }) => {
                 fontSize: 18,
                 marginBottom: 40,
               }}
-              content={formStage == 1 ? t("Just few more things about you") : t("Where do you live/work?")}
+              content={
+                formStage == 1
+                  ? t("Just few more things about you")
+                  : t("Where do you live/work?")
+              }
             ></PoppinsTextMedium>
           ) : (
             <PoppinsTextMedium
@@ -1636,16 +1634,27 @@ const BasicInfo = ({ navigation, route }) => {
                     ></ImageInput>
                   );
                 } else if (item.type === "select") {
-                  return (
-                    <DropDownRegistration
-                      required={item.required}
-                      title={item.name}
-                      header={item.name}
-                      jsonData={item}
-                      data={item.options}
-                      handleData={handleChildComponentData}
-                    ></DropDownRegistration>
-                  );
+                  if ((item?.name).toLowerCase() == "gender") {
+                    return (
+                      <SelectFromRadio
+                        jsonData={item}
+                        name={item?.name}
+                        options={item?.options}
+                        onSelect={handleChildComponentData}
+                      />
+                    );
+                  } else {
+                    return (
+                      <DropDownRegistration
+                        required={item.required}
+                        title={item.name}
+                        header={item.name}
+                        jsonData={item}
+                        data={item.options}
+                        handleData={handleChildComponentData}
+                      ></DropDownRegistration>
+                    );
+                  }
                 } else if (item.type === "date") {
                   return (
                     <InputDate

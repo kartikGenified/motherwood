@@ -609,7 +609,7 @@ const ExtraPointHistory = ({ navigation }) => {
           justifyContent: "space-between",
         }}
       >
-        <View style={{ margin: 20, flexDirection: "row" }}>
+        {/* <View style={{ margin: 20, flexDirection: "row" }}>
           <Image source={require("../../../assets/images/coin.png")}></Image>
           <View style={{ marginLeft: 10 }}>
             <PoppinsTextLeftMedium
@@ -621,12 +621,14 @@ const ExtraPointHistory = ({ navigation }) => {
               content={"Recieved Points"}
             ></PoppinsTextLeftMedium>
           </View>
-
-        <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:140,marginLeft:20}} onPress={()=>{}}>
-            {/* <Image source={require("../")}></Image> */}
+          {
+            (userData.user_type).toLowerCase()!='carpenter' && (userData.user_type).toLowerCase()!='contractor' && (userData.user_type).toLowerCase()!='oem' && (userData.user_type).toLowerCase()!='directoem' && 
+            <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:140,marginLeft:20}} onPress={()=>{}}>
             <PoppinsTextMedium style={{color:'white', fontSize:16, fontWeight:'bold'}} content={"Points Transfer"}></PoppinsTextMedium>
         </TouchableOpacity>
-        </View>
+          }
+       
+        </View> */}
       </View>
 
       <Header></Header>
