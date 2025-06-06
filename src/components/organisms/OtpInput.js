@@ -30,8 +30,13 @@ const OtpInput = (propData) => {
     const primaryThemeColor = useSelector(
       state => state.apptheme.primaryThemeColor,
     )
-      ? useSelector(state => state.apptheme.primaryThemeColor)
-      : '#FF9B00';
+    const ternaryThemeColor = useSelector(
+      state => state.apptheme.ternaryThemeColor,
+    )
+    const secondaryThemeColor = useSelector(
+      state => state.apptheme.ternaryThemeColor,
+    )
+      
   useEffect(() => {
     if(
       value.length===6
@@ -59,10 +64,10 @@ const OtpInput = (propData) => {
             // Make sure that you pass onLayout={getCellOnLayoutHandler(index)} prop to root component of "Cell"
             onLayout={getCellOnLayoutHandler(index)}
             key={index}
-            style={[styles.cellRoot, isFocused && {...styles.focusCell,borderBlockColor:primaryThemeColor,
+            style={[styles.cellRoot, isFocused && {...styles.focusCell,borderBlockColor:ternaryThemeColor,
             },{borderBottomColor: "black",
             borderBottomWidth: 1, borderWidth:type ? 0 :1}]}>
-            <Text style={{...styles.cellText, color: buttonThemeColor,}}>
+            <Text style={{...styles.cellText, color: ternaryThemeColor,}}>
               {symbol || (isFocused ? <Cursor /> : null)}
             </Text>
           </View>

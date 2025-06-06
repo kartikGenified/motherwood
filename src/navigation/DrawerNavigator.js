@@ -287,6 +287,10 @@ const CustomDrawer = () => {
                 navigation.navigate("MediaGallery");
               }else if (props.title.toLowerCase() === "media gallery") {
                 navigation.navigate("MediaGallery");
+              }else if (props.title.toLowerCase() === "terms and conditions") {
+                navigation.navigate("PdfComponent", { pdf: getTermsData })
+              }else if (props.title.toLowerCase() === "privacy policy") {
+                navigation.navigate("PdfComponent", { pdf: getPolicyData })
               } else if (props.title.toLowerCase() === "rewards") {
                 navigation.navigate("RedeemRewardHistory");
               } else if (props.title.toLowerCase() === "events") {

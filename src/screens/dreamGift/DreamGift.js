@@ -30,11 +30,14 @@ const DreamGift = () => {
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
   const [token, setToken] = useState("");
+  const [isTertiary, setIsTertiary] = useState(false)
   // const [selected, setSelected] = useState(false);
   const navigation = useNavigation();
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );
+  const userData = useSelector(state => state.appusersdata.userData)
+
   const [
     dreamListFunc,
     {
@@ -55,6 +58,22 @@ const DreamGift = () => {
     },
   ] = useAddDreamGiftMutation();
 
+  useEffect(()=>{
+    if(userData.user_type.toLowerCase() == "contractor" ||
+    userData.user_type.toLowerCase() == "carpenter" ||
+    userData.user_type.toLowerCase() == "oem" ||
+    userData.user_type.toLowerCase() == "directoem")
+    {
+      setIsTertiary(true)
+    }
+    else{
+      setIsTertiary(false)
+    }
+    
+  },[userData])
+
+
+  console.log("dakshjdghjgjhwqgbcnqwkjjkwqghjg", isTertiary)
   useEffect(() => {
     const getToken = async () => {
       const credentials = await Keychain.getGenericPassword();
@@ -232,8 +251,8 @@ const DreamGift = () => {
       <View style={{ height: 10, backgroundColor: ternaryThemeColor }}></View>
 
       <View style={{ height: "42%", width: "100%", alignItems: "center" }}>
-        <Image
-          source={require("../../../assets/images/DreamGiftImageRed.png")}
+         <Image
+          source={isTertiary ? require("../../../assets/images/DreamGiftImageBlue.png") : require("../../../assets/images/DreamGiftImageRed.png")}
           style={{ height: "100%", width: "100%", resizeMode: "cover" }}
         ></Image>
       </View>

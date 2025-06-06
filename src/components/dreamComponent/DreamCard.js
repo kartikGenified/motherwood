@@ -35,6 +35,7 @@ const DreamCard = () => {
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );
+  const userData = useSelector(state => state.appusersdata.userData)
 
   const [
     deleteDreamGiftFunc,
@@ -217,7 +218,7 @@ const DreamCard = () => {
             style={{
               width: "90%",
               alignItems: "center",
-              backgroundColor: ternaryThemeColor,
+              backgroundColor: (userData?.user_type.toLowerCase() == "carpenter" || userData?.user_type.toLowerCase() == "oem" || userData?.user_type.toLowerCase() == "directoem" || userData?.user_type.toLowerCase() == "carpenter") ? '#00A79D' : ternaryThemeColor,
               borderRadius: 10,
               marginBottom: 20,
             }}
@@ -236,7 +237,7 @@ const DreamCard = () => {
                   <Image
                     style={{
                       height: 120,
-                      width: "120%",
+                      width: 140,
                       resizeMode: "contain",
                     }}
                     source={{ uri: dreamGift.images[0] }}
@@ -252,7 +253,7 @@ const DreamCard = () => {
                     source={require("../../../assets/images/congratulation.png")}
                   />
                   <Text
-                    style={{ color: "black", fontSize: 12, fontWeight: "500" }}
+                    style={{ color: "white", fontSize: 12, fontWeight: "500" }}
                   >
                     Your Dream Gift
                   </Text>
@@ -267,7 +268,7 @@ const DreamCard = () => {
                   />
                   <Text
                     style={{
-                      color: "black",
+                      color: "white",
                       fontSize: 13,
                       width: "60%",
                       fontWeight: "bold",
@@ -282,8 +283,8 @@ const DreamCard = () => {
             </View>
             <View
               style={{
-                backgroundColor: ternaryThemeColor,
-                height: 100,
+                backgroundColor: (userData?.user_type.toLowerCase() == "carpenter" || userData?.user_type.toLowerCase() == "oem" || userData?.user_type.toLowerCase() == "directoem" || userData?.user_type.toLowerCase() == "carpenter") ? '#00A79D' : ternaryThemeColor,
+                height: 60,
                 width: "90%",
                 marginBottom: 40,
               }}
@@ -291,16 +292,16 @@ const DreamCard = () => {
               <Text
                 style={{
                   color: "white",
-                  fontSize: 18,
+                  fontSize: 15,
                   fontWeight: "800",
                   textAlign: "center",
                   marginTop: 10,
                 }}
               >
-                Your Achievements
+                Every step brings you closer!
               </Text>
               {profilePercentage >= 0 && (
-                <View style={{ width: 300 }}>
+                <View style={{ width: 280 }}>
                   <View
                     style={{
                       height: 20,
@@ -379,7 +380,7 @@ const DreamCard = () => {
                           color: "white",
                           marginLeft:
                             profilePercentage < 9
-                              ? -11
+                              ? 0
                               : profilePercentage >= 4 && profilePercentage < 6
                                 ? -18
                                 : -30,
@@ -424,7 +425,7 @@ const DreamCard = () => {
                 </TouchableOpacity>
               </View>
             )}
-            <TouchableOpacity style={{ position: 'absolute', right: 0, bottom: 0 }} onPress={() => {
+            <TouchableOpacity style={{ position: 'absolute', right: 10, bottom: 70 }} onPress={() => {
               setModalVisible(!modalVisible)
             }}>
               <Delete name="delete-circle" size={40} color={"#DDDDDD"} />

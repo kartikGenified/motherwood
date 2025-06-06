@@ -25,7 +25,7 @@ const DashboardSupportBox = (props) => {
   // console.log("text support",text)
 
   const handleNavigation = () => {
-    if (text === "Feedback") {
+    if (text === "Rating/Feedback") {
       navigation.navigate("FeedbackOptions");
     } else if (text === "Rewards") {
       navigation.navigate("RedeemRewardHistory");
@@ -41,7 +41,7 @@ const DashboardSupportBox = (props) => {
       }}
       style={{
         height: 50,
-        width: 180,
+        width: 170,
         borderTopLeftRadius:30,
         borderBottomLeftRadius:30,
         borderTopRightRadius:30,

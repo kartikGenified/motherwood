@@ -18,8 +18,14 @@ const DashboardMenuBox = (props) => {
   const navigation = props.navigation;
   const width = Dimensions.get("window").width;
   const requiresLocation = props.requiresLocation;
+
+
   const getAboutData = useSelector((state) => state.termsPolicy.about);
+
+
   const getDetailsData = useSelector((state) => state.termsPolicy.details);
+
+  console.log("getAboutDatagetDetailsData",getAboutData,getDetailsData)
   const handleMenuItemPress = (data) => {
     if (data.substring(0, 4).toLowerCase() === "scan") {
       Platform.OS == "android"

@@ -1,6 +1,6 @@
 //import liraries
 import { useNavigation } from "@react-navigation/native";
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity,ScrollView } from "react-native";
 import { useSelector } from "react-redux";
 import  ConfettiCannon from "react-native-confetti-cannon"
@@ -11,6 +11,7 @@ import { t } from "i18next";
 
 // create a component
 const DreamGiftDetails = (params) => {
+  const [isTertiary, setIsTertiary] = useState()
 
   const[image,setImage] = useState(params.route.params.gift.gift.images[0])
 
@@ -20,6 +21,21 @@ const navigation = useNavigation()
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );
+  const userData = useSelector(state => state.appusersdata.userData)
+
+  useEffect(()=>{
+    if(userData.user_type.toLowerCase() == "contractor" ||
+    userData.user_type.toLowerCase() == "carpenter" ||
+    userData.user_type.toLowerCase() == "oem" ||
+    userData.user_type.toLowerCase() == "directoem")
+    {
+      setIsTertiary(true)
+    }
+    else{
+      setIsTertiary(false)
+    }
+    
+  },[userData])
 
   const target = params.route.params.gift.target
   const current = params.route.params.gift.current
@@ -189,8 +205,9 @@ const navigation = useNavigation()
   };
   return (
     <ImageBackground
-      style={{ width: "100%", height: "100%" }}
-      source={require("../../../assets/images/transparentBackground.png")}
+      style={{flex:1}}
+      resizeMode='cover'
+      source={isTertiary ? require('../../../assets/images/transparentBackgroundBlue.png') : require('../../../assets/images/transparentBackgroundred.png')}
     >
       <ScrollView contentContainerStyle={{ alignItems: "center",marginTop:30 }}>
         <Image
@@ -202,7 +219,7 @@ const navigation = useNavigation()
           }}
           source={require("../../../assets/images/congratulation.png")}
         ></Image>
-        <Text style={{ color: "black", fontSize: 27, fontWeight: "500" }}>
+        <Text style={{ color: "white", fontSize: 27, fontWeight: "500" }}>
           Your Dream Gift
         </Text>
         <Image
@@ -217,7 +234,7 @@ const navigation = useNavigation()
         ></Image>
         <Text
           style={{
-            color: "black",
+            color: "white",
             fontSize: 29,
             width:'60%',
             fontWeight: "bold",

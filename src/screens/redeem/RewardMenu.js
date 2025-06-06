@@ -15,10 +15,10 @@ const RewardMenu = ({navigation}) => {
 
             <View style={{alignItems:'center',marginTop:30,width:'100%'}}>
                 <TouchableOpacity style={{alignItems:'center',width:'90%'}} onPress={()=>{navigation.navigate('RedeemGifts',{schemeType : "yearly"})}}> 
-                <Image style={{height:150, width:'100%',borderRadius:20,resizeMode:'contain'}} source={require("../../../assets/images/redeemBox.png")}></Image>
+                <Image style={{height:150, width:'100%',resizeMode:'contain'}} source={require("../../../assets/images/redeemBox.png")}></Image>
                 </TouchableOpacity>
-                <TouchableOpacity style={{alignItems:'center',width:'90%'}} onPress={()=>{navigation.navigate('RedeemCashback')}}> 
-                <Image style={{height:150, width:'100%', marginTop:20,borderRadius:20,resizeMode:'contain'}} source={require("../../../assets/images/cashbackBox.png")}></Image>
+                <TouchableOpacity style={{alignItems:'center',width:'90%',bottom:20}} onPress={()=>{navigation.navigate('RedeemCashback')}}> 
+                <Image style={{height:150, width:'90%',resizeMode:'contain'}} source={require("../../../assets/images/cashbackBox.png")}></Image>
 
                 </TouchableOpacity>
              

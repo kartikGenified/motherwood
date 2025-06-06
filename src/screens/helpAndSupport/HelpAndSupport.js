@@ -181,7 +181,7 @@ const HelpAndSupport = ({ navigation }) => {
           }}>
             <PoppinsTextLeftMedium
               style={{
-                fontSize: 20,
+                fontSize: 17,
                 marginLeft: 17,
                 color: "#303030",
                 fontWeight: "600",
@@ -190,10 +190,11 @@ const HelpAndSupport = ({ navigation }) => {
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{
-                fontSize: 17,
+                fontSize: 14,
                 marginLeft: 20,
                 color: "#303030",
                 fontWeight: "700",
+                marginTop:6
               }}
               content={supportMobile ? supportMobile : ""}
             ></PoppinsTextLeftMedium>

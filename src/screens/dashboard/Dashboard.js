@@ -40,7 +40,10 @@ import {
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
 import { setQrIdList } from "../../../redux/slices/qrCodeDataSlice";
 import CampaignVideoModal from "../../components/modals/CampaignVideoModal";
-import { useGetActiveMembershipMutation, useGetMembershipMutation } from "../../apiServices/membership/AppMembershipApi";
+import {
+  useGetActiveMembershipMutation,
+  useGetMembershipMutation,
+} from "../../apiServices/membership/AppMembershipApi";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import PlatinumModal from "../../components/platinum/PlatinumModal";
 import { useFetchAllQrScanedListMutation } from "../../apiServices/qrScan/AddQrApi";
@@ -72,7 +75,10 @@ import RewardBox from "../../components/molecules/RewardBox";
 import RewardBoxDashboard from "../../components/molecules/RewardBoxDashboard";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import DreamCard from "../../components/dreamComponent/DreamCard";
-import { setSecondaryThemeColor, setTernaryThemeColor } from "../../../redux/slices/appThemeSlice";
+import {
+  setSecondaryThemeColor,
+  setTernaryThemeColor,
+} from "../../../redux/slices/appThemeSlice";
 
 const Dashboard = ({ navigation }) => {
   const [dashboardItems, setDashboardItems] = useState();
@@ -90,8 +96,9 @@ const Dashboard = ({ navigation }) => {
   const [success, setSuccess] = useState(false);
   const [hide, setHide] = useState(true);
   const [campaignData, setCaimpaignData] = useState(null);
-  const [showCampaign, setShowCampaign] = useState();
+  const [showCampaign, setShowCampaign] = useState(true);
   const [error, setError] = useState(false);
+  const [isTertiary, setIsTertiary] = useState();
   const [walkThrough, setWalkThrough] = useState(false);
   const stepId = useSelector((state) => state.walkThrough.stepId);
   const { date, time, month, year } = useCurrentDateTime();
@@ -120,14 +127,25 @@ const Dashboard = ({ navigation }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.appusersdata.userId);
   const userData = useSelector((state) => state.appusersdata.userData);
-  if((userData.user_type).toLowerCase() == 'contractor' || (userData.user_type).toLowerCase() == 'carpenter' || (userData.user_type).toLowerCase() == 'oem' || (userData.user_type).toLowerCase() == 'directoem')
-      {
-        console.log("dispatching new user themes according to user types")
-        dispatch(setTernaryThemeColor("#00A79D"))
-        
-        dispatch(setSecondaryThemeColor("#F0F8F6"))
-      }
-  console.log("user data in dashboard is here", userData)
+
+  useEffect(() => {
+    if (
+      userData.user_type.toLowerCase() == "contractor" ||
+      userData.user_type.toLowerCase() == "carpenter" ||
+      userData.user_type.toLowerCase() == "oem" ||
+      userData.user_type.toLowerCase() == "directoem"
+    ) {
+      console.log("dispatching new user themes according to user types");
+      dispatch(setTernaryThemeColor("#00A79D"));
+      setIsTertiary(true);
+
+      dispatch(setSecondaryThemeColor("#F0F8F6"));
+    } else {
+      setIsTertiary(false);
+    }
+  }, [userData]);
+
+  console.log("user data in dashboard is here", userData);
   const pointSharingData = useSelector(
     (state) => state.pointSharing.pointSharing
   );
@@ -206,6 +224,8 @@ const Dashboard = ({ navigation }) => {
   const id = useSelector((state) => state.appusersdata.id);
   const { t } = useTranslation();
 
+  console.log("gvbjkbsdjkbvjksdhjgfgsahjgfjksa",isTertiary)
+
   const fetchPoints = async () => {
     const credentials = await Keychain.getGenericPassword();
     const token = credentials.username;
@@ -277,10 +297,13 @@ const Dashboard = ({ navigation }) => {
     getToken();
   }, []);
 
-    useEffect(() => {
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      return true; // Prevent default behavior (disables back button)
-    });
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        return true; // Prevent default behavior (disables back button)
+      }
+    );
 
     return () => backHandler.remove(); // Cleanup on unmount
   }, []);
@@ -335,11 +358,18 @@ const Dashboard = ({ navigation }) => {
 
   useEffect(() => {
     if (getActiveMembershipData) {
-      console.log("getActiveMembershipData", JSON.stringify(getActiveMembershipData))
+      console.log(
+        "getActiveMembershipData",
+        JSON.stringify(getActiveMembershipData)
+      );
       if (getActiveMembershipData?.success) {
         setMembership(getActiveMembershipData?.body?.tier?.name);
       }
     } else if (getActiveMembershipError) {
+      console.log(
+        "getActiveMembershipData",
+        JSON.stringify(getActiveMembershipData)
+      );
       if (getActiveMembershipError.status == 401) {
         const handleLogout = async () => {
           try {
@@ -402,7 +432,7 @@ const Dashboard = ({ navigation }) => {
     let eligibleUser = "";
     let percentage;
     let index;
-    
+
     for (var i = 0; i < values.length; i++) {
       if (values[i].includes(userData?.user_type)) {
         eligibleUser = keys[i];
@@ -490,7 +520,7 @@ const Dashboard = ({ navigation }) => {
     const credentials = await Keychain.getGenericPassword();
     if (credentials) {
       const token = credentials?.username;
-      console.log("getActiveMembershipFunc token",token)
+      console.log("getActiveMembershipFunc token", token);
       getActiveMembershipFunc(token);
     }
   };
@@ -508,7 +538,7 @@ const Dashboard = ({ navigation }) => {
   };
 
   const dontShow = (status) => {
-    console.log("dont show campaign");
+    console.log("dont show campaign", status);
     setShowCampaign(status);
   };
 
@@ -703,11 +733,7 @@ const Dashboard = ({ navigation }) => {
             <></>
           )}
 
-          
-            <RewardBoxDashboard />
-
-
-
+          <RewardBoxDashboard />
 
           {dashboardData && !userPointIsLoading && (
             <DashboardMenuBox
@@ -716,11 +742,10 @@ const Dashboard = ({ navigation }) => {
               data={dashboardData}
             ></DashboardMenuBox>
           )}
-          <DreamCard/>
+          <DreamCard />
 
-          {
-            <View style={{width:'100%',backgroundColor:'white'}}>
-                   <TouchableOpacity
+          <View style={{ width: "100%", backgroundColor: "white", bottom: 4, marginBottom:4 }}>
+            <TouchableOpacity
               onPress={() => {
                 navigation.navigate("DreamGift");
               }}
@@ -730,22 +755,23 @@ const Dashboard = ({ navigation }) => {
                   width: "90%",
                   alignSelf: "center",
                   resizeMode: "contain",
+                  height:120
                 }}
-                source={require("../../../assets/images/DreamCardRed.png")}
+                source={
+                  isTertiary
+                    ? require("../../../assets/images/DreamCardBlue.png")
+                    : require("../../../assets/images/DreamCardRed.png")
+                }
               ></Image>
             </TouchableOpacity>
-            </View>
+          </View>
 
-          }
-
-        
           {userPointIsLoading && (
             <FastImage
               style={{
                 width: 100,
                 height: 100,
                 alignSelf: "center",
-                marginTop: 20,
               }}
               source={{
                 uri: gifUri, // Update the path to your GIF
@@ -759,11 +785,11 @@ const Dashboard = ({ navigation }) => {
             style={{
               flexDirection: "row",
               width: "100%",
-              height: 100,
-              marginBottom:40,
               backgroundColor: "white",
               alignItems: "center",
               justifyContent: "space-evenly",
+              bottom: 30,
+              marginBottom: 20,
             }}
           >
             <DashboardSupportBox
@@ -775,8 +801,8 @@ const Dashboard = ({ navigation }) => {
             ></DashboardSupportBox>
 
             <DashboardSupportBox
-              title={t("feedback")}
-              text="Feedback"
+              title={t("Rating/Feedback")}
+              text="Rating/Feedback"
               backgroundColor={secondaryThemeColor}
               borderColor={ternaryThemeColor}
               image={require("../../../assets/images/feedback_red.png")}
@@ -784,7 +810,7 @@ const Dashboard = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
-      <SocialBottomBar backgroundColor={"white"}/>
+      <SocialBottomBar backgroundColor={"white"} />
     </View>
   );
 };

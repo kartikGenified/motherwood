@@ -52,15 +52,15 @@ const CampaignVideoModal = ({ dontShow,isVisible, onClose }) => {
 
     useEffect(() => {
         if (getAppCampaignData) {
-            console.log("getAppCampaignData", getAppCampaignData);
+            console.log("getAppCampaignData", JSON.stringify(getAppCampaignData));
             setHide(getAppCampaignData?.body?.data?.[0]?.image?.can_user_hide);
-            if(getAppCampaignData.body.data.length==0)
-            {
-                dontShow(true)
-            }
-            else{
-                dontShow(false)
-            }
+            // if(getAppCampaignData.body.data.length==0)
+            // {
+            //     dontShow(true)
+            // }
+            // else{
+            //     dontShow(false)
+            // }
         }
         else if (getAppCampaignError) {
             console.log("getAppCampaignIsError", getAppCampaignIsError);
@@ -88,7 +88,7 @@ const CampaignVideoModal = ({ dontShow,isVisible, onClose }) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
                     {getAppCampaignData &&
-                        <Image style={{ width: '100%', height: '100%', resizeMode: "center" }} source={{ uri: BaseUrlImages + getAppCampaignData?.body?.data?.[0]?.image }}></Image>
+                        <Image style={{ width: '100%', height: '100%', resizeMode: "cover" }} source={{ uri: BaseUrlImages + getAppCampaignData?.body?.data?.[0]?.image }}></Image>
                     }
 
 
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         width: '90%',
         height: 350,
         borderRadius: 10,
-        padding: 20,
+        padding: 4,
     },
     successText: {
         fontSize: 24,

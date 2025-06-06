@@ -30,7 +30,15 @@ const SelectUserBox = (props) => {
 
     useEffect(()=>{
         setBoxColor("white")
-        
+        if((props.content).toLowerCase() == 'contractor' || (props.content).toLowerCase() == 'carpenter' || (props.content).toLowerCase() == 'oem' || (props.content).toLowerCase() == 'directoem')
+      {
+        dispatch(setTernaryThemeColor("#F0F8F6"))
+        dispatch(setSecondaryThemeColor("#00A79D"))
+      }
+      else{
+        dispatch(setTernaryThemeColor("#B6202D"))
+        dispatch(setSecondaryThemeColor("#FFF8E7"))
+      }
     },[focused])
    
         
@@ -67,11 +75,7 @@ const SelectUserBox = (props) => {
 
     const handleNavigation=(needsApproval,registrationRequired)=>{
 
-        if((props.content).toLowerCase() == 'contractor' || (props.content).toLowerCase() == 'carpenter' || (props.content).toLowerCase() == 'oem' || (props.content).toLowerCase() == 'directoem')
-      {
-        dispatch(setTernaryThemeColor("#F0F8F6"))
-        dispatch(setSecondaryThemeColor("#00A79D"))
-      }
+        
         console.log("Needs Approval",needsApproval)
         if(otpLogin.includes(props.content)
         ){

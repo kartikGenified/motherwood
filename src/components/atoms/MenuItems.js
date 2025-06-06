@@ -50,7 +50,9 @@ const MenuItems = (props) => {
     <View
       accessibilityLabel={String(props.index)}
       style={{
-        margin:4
+        margin:4,
+        height:80
+        
       }}
     >
       <TouchableOpacity
@@ -66,7 +68,8 @@ const MenuItems = (props) => {
           alignItems: "center",
           justifyContent: "center",
           opacity: 1,
-          paddingBottom:4
+          paddingBottom:4,
+          height:80
         }}
       >
         <Image
