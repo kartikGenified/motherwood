@@ -87,23 +87,11 @@ const CampaignVideoModal = ({ dontShow,isVisible, onClose }) => {
         >
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
-                    <PoppinsTextMedium style={{ fontWeight: '800', color: 'black', fontSize: 20 }} content={t("campaign app promotion")}></PoppinsTextMedium>
                     {getAppCampaignData &&
-                        <Image style={{ width: '100%', height: 150, resizeMode: "center", marginTop: 10 }} source={{ uri: BaseUrlImages + getAppCampaignData?.body?.data?.[0]?.image }}></Image>
+                        <Image style={{ width: '100%', height: '100%', resizeMode: "center" }} source={{ uri: BaseUrlImages + getAppCampaignData?.body?.data?.[0]?.image }}></Image>
                     }
 
 
-                    <TouchableOpacity style={{ width: '80%', borderRadius: 5, height: 40, backgroundColor: '#E10c68', alignItems: 'center', justifyContent: 'center', marginTop: 20, alignSelf: 'center' }} onPress={() => {
-                        touchedVideo()
-                    }}>
-                        <PoppinsTextMedium content={t('video')} style={{ fontSize: 20, color: 'white', fontWeight: 'bold' }}></PoppinsTextMedium>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{ width: '80%', borderRadius: 5, height: 40, backgroundColor: '#2C2C2C', alignItems: 'center', justifyContent: 'center', marginTop: 10, alignSelf: 'center' }} onPress={() => {
-                        touchedKnowMore()
-                    }}>
-                        <PoppinsTextMedium content={t("know more")} style={{ fontSize: 20, color: 'white', fontWeight: 'bold' }}></PoppinsTextMedium>
-                    </TouchableOpacity>
 
 
                     {
