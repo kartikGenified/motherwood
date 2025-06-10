@@ -21,7 +21,7 @@ import { useGetLoginOtpMutation } from "../../apiServices/login/otpBased/SendOtp
 import ButtonNavigate from "../../components/atoms/buttons/ButtonNavigate";
 import ErrorModal from "../../components/modals/ErrorModal";
 import { useGetNameMutation } from "../../apiServices/login/GetNameByMobile";
-
+import Mobile from 'react-native-vector-icons/AntDesign'
 import { useIsFocused } from "@react-navigation/native";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
 import Checkbox from "../../components/atoms/checkbox/Checkbox";
@@ -406,13 +406,17 @@ const OtpLogin = ({ navigation, route }) => {
           openModal={alert}
         ></AlertModal>
       )}
-      <KeyboardAvoidingView>
+      <KeyboardAvoidingView style={{flexDirection:"row",
+            marginTop: 40,
+            alignItems:'center',
+            justifyContent:'center',
+            width:'100%',
+          }}>
         <View
           style={{
-            width: "100%",
+            width: "80%",
             alignItems: "center",
             justifyContent: "center",
-            marginTop: 40,
           }}
         >
           <TextInputInsIdePlaceholder
@@ -431,6 +435,9 @@ const OtpLogin = ({ navigation, route }) => {
               value={name}
               specialCharValidation={true}
             ></TextInputRectangularWithPlaceholder> */}
+        </View>
+        <View style={{alignItems:'center', justifyContent:'center',backgroundColor:"white",height:70,width:'10%'}}>
+          <Mobile name="mobile1" size={30} color={"black"}></Mobile>
         </View>
       </KeyboardAvoidingView>
 

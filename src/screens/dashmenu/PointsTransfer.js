@@ -22,6 +22,7 @@ import {
 import * as Keychain from "react-native-keychain";
 import { useFetchUserPointsMutation } from "../../apiServices/workflow/rewards/GetPointsApi";
 import { useSelector } from "react-redux";
+import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 
 // for userSearch
 const PointsTransfer = () => {
@@ -95,6 +96,7 @@ const PointsTransfer = () => {
   }, [mobile]);
 
   return (
+    <>
     <ScrollView style={styles.container}>
       <TopHeader title={"Point Transfer"} />
       <RewardBox />
@@ -289,6 +291,8 @@ const PointsTransfer = () => {
         </TouchableOpacity>
       )}
     </ScrollView>
+    <SocialBottomBar></SocialBottomBar>
+    </>
   );
 };
 
@@ -297,6 +301,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
+  
   },
 });
 

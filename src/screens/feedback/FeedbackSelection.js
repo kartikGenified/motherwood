@@ -55,6 +55,8 @@ const FeedbackSelection = ({navigation}) => {
             <View style={{alignItems:'center', justifyContent:'center',marginTop:40}}>
             <Selector image={require('../../../assets/images/feedbackApp.png')} navigate="Feedback" title="Feedback For App"/>
             <Selector image={require('../../../assets/images/feedbackProducts.png')} navigate="FeedbackProducts" title="Feedback For Product"/>
+            <SocialBottomBar backgroundColor={"white"} />
+
             </View>
         </View>
     );

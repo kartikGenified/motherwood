@@ -24,10 +24,10 @@ const navigation = useNavigation()
   const userData = useSelector(state => state.appusersdata.userData)
 
   useEffect(()=>{
-    if(userData.user_type.toLowerCase() == "contractor" ||
-    userData.user_type.toLowerCase() == "carpenter" ||
-    userData.user_type.toLowerCase() == "oem" ||
-    userData.user_type.toLowerCase() == "directoem")
+    if((userData?.user_type)?.toLowerCase() == "contractor" ||
+    (userData?.user_type)?.toLowerCase() == "carpenter" ||
+    (userData?.user_type)?.toLowerCase() == "oem" ||
+    (userData?.user_type)?.toLowerCase() == "directoem")
     {
       setIsTertiary(true)
     }

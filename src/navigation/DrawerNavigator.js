@@ -25,7 +25,7 @@ import { useGetAppMenuDataMutation } from "../apiServices/dashboard/AppUserDashb
 import * as Keychain from "react-native-keychain";
 import { SvgUri } from "react-native-svg";
 import { ScrollView } from "react-native-gesture-handler";
-import { useGetActiveMembershipMutation } from "../apiServices/membership/AppMembershipApi";
+import { useGetActiveMembershipMutation, useGetSavedMembershipMutation } from "../apiServices/membership/AppMembershipApi";
 import { useFetchProfileMutation } from "../apiServices/profile/profileApi";
 import Share from "react-native-share";
 import { shareAppLink } from "../utils/ShareAppLink";
@@ -110,7 +110,7 @@ const CustomDrawer = () => {
       isLoading: getActiveMembershipIsLoading,
       isError: getActiveMembershipIsError,
     },
-  ] = useGetActiveMembershipMutation();
+  ] = useGetSavedMembershipMutation();
 
   const focused = useIsFocused();
 
@@ -623,6 +623,10 @@ const CustomDrawer = () => {
             style={{ color: "black" }}
             content={"MWEDKSKD"}
           ></PoppinsTextMedium>
+          {getActiveMembershipData  && <PoppinsTextMedium
+            style={{ color: "black" }}
+            content={getActiveMembershipData?.body?.tier?.name}
+          ></PoppinsTextMedium>}
         </View>
 
         <View style={{ justifyContent: "center", marginLeft: 50 }}>

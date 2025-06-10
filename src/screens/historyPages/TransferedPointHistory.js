@@ -651,7 +651,7 @@ const TransferredPointHistory = ({ navigation }) => {
             ></PoppinsTextLeftMedium>
           </View>
           {
-            (userData.user_type).toLowerCase()!='carpenter' && (userData.user_type).toLowerCase()!='contractor' && (userData.user_type).toLowerCase()!='oem' && (userData.user_type).toLowerCase()!='directoem' && 
+            (userData?.user_type)?.toLowerCase()!='carpenter' && (userData?.user_type)?.toLowerCase()!='contractor' && (userData?.user_type)?.toLowerCase()!='oem' && (userData?.user_type)?.toLowerCase()!='directoem' && 
             <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:140,marginLeft:20}} onPress={()=>{
               navigation.navigate('PointsTransfer')
   

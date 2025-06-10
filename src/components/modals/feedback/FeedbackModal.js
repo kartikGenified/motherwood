@@ -22,7 +22,7 @@ const FeedbackModal = ({ isVisible, onClose, user }) => {
                     <PoppinsTextMedium style={{ fontSize: 22, fontWeight: '600', color: '#7BC143', fontWeight: 'bold', marginTop: 10 }} content={"Dear " + user}></PoppinsTextMedium>
 
                     <View>
-                        <PoppinsTextMedium style={{ fontSize: 22, fontWeight: '600', color: '#000000', marginTop: 20, marginHorizontal: 20 }} type={"feedback"} content={t("Thank You for submitting your feedback")}></PoppinsTextMedium>
+                        <PoppinsTextMedium style={{ fontSize: 22, fontWeight: '600', color: '#000000', marginTop: 20, marginHorizontal: 20 }} type={"feedback"} content={t("Thank You for submitting your feedback. We truly  value your input")}></PoppinsTextMedium>
                     </View>
 
                     <TouchableOpacity style={styles.closeButton} onPress={onClose}>

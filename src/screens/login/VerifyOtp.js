@@ -70,6 +70,8 @@ import { useIsFocused } from "@react-navigation/native";
 import { useVerifyOtpForNormalUseMutation } from "../../apiServices/otp/VerifyOtpForNormalUseApi";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import { useGetLoginOtpForVerificationMutation } from "../../apiServices/otp/GetOtpApi";
+import Phone from 'react-native-vector-icons/FontAwesome'
+
 
 const VerifyOtp = ({ navigation, route }) => {
   console.log("ndjnjeddnjcndncd", route.params);
@@ -650,33 +652,34 @@ useEffect(()=>{
     if (value.length === 6) {
       setOtp(value);
       console.log("From Verify Otp", value);
-
     }
   };
 
-  useEffect(() => {
+  useEffect(()=>{
     if (otp.length === 6) {
-      // setOtp(value);
-      if(navigationParams?.otp)
+    if(navigationParams?.otp)
+    {
+      if(navigationParams?.otp == otp)
       {
-        if(navigationParams?.otp == otp)
-        {
-          navigation.reset({ index: "0", routes: [{
-            name: "BasicInfo",
-            params: navigationParams, // your JSON object
-          },] });
-        }
-        else{
-          setError(true)
-          setMessage("Kindly Enter the correct OTP")
-        }
+        navigation.reset({ index: "0", routes: [{
+          name: "BasicInfo",
+          params: navigationParams, // your JSON object
+        },] })
       }
       else{
-        verifyOtp();
+        setError(true)
+        setMessage("Kindly Enter the correct OTP")
       }
-      // console.log('From Verify Otp', value);
     }
-  }, [otp]);
+    else{
+      verifyOtp();
+    }
+  }
+  },[otp])
+   
+  
+
+  
 
   const modalClose = () => {
     setError(false);
@@ -691,6 +694,19 @@ useEffect(()=>{
       handleOtpResend();
     }
   };
+
+  const handleVerifyButton=()=>{
+    if(otp.length==6)
+    {
+    verifyOtp();
+      
+    }
+    else{
+      setError(true)
+      setMessage("Kindly Enter the correct OTP")
+    }
+
+  }
 
   const verifyOtp = () => {
     console.log("first");
@@ -806,11 +822,14 @@ useEffect(()=>{
             style={{ color: "#00A79D", fontSize: 14 }}
             content={t("OTP has been sent to the below Mobile Number")}
           ></PoppinsText>
-
+          <View style={{alignItems:'center',justifyContent:'center',flexDirection:"row"}}>
+          <Phone name="phone" size={16} color={"#00A79D"}></Phone>
           <PoppinsText
-            style={{ color: "black", fontSize: 14 }}
+            style={{ color: "#00A79D", fontSize: 14,marginLeft:4  }}
             content={"+91-" + navigationParams.mobile}
           ></PoppinsText>
+          </View>
+          
         </View>
       </View>
       <View style={{ marginHorizontal: 100 }}>
@@ -834,12 +853,7 @@ useEffect(()=>{
         )}
       </View>
 
-        <View style={{ alignItems: "center", justifyContent: "center" }}>
-          <Image
-            style={{ height: 160, width: 160, resizeMode: "contain" }}
-            source={require("../../../assets/images/otpScreenImage.png")}
-          ></Image>
-        </View>
+       
         <OtpInput
           getOtpFromComponent={getOtpFromComponent}
           color={"white"}
@@ -889,8 +903,15 @@ useEffect(()=>{
             </Text>
           </View>
         </View>
-        
+        <TouchableOpacity onPress={()=>{handleVerifyButton()}} style={{alignItems:"center", justifyContent:'center',width:'90%',backgroundColor:'black',height:60,borderRadius:6}}>
+        <Text style={{ color: "white", fontSize:22, fontWeight:'700'}}>
+        Verify OTP
+            </Text>
+        </TouchableOpacity>
+        <View style={{marginTop:110}}>
         <SocialBottomBar showRelative={true}/>
+
+        </View>
     </ScrollView>
     </View>
     </KeyboardAvoidingView>

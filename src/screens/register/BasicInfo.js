@@ -1252,7 +1252,7 @@ const BasicInfo = ({ navigation, route }) => {
               style={{
                 color: "black",
                 fontWeight: "700",
-                fontSize: 18,
+                fontSize: 22,
                 marginBottom: 40,
               }}
               content={

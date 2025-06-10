@@ -7,6 +7,7 @@ import HyperlinkText from "../../components/electrons/customFonts/HyperlinkText"
 import DataNotFound from "../data not found/DataNotFound";
 import { useTranslation } from "react-i18next";
 import { useIsFocused } from "@react-navigation/native";
+import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 const Notification = ({ navigation }) => {
 
     const [getNotiFunc, {
@@ -89,7 +90,7 @@ const Notification = ({ navigation }) => {
 
             </View>
             }
-            <ScrollView contentContainerStyle={{  backgroundColor: "white",minHeight:'90%', width:'100%', borderTopLeftRadius: 20, borderTopRightRadius: 20 }}>
+            <ScrollView contentContainerStyle={{  backgroundColor: "white",minHeight:'84%', width:'100%', borderTopLeftRadius: 20, borderTopRightRadius: 20 }}>
             
             
                 {
@@ -100,10 +101,14 @@ const Notification = ({ navigation }) => {
                 }
                  
         </ScrollView>
+      <SocialBottomBar backgroundColor={"white"} />
+
         {
                   notifData?.body?.count == "0"  &&
                      <View style={{height:'90%', backgroundColor:'white',width:'100%' }}>
                      <DataNotFound></DataNotFound>
+      <SocialBottomBar backgroundColor={"white"} />
+
                      </View>
 
                 }

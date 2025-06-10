@@ -130,10 +130,10 @@ const Dashboard = ({ navigation }) => {
 
   useEffect(() => {
     if (
-      userData.user_type.toLowerCase() == "contractor" ||
-      userData.user_type.toLowerCase() == "carpenter" ||
-      userData.user_type.toLowerCase() == "oem" ||
-      userData.user_type.toLowerCase() == "directoem"
+      (userData?.user_type)?.toLowerCase() == "contractor" ||
+      (userData?.user_type)?.toLowerCase() == "carpenter" ||
+      (userData?.user_type)?.toLowerCase() == "oem" ||
+      (userData?.user_type)?.toLowerCase() == "directoem"
     ) {
       console.log("dispatching new user themes according to user types");
       dispatch(setTernaryThemeColor("#00A79D"));
@@ -715,8 +715,8 @@ const Dashboard = ({ navigation }) => {
             </TouchableOpacity>
           </View>
 
-          {(userData?.user_type).toLowerCase() !== "dealer" ? (
-            (userData?.user_type).toLowerCase() !== "sales" ? (
+          {(userData?.user_type)?.toLowerCase() !== "dealer" ? (
+            (userData?.user_type)?.toLowerCase() !== "sales" ? (
               scanningDetails &&
               scanningDetails?.data.length !== 0 && (
                 <ScannedDetailsBox

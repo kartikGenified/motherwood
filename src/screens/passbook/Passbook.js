@@ -556,7 +556,7 @@ const Passbook = ({ navigation }) => {
             }
 
 {
-            (userData.user_type).toLowerCase()!='carpenter' && (userData.user_type).toLowerCase()!='contractor' && (userData.user_type).toLowerCase()!='oem' && (userData.user_type).toLowerCase()!='directoem' && 
+            (userData?.user_type)?.toLowerCase()!='carpenter' && (userData?.user_type)?.toLowerCase()!='contractor' && (userData?.user_type)?.toLowerCase()!='oem' && (userData?.user_type)?.toLowerCase()!='directoem' && 
               <NavigateTO
                 visibleTitle={t("Transferred Points Summary")}
                 title={"Points History Transfered"}
@@ -747,7 +747,7 @@ const Passbook = ({ navigation }) => {
                 ></GridVIew>
               )}
                        {
-            (userData.user_type).toLowerCase()!='carpenter' && (userData.user_type).toLowerCase()!='contractor' && (userData.user_type).toLowerCase()!='oem' && (userData.user_type).toLowerCase()!='directoem' && 
+            (userData?.user_type)?.toLowerCase()!='carpenter' && (userData?.user_type)?.toLowerCase()!='contractor' && (userData?.user_type)?.toLowerCase()!='oem' && (userData?.user_type)?.toLowerCase()!='directoem' && 
                 <GridVIew
                   title={t("Transferred Points Summary")}
                   discription=" list of points redeemed by you"

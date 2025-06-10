@@ -22,7 +22,7 @@ const id = useSelector(state => state.appusersdata.id);
 const userData = useSelector((state) => state.appusersdata.userData);
 const membership = props?.memberShip?.toLowerCase()
 useEffect(() => {
-  if( (userData.user_type).toLowerCase() == 'carpenter' ||  (userData.user_type).toLowerCase() == 'contractor' ||  (userData.user_type).toLowerCase() == 'oem' ||  (userData.user_type).toLowerCase() == 'directoem')
+  if( (userData?.user_type)?.toLowerCase() == 'carpenter' ||  (userData?.user_type)?.toLowerCase() == 'contractor' ||  (userData?.user_type)?.toLowerCase() == 'oem' ||  (userData?.user_type)?.toLowerCase() == 'directoem')
  {
   setIsTertiary(true)
  }

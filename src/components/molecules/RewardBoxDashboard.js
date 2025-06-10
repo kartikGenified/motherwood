@@ -76,13 +76,13 @@ const RewardBoxDashboard = () => {
                     workflow?.includes("Wheel") && <RewardRectangular color="#FFE2E6" image={require('../../../assets/images/cashback.png')} title="Spin Wheel"></RewardRectangular>
 
                 }
-
+{
+                    userData && (userData?.user_type)?.toLowerCase() == 'distributor' && userPointData  && <RewardRectangular amount={userPointData.body.point_earned} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("earned points")}></RewardRectangular>
+                }
                 {
                   userPointData && <RewardRectangular amount={Math.floor(userPointData.body.point_earned ? userPointData.body.point_earned : 0)} color="#F0FCE7" image={require('../../../assets/images/current_point.png')} title={t("Current Points")}></RewardRectangular>
                 }
-                {
-                    userData && (userData?.user_type)?.toLowerCase() == 'distributor' && userPointData  && <RewardRectangular amount={userPointData.body.point_earned} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("earned points")}></RewardRectangular>
-                }
+                
                 {
                     workflow?.includes("Points On Product") && userPointData && <RewardRectangular amount={userPointData.body.point_redeemed} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("redeemed points")}></RewardRectangular>
                 }
