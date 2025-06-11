@@ -298,7 +298,9 @@ const CustomDrawer = () => {
               }
               else if (props.title.toLowerCase() === "gift catalogue") {
                 navigation.navigate("GiftCatalogue");
-              } else if (
+              }
+       
+              else if (
                 props.title.toLowerCase() === "bank details" ||
                 props.title.toLowerCase() === "bank account"
               ) {

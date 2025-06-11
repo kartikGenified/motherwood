@@ -1252,8 +1252,9 @@ const BasicInfo = ({ navigation, route }) => {
               style={{
                 color: "black",
                 fontWeight: "700",
-                fontSize: 22,
+                fontSize: 26,
                 marginBottom: 40,
+                paddingHorizontal:50
               }}
               content={
                 formStage == 1
