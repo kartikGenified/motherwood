@@ -180,7 +180,7 @@ const AddBankDetails = ({navigation}) => {
         )
     }
     return (
-        <View style={{alignItems:"center",justifyContent:"center",width:'100%',backgroundColor:ternaryThemeColor,height:'100%'}}>
+        <View style={{alignItems:"center",justifyContent:"center",width:'100%',backgroundColor:"#FFF8E7",height:'100%'}}>
             {error && (
             <ErrorModal
               modalClose={modalClose}
@@ -203,7 +203,7 @@ const AddBankDetails = ({navigation}) => {
             <Image style={{height:24,width:24,resizeMode:'contain',marginLeft:20}} source={require('../../../assets/images/blackBack.png')}></Image>
 
                 </TouchableOpacity>
-            <PoppinsTextMedium content ={t("Add Bank Details")} style={{marginLeft:10,fontSize:16,fontWeight:'700',color:'white'}}></PoppinsTextMedium>
+            <PoppinsTextMedium content ={t("Add Bank Details")} style={{marginLeft:10,fontSize:16,fontWeight:'700',color:'black'}}></PoppinsTextMedium>
             
             </View>
             
@@ -211,7 +211,7 @@ const AddBankDetails = ({navigation}) => {
                 <BankDetails></BankDetails>
                 <AccountDetails></AccountDetails>
                  {/* <TransferDetails></TransferDetails> */}
-               {!hideButton && <ShowLoadingButton handleData={submitData} title={t("proceed")}></ShowLoadingButton>}
+               {!hideButton && <ShowLoadingButton handleData={submitData} title={t("Proceed")}></ShowLoadingButton>}
             </View>
             </ScrollView>
             

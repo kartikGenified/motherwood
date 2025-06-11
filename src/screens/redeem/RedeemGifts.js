@@ -67,13 +67,13 @@ const RedeemGifts = ({ navigation, route }) => {
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   )
-    ? useSelector((state) => state.apptheme.ternaryThemeColor)
-    : "grey";
+   
+  const userData = useSelector(state => state.appusersdata.userData)
+
   const secondaryThemeColor = useSelector(
     (state) => state.apptheme.secondaryThemeColor
   )
-    ? useSelector((state) => state.apptheme.secondaryThemeColor)
-    : "#FFB533";
+   
   const userId = useSelector((state) => state.appusersdata.id);
 
   const selectedGift = useSelector((state) => state.dreamgift?.selectedGift);
@@ -839,7 +839,7 @@ const RedeemGifts = ({ navigation, route }) => {
         </TouchableOpacity>
         <View style={{}}>
           <PoppinsTextMedium
-            content={t("Redeem Points")}
+            content={t("Rewards")}
             style={{
               marginLeft: 10,
               fontSize: 16,
@@ -1124,9 +1124,9 @@ const RedeemGifts = ({ navigation, route }) => {
                             alignItems: "center",
                             justifyContent: "center",
                             borderWidth: 1,
-                            borderColor: ternaryThemeColor,
+                            borderColor: "black",
                             borderRadius: 10,
-                            backgroundColor: "#B6202D",
+                            backgroundColor: ((userData?.user_type).toLowerCase() == "carpenter" || (userData?.user_type).toLowerCase() == "oem" || (userData?.user_type).toLowerCase() == "directoem" || (userData?.user_type).toLowerCase() == "contractor")  ? "#00A79D" : "#B6202D",
                             width: "94%",
                             padding: 6,
                             marginBottom: 20,
@@ -1186,7 +1186,7 @@ const RedeemGifts = ({ navigation, route }) => {
                     position: "absolute",
                     bottom: 100,
                     left: 50,
-                    backgroundColor: ternaryThemeColor,
+                    backgroundColor: "black",
                   }}
                 >
                   <PoppinsTextMedium
@@ -1195,7 +1195,7 @@ const RedeemGifts = ({ navigation, route }) => {
                       fontSize: 18,
                       fontWeight: "700",
                     }}
-                    content={t("continue")}
+                    content={t("Process")}
                   />
                 </TouchableOpacity>
               )}

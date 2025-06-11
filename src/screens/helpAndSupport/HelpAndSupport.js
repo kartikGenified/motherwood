@@ -76,7 +76,7 @@ const HelpAndSupport = ({ navigation }) => {
           ></Image>
         </TouchableOpacity>
         <PoppinsTextMedium
-          content={t("Help And Support")}
+          content={t("Customer Support")}
           style={{
             marginLeft: 10,
             fontSize: 16,

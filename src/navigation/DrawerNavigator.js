@@ -384,7 +384,7 @@ const CustomDrawer = () => {
             }}
           >
             {/* {console.log("props.title", props.title)} */}
-            <Text style={{ color: ternaryThemeColor, fontSize: 15 }}>
+            <Text style={{ color: "black", fontSize: 15 }}>
               {props.title == "Passbook"
                 ? `${t("Passbook")}`
                 : props.title == "My Profile"
@@ -1026,7 +1026,7 @@ const CustomDrawer = () => {
 
         <TouchableOpacity
           style={{
-            backgroundColor: ternaryThemeColor,
+            backgroundColor: "black",
             height: 70,
             justifyContent: "center",
             width: "100%",

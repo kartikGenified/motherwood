@@ -39,7 +39,7 @@ const title = props.title
     return (
         <TouchableOpacity onPress={()=>{
             handleSubmit()
-        }} style={{alignItems:"center",justifyContent:"center",width:'50%',height:50,backgroundColor:ternaryThemeColor,margin:20,borderRadius:2}}> 
+        }} style={{alignItems:"center",justifyContent:"center",width:'80%',height:50,backgroundColor:"black",margin:20,borderRadius:8,borderWidth:0.1}}> 
             {!showLoading && <PoppinsTextMedium style={{color:'white',fontSize:16,fontWeight:'700'}} content = {title}></PoppinsTextMedium>}
             {showLoading && <Dots></Dots>}
         </TouchableOpacity>

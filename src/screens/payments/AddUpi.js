@@ -70,7 +70,7 @@ const AddUpi = ({navigation}) => {
   useEffect(() => {
     if (addBankDetailsData) {
       console.log('addBankDetailsData', addBankDetailsData);
-      if (addBankDetailsData.message === 'Bank Account Created') {
+      if (addBankDetailsData.status === 201) {
         addBankDetailsData.body.bene_name == null &&
           getInitials(addBankDetailsData.body.bene_details.bene_name);
         setName(addBankDetailsData.body.bene_details.bene_name);
@@ -180,7 +180,7 @@ console.log("deleteBankError",deleteBankError)
             height: 50,
             width: 50,
             borderRadius: 2,
-            backgroundColor: ternaryThemeColor,
+            backgroundColor: "black",
             alignItems: 'center',
             justifyContent: 'center',
             marginLeft: 20,
@@ -232,7 +232,7 @@ console.log("deleteBankError",deleteBankError)
           <Info
             style={{marginLeft: 20}}
             name="infocirlce"
-            color={ternaryThemeColor}
+            color={"black"}
             size={20}></Info>
           <Text
             style={{
@@ -300,7 +300,7 @@ console.log("deleteBankError",deleteBankError)
         alignItems: 'center',
         justifyContent: 'flex-start',
         width: '100%',
-        backgroundColor: ternaryThemeColor,
+        backgroundColor: "#FFF8E7",
         height: '100%',
       }}>
       {error && (
@@ -327,11 +327,12 @@ console.log("deleteBankError",deleteBankError)
 
       <View
         style={{
-          alignItems: 'flex-start',
-          justifyContent: 'center',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
           width: '100%',
           height: '14%',
           marginTop: 10,
+          flexDirection:'row'
         }}>
         <TouchableOpacity
           onPress={() => {
@@ -347,11 +348,11 @@ console.log("deleteBankError",deleteBankError)
             source={require('../../../assets/images/blackBack.png')}></Image>
         </TouchableOpacity>
         <PoppinsTextMedium
-          content={t("Enter UPI Address")}
+          content={t("UPI ID Details")}
           style={{
             fontSize: 22,
             fontWeight: '700',
-            color: 'white',
+            color: 'black',
             marginLeft: 30,
           }}></PoppinsTextMedium>
       </View>
@@ -402,7 +403,7 @@ console.log("deleteBankError",deleteBankError)
           }}>
           <ShowLoadingButtonSmall
             handleData={submitUpi}
-            title={t("verify")}></ShowLoadingButtonSmall>
+            title={t("Process")}></ShowLoadingButtonSmall>
         </View>
         }
       </View>

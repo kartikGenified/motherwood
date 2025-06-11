@@ -33,6 +33,7 @@ import TextInputRectangularWithPlaceholder from "../../components/atoms/input/Te
 import { setKycData } from "../../../redux/slices/userKycStatusSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
+import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 const KycMotherhood = ({ navigation }) => {
   const [modalContent, setModalContent] = useState();
   const [modal, setModal] = useState(false);
@@ -1964,6 +1965,8 @@ const KycMotherhood = ({ navigation }) => {
           title="Add UPI"
           verified={upiVerified}
         ></KycComp>
+        <PoppinsTextMedium style={{color:"black",margin:10}} content="For any issues with KYC approvals, please contact our help and support team at +91-9258262524."></PoppinsTextMedium>
+        <SocialBottomBar showRelative={true}></SocialBottomBar>
       </ScrollView>
     </View>
   );

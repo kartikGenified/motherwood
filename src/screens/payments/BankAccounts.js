@@ -284,13 +284,13 @@ const BankAccounts = ({ navigation, route }) => {
 
               }} style={{ height: '50%', flexDirection: 'row', alignItems: "center", justifyContent: 'center' }}>
    <Delete style={{ marginLeft: 4 }} name={t("delete")} size={14} color={ternaryThemeColor}></Delete>
-   <PoppinsTextMedium style={{ color: ternaryThemeColor, fontSize: 14, marginLeft: 4 }} content={t("Delete")}></PoppinsTextMedium>
+   <PoppinsTextMedium style={{ color: "#595959", fontSize: 14, marginLeft: 4 }} content={t("Delete")}></PoppinsTextMedium>
               </TouchableOpacity>
 
             </View>
           }
           <TouchableOpacity onPress={() => { setOpenDrawer(!openDrawer) }}>
-            <Dots name={"dots-three-vertical"} color={ternaryThemeColor} style={{ marginLeft: 4 }} size={26}></Dots>
+            <Dots name={"dots-three-vertical"} color={"#595959"} style={{ marginLeft: 4 }} size={26}></Dots>
           </TouchableOpacity>
         </View>
       </View>
@@ -363,13 +363,13 @@ const BankAccounts = ({ navigation, route }) => {
                 setModalVisible(true)
               }} style={{ height: '50%', flexDirection: 'row', alignItems: "center", justifyContent: 'center' }}>
    <Delete style={{ marginLeft: 4 }} name={t("delete")} size={14} color={ternaryThemeColor}></Delete>
-   <PoppinsTextMedium style={{ color: ternaryThemeColor, fontSize: 14, marginLeft: 4 }} content={t("Delete")}></PoppinsTextMedium>
+   <PoppinsTextMedium style={{ color: "#595959", fontSize: 14, marginLeft: 4 }} content={t("Delete")}></PoppinsTextMedium>
               </TouchableOpacity>
 
             </View>
           }
           <TouchableOpacity onPress={() => { setOpenDrawer(!openDrawer) }}>
-            <Dots name={"dots-three-vertical"} color={ternaryThemeColor} style={{ marginLeft: 4 }} size={26}></Dots>
+            <Dots name={"dots-three-vertical"} color={"#595959"} style={{ marginLeft: 4 }} size={26}></Dots>
           </TouchableOpacity>
         </View>
       </View>
@@ -382,7 +382,7 @@ const BankAccounts = ({ navigation, route }) => {
         alignItems: 'center',
         justifyContent: 'flex-start',
         width: '100%',
-        backgroundColor: ternaryThemeColor,
+        backgroundColor: "#FFF8E7",
         height: '100%',
       }}>
         {modalVisible && <DeleteAccountModal></DeleteAccountModal>}
@@ -430,7 +430,7 @@ const BankAccounts = ({ navigation, route }) => {
             marginLeft: 10,
             fontSize: 16,
             fontWeight: '700',
-            color: 'white',
+            color: 'black',
           }}></PoppinsTextMedium>
       </View>
 
@@ -505,10 +505,10 @@ const BankAccounts = ({ navigation, route }) => {
           
         </ScrollView>
         <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'center', position: 'absolute', bottom: 14, right: 20 }}>
-          <PoppinsText content={t("Add Account")} style={{ color: ternaryThemeColor, fontSize: 16 }}></PoppinsText>
+          <PoppinsText content={t("Add Account")} style={{ color: "#595959", fontSize: 16 }}></PoppinsText>
           <TouchableOpacity onPress={() => { navigation.navigate('AddBankAccountAndUpi') }} style={{ backgroundColor: '#DDDDDD', height: 60, width: 60, borderRadius: 30, alignItems: "center", justifyContent: 'center', marginLeft: 10 }}>
 
-            <Plus name="pluscircle" size={50} color={ternaryThemeColor}></Plus>
+            <Plus name="pluscircle" size={50} color={"#595959"}></Plus>
           </TouchableOpacity>
         </View>
         {
@@ -517,7 +517,7 @@ const BankAccounts = ({ navigation, route }) => {
             {
             navigation.replace("OtpVerification",{type:"Cashback",selectedAccount:hasSelectedPaymentMethod})
             }
-            }} style={{width:100,alignItems:'center',justifyContent:'center',backgroundColor:ternaryThemeColor,padding:8, position: 'absolute', bottom: 14, left: 20 }}>
+            }} style={{width:100,alignItems:'center',justifyContent:'center',backgroundColor:"#595959",padding:8, position: 'absolute', bottom: 22, left: 20 }}>
               <PoppinsText content ={t("Get OTP")} style={{color:'white',fontSize:16}}></PoppinsText>
             </TouchableOpacity>
             }

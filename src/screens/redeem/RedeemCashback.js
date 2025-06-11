@@ -436,7 +436,7 @@ const [checkBeforeRedeem, {
         </TouchableOpacity>
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
           <PoppinsTextMedium
-            content={t("Redeem Cashback")}
+            content={t("Bank/UPI Transfers")}
             style={{
               marginLeft: 10,
               fontSize: 16,
@@ -452,27 +452,21 @@ const [checkBeforeRedeem, {
           style={{height: 140, width: 140}}
           source={require('../../../assets/images/redeemCashback.png')}></Image>
         <View style={{width:'100%',alignItems:'center',justifyContent:'center',flexDirection:'row'}}>
-         {redemptionFrom!="Wallet" ?
-           <View style={{width:'50%',alignItems:'center',justifyContent:'center'}}>
+         {redemptionFrom!="Wallet" &&
+           <View style={{width:'100%',alignItems:'center',justifyContent:'center'}}>
           <PoppinsText
           style={{fontSize: 24, color: 'black', marginTop: 20}}
           content={points ? points : 0}></PoppinsText>
         <PoppinsTextMedium
-          content={t("Available Points")}
+          content={t("Wallet Points")}
           style={{
             color: 'black',
             fontWeight: '600',
             marginBottom: 20,
           }}></PoppinsTextMedium>
-          </View> : 
-          <View style={{width:'60%',alignItems:'center',justifyContent:'center'}}>
-          <PoppinsText
-          style={{fontSize: 24, color: 'black', marginTop: 20}}
-          content="Wallet Balance"></PoppinsText>
-        
-          </View>
+          </View> 
           }
-         {redemptionFrom!="Wallet"  ? <View style={{width:'50%',alignItems:'center',justifyContent:'center'}}>
+         {/* {redemptionFrom!="Wallet"  ? <View style={{width:'50%',alignItems:'center',justifyContent:'center'}}>
           <PoppinsText
           style={{fontSize: 24, color: 'black', marginTop: 20}}
           content={getWalletBalanceData?.body?.cashback_balance ? getWalletBalanceData?.body?.cashback_balance : 0}></PoppinsText>
@@ -490,7 +484,7 @@ const [checkBeforeRedeem, {
           content={getWalletBalanceData?.body?.cashback_balance}></PoppinsText>
         
           </View>
-          }
+          } */}
         </View>
        {redemptionFrom!=="Wallet" &&  <View><PoppinsTextMedium
           content={t("Convert your Points to Cash")}
@@ -596,7 +590,7 @@ const [checkBeforeRedeem, {
               top: 4,
             }}></PoppinsTextMedium>
         </View>
-        <View
+        {/* <View
           style={{
             width: '90%',
             alignItems: 'center',
@@ -614,7 +608,7 @@ const [checkBeforeRedeem, {
               left: 0,
               top: 2,
             }}></PoppinsTextMedium>
-        </View>
+        </View> */}
       </View> 
 
       :
@@ -709,7 +703,7 @@ const [checkBeforeRedeem, {
           alignItems: 'center',
           justifyContent: 'center',
           width: '90%',
-          backgroundColor: ternaryThemeColor,
+          backgroundColor: "black",
           borderRadius: 6,
           height: 50,
           flexDirection: 'row',

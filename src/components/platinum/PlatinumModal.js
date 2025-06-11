@@ -69,7 +69,7 @@ const PlatinumModal = ({ isVisible, onClose, getActiveMembershipData }) => {
                 fontSize: 24,
                 fontWeight: "700",
               }}
-              content="Earn Badges"
+              content="Earn Badge"
             ></PoppinsTextMedium>
 
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
@@ -77,14 +77,14 @@ const PlatinumModal = ({ isVisible, onClose, getActiveMembershipData }) => {
             </TouchableOpacity>
           </View>
           <View style={{flexDirection:'row', alignItems:'center' ,justifyContent:'center',marginTop:10}}>
-            <View style={{alignItems:'center', justifyContent:'center',backgroundColor:ternaryThemeColor,padding:10,margin:1}}>
+            <View style={{alignItems:'flex-start', justifyContent:'center',backgroundColor:ternaryThemeColor,padding:10,margin:1,width:90}}>
             <PoppinsTextMedium
               style={{
                 color: "white",
                 fontSize: 16,
                 fontWeight: "600",
               }}
-              content="Earn Badges"
+              content="Club"
             ></PoppinsTextMedium>
             </View>
             <View style={{alignItems:'center', justifyContent:'center',backgroundColor:ternaryThemeColor,padding:10,margin:1}}>
@@ -104,7 +104,7 @@ const PlatinumModal = ({ isVisible, onClose, getActiveMembershipData }) => {
                 fontSize: 16,
                 fontWeight: "600",
               }}
-              content="Bonus Point"
+              content="Bonus Points"
             ></PoppinsTextMedium>
             </View>
           </View>

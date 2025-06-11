@@ -17,7 +17,7 @@ const AddBankAccountAndUpi = ({navigation}) => {
         
         const {t} = useTranslation()
     return (
-        <View style={{alignItems:"center",justifyContent:"flex-start",width:'100%',backgroundColor:ternaryThemeColor,height:'100%'}}>
+        <View style={{alignItems:"center",justifyContent:"flex-start",width:'100%',backgroundColor:"#FFF8E7",height:'100%'}}>
             <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:10,height:'10%',marginLeft:20}}>
                 <TouchableOpacity onPress={()=>{
                     navigation.goBack()
@@ -25,7 +25,7 @@ const AddBankAccountAndUpi = ({navigation}) => {
             <Image style={{height:24,width:24,resizeMode:'contain',marginLeft:10}} source={require('../../../assets/images/blackBack.png')}></Image>
 
                 </TouchableOpacity>
-            <PoppinsTextMedium content ={t("Add Bank & UPI")} style={{marginLeft:10,fontSize:16,fontWeight:'700',color:'white'}}></PoppinsTextMedium>
+            <PoppinsTextMedium content ={t("Add Bank & UPI")} style={{marginLeft:10,fontSize:16,fontWeight:'700',color:'black'}}></PoppinsTextMedium>
             
             </View>
             <View style={{height:'90%',width:'100%',borderTopRightRadius:40,borderTopLeftRadius:40,alignItems:"center",justifyContent:"flexx-start",backgroundColor:"white"}}>
@@ -33,7 +33,7 @@ const AddBankAccountAndUpi = ({navigation}) => {
             <View style={{borderBottomWidth:1,borderColor:'#DDDDDD',width: '80%',paddingBottom:10}}>
             <PoppinsTextMedium style={{color:'#292626',marginTop:10,fontWeight:'800', fontSize:18}} content={t("Select Method")}></PoppinsTextMedium>
             </View>
-            {/* <TouchableOpacity onPress={()=>{navigation.navigate('AddBankDetails')}} style={{width:'90%',alignItems:"center",justifyContent:"center",height:80,flexDirection:'row',marginTop:20,borderBottomWidth:0.4,borderColor:'#DDDDDD'}}>
+            <TouchableOpacity onPress={()=>{navigation.navigate('AddBankDetails')}} style={{width:'90%',alignItems:"center",justifyContent:"center",height:80,flexDirection:'row',marginTop:20,borderBottomWidth:0.4,borderColor:'#DDDDDD'}}>
             <View style={{height:60,width:60,alignItems:'center',justifyContent:'center',borderRadius:30,borderWidth:1,borderColor:'#DDDDDD'}}>
                 <Image style={{height:30,width:30,resizeMode:'contain'}} source={require('../../../assets/images/bankaccount.png')}></Image>
             </View>
@@ -45,7 +45,7 @@ const AddBankAccountAndUpi = ({navigation}) => {
             <View style={{alignItems:'center',justifyContent:'center'}}>
                 <Image style={{height:20,width:20,resizeMode:"contain"}} source={require('../../../assets/images/next.png')}></Image>
             </View>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             <TouchableOpacity onPress={()=>{navigation.navigate('AddUpi')}} style={{width:'90%',alignItems:"center",justifyContent:"center",height:80,flexDirection:'row',marginTop:20,borderBottomWidth:0.4,borderColor:'#DDDDDD'}}>
             <View style={{height:60,width:60,alignItems:'center',justifyContent:'center',borderRadius:30,borderWidth:1,borderColor:'#DDDDDD'}}>
                 <Image style={{height:30,width:30,resizeMode:'contain'}} source={require('../../../assets/images/upi.png')}></Image>
