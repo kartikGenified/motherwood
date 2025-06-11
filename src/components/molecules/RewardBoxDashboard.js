@@ -80,17 +80,19 @@ const RewardBoxDashboard = () => {
                     userData && (userData?.user_type)?.toLowerCase() == 'distributor' && userPointData  && <RewardRectangular amount={userPointData.body.point_earned} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("earned points")}></RewardRectangular>
                 }
                 {
-                  userPointData && <RewardRectangular amount={Math.floor(userPointData.body.point_earned ? userPointData.body.point_earned : 0)} color="#F0FCE7" image={require('../../../assets/images/current_point.png')} title={t("Current Points")}></RewardRectangular>
+                  userPointData && <RewardRectangular amount={Math.floor(userPointData.body.point_earned ? userPointData.body.point_earned : 0)} color="#F0FCE7" image={require('../../../assets/images/current_point.png')} title={t("Earned Points")}></RewardRectangular>
                 }
                 
                 {
-                    workflow?.includes("Points On Product") && userPointData && <RewardRectangular amount={userPointData.body.point_redeemed} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("redeemed points")}></RewardRectangular>
+                    workflow?.includes("Points On Product") && userPointData && <RewardRectangular amount={userPointData.body.point_redeemed} color="#DCFCE7" image={require('../../../assets/images/reward.png')} title={t("redeemed points")}></RewardRectangular>
                 }
                     {
-                  <RewardRectangular amount={Math.floor(userPointData?.body.transfer_points ? userPointData?.body.transfer_points : 0)} color="#DCF0FF" image={require('../../../assets/images/transferable.png')} title={t("Transferable points")}></RewardRectangular>
+                  <RewardRectangular amount={Math.floor(userPointData?.body.transfer_points ? userPointData?.body.point_balance : 0)} color="#FFFCCF" image={require('../../../assets/images/transferable.png')} title={t("Wallet points")}></RewardRectangular>
                 }
-                  {
-                  <RewardRectangular amount={Math.floor(userPointData?.body.point_balance ? userPointData?.body.point_balance : 0)} color="#FFFCCF" image={require('../../../assets/images/balance_black.png')} title={t("balance points")}></RewardRectangular>
+             
+
+                     {
+                  <RewardRectangular amount={Math.floor(userPointData?.body.point_balance ? userPointData?.body.point_redeemed : 0)} color="#E4FFFB" image={require('../../../assets/images/balance_black.png')} title={t("Redeemed points")}></RewardRectangular>
                 }
             
                 {

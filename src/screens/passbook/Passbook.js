@@ -11,7 +11,11 @@ import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTex
 import { useSelector } from "react-redux";
 import PoppinsText from "../../components/electrons/customFonts/PoppinsText";
 import RewardBox from "../../components/molecules/RewardBox";
-import { useGetActiveMembershipMutation, useGetMembershipMutation, useGetSavedMembershipMutation } from "../../apiServices/membership/AppMembershipApi";
+import {
+  useGetActiveMembershipMutation,
+  useGetMembershipMutation,
+  useGetSavedMembershipMutation,
+} from "../../apiServices/membership/AppMembershipApi";
 import * as Keychain from "react-native-keychain";
 import PlatinumModal from "../../components/platinum/PlatinumModal";
 import { useGetPointSharingDataMutation } from "../../apiServices/pointSharing/pointSharingApi";
@@ -72,8 +76,7 @@ const Passbook = ({ navigation }) => {
 
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
-  )
-    
+  );
 
   const secondaryThemeColor = useSelector(
     (state) => state.apptheme.secondaryThemeColor
@@ -131,7 +134,7 @@ const Passbook = ({ navigation }) => {
 
   useEffect(() => {
     if (getMemberShipData) {
-      console.log("getMemberShipData", JSON.stringify(getMemberShipData))
+      console.log("getMemberShipData", JSON.stringify(getMemberShipData));
       if (getMemberShipData?.success) {
       }
     } else if (getMemberShipError) {
@@ -183,7 +186,7 @@ const Passbook = ({ navigation }) => {
       );
       const token = credentials.username;
       getMemberShipFunc(token);
-      getActiveMembershipFunc(token)
+      getActiveMembershipFunc(token);
     }
   };
 
@@ -206,9 +209,6 @@ const Passbook = ({ navigation }) => {
     }
   }, [getActiveMembershipData, getActiveMembershipError]);
 
-
-  
-
   const NavigateTO = (props) => {
     const title = props.title;
     const visibleTitle = props.visibleTitle;
@@ -218,14 +218,11 @@ const Passbook = ({ navigation }) => {
       console.log("navigateToPages", data);
       if (data === "Scanned History") {
         navigation.navigate("ScannedHistory");
-      }
-      else if (data === "Points History Extra") {
+      } else if (data === "Points History Extra") {
         navigation.navigate("ExtraPointHistory");
-      }
-      else if (data === "Points History Transfered") {
+      } else if (data === "Points History Transfered") {
         navigation.navigate("TransferedPointHistory");
-      }
-      else if (data === "Points History") {
+      } else if (data === "Points History") {
         navigation.navigate("PointHistory");
       } else if (data === "Redeemed History") {
         navigation.navigate("RedeemedHistory");
@@ -300,14 +297,18 @@ const Passbook = ({ navigation }) => {
           onPress={() => {
             navigateToPages(title);
           }}
-          style={{marginLeft:10, borderWidth:1,padding:8,borderRadius:20,borderColor:ternaryThemeColor}}
-
+          style={{
+            marginLeft: 10,
+            borderWidth: 1,
+            padding: 8,
+            borderRadius: 20,
+            borderColor: ternaryThemeColor,
+          }}
         >
           <Image
             style={{ height: 15, width: 15, resizeMode: "contain" }}
             source={require("../../../assets/images/blackArrowRight.png")}
           ></Image>
-
         </TouchableOpacity>
       </TouchableOpacity>
     );
@@ -390,10 +391,7 @@ const Passbook = ({ navigation }) => {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={{  }}
-      style={{ width: "100%" }}
-    >
+    <ScrollView contentContainerStyle={{}} style={{ width: "100%" }}>
       <View
         style={{
           alignItems: "center",
@@ -402,14 +400,13 @@ const Passbook = ({ navigation }) => {
           backgroundColor: "white",
         }}
       >
-
-            <PlatinumModal
-              isVisible={membershipModal}
-              onClose={() => {
-                setMemberShipModal(false);
-              }}
-              getActiveMembershipData={getMemberShipData}
-            />
+        <PlatinumModal
+          isVisible={membershipModal}
+          onClose={() => {
+            setMemberShipModal(false);
+          }}
+          getActiveMembershipData={getMemberShipData}
+        />
         {/* coloured header */}
         <View style={{ width: "100%", backgroundColor: secondaryThemeColor }}>
           <View
@@ -444,9 +441,12 @@ const Passbook = ({ navigation }) => {
             ></PoppinsTextMedium>
           </View>
           <View style={{ width: "100%", marginTop: 40 }}>
-            <PointsCard memberShip={getActiveMembershipData?.body?.tier?.name}  setModalVisible={()=>{
-              setMemberShipModal(true)
-            }}/>
+            <PointsCard
+              memberShip={getActiveMembershipData?.body?.tier?.name}
+              setModalVisible={() => {
+                setMemberShipModal(true);
+              }}
+            />
           </View>
         </View>
 
@@ -548,24 +548,31 @@ const Passbook = ({ navigation }) => {
 
             {
               <NavigateTO
-                visibleTitle={t("Received Points Summary")}
+                visibleTitle={
+                  userData?.user_type.toLowerCase() === "contractor" ||
+                  userData?.user_type.toLowerCase() === "carpenter"
+                    ? "Point History"
+                    : t("Received Points Summary")
+                }
                 title={"Points History"}
                 // discription={t("list of points redeemed by you")}
                 image={require("../../../assets/images/coinStack.png")}
               ></NavigateTO>
             }
 
-{
-            (userData?.user_type)?.toLowerCase()!='carpenter' && (userData?.user_type)?.toLowerCase()!='contractor' && (userData?.user_type)?.toLowerCase()!='oem' && (userData?.user_type)?.toLowerCase()!='directoem' && 
-              <NavigateTO
-                visibleTitle={t("Transferred Points Summary")}
-                title={"Points History Transfered"}
-                // discription={t("list of points redeemed by you")}
-                image={require("../../../assets/images/coinStack.png")}
-              ></NavigateTO>
-            }
+            {userData?.user_type?.toLowerCase() != "carpenter" &&
+              userData?.user_type?.toLowerCase() != "contractor" &&
+              userData?.user_type?.toLowerCase() != "oem" &&
+              userData?.user_type?.toLowerCase() != "directoem" && (
+                <NavigateTO
+                  visibleTitle={t("Transferred Points Summary")}
+                  title={"Points History Transfered"}
+                  // discription={t("list of points redeemed by you")}
+                  image={require("../../../assets/images/coinStack.png")}
+                ></NavigateTO>
+              )}
 
-{
+            {
               <NavigateTO
                 visibleTitle={t("Wallet Points Summary")}
                 title={"Points History Extra"}
@@ -577,15 +584,14 @@ const Passbook = ({ navigation }) => {
             {/* ozone change */}
             {/* {userData.user_type !== "dealer" && neededHistory.includes("scanned") &&  <NavigateTO visibleTitle={t("scanned history")} title={"Scanned History"} discription={t('list of products scanned by you')} image={require('../../../assets/images/scannedHistory.png')}></NavigateTO>} */}
 
-            {
-              neededHistory.includes("redeemed") && (
-                <NavigateTO
-                  visibleTitle={t("redeemed history")}
-                  title="Redeemed History"
-                  // discription={t("list of products redeemed by you")}
-                  image={require("../../../assets/images/redeemed_icon.png")}
-                ></NavigateTO>
-              )}
+            {neededHistory.includes("redeemed") && (
+              <NavigateTO
+                visibleTitle={t("redeemed history")}
+                title="Redeemed History"
+                // discription={t("list of products redeemed by you")}
+                image={require("../../../assets/images/redeemed_icon.png")}
+              ></NavigateTO>
+            )}
             {neededHistory.includes("cashback") && (
               <NavigateTO
                 visibleTitle={t("cashback history")}
@@ -739,38 +745,40 @@ const Passbook = ({ navigation }) => {
                 justifyContent: "center",
               }}
             >
-              { (
+              {
                 <GridVIew
                   title={t("Recieved Points Summary")}
                   discription=" list of points redeemed by you"
                   image={require("../../../assets/images/coinStack.png")}
                 ></GridVIew>
-              )}
-                       {
-            (userData?.user_type)?.toLowerCase()!='carpenter' && (userData?.user_type)?.toLowerCase()!='contractor' && (userData?.user_type)?.toLowerCase()!='oem' && (userData?.user_type)?.toLowerCase()!='directoem' && 
-                <GridVIew
-                  title={t("Transferred Points Summary")}
-                  discription=" list of points redeemed by you"
-                  image={require("../../../assets/images/coinStack.png")}
-                ></GridVIew>
               }
-                           { (
+              {userData?.user_type?.toLowerCase() != "carpenter" &&
+                userData?.user_type?.toLowerCase() != "contractor" &&
+                userData?.user_type?.toLowerCase() != "oem" &&
+                userData?.user_type?.toLowerCase() != "directoem" && (
+                  <GridVIew
+                    title={t("Transferred Points Summary")}
+                    discription=" list of points redeemed by you"
+                    image={require("../../../assets/images/coinStack.png")}
+                  ></GridVIew>
+                )}
+              {
                 <GridVIew
                   title={t("Wallet Points Summary")}
                   discription=" list of points redeemed by you"
                   image={require("../../../assets/images/coinStack.png")}
                 ></GridVIew>
-              )}
+              }
               {/* ozone change */}
 
               {/* {userData.user_type !== "dealer" && <GridVIew title={t("scanned history")} discription="" image={require('../../../assets/images/scannedHistory.png')}></GridVIew>} */}
-              { (
+              {
                 <GridVIew
                   title={t("redeemed history")}
                   discription=" list of products redeemed by you"
                   image={require("../../../assets/images/redeemed_icon.png")}
                 ></GridVIew>
-              )}
+              }
               {/* <GridVIew title={t("cashback history")} discription=" list of cashback redeemed by you" image={require('../../../assets/images/cashbackBlack.png')}></GridVIew> */}
               {/* {
                                 couponOptionEnabled &&
@@ -819,7 +827,7 @@ const Passbook = ({ navigation }) => {
         />
       )}
 
-      <SocialBottomBar showRelative ={true}/>
+      <SocialBottomBar showRelative={true} />
     </ScrollView>
   );
 };

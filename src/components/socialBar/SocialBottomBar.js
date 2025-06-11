@@ -1,9 +1,28 @@
 //import liraries
+import { Link } from "@react-navigation/native";
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, Linking } from "react-native";
+import { useSelector } from "react-redux";
 
 // create a component
 const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
+      const socials = useSelector(
+          state => state.apptheme.socials,
+      );
+  
+      const website = useSelector(
+          state => state.apptheme.website,
+      );
+
+        const supportMail = useSelector(
+          (state) => state.apptheme.customerSupportMail
+        );
+
+        const supportMobile = useSelector(
+          (state) => state.apptheme.customerSupportMobile
+        );
+
+      console.log("socials", socials, website)
   return (
     <View
       style={{
@@ -21,7 +40,7 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
       }}
     >
       <TouchableOpacity
-        onPress={() => {}}
+        onPress={() => {Linking.openURL(socials.facebook)}}
         style={{ flexDirection: "row", marginLeft: 20, marginTop: 5 }}
       >
         <Image
@@ -44,6 +63,9 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
+      onPress={()=>{
+        Linking.openURL(socials.instagram)
+      }}
         style={{ flexDirection: "row", marginLeft: 20, marginTop: 5 }}
       >
         <Image
@@ -65,6 +87,9 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
         ></View>
       </TouchableOpacity>
       <TouchableOpacity
+      onPress={()=>{
+        Linking.openURL(socials.youtube)
+      }}
         style={{ flexDirection: "row", marginLeft: 20, marginTop: 5 }}
       >
         <Image
@@ -86,6 +111,9 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
         ></View>
       </TouchableOpacity>
       <TouchableOpacity
+      onPress={()=>{
+        socials?.linkedin
+      }}
         style={{ flexDirection: "row", marginLeft: 20, marginTop: 5 }}
       >
         <Image
@@ -107,6 +135,7 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
         ></View>
       </TouchableOpacity>
       <TouchableOpacity
+      onPress={()=>{ Linking.openURL(`tel:${supportMobile}`)}}
         style={{ flexDirection: "row", marginLeft: 20, marginTop: 5 }}
       >
         <Image
@@ -128,6 +157,9 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
         ></View>
       </TouchableOpacity>
       <TouchableOpacity
+      onPress={()=>{
+        Linking.openURL(`mailto:${supportMail}`)
+      }}
         style={{ flexDirection: "row", marginLeft: 20, marginTop: 5 }}
       >
         <Image
