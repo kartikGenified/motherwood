@@ -291,7 +291,7 @@ const PointsTransfer = () => {
         </TouchableOpacity>
       )}
     </ScrollView>
-    <SocialBottomBar></SocialBottomBar>
+    <SocialBottomBar showRelative={true}></SocialBottomBar>
     </>
   );
 };

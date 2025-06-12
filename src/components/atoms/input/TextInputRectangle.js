@@ -17,6 +17,10 @@ console.log("asdhgasghfdghfsaghfcghvasghcghvsaghvchjvasghvchjs",placeHolder)
     setKeyboardShow(false);
   });
   useEffect(()=>{handleInputEnd()},[keyboardShow])
+
+  useEffect(()=>{
+    setValue(props.value)
+  },[props.value])
   const handleInput = (text) => {
     console.log(label)
     setValue(text);
@@ -57,7 +61,7 @@ console.log("asdhgasghfdghfsaghfcghvasghcghvsaghvchjvasghvchjs",placeHolder)
         ></PoppinsTextMedium>
       </View>
       <TextInput
-      
+        editable={props.editable}
         onEndEditing={(text) => {
           handleInputEnd();
         }}

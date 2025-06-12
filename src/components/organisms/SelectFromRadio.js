@@ -28,8 +28,8 @@ const SelectFromRadio = ({ options, name, onSelect, jsonData }) => {
                     style={[
                         styles.circle,
                         {
-                            backgroundColor: selected ? ternaryThemeColor : 'white',
-                            borderColor: selected ? ternaryThemeColor : 'black',
+                            backgroundColor: selected ? "black" : 'white',
+                            borderColor: selected ? "black" : 'black',
                         },
                     ]}
                 />
@@ -43,10 +43,10 @@ const SelectFromRadio = ({ options, name, onSelect, jsonData }) => {
 
     return (
         <View style={styles.container}>
-            <PoppinsTextMedium
+            {/* <PoppinsTextMedium
                 style={styles.header}
                 content={name?.toUpperCase()}
-            />
+            /> */}
             <ScrollView contentContainerStyle={styles.scrollView} horizontal={true}>
                 {options &&
                     options.map((item, index) => (
@@ -84,9 +84,9 @@ const styles = StyleSheet.create({
         padding: 4,
     },
     circle: {
-        height: 20,
-        width: 20,
-        borderRadius: 10,
+        height: 16,
+        width: 16,
+        borderRadius: 8,
         borderWidth: 1,
     },
     text: {

@@ -79,6 +79,7 @@ import {
   setSecondaryThemeColor,
   setTernaryThemeColor,
 } from "../../../redux/slices/appThemeSlice";
+import Info from "react-native-vector-icons/AntDesign";
 
 const Dashboard = ({ navigation }) => {
   const [dashboardItems, setDashboardItems] = useState();
@@ -130,10 +131,10 @@ const Dashboard = ({ navigation }) => {
 
   useEffect(() => {
     if (
-      (userData?.user_type)?.toLowerCase() == "contractor" ||
-      (userData?.user_type)?.toLowerCase() == "carpenter" ||
-      (userData?.user_type)?.toLowerCase() == "oem" ||
-      (userData?.user_type)?.toLowerCase() == "directoem"
+      userData?.user_type?.toLowerCase() == "contractor" ||
+      userData?.user_type?.toLowerCase() == "carpenter" ||
+      userData?.user_type?.toLowerCase() == "oem" ||
+      userData?.user_type?.toLowerCase() == "directoem"
     ) {
       console.log("dispatching new user themes according to user types");
       dispatch(setTernaryThemeColor("#00A79D"));
@@ -224,7 +225,7 @@ const Dashboard = ({ navigation }) => {
   const id = useSelector((state) => state.appusersdata.id);
   const { t } = useTranslation();
 
-  console.log("gvbjkbsdjkbvjksdhjgfgsahjgfjksa",isTertiary)
+  console.log("gvbjkbsdjkbvjksdhjgfgsahjgfjksa", isTertiary);
 
   const fetchPoints = async () => {
     const credentials = await Keychain.getGenericPassword();
@@ -320,7 +321,7 @@ const Dashboard = ({ navigation }) => {
 
   useEffect(() => {
     if (userPointData) {
-      console.log("userPointData", userPointData);
+      console.log("userPointData", JSON.stringify(userPointData));
       pointsRef.current = userPointData?.body?.point_balance;
     } else if (userPointError) {
       setError(true);
@@ -660,7 +661,7 @@ const Dashboard = ({ navigation }) => {
           <View
             style={{
               width: "90%",
-              marginBottom: 20,
+              marginBottom: 10,
               flexDirection: "row",
               justifyContent: "space-between",
             }}
@@ -677,7 +678,7 @@ const Dashboard = ({ navigation }) => {
                   backgroundColor: "white",
                   width: 30,
                   height: 30,
-                  borderRadius: 20,
+                  borderRadius: 15,
                   alignItems: "center",
                   justifyContent: "center",
                   flexDirection: "row",
@@ -689,7 +690,12 @@ const Dashboard = ({ navigation }) => {
                 ></Image>
               </View>
               <Text
-                style={{ color: "#1A1818", marginLeft: 5, fontWeight: "bold" }}
+                style={{
+                  color: "#1A1818",
+                  marginLeft: 5,
+                  fontWeight: "bold",
+                  fontSize: 12,
+                }}
               >
                 {userData?.name}
               </Text>
@@ -699,24 +705,31 @@ const Dashboard = ({ navigation }) => {
               onPress={() => {
                 setMemberShipModal(true);
               }}
-              style={{ flexDirection: "row", marginTop: 13 }}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
-              <Image
-                source={require("../../screens/../../assets/images/info_white.png")}
-              ></Image>
+              <Info
+                name="infocirlceo"
+                size={15}
+                color={ternaryThemeColor}
+              ></Info>
               <PoppinsTextLeftMedium
                 style={{
                   color: ternaryThemeColor,
                   fontWeight: "600",
-                  fontSize: 17,
+                  fontSize: 13,
+                  marginLeft: 4,
                 }}
                 content={t("Earn Badge")}
               ></PoppinsTextLeftMedium>
             </TouchableOpacity>
           </View>
 
-          {(userData?.user_type)?.toLowerCase() !== "dealer" ? (
-            (userData?.user_type)?.toLowerCase() !== "sales" ? (
+          {userData?.user_type?.toLowerCase() !== "dealer" ? (
+            userData?.user_type?.toLowerCase() !== "sales" ? (
               scanningDetails &&
               scanningDetails?.data.length !== 0 && (
                 <ScannedDetailsBox
@@ -744,7 +757,14 @@ const Dashboard = ({ navigation }) => {
           )}
           <DreamCard />
 
-          <View style={{ width: "100%", backgroundColor: "white", bottom: 4, marginBottom:4 }}>
+          <View
+            style={{
+              width: "100%",
+              backgroundColor: "white",
+              bottom: 4,
+              marginBottom: 4,
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("DreamGift");
@@ -755,7 +775,7 @@ const Dashboard = ({ navigation }) => {
                   width: "90%",
                   alignSelf: "center",
                   resizeMode: "contain",
-                  height:120
+                  height: 120,
                 }}
                 source={
                   isTertiary
@@ -767,18 +787,20 @@ const Dashboard = ({ navigation }) => {
           </View>
 
           {userPointIsLoading && (
-            <FastImage
-              style={{
-                width: 100,
-                height: 100,
-                alignSelf: "center",
-              }}
-              source={{
-                uri: gifUri, // Update the path to your GIF
-                priority: FastImage.priority.normal,
-              }}
-              resizeMode={FastImage.resizeMode.contain}
-            />
+            <View style={{ height: 200, width: "100%" }}>
+              <FastImage
+                style={{
+                  width: 100,
+                  height: 100,
+                  alignSelf: "center",
+                }}
+                source={{
+                  uri: gifUri, // Update the path to your GIF
+                  priority: FastImage.priority.normal,
+                }}
+                resizeMode={FastImage.resizeMode.contain}
+              />
+            </View>
           )}
 
           <View

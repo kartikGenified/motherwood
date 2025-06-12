@@ -292,7 +292,7 @@ const PointsTransferNext = (params) => {
           key={index}
           index={index}
           data={data}
-          thicknessOptions={thicknessOptions}
+          thicknessOptions={(thicknessOptions?.sort())}
           handleSearch={handleSearch}
            handleThicknessSearch={handleThicknessSearch}
           selected={row.selected}
@@ -444,7 +444,7 @@ const UiList = ({
           style={{ color: "black", fontWeight: "bold" }}
           content={"Product/ SKU"}
         />
-        <View style={{ width: 180, marginRight: 10 }}>
+        <View style={{ width: 170, marginRight: 14 }}>
           <DropDownWithSearch
             handleSearchData={(t) => handleSearch(t)}
             handleData={(data) => onCategoryChange(data)}
@@ -457,7 +457,7 @@ const UiList = ({
       <View>
         <View
                    style={{
-            width: 90,
+            width: 80,
             alignItems: "center",
             justifyContent: "center",
             marginRight: 10,
@@ -467,7 +467,7 @@ const UiList = ({
             style={{ color: "black", fontWeight: "bold" }}
             content={"Thickness"}
           />
-          <View style={{ width: 90 }}>
+          <View style={{ width: 80 }}>
             <DropDownWithSearch
                 handleSearchData={(t) => handleThicknessSearch(t)}
               handleData={(data) => onThicknessChange(data)}
@@ -478,7 +478,7 @@ const UiList = ({
           </View>
         </View>
       </View>
-      <View>
+      <View style={{marginLeft:4}}>
         <PoppinsTextMedium
           style={{ color: "black", fontWeight: "bold" }}
           content={"Qty"}

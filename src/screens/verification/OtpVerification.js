@@ -157,7 +157,7 @@ const OtpVerification = ({ navigation, route }) => {
   const schemeID = route.params?.schemeID;
   const { t } = useTranslation();
 
-  console.log("couponCart", schemeID, schemeType);
+  console.log("couponCart", schemeID, schemeType,type);
 
   const handleCashbackRedemption = async () => {
     const credentials = await Keychain.getGenericPassword();
@@ -495,7 +495,7 @@ const OtpVerification = ({ navigation, route }) => {
         justifyContent: "flex-start",}}>
       <View
         style={{
-          height: "10%",
+          height: "6%",
           width: "100%",
           backgroundColor: secondaryThemeColor,
           alignItems: "center",
@@ -615,8 +615,8 @@ const OtpVerification = ({ navigation, route }) => {
         </View>
       </View>
 
-      <View style={{height:1,width:'90%',backgroundColor:"black",marginTop:50,marginBottom:20}}></View>
-      <View style={{backgroundColor:"#F8F8F8", alignItems:'flex-start', justifyContent:'center',borderRadius:10,paddingBottom:20, width:'90%'}}>
+      <View style={{height:1,width:'90%',backgroundColor:"black",marginTop:20,marginBottom:10}}></View>
+      {type!== "Cashback" &&<View style={{backgroundColor:"#F8F8F8", alignItems:'flex-start', justifyContent:'center',borderRadius:10,paddingBottom:20, width:'90%'}}>
       <Text style={{ color: "#171717", marginTop: 10,fontSize:18,fontWeight:'700' }}>
               {t("Delivery Address")}?
       </Text>
@@ -667,14 +667,14 @@ const OtpVerification = ({ navigation, route }) => {
       </View>
       
       
-      </View>
+      </View>}
       {showRedeemButton && (
         <View
           style={{
             alignItems: "center",
             justifyContent: "center",
             width: "100%",
-           
+            
           }}
         >
           <TouchableOpacity
@@ -688,6 +688,7 @@ const OtpVerification = ({ navigation, route }) => {
               justifyContent: "center",
               backgroundColor: "black",
               borderRadius: 20,
+              marginBottom:100
             }}
           >
             <PoppinsTextMedium

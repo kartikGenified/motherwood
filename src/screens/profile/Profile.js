@@ -39,7 +39,7 @@ const Profile = ({ navigation }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const options = ["Basic Details", "Address"];
   const kycData = useSelector((state) => state.kycDataSlice.kycData);
-  const addressArr = ["city", "state", "district", "pincode"]
+  const addressArr = ["city", "state", "district", "pincode","deliveryAddress","deliveryPincode","deliveryState","deliveryCity","deliveryaddress","deliverypincode","deliverystate","deliverycity","sameAddress", "sameaddress"]
   const { t } = useTranslation();
 
   const ternaryThemeColor = useSelector(
@@ -49,6 +49,7 @@ const Profile = ({ navigation }) => {
     : "grey";
   const userData = useSelector((state) => state.appusersdata.userData);
   const isLocationStageField = (fieldName) => {
+    console.log("checking data in islocationstagefield", fieldName)
     return addressArr.includes(fieldName.trim().toLowerCase());
   };
   console.log("userdata is", userData);
@@ -519,11 +520,11 @@ const Profile = ({ navigation }) => {
                   content="Account Verified"
                 ></PoppinsTextMedium>
 
-                <PlatinumModal
+                {/* <PlatinumModal
                   isVisible={isSuccessModalVisible}
                   onClose={hideSuccessModal}
                   getActiveMembershipData={getActiveMembershipData}
-                />
+                /> */}
               </TouchableOpacity>
             )}
             <View

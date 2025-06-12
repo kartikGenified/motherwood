@@ -184,7 +184,7 @@ const fetchPoints = async () => {
           ></IconBox>
           <IconBox
             image={require("../../../assets/images/white_gift.png")}
-            points={isNaN(Math.floor(userPointData?.body?.point_balance)) ? '0' : Math.floor(userPointData?.body?.point_balance)}
+            points={isNaN(Math.floor(userPointData?.body?.point_redeemed)) ? '0' : Math.floor(userPointData?.body?.point_redeemed)}
             title={"Redeemed Points"}
           ></IconBox>
         </ScrollView>

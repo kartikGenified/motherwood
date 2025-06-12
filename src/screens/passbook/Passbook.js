@@ -250,13 +250,13 @@ const Passbook = ({ navigation }) => {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "flex-start",
+          justifyContent: "center",
           borderBottomWidth: 1,
           width: "100%",
           borderColor: "#EEEEEE",
           padding: 6,
-          paddingTop: 8,
-          paddingBottom: 8,
+          
+          height:60
         }}
       >
         <View
@@ -278,25 +278,24 @@ const Passbook = ({ navigation }) => {
         </View>
         <View
           style={{
-            width: 210,
+            width: 190,
             alignItems: "flex-start",
             justifyContent: "center",
-            marginLeft: 10,
+            marginLeft: 20,
+            height:'100%',
           }}
         >
-          <PoppinsText
-            style={{ color: "black", fontSize: 14 }}
-            content={visibleTitle}
-          ></PoppinsText>
           <PoppinsTextMedium
+            style={{ color: "black", fontSize: 12, fontWeight:"600" }}
+            content={visibleTitle}
+          ></PoppinsTextMedium>
+         {discription && <PoppinsTextMedium
             style={{ color: "grey", fontSize: 12, textAlign: "left" }}
             content={discription}
-          ></PoppinsTextMedium>
+          ></PoppinsTextMedium>}
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            navigateToPages(title);
-          }}
+        <View
+          
           style={{
             marginLeft: 10,
             borderWidth: 1,
@@ -309,7 +308,7 @@ const Passbook = ({ navigation }) => {
             style={{ height: 15, width: 15, resizeMode: "contain" }}
             source={require("../../../assets/images/blackArrowRight.png")}
           ></Image>
-        </TouchableOpacity>
+        </View>
       </TouchableOpacity>
     );
   };
@@ -326,15 +325,20 @@ const Passbook = ({ navigation }) => {
       } else if (data === "Points History") {
         navigation.navigate("PointHistory");
       } else if (data === "Redeemed History") {
-        navigation.navigate("RedeemedHistory");
+        navigation.navigate("CashbackHistory");
       } else if (data === "Cashback History") {
         navigation.navigate("CashbackHistory");
       } else if (data === "Coupon History") {
         navigation.navigate("CouponHistory");
       } else if (data === "Wheel History") {
         navigation.navigate("WheelHistory");
-      } else if (data === "Warranty History") {
+      }
+      
+      else if (data === "Warranty History") {
         navigation.navigate("WarrantyHistory");
+      }
+      else if (data === "Bonus Points Summary") {
+        navigation.navigate("ExtraPointHistory");
       } else if (data === "Shared Point History") {
         navigation.navigate("SharedPointsHistory");
       } else if (data === "Previous Transaction History") {
@@ -459,13 +463,13 @@ const Passbook = ({ navigation }) => {
               borderWidth: 1,
               borderColor: "#EEEEEE",
               borderRadius: 20,
-              marginTop: 70,
+              marginTop: 30,
             }}
           >
             <View
               style={{
                 width: "100%",
-                height: 90,
+                height: 60,
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
@@ -574,7 +578,7 @@ const Passbook = ({ navigation }) => {
 
             {
               <NavigateTO
-                visibleTitle={t("Wallet Points Summary")}
+                visibleTitle={t("Bonus Points Summary")}
                 title={"Points History Extra"}
                 // discription={t("list of points redeemed by you")}
                 image={require("../../../assets/images/coinStack.png")}
@@ -584,17 +588,17 @@ const Passbook = ({ navigation }) => {
             {/* ozone change */}
             {/* {userData.user_type !== "dealer" && neededHistory.includes("scanned") &&  <NavigateTO visibleTitle={t("scanned history")} title={"Scanned History"} discription={t('list of products scanned by you')} image={require('../../../assets/images/scannedHistory.png')}></NavigateTO>} */}
 
-            {neededHistory.includes("redeemed") && (
+            {/* {neededHistory.includes("redeemed") && (
               <NavigateTO
                 visibleTitle={t("redeemed history")}
                 title="Redeemed History"
                 // discription={t("list of products redeemed by you")}
                 image={require("../../../assets/images/redeemed_icon.png")}
               ></NavigateTO>
-            )}
+            )} */}
             {neededHistory.includes("cashback") && (
               <NavigateTO
-                visibleTitle={t("cashback history")}
+                visibleTitle={t("redeemed history")}
                 title="Cashback History"
                 // discription={t("list of cashback claimed by you")}
                 image={require("../../../assets/images/cashbackBlack.png")}
@@ -764,7 +768,7 @@ const Passbook = ({ navigation }) => {
                 )}
               {
                 <GridVIew
-                  title={t("Wallet Points Summary")}
+                  title={t("Bonus Points Summary")}
                   discription=" list of points redeemed by you"
                   image={require("../../../assets/images/coinStack.png")}
                 ></GridVIew>

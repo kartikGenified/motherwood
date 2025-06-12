@@ -41,13 +41,13 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
     >
       <TouchableOpacity
         onPress={() => {Linking.openURL(socials.facebook)}}
-        style={{ flexDirection: "row", marginLeft: 20, marginTop: 5 }}
+        style={{ flexDirection: "row", marginLeft: 10, marginTop: 5 }}
       >
         <Image
           style={{
-            height: 20,
-            width: 20,
-            resizeMode: "cover",
+            height: 17,
+            width: 17,
+            resizeMode: "contain",
           }}
           source={require("../../../assets/images/facebook.png")}
         ></Image>
@@ -66,13 +66,13 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
       onPress={()=>{
         Linking.openURL(socials.instagram)
       }}
-        style={{ flexDirection: "row", marginLeft: 20, marginTop: 5 }}
+        style={{ flexDirection: "row", marginLeft: 10, marginTop: 5 }}
       >
         <Image
           style={{
-            height: 20,
-            width: 20,
-            resizeMode: "cover",
+            height: 17,
+            width: 17,
+            resizeMode: "contain",
           }}
           source={require("../../../assets/images/instagram.png")}
         ></Image>
@@ -90,13 +90,13 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
       onPress={()=>{
         Linking.openURL(socials.youtube)
       }}
-        style={{ flexDirection: "row", marginLeft: 20, marginTop: 5 }}
+        style={{ flexDirection: "row", marginLeft: 10, marginTop: 5 }}
       >
         <Image
           style={{
-            height: 20,
-            width: 20,
-            resizeMode: "cover",
+            height: 17,
+            width: 17,
+            resizeMode: "contain",
           }}
           source={require("../../../assets/images/youtube.png")}
         ></Image>
@@ -114,13 +114,13 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
       onPress={()=>{
         socials?.linkedin
       }}
-        style={{ flexDirection: "row", marginLeft: 20, marginTop: 5 }}
+        style={{ flexDirection: "row", marginLeft: 10, marginTop: 5 }}
       >
         <Image
           style={{
-            height: 20,
-            width: 20,
-            resizeMode: "cover",
+            height: 17,
+            width: 17,
+            resizeMode: "contain",
           }}
           source={require("../../../assets/images/linkedin.png")}
         ></Image>
@@ -136,13 +136,13 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
       </TouchableOpacity>
       <TouchableOpacity
       onPress={()=>{ Linking.openURL(`tel:${supportMobile}`)}}
-        style={{ flexDirection: "row", marginLeft: 20, marginTop: 5 }}
+        style={{ flexDirection: "row", marginLeft: 10, marginTop: 5 }}
       >
         <Image
           style={{
-            height: 20,
-            width: 20,
-            resizeMode: "cover",
+            height: 17,
+            width: 17,
+            resizeMode: "contain",
           }}
           source={require("../../../assets/images/phone.png")}
         ></Image>
@@ -160,12 +160,12 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
       onPress={()=>{
         Linking.openURL(`mailto:${supportMail}`)
       }}
-        style={{ flexDirection: "row", marginLeft: 20, marginTop: 5 }}
+        style={{ flexDirection: "row", marginLeft: 10, marginTop: 5 }}
       >
         <Image
           style={{
-            height: 20,
-            width: 20,
+            height: 17,
+            width: 17,
             resizeMode: "cover",
           }}
           source={require("../../../assets/images/help.png")}

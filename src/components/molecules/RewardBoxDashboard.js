@@ -50,7 +50,7 @@ const RewardBoxDashboard = () => {
 
     console.log(workflow)
     return (
-        <View style={{ padding: 4, width: '100%', borderRadius: 14, elevation: 4, backgroundColor: 'white', height: 120 }}>
+        <View style={{width: '100%', borderRadius: 14, elevation: 4, backgroundColor: 'white', height: 80 }}>
 
 
             {userPointIsLoading &&
@@ -64,7 +64,7 @@ const RewardBoxDashboard = () => {
                 />
             }
 
-            <ScrollView contentContainerStyle={{ }} style={{width:'100%'   }} showsHorizontalScrollIndicator={false} horizontal={true}>
+            <View style={{width:'100%',flexDirection:'row'}}>
                 {
                     workflow?.includes("Static Coupon") && <RewardRectangular color="#FFE2E6" image={require('../../../assets/images/voucher.png')} title="My Coupons"></RewardRectangular>
                 }
@@ -77,34 +77,34 @@ const RewardBoxDashboard = () => {
 
                 }
 {
-                    userData && (userData?.user_type)?.toLowerCase() == 'distributor' && userPointData  && <RewardRectangular amount={userPointData.body.point_earned} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("earned points")}></RewardRectangular>
+                    // userData && (userData?.user_type)?.toLowerCase() == 'distributor' && userPointData  && <RewardRectangular amount={userPointData.body.point_earned} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("earned points")}></RewardRectangular>
                 }
                 {
-                  userPointData && <RewardRectangular amount={Math.floor(userPointData.body.point_earned ? userPointData.body.point_earned : 0)} color="#F0FCE7" image={require('../../../assets/images/current_point.png')} title={t("Earned Points")}></RewardRectangular>
+                  userPointData && <RewardRectangular amount={Math.floor( Number(userPointData.body.point_reserved) + Number(userPointData.body.point_balance)+Number(userPointData?.body.point_redeemed))} color="#F0FCE7" image={require('../../../assets/images/current_point.png')} title={t("Earned Points")}></RewardRectangular>
                 }
                 
                 {
-                    workflow?.includes("Points On Product") && userPointData && <RewardRectangular amount={userPointData.body.point_redeemed} color="#DCFCE7" image={require('../../../assets/images/reward.png')} title={t("redeemed points")}></RewardRectangular>
+                    // workflow?.includes("Points On Product") && userPointData && <RewardRectangular amount={userPointData.body.point_redeemed} color="#DCFCE7" image={require('../../../assets/images/reward.png')} title={t("redeemed points")}></RewardRectangular>
                 }
                     {
-                  <RewardRectangular amount={Math.floor(userPointData?.body.transfer_points ? userPointData?.body.point_balance : 0)} color="#FFFCCF" image={require('../../../assets/images/transferable.png')} title={t("Wallet points")}></RewardRectangular>
+                  <RewardRectangular amount={Math.floor(Number(userPointData?.body.transfer_points) ? Number(userPointData?.body.point_balance) : 0)} color="#FFFCCF" image={require('../../../assets/images/transferable.png')} title={t("Wallet points")}></RewardRectangular>
                 }
              
 
                      {
-                  <RewardRectangular amount={Math.floor(userPointData?.body.point_balance ? userPointData?.body.point_redeemed : 0)} color="#E4FFFB" image={require('../../../assets/images/balance_black.png')} title={t("Redeemed points")}></RewardRectangular>
+                  <RewardRectangular amount={Math.floor(Number(userPointData?.body.point_balance) ? Number(userPointData?.body.point_redeemed) : 0)} color="#E4FFFB" image={require('../../../assets/images/balance_black.png')} title={t("Redeemed points")}></RewardRectangular>
                 }
             
                 {
                     // workflow?.includes("Points On Product") && userPointData && <RewardRectangular amount={userPointData.body.point_reserved} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("reserved points")}></RewardRectangular>
                 }
-                {
+                {/* {
                     workflow?.includes("Points On Product") && userPointData && <RewardRectangular amount={((Number(userPointData.body.point_reserved) + Number(userPointData.body.point_balance)).toFixed(2))} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("Total Points")}></RewardRectangular>
-                }
-                {
+                } */}
+                {/* {
                    userData && (userData?.user_type)?.toLowerCase() == 'distributor' &&  userPointData && <RewardRectangular amount={((Number(userPointData.body.point_reserved) + Number(userPointData.body.point_balance)).toFixed(2))} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("Total Points")}></RewardRectangular>
-                }
-            </ScrollView>
+                } */}
+            </View>
 
         </View>
     )

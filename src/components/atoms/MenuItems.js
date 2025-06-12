@@ -51,7 +51,7 @@ const MenuItems = (props) => {
       accessibilityLabel={String(props.index)}
       style={{
         margin:4,
-        height:80
+        height:64
         
       }}
     >
@@ -60,7 +60,7 @@ const MenuItems = (props) => {
           handlePress();
         }}
         style={{
-          width: 96,
+          width: 86,
           borderRadius:5,
           borderWidth:1,
           borderColor:ternaryThemeColor,
@@ -69,11 +69,11 @@ const MenuItems = (props) => {
           justifyContent: "center",
           opacity: 1,
           paddingBottom:4,
-          height:80
+          height:64
         }}
       >
         <Image
-          style={{ height: 39, width: 39,marginTop:10,resizeMode:'contain' }}
+          style={{ height: 24, width: 24,marginTop:4,resizeMode:'contain' }}
           source={{ uri: image }}
         ></Image>
            <PoppinsTextMedium
@@ -95,7 +95,7 @@ const MenuItems = (props) => {
             : t(content)
         }
         style={{
-          width: 80,
+          width: 70,
           marginTop: 6,
           color:  !isTertiary ? ternaryThemeColor : "#00A79D",
           fontSize: platformFontSize,

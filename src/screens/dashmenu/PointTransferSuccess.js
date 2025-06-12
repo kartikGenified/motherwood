@@ -17,7 +17,7 @@ const PointsTransferSuccess = (params) => {
   const [message, setMessage] = useState();
   const navigation = useNavigation();
   const data = params?.route?.params?.getPointTransferData?.body;
-  console.log("praaaaa", data);
+  console.log("praaaaa", JSON.stringify(data));
   const orderNo = params?.route?.params?.item?.id;
   const item = params?.route?.params?.getPointTransferData?.body;
   console.log("item params", item);
@@ -375,6 +375,10 @@ const PointsTransferSuccess = (params) => {
           </View>
 
           {data?.orderDetail?.orderLineDetail?.map((item, index) => {
+            console.log("asdasghjcbsajc", item)
+            const product_code = item.product_code
+            const splitedProductCode = product_code?.split('-')
+            
             return (
               <View
                 style={{ backgroundColor: "#E7E5C5", flexDirection: "row" }}
@@ -413,7 +417,7 @@ const PointsTransferSuccess = (params) => {
                   }}
                 >
                   <Text style={{ color: "#000000", fontWeight: "600" }}>
-                    {item?.unique_col}
+                    {item?.qty}
                   </Text>
                 </View>
 

@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, View,BackHandler, Platform} from 'react-native';
+import {Alert, Modal, StyleSheet, Text, Pressable, View,BackHandler, Platform, Image} from 'react-native';
 import { useSelector } from 'react-redux';
 import  Icon  from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
@@ -10,7 +10,7 @@ const MessageModal = (props) => {
     state => state.apptheme.ternaryThemeColor,
   )
   const {t} = useTranslation()
-    
+    const buttonText = props.buttonText
     const navigation = useNavigation()
     const navigateTo = props.navigateTo
     const params = props.params
@@ -57,14 +57,15 @@ const MessageModal = (props) => {
    }
         }}>
         <View style={styles.centeredView}>
-          <View style={{...styles.modalView,borderWidth:3,borderColor:'#2FBA7E'}}>
-          <Icon name="cloud-done" size={100} color="#2FBA7E"></Icon>
+          <View style={{...styles.modalView}}>
+          {/* <Icon name="cloud-done" size={100} color="#2FBA7E"></Icon> */}
+          <Image style={{height:100, width:100,resizeMode:'contain'}} source={require('../../../assets/images/greenTick.png')}></Image>
           <Text style={{color:'black',fontSize:24,fontWeight:'600'}}>{t("Success")}</Text>
           <Text style={{...styles.modalText,fontSize:18,fontWeight:'500', color:'black',marginTop:20}}>{props.message}</Text>
             <Pressable
-              style={{...styles.button,backgroundColor:'#2FBA7E',width:240}}
+              style={{...styles.button,backgroundColor:'black',width:100}}
               onPress={() => closeModal()}>
-              <Text style={styles.textStyle}>{t("Okay")}</Text>
+              <Text style={styles.textStyle}>{t(buttonText ? buttonText  : "Done")}</Text>
             </Pressable>
           </View>
         </View>
@@ -75,10 +76,12 @@ const MessageModal = (props) => {
 
 const styles = StyleSheet.create({
   centeredView: {
+    
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.8)'
+    backgroundColor: 'white'
+
   },
   modalView: {
   
@@ -95,12 +98,11 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
     position:"absolute",
    
   },
   button: {
-    borderRadius: 30,
+    borderRadius: 10,
     padding: 14,
     elevation: 2,
   },

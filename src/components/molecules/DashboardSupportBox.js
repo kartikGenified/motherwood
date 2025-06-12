@@ -20,7 +20,7 @@ const DashboardSupportBox = (props) => {
   const text = props?.text;
   const borderColor = props?.borderColor;
   const fontWeight = Platform.OS === "ios" ? "400" : "800";
-  const fontSize = Platform.OS === "ios" ? 10 : 12;
+  const fontSize = Platform.OS === "ios" ? 8 : 10;
 
   // console.log("text support",text)
 
@@ -48,7 +48,9 @@ const DashboardSupportBox = (props) => {
         borderBottomRightRadius:30,
         backgroundColor: backgroundColor,
         borderColor: borderColor,
-        borderWidth:1,
+        borderTopWidth:1,
+        borderBottomWidth:1,
+        borderRightWidth:1,
         flexDirection: "row",
         alignItems: "center",
 
@@ -58,7 +60,7 @@ const DashboardSupportBox = (props) => {
         style={{
           height: 50,
           width: 50,
-          borderRadius: 40,
+          borderRadius: 25,
           backgroundColor: "white",
           alignItems: "center",
           borderWidth:1,
@@ -68,7 +70,7 @@ const DashboardSupportBox = (props) => {
         }}
       >
         <Image
-          style={{ height: 30, width: 30, resizeMode: "contain" }}
+          style={{ height: 24, width: 24, resizeMode: "contain" }}
           source={image}
         ></Image>
       </View>

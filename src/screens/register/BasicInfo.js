@@ -9,6 +9,7 @@ import {
   ScrollView,
   Dimensions,
   Text,
+  TouchableWithoutFeedback,
 } from "react-native";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import { useSelector, useDispatch } from "react-redux";
@@ -59,7 +60,12 @@ import { useGetAppUsersDataMutation } from "../../apiServices/appUsers/AppUsersA
 import { getUsersDataCachedDispatch } from "../../../redux/dispatches/getUsersDataCachedDispatch";
 import { setUserData } from "../../../redux/slices/appUserDataSlice";
 import SelectFromRadio from "../../components/organisms/SelectFromRadio";
-import { setPrimaryThemeColor, setSecondaryThemeColor } from "../../../redux/slices/appThemeSlice";
+import {
+  setPrimaryThemeColor,
+  setSecondaryThemeColor,
+} from "../../../redux/slices/appThemeSlice";
+import Check from "react-native-vector-icons/Entypo";
+import SuccessConfettiModal from "../../components/modals/SuccessConfettiModal";
 
 const BasicInfo = ({ navigation, route }) => {
   const [userName, setUserName] = useState();
@@ -77,6 +83,7 @@ const BasicInfo = ({ navigation, route }) => {
   const [isCorrectPincode, setIsCorrectPincode] = useState(true);
   const [otp, setOtp] = useState("");
   const [otpVerified, setOtpVerified] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const [otpModal, setOtpModal] = useState(false);
   const [otpVisible, setOtpVisible] = useState(false);
   const [isValid, setIsValid] = useState(true);
@@ -609,14 +616,14 @@ const BasicInfo = ({ navigation, route }) => {
         const storeData = async (value) => {
           try {
             const jsonValue = JSON.stringify(value);
-            await AsyncStorage.setItem('loginData', jsonValue);
+            await AsyncStorage.setItem("loginData", jsonValue);
           } catch (e) {
-            console.log("Error while saving loginData", e)
+            console.log("Error while saving loginData", e);
           }
         };
-       
-        storeData(registerUserData?.body)
-        setMessage(t("Thank you for joining Motherwood Loyalty program"));
+
+        storeData(registerUserData?.body);
+        setMessage(t("You have been registered successfully"));
         setModalTitle(t("Greetings"));
         dispatch(setUserData(registerUserData?.body));
       }
@@ -1146,6 +1153,23 @@ const BasicInfo = ({ navigation, route }) => {
           openModal={error}
         ></ErrorModal>
       )}
+
+      {
+        success && <SuccessConfettiModal
+        modalClose={modalClose}
+        title="Success"
+        header="Your request has been submitted successfully."
+        message="For confirmation, you will receive an SMS on your registered mobile number"
+        navigateTo="Dashboard"
+        params={{
+          needsApproval: needsApproval,
+          userType: userType,
+          userId: userTypeId,
+          registrationRequired: registrationRequired,
+        }}
+        navigation={navigation}
+        ></SuccessConfettiModal>
+      }
       {success && (
         <MessageModal
           modalClose={modalClose}
@@ -1254,7 +1278,7 @@ const BasicInfo = ({ navigation, route }) => {
                 fontWeight: "700",
                 fontSize: 26,
                 marginBottom: 40,
-                paddingHorizontal:50
+                paddingHorizontal: 50,
               }}
               content={
                 formStage == 1
@@ -1614,17 +1638,117 @@ const BasicInfo = ({ navigation, route }) => {
                       </View>
                     );
                   } else {
-                    return (
-                      <TextInputRectangle
-                        jsonData={item}
-                        key={index}
-                        handleData={handleChildComponentData}
-                        placeHolder={item.name}
-                        label={item.label}
-                      >
-                        {" "}
-                      </TextInputRectangle>
-                    );
+                    if (item.name == "firm_name") {
+                      return (
+                        <>
+                          <TextInputRectangle
+                            jsonData={item}
+                            key={index}
+                            handleData={handleChildComponentData}
+                            placeHolder={item.name}
+                            label={item.label}
+                          >
+                            {" "}
+                          </TextInputRectangle>
+                          <PoppinsTextMedium
+                            content={t(
+                              "Please enter your firm name as per the bank account"
+                            )}
+                            style={{
+                              marginBottom: 10,
+                              fontSize: 12,
+                              fontWeight: "600",
+                              color: "red",
+                            }}
+                          ></PoppinsTextMedium>
+                        </>
+                      );
+                    } else {
+                      if (item?.name == "whatsapp_number") {
+                        return (
+                          <View
+                            style={{
+                              alignItems: "center",
+                              justifyContent: "center",
+                              width: "100%",
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: "80%",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginBottom:14
+                              }}
+                            >
+                              <View
+                                style={{
+                                  width:'100%',
+                                  alignItems: "center",
+                                  justifyContent: "flex-start",
+                                flexDirection: "row",
+
+                                }}
+                              >
+                                <TouchableOpacity
+                                  style={{
+                                    width: 20,
+                                    height: 20,
+                                    borderRadius: 2,
+                                    borderWidth: 1,
+                                    borderColor: "black",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    backgroundColor: isChecked
+                                      ? "black"
+                                      : "white",
+                                  }}
+                                  onPress={() => {
+                                    setIsChecked(!isChecked);
+                                  }}
+                                >
+                                  {isChecked && (
+                                    <Check
+                                      name="check"
+                                      size={14}
+                                      color={"white"}
+                                    ></Check>
+                                  )}
+                                </TouchableOpacity>
+                                <PoppinsTextMedium
+                                  content="Same Number on Whatsapp"
+                                  style={{ color: "black", marginLeft: 10 }}
+                                ></PoppinsTextMedium>
+                              </View>
+                            </View>
+
+                            <TextInputRectangle
+                              editable={!isChecked}
+                              jsonData={item}
+                              key={index}
+                              handleData={handleChildComponentData}
+                              placeHolder={item.name}
+                              label={item.label}
+                              value={userMobile}
+                            >
+                              {" "}
+                            </TextInputRectangle>
+                          </View>
+                        );
+                      } else {
+                        return (
+                          <TextInputRectangle
+                            jsonData={item}
+                            key={index}
+                            handleData={handleChildComponentData}
+                            placeHolder={item.name}
+                            label={item.label}
+                          >
+                            {" "}
+                          </TextInputRectangle>
+                        );
+                      }
+                    }
                   }
                 } else if (item.type === "file") {
                   return (
@@ -1677,6 +1801,7 @@ const BasicInfo = ({ navigation, route }) => {
               handleOperation={() => {
                 setFormStage(2);
               }}
+              backgroundColor="black"
               content={t("Next")}
               style={{
                 paddingLeft: 30,
@@ -1687,19 +1812,19 @@ const BasicInfo = ({ navigation, route }) => {
               }}
             ></ButtonOval>
           )}
-          {console.log("sadbhjasbhjvfhjvhasjvhj", hideButton)}
           {formStage == 2 && formFound && !hideButton && (
             <ButtonOval
               handleOperation={() => {
                 handleRegistrationFormSubmission();
               }}
-              content={t("submit")}
+              backgroundColor="black"
+              content={t("Well Done! One more Step")}
               style={{
                 paddingLeft: 30,
                 paddingRight: 30,
                 padding: 10,
                 color: "white",
-                fontSize: 16,
+                fontSize: 12,
               }}
             ></ButtonOval>
           )}

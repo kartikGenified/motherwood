@@ -95,8 +95,8 @@ const [checkBeforeRedeem, {
   
 
   const points =userPointData?.body?.point_balance;
-  const minPointsRedeemed = cashPerPointData?.body?.min_point_redeem
-  const maxCashConverted = cashPerPointData?.body?.min_cash_redeem
+  const minPointsRedeemed = Math.trunc(cashPerPointData?.body?.min_point_redeem)
+  const maxCashConverted = Math.trunc(cashPerPointData?.body?.min_cash_redeem)
   const height = Dimensions.get('window').height
 
 
@@ -486,16 +486,19 @@ const [checkBeforeRedeem, {
           </View>
           } */}
         </View>
-       {redemptionFrom!=="Wallet" &&  <View><PoppinsTextMedium
+       {redemptionFrom!=="Wallet" &&  
+       <View>
+        <PoppinsTextMedium
           content={t("Convert your Points to Cash")}
           style={{
             color: '#909090',
             fontWeight: '600',
             fontSize: 16,
           }}></PoppinsTextMedium>
-        <PoppinsTextMedium
+        {/* <PoppinsTextMedium
           style={{color: 'black', fontWeight: '600'}}
-          content={`${pointsConversion} ${t("Points")} = ${cashConversion} Rupees`}></PoppinsTextMedium></View>}
+          content={`${pointsConversion} ${t("Points")} = ${cashConversion} Rupees`}></PoppinsTextMedium> */}
+          </View>}
       </View>
       {redemptionFrom !="Wallet" ? 
       <View

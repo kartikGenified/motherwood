@@ -38,6 +38,7 @@ export const neededHistory = [
   "scanned",
   "redeemed",
   "coupon",
+  "cashback"
 ];
 
 export const showEditProfile = true;

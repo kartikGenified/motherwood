@@ -7,17 +7,16 @@ const RewardRectangular = (props) => {
     const amount =props.amount
     const title = props.title
     const color =props.color
-    const imageHeight = title ==="Cashback" ? 60:40
-    const imageWidth = title ==="Cashback" ? 60:40
+    const imageHeight = title ==="Cashback" ? 40:30
+    const imageWidth = title ==="Cashback" ? 30:20
 
     return (
-        <View style={{width:190,borderRadius:10,alignItems:"center",justifyContent:"center",backgroundColor:color,margin:8, flexDirection:'row'}}>
-            <Image style={{height:imageHeight,width:imageWidth,resizeMode:"contain",margin:4}} source={image}></Image>
-            <View style={{marginLeft:4}}>
-            <PoppinsText content ={amount} style={{fontSize:16,color:'black'}}></PoppinsText>
-            <PoppinsTextMedium content={title} style={{fontSize:14,color:'black', fontWeight:'800'}}></PoppinsTextMedium>
+        <View style={{width:110,borderRadius:8,alignItems:"center",justifyContent:"center",backgroundColor:color,margin:4, flexDirection:'row',padding:4,height:70}}>
+            <Image style={{height:imageHeight,width:'25%',resizeMode:"contain",margin:2}} source={image}></Image>
+            <View style={{marginLeft:4,alignItems:'center',justifyContent:'center',width:'70%'}}>
+            <PoppinsTextMedium content ={amount} style={{fontSize:12,color:'black'}}></PoppinsTextMedium>
+            <PoppinsTextMedium content={title} style={{fontSize:11,color:'black', fontWeight:'600'}}></PoppinsTextMedium>
             </View>
-
         </View>
     );
 }

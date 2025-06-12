@@ -445,6 +445,12 @@ const BankAccounts = ({ navigation, route }) => {
           height: '90%',
           marginTop: 30
         }}>
+          <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'center',backgroundColor:"black",borderRadius:8 }}>
+          <PoppinsText content={t("Add Account")} style={{ color: "#595959", fontSize: 16 }}></PoppinsText>
+          <TouchableOpacity onPress={() => { navigation.navigate('AddBankAccountAndUpi') }} style={{ backgroundColor: '#DDDDDD', height: 60, width: 60, borderRadius: 30, alignItems: "center", justifyContent: 'center', marginLeft: 10 }}>
+            <Plus name="pluscircle" size={50} color={"#595959"}></Plus>
+          </TouchableOpacity>
+        </View>
         <PoppinsTextMedium
           style={{
             fontWeight: '800',
@@ -504,13 +510,7 @@ const BankAccounts = ({ navigation, route }) => {
           </View>
           
         </ScrollView>
-        <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'center', position: 'absolute', bottom: 14, right: 20 }}>
-          <PoppinsText content={t("Add Account")} style={{ color: "#595959", fontSize: 16 }}></PoppinsText>
-          <TouchableOpacity onPress={() => { navigation.navigate('AddBankAccountAndUpi') }} style={{ backgroundColor: '#DDDDDD', height: 60, width: 60, borderRadius: 30, alignItems: "center", justifyContent: 'center', marginLeft: 10 }}>
-
-            <Plus name="pluscircle" size={50} color={"#595959"}></Plus>
-          </TouchableOpacity>
-        </View>
+        
         {
            type==="Cashback" && <TouchableOpacity onPress={()=>{
             if(hasSelectedPaymentMethod)
