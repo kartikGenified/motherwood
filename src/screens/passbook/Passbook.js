@@ -220,7 +220,7 @@ const Passbook = ({ navigation }) => {
         navigation.navigate("ScannedHistory");
       } else if (data === "Points History Extra") {
         navigation.navigate("ExtraPointHistory");
-      } else if (data === "Points History Transfered") {
+      } else if (data === "Points History Transferred") {
         navigation.navigate("TransferedPointHistory");
       } else if (data === "Points History") {
         navigation.navigate("PointHistory");
@@ -286,7 +286,7 @@ const Passbook = ({ navigation }) => {
           }}
         >
           <PoppinsTextMedium
-            style={{ color: "black", fontSize: 12, fontWeight:"600" }}
+            style={{ color: "black", fontSize: 12, fontWeight:"700" }}
             content={visibleTitle}
           ></PoppinsTextMedium>
          {discription && <PoppinsTextMedium
@@ -299,13 +299,13 @@ const Passbook = ({ navigation }) => {
           style={{
             marginLeft: 10,
             borderWidth: 1,
-            padding: 8,
+            padding: 4,
             borderRadius: 20,
             borderColor: ternaryThemeColor,
           }}
         >
           <Image
-            style={{ height: 15, width: 15, resizeMode: "contain" }}
+            style={{ height: 12, width: 12, resizeMode: "contain" }}
             source={require("../../../assets/images/blackArrowRight.png")}
           ></Image>
         </View>
@@ -444,7 +444,7 @@ const Passbook = ({ navigation }) => {
               }}
             ></PoppinsTextMedium>
           </View>
-          <View style={{ width: "100%", marginTop: 40 }}>
+          <View style={{ width: "100%", marginTop: 20 }}>
             <PointsCard
               memberShip={getActiveMembershipData?.body?.tier?.name}
               setModalVisible={() => {
@@ -560,7 +560,7 @@ const Passbook = ({ navigation }) => {
                 }
                 title={"Points History"}
                 // discription={t("list of points redeemed by you")}
-                image={require("../../../assets/images/coinStack.png")}
+                image={require("../../../assets/images/rps.png")}
               ></NavigateTO>
             }
 
@@ -570,9 +570,9 @@ const Passbook = ({ navigation }) => {
               userData?.user_type?.toLowerCase() != "directoem" && (
                 <NavigateTO
                   visibleTitle={t("Transferred Points Summary")}
-                  title={"Points History Transfered"}
+                  title={"Points History Transferred"}
                   // discription={t("list of points redeemed by you")}
-                  image={require("../../../assets/images/coinStack.png")}
+                  image={require("../../../assets/images/transferable.png")}
                 ></NavigateTO>
               )}
 
@@ -581,7 +581,7 @@ const Passbook = ({ navigation }) => {
                 visibleTitle={t("Bonus Points Summary")}
                 title={"Points History Extra"}
                 // discription={t("list of points redeemed by you")}
-                image={require("../../../assets/images/coinStack.png")}
+                image={require("../../../assets/images/rp.png")}
               ></NavigateTO>
             }
 
@@ -601,7 +601,7 @@ const Passbook = ({ navigation }) => {
                 visibleTitle={t("redeemed history")}
                 title="Cashback History"
                 // discription={t("list of cashback claimed by you")}
-                image={require("../../../assets/images/cashbackBlack.png")}
+                image={require("../../../assets/images/redeemedHistory.png")}
               ></NavigateTO>
             )}
             {/* {
@@ -751,7 +751,7 @@ const Passbook = ({ navigation }) => {
             >
               {
                 <GridVIew
-                  title={t("Recieved Points Summary")}
+                  title={t("Received Points Summary")}
                   discription=" list of points redeemed by you"
                   image={require("../../../assets/images/coinStack.png")}
                 ></GridVIew>
@@ -811,7 +811,7 @@ const Passbook = ({ navigation }) => {
                 pointSharing && (
                   <GridVIew
                     title="Shared Point History"
-                    discription=" list of shared points recieved by you"
+                    discription=" list of shared points received by you"
                     image={require("../../../assets/images/shared_point.png")}
                   ></GridVIew>
                 )}

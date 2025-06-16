@@ -569,7 +569,7 @@ const Profile = ({ navigation }) => {
             >
               <Edit name="edit" size={20} color={ternaryThemeColor}></Edit>
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 deleteID();
               }}
@@ -590,7 +590,7 @@ const Profile = ({ navigation }) => {
                 size={24}
                 color={ternaryThemeColor}
               ></Delete>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>

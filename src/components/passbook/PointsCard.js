@@ -21,6 +21,9 @@ const [isTertiary, setIsTertiary] = useState(false)
 const id = useSelector(state => state.appusersdata.id);
 const userData = useSelector((state) => state.appusersdata.userData);
 const membership = props?.memberShip?.toLowerCase()
+
+
+console.log("dashjgdhjgasjjcbjkasbcv gcahgvs",userData)
 useEffect(() => {
   if( (userData?.user_type)?.toLowerCase() == 'carpenter' ||  (userData?.user_type)?.toLowerCase() == 'contractor' ||  (userData?.user_type)?.toLowerCase() == 'oem' ||  (userData?.user_type)?.toLowerCase() == 'directoem')
  {
@@ -59,12 +62,11 @@ const fetchPoints = async () => {
         style={{
           alignItems: "center",
           marginTop:20,
-          height:105, 
-          width:130,
-          paddingRight:5, 
+          height:110, 
+          width:86,
           borderRightWidth:0.4,
           borderRightColor:'red',
-          paddingLeft:5
+          padding:4
         }}
       >
         <Image
@@ -83,7 +85,7 @@ const fetchPoints = async () => {
             content={points ? points : 0}
           ></PoppinsTextLeftMedium>
           <PoppinsTextMedium
-            style={{ color: "white", textAlign: "center", fontSize: 13, fontWeight:'600' }}
+            style={{ color: "white", textAlign: "center", fontSize: 12, fontWeight:'700' }}
             content={title}
           ></PoppinsTextMedium>
         </View>
@@ -97,7 +99,7 @@ const fetchPoints = async () => {
     <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={membership == null ? isTertiary ? ["#315855","#315855","#1B7C76","#00A79D"] : ["#B1202C", "#573B3D"] : membership == "silver" ? ['#909090','#B9B9B9'] : membership == 'gold' ? ['#C79935','#A37B24']: membership == "platinum" ? ['#DDDDDD','#B9B9B9'] :[]}  style={styles.container}>
       <View
         style={{
-          height: "53%",
+          height: "48%",
           justifyContent: "space-between",
           flexDirection: "row",
           borderBottomWidth: 0.5,
@@ -128,20 +130,24 @@ const fetchPoints = async () => {
               style={{ color: "white", fontSize: 18, fontWeight: "800" }}
               content={userData?.name}
             ></PoppinsTextLeftMedium>
+            <PoppinsTextLeftMedium
+              style={{ color: "white", fontSize: 16, fontWeight: "600" }}
+              content={userData.user_type + '_' + userData?.id}
+            ></PoppinsTextLeftMedium>
            
           </View>
         </View>
 
         <View>
           <Image
-            style={{ height: 40, width: 100, marginTop: 30, marginRight: 10,resizeMode:'contain' }}
+            style={{ height: 40, width: 100, marginTop: 10, marginRight: 10,resizeMode:'contain',top:20 }}
             source={require("../../../assets/images/motherwood_white_logo.png")}
           ></Image>
           <TouchableOpacity
             onPress={()=>{
               props.setModalVisible(true)
             }}
-            style={{ flexDirection: "row", marginTop: 20, marginRight: 20 }}
+            style={{ flexDirection: "row", marginTop: 20, marginRight: 20,top:30 }}
           >
             <Image
               style={{ height: 16, width: 16, marginRight: 5, marginTop: 3 }}
@@ -170,12 +176,12 @@ const fetchPoints = async () => {
           <IconBox
             image={require("../../../assets/images/hand_coin_white.png")}
             points={isNaN(Math.floor(userPointData?.body.point_earned)) ? '0' : Math.floor(userPointData?.body.point_earned)}
-            title={"Recieved Points"}
+            title={"Received Points"}
           ></IconBox>
           <IconBox
             image={require("../../../assets/images/loop_star.png")}
             points={isNaN(Math.floor(userPointData?.body?.transfer_points)) ? '0' : Math.floor(userPointData?.body?.transfer_points)}
-            title={"Transfered Points"}
+            title={"Transferred Points"}
           ></IconBox>
           <IconBox
             image={require("../../../assets/images/white_coin.png")}

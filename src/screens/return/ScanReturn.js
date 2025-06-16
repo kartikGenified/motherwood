@@ -903,7 +903,7 @@ const ScanReturn = ({ navigation, route }) => {
 
   const locationStatus = (status) => {
     console.log(
-      "location status recieved from enable location screen ",
+      "location status received from enable location screen ",
       status
     );
     setLocationEnabled(status);

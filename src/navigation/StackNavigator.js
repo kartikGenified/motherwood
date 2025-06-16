@@ -107,6 +107,7 @@ import FeedbackProducts from "../screens/feedback/FeedbackProducts";
 import DreamGift from "../screens/dreamGift/DreamGift";
 import DreamGiftDetails from "../screens/dreamGift/DreamGiftDetails";
 import PointsTransferSuccess from "../screens/dashmenu/PointTransferSuccess";
+import Setting from "../screens/settingsPage/Setting";
 
 const Stack = createNativeStackNavigator();
 
@@ -175,7 +176,7 @@ const StackNavigator = () => {
           options={{
             headerShown: false,
           }}
-          name="TransferedPointHistory"
+          name="TransferredPointHistory"
           component={TransferedPointHistory}
         ></Stack.Screen>
         <Stack.Screen
@@ -256,6 +257,13 @@ const StackNavigator = () => {
           }}
           name="FAQ"
           component={FAQ}
+        ></Stack.Screen>
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="Setting"
+          component={Setting}
         ></Stack.Screen>
         <Stack.Screen
           options={{

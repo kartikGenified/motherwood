@@ -1,8 +1,9 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import { useTranslation } from "react-i18next";
 import { Image, ImageBackground, Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Modal } from "react-native-paper";
 import { useSelector } from "react-redux";
+import PoppinsTextMedium from "../electrons/customFonts/PoppinsTextMedium";
 
 const SuccessConfettiModal = (props) => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -20,7 +21,7 @@ const SuccessConfettiModal = (props) => {
   const params = props.params
   const navigation = props.navigation
 
-
+console.log("success confetti modal has been opened yayyyyyyyyyy")
   useEffect(()=>{
     if(props.openModal===true)
     {
@@ -95,7 +96,7 @@ const SuccessConfettiModal = (props) => {
                   content={header}
                 ></PoppinsTextMedium>
       </View>
-      <View style={{width:'80%',alignItems:'center', justifyContent:'center'}}>
+      {message && <View style={{width:'80%',alignItems:'center', justifyContent:'center'}}>
       <PoppinsTextMedium
                   style={{
                     fontSize: 16,
@@ -103,7 +104,7 @@ const SuccessConfettiModal = (props) => {
                   }}
                   content={message}
                 ></PoppinsTextMedium>
-      </View>
+      </View>}
 
       <TouchableOpacity onPress={()=>{
         closeModal()

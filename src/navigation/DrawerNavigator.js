@@ -37,9 +37,8 @@ import ErrorModal from "../components/modals/ErrorModal";
 import VersionCheck from "react-native-version-check";
 import { useTranslation } from "react-i18next";
 import Edit from "react-native-vector-icons/Entypo";
-
 const Drawer = createDrawerNavigator();
-const CustomDrawer = () => {
+const CustomDrawer = (props) => {
   const [profileImage, setProfileImage] = useState();
   const [myProgramVisible, setMyProgramVisibile] = useState(false);
   const [ozoneProductVisible, setOzoneProductVisible] = useState(false);
@@ -71,8 +70,7 @@ const CustomDrawer = () => {
   const primaryThemeColor = useSelector(
     (state) => state.apptheme.primaryThemeColor
   )
-    ? useSelector((state) => state.apptheme.primaryThemeColor)
-    : "#FF9B00";
+    
   const userData = useSelector((state) => state.appusersdata.userData);
   const kycData = useSelector((state) => state.kycDataSlice.kycData);
 
@@ -275,7 +273,9 @@ const CustomDrawer = () => {
                 // Drawer.navigate("Passbook")
                 navigation.navigate("KycMotherhood");
               }
-              
+              else if (props.title.toLowerCase() === "settings") {
+                navigation.navigate("Setting");
+              }
               else if (props.title.toLowerCase() === "redeem") {
                 // Drawer.navigate("Passbook")
                 navigation.navigate("RewardMenu");
@@ -541,6 +541,17 @@ const CustomDrawer = () => {
           justifyContent: "center",
         }}
       >
+        <TouchableOpacity
+        style={{position:"absolute",left:14,top:26}}
+              onPress={() => {
+                props.navigation.dispatch(DrawerActions.closeDrawer())
+              }}
+            >
+              <Image
+                style={{ height: 30, width: 30, resizeMode: "contain" }}
+                source={require("../../assets/images/blackBack.png")}
+              ></Image>
+            </TouchableOpacity>
         {profileImage ? (
           <View
             style={{
@@ -608,27 +619,29 @@ const CustomDrawer = () => {
                 navigation.navigate("Profile");
               }}
               style={{
-                height: 23,
-                width: 23,
+                height: 16,
+                width: 16,
                 borderWidth: 1,
                 alignItems: "center",
                 justifyContent: "center",
-                borderRadius: 20,
-                marginTop: 10,
-                marginLeft: 10,
+                borderRadius: 8,
+                marginTop: 14,
+                marginLeft: 4,
               }}
             >
-              <Edit name="edit" size={12} color={"black"}></Edit>
+              <Edit name="edit" size={8} color={"black"}></Edit>
             </TouchableOpacity>
           </View>
           <PoppinsTextMedium
             style={{ color: "black" }}
             content={"MWEDKSKD"}
           ></PoppinsTextMedium>
-          {getActiveMembershipData  && <PoppinsTextMedium
+          {
+          getActiveMembershipData  && <PoppinsTextMedium
             style={{ color: "black" }}
             content={getActiveMembershipData?.body?.tier?.name}
-          ></PoppinsTextMedium>}
+          ></PoppinsTextMedium>
+          }
         </View>
 
         <View style={{ justifyContent: "center", marginLeft: 50 }}>
@@ -1026,7 +1039,7 @@ const CustomDrawer = () => {
         </View> */}
         {/* Knowledge Hub*/}
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             backgroundColor: "black",
             height: 70,
@@ -1050,14 +1063,15 @@ const CustomDrawer = () => {
             }}
             content="Designed and developed by Genefied"
           ></PoppinsTextLeftMedium>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </ScrollView>
     </View>
   );
 };
 function DrawerNavigator() {
+  const navigation = useNavigation()
   return (
-    <Drawer.Navigator drawerContent={() => <CustomDrawer />}>
+    <Drawer.Navigator drawerContent={() => <CustomDrawer navigation = {navigation} />}>
       <Drawer.Screen
         options={{ headerShown: false }}
         name="DashboardDrawer"

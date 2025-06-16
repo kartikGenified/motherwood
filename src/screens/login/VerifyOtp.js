@@ -71,6 +71,7 @@ import { useVerifyOtpForNormalUseMutation } from "../../apiServices/otp/VerifyOt
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import { useGetLoginOtpForVerificationMutation } from "../../apiServices/otp/GetOtpApi";
 import Phone from 'react-native-vector-icons/FontAwesome'
+import SuccessConfettiModal from "../../components/modals/SuccessConfettiModal";
 
 
 const VerifyOtp = ({ navigation, route }) => {
@@ -841,7 +842,6 @@ useEffect(()=>{
           ></ErrorModal>
         )}
       </View>
-
       <View style={{ marginHorizontal: 100 }}>
         {openModalWithBorder && (
           <ModalWithBorder
@@ -852,6 +852,18 @@ useEffect(()=>{
           ></ModalWithBorder>
         )}
       </View>
+
+      {/* {
+        success && <SuccessConfettiModal
+        modalClose={modalWithBorderClose}
+        title="Success"
+        header="You have successfully logged in"
+        // message="For confirmation, you will receive an SMS on your registered mobile number"
+        navigateTo="Dashboard"
+        params={route.params}
+        navigation={navigation}
+        ></SuccessConfettiModal>
+      } */}
 
        
         <OtpInput

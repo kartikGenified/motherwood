@@ -637,7 +637,7 @@ const Dashboard = ({ navigation }) => {
             height: "90%",
           }}
         >
-          <View style={{ height: 200, width: "100%", marginBottom: 20 }}>
+          <View style={{ height: 180, width: "100%", marginBottom: 20 }}>
             {bannerArray && <Banner images={bannerArray}></Banner>}
 
             {showCampaign && (
@@ -713,13 +713,13 @@ const Dashboard = ({ navigation }) => {
             >
               <Info
                 name="infocirlceo"
-                size={15}
+                size={13}
                 color={ternaryThemeColor}
               ></Info>
               <PoppinsTextLeftMedium
                 style={{
                   color: ternaryThemeColor,
-                  fontWeight: "600",
+                  fontWeight: "700",
                   fontSize: 13,
                   marginLeft: 4,
                 }}
@@ -811,7 +811,7 @@ const Dashboard = ({ navigation }) => {
               alignItems: "center",
               justifyContent: "space-evenly",
               bottom: 30,
-              marginBottom: 20,
+              paddingBottom: 40,
             }}
           >
             <DashboardSupportBox

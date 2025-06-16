@@ -54,7 +54,7 @@ const TopHeader = ({title}) => {
 
         <PoppinsTextMedium
           style={{
-            fontSize: 20,
+            fontSize: 16,
             color: "#000",
             marginTop: 5,
             position: "absolute",

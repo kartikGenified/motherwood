@@ -14,7 +14,7 @@ const RewardBoxDashboard = () => {
     const userData = useSelector(state => state.appusersdata.userData)
     const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loaderNew.gif')).uri;
     const {t} = useTranslation();
-
+    const secondaryThemeColor = useSelector(state=>state.apptheme.secondaryThemeColor)
     console.log("asbfhjsahjvchjashvhhavshj",userData)
     const [userPointFunc, {
         data: userPointData,
@@ -50,7 +50,7 @@ const RewardBoxDashboard = () => {
 
     console.log(workflow)
     return (
-        <View style={{width: '100%', borderRadius: 14, elevation: 4, backgroundColor: 'white', height: 80 }}>
+        <View style={{width: '100%', borderRadius: 14, elevation: 4, backgroundColor: secondaryThemeColor, height: 80 }}>
 
 
             {userPointIsLoading &&
@@ -87,12 +87,12 @@ const RewardBoxDashboard = () => {
                     // workflow?.includes("Points On Product") && userPointData && <RewardRectangular amount={userPointData.body.point_redeemed} color="#DCFCE7" image={require('../../../assets/images/reward.png')} title={t("redeemed points")}></RewardRectangular>
                 }
                     {
-                  <RewardRectangular amount={Math.floor(Number(userPointData?.body.transfer_points) ? Number(userPointData?.body.point_balance) : 0)} color="#FFFCCF" image={require('../../../assets/images/transferable.png')} title={t("Wallet points")}></RewardRectangular>
+                  <RewardRectangular amount={Math.floor(Number(userPointData?.body.transfer_points) ? Number(userPointData?.body.point_balance) : 0)} color="#FFFCCF" image={require('../../../assets/images/rp.png')} title={t("Wallet Points")}></RewardRectangular>
                 }
              
 
                      {
-                  <RewardRectangular amount={Math.floor(Number(userPointData?.body.point_balance) ? Number(userPointData?.body.point_redeemed) : 0)} color="#E4FFFB" image={require('../../../assets/images/balance_black.png')} title={t("Redeemed points")}></RewardRectangular>
+                  <RewardRectangular amount={Math.floor(Number(userPointData?.body.point_balance) ? Number(userPointData?.body.point_redeemed) : 0)} color="#E4FFFB" image={require('../../../assets/images/rc.png')} title={t("Redeemed Points")}></RewardRectangular>
                 }
             
                 {

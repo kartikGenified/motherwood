@@ -37,7 +37,7 @@ console.log("asdhgasghfdghfsaghfcghvasghcghvsaghvchjvasghvchjs",placeHolder)
       style={{
         height: 50,
         width: "86%",
-        borderWidth: 1,
+        borderWidth: 0.6,
         borderColor: "#DDDDDD",
         alignItems: "center",
         justifyContent: "center",

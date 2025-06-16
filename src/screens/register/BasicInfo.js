@@ -22,6 +22,7 @@ import {
   useGetFormAccordingToAppUserTypeMutation,
   useGetFormMutation,
 } from "../../apiServices/workflow/GetForms";
+import * as Keychain from "react-native-keychain";
 import ButtonOval from "../../components/atoms/buttons/ButtonOval";
 import { useRegisterUserByBodyMutation } from "../../apiServices/register/UserRegisterApi";
 import TextInputAadhar from "../../components/atoms/input/TextInputAadhar";
@@ -613,6 +614,8 @@ const BasicInfo = ({ navigation, route }) => {
       if (registerUserData.success) {
         setToken(registerUserData?.body?.token);
         setSuccess(true);
+        saveToken(registerUserData?.body?.token);
+
         const storeData = async (value) => {
           try {
             const jsonValue = JSON.stringify(value);
@@ -672,6 +675,13 @@ const BasicInfo = ({ navigation, route }) => {
     } else {
       alert("Name could not be empty");
     }
+  };
+
+  const saveToken = async (data) => {
+    const token = data;
+    const password = "17dec1998";
+
+    await Keychain.setGenericPassword(token, password);
   };
 
   const isValidEmail = (text) => {
@@ -1154,23 +1164,23 @@ const BasicInfo = ({ navigation, route }) => {
         ></ErrorModal>
       )}
 
-      {
-        success && <SuccessConfettiModal
-        modalClose={modalClose}
-        title="Success"
-        header="Your request has been submitted successfully."
-        message="For confirmation, you will receive an SMS on your registered mobile number"
-        navigateTo="Dashboard"
-        params={{
-          needsApproval: needsApproval,
-          userType: userType,
-          userId: userTypeId,
-          registrationRequired: registrationRequired,
-        }}
-        navigation={navigation}
-        ></SuccessConfettiModal>
-      }
       {success && (
+        <SuccessConfettiModal
+          modalClose={modalClose}
+          title="Success"
+          header="Your request has been submitted successfully."
+          message="For confirmation, you will receive an SMS on your registered mobile number"
+          navigateTo="Dashboard"
+          params={{
+            needsApproval: needsApproval,
+            userType: userType,
+            userId: userTypeId,
+            registrationRequired: registrationRequired,
+          }}
+          navigation={navigation}
+        ></SuccessConfettiModal>
+      )}
+      {/* {success && (
         <MessageModal
           modalClose={modalClose}
           title={modalTitle}
@@ -1184,7 +1194,7 @@ const BasicInfo = ({ navigation, route }) => {
             registrationRequired: registrationRequired,
           }}
         ></MessageModal>
-      )}
+      )} */}
 
       {otpModal && (
         <MessageModal
@@ -1678,16 +1688,15 @@ const BasicInfo = ({ navigation, route }) => {
                                 width: "80%",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                marginBottom:14
+                                marginBottom: 14,
                               }}
                             >
                               <View
                                 style={{
-                                  width:'100%',
+                                  width: "100%",
                                   alignItems: "center",
                                   justifyContent: "flex-start",
-                                flexDirection: "row",
-
+                                  flexDirection: "row",
                                 }}
                               >
                                 <TouchableOpacity

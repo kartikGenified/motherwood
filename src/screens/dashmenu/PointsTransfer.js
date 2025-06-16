@@ -111,7 +111,7 @@ const PointsTransfer = () => {
           marginHorizontal: 20,
           flexDirection: "row",
           borderRadius: 10,
-          marginTop: 15,
+          marginTop: 10,
           justifyContent: "space-between",
         }}
       >
@@ -135,13 +135,13 @@ const PointsTransfer = () => {
             source={require("../../../assets/images/coin.png")}
           />
           <Text style={{ color: "white", fontSize: 22 }}>
-            {userPointData?.body?.transfer_points}
+            {Math.trunc(userPointData?.body?.transfer_points)}
           </Text>
         </View>
       </View>
 
       {/* Mobile Input  */}
-      <View style={{ height: 120, marginTop: 30 }}>
+      <View style={{ height: 120, marginTop: 10 }}>
         <PoppinsTextLeftMedium
           style={{
             marginLeft: 22,
@@ -153,7 +153,7 @@ const PointsTransfer = () => {
         ></PoppinsTextLeftMedium>
         <TextInput
           onChangeText={setMobile}
-          placeholder="99999999999"
+          placeholder="+91-99999999999"
           placeholderTextColor={"#808080"}
           maxLength={10}
           style={{
@@ -286,7 +286,7 @@ const PointsTransfer = () => {
         >
           <PoppinsTextLeftMedium
             style={{ color: "white", fontSize: 23, fontWeight: "bold" }}
-            content="NEXT"
+            content="Next"
           ></PoppinsTextLeftMedium>
         </TouchableOpacity>
       )}

@@ -60,7 +60,7 @@ const MenuItems = (props) => {
           handlePress();
         }}
         style={{
-          width: 86,
+          width: 70,
           borderRadius:5,
           borderWidth:1,
           borderColor:ternaryThemeColor,
@@ -95,7 +95,7 @@ const MenuItems = (props) => {
             : t(content)
         }
         style={{
-          width: 70,
+          width: 60,
           marginTop: 6,
           color:  !isTertiary ? ternaryThemeColor : "#00A79D",
           fontSize: platformFontSize,
