@@ -321,6 +321,7 @@ const OtpLogin = ({ navigation, route }) => {
     setAlert(false);
   };
   return (
+    <KeyboardAvoidingView style={{height:'100%'}}>
     <ScrollView
       contentContainerStyle={{}}
       style={{ width: "100%" }}
@@ -546,11 +547,12 @@ const OtpLogin = ({ navigation, route }) => {
             ></ButtonNavigate>
           </View>
         )} */}
-        <View style={{marginTop:30}}>
-        <SocialBottomBar showRelative={true}/>
 
+        <View style={{width:'100%',marginTop:40}}>
+        <SocialBottomBar showRelative={true}/>
         </View>
     </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

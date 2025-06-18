@@ -112,7 +112,7 @@ const RedeemGifts = ({ navigation, route }) => {
 
         fetchGiftCatalogue({
           token: token,
-          type: 1,
+          type: 2,
           limit: 1000,
           offset: 0,
         });
@@ -851,21 +851,39 @@ const RedeemGifts = ({ navigation, route }) => {
             }}
           ></PoppinsTextMedium>
 
-          <PoppinsTextMedium
-            content={`${Math.floor(
-              Number(pointBalance)
-            )} ${t("pts Available ")}  `}
+         
+        </View>
+        <View style={{alignItems:"center", justifyContent:'center',position: "absolute",
+              right:20,
+              top: 20,}}>
+                <PoppinsTextMedium
+            content={"Your Wallet Points"}
             style={{
               marginLeft: 10,
-              position: "absolute",
-              left: 0,
-              top: 10,
+              
               fontSize: 13,
-              fontWeight: "300",
+              fontWeight: "700",
               color: "black",
             }}
           ></PoppinsTextMedium>
+          <View style={{alignItems:'center', justifyContent:'center',flexDirection:'row'}}>
+            <Image style={{height:20,width:20,resizeMode:'contain'}} source={require('../../../assets/images/coin.png')}></Image>
+            <PoppinsTextMedium
+            content={`${Math.floor(
+              Number(pointBalance)
+            )} `}
+            style={{
+              marginLeft: 10,
+              
+              fontSize: 17,
+              fontWeight: "700",
+              color: "black",
+            }}
+          ></PoppinsTextMedium>
+          </View>
+        
         </View>
+        
       </View>
       <View
         style={{
@@ -883,7 +901,7 @@ const RedeemGifts = ({ navigation, route }) => {
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "row",
-            backgroundColor: "#EFF6FC",
+            backgroundColor: "white",
             width: "100%",
             borderTopRightRadius: 40,
             borderTopLeftRadius: 40,
@@ -910,6 +928,8 @@ const RedeemGifts = ({ navigation, route }) => {
                   backgroundColor: "white",
                   borderRadius: 20,
                   marginLeft: 20,
+                  borderWidth:0.4,
+                  borderColor:"#DDDDDD"
                 }}
               >
                 <Icon
@@ -1175,17 +1195,18 @@ const RedeemGifts = ({ navigation, route }) => {
                 />
               )}
               {cart && (
+                <View style={{alignItems:'center' ,justifyContent:'center', width:'100%',position: "absolute",
+                bottom: 100,}}>
                 <TouchableOpacity
                   onPress={onContinueClick}
                   style={{
                     alignItems: "center",
-                    borderRadius: 10,
+                    borderRadius: 30,
                     justifyContent: "center",
                     height: 50,
-                    width: "80%",
-                    position: "absolute",
-                    bottom: 100,
-                    left: 50,
+                    width: "60%",
+                    
+                    
                     backgroundColor: "black",
                   }}
                 >
@@ -1198,6 +1219,7 @@ const RedeemGifts = ({ navigation, route }) => {
                     content={t("Process")}
                   />
                 </TouchableOpacity>
+                </View>
               )}
             </View>
           )}

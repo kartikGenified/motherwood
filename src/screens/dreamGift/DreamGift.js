@@ -173,7 +173,7 @@ const DreamGift = () => {
           style={{
             height: "56%",
             width: "90%",
-            resizeMode: "cover",
+            resizeMode: 'contain',
             borderRadius: 20,
             marginTop: 20,
           }}

@@ -221,7 +221,7 @@ const Passbook = ({ navigation }) => {
       } else if (data === "Points History Extra") {
         navigation.navigate("ExtraPointHistory");
       } else if (data === "Points History Transferred") {
-        navigation.navigate("TransferedPointHistory");
+        navigation.navigate("TransferredPointHistory");
       } else if (data === "Points History") {
         navigation.navigate("PointHistory");
       } else if (data === "Redeemed History") {
@@ -333,7 +333,9 @@ const Passbook = ({ navigation }) => {
       } else if (data === "Wheel History") {
         navigation.navigate("WheelHistory");
       }
-      
+      else if (data === "Transferred Points Summary") {
+        navigation.navigate("TransferredPointHistory");
+      }
       else if (data === "Warranty History") {
         navigation.navigate("WarrantyHistory");
       }
@@ -506,6 +508,7 @@ const Passbook = ({ navigation }) => {
                       fontWeight: "bold",
                       position: "absolute",
                       left: 10,
+                      color:'black'
                     }}
                     content={t("Overview")}
                   ></PoppinsTextMedium>
@@ -763,14 +766,14 @@ const Passbook = ({ navigation }) => {
                   <GridVIew
                     title={t("Transferred Points Summary")}
                     discription=" list of points redeemed by you"
-                    image={require("../../../assets/images/coinStack.png")}
+                    image={require("../../../assets/images/transferable.png")}
                   ></GridVIew>
                 )}
               {
                 <GridVIew
                   title={t("Bonus Points Summary")}
                   discription=" list of points redeemed by you"
-                  image={require("../../../assets/images/coinStack.png")}
+                  image={require("../../../assets/images/rp.png")}
                 ></GridVIew>
               }
               {/* ozone change */}

@@ -12,6 +12,7 @@ import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTex
 import {
   useFetchUserPointsMutation,
   useFetchUserPointsHistoryMutation,
+  useCashPerPointMutation,
 } from "../../apiServices/workflow/rewards/GetPointsApi";
 import * as Keychain from "react-native-keychain";
 import { useSelector } from "react-redux";
@@ -25,11 +26,17 @@ import InputDate from "../../components/atoms/input/InputDate";
 import { useTranslation } from "react-i18next";
 import TopHeader from "../../components/topBar/TopHeader";
 import { useGetOrderDetailsByTypeMutation } from "../../apiServices/order/orderApi";
+import { useIsFocused } from "@react-navigation/native";
+
 
 const ExtraPointHistory = ({ navigation }) => {
   const [displayList, setDisplayList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [minRedemptionPoints, setMinRedemptionPoints] = useState();
+  const [redemptionStartData, setRedemptionStartDate] = useState();
+  const [redemptionEndDate, setRedemptionEndDate] = useState();
   const points = 100;
+  const focused = useIsFocused()
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );
@@ -75,6 +82,16 @@ const ExtraPointHistory = ({ navigation }) => {
   ] = useFetchUserPointsHistoryMutation();
 
   const [
+    cashPerPointFunc,
+    {
+      data: cashPerPointData,
+      error: cashPerPointError,
+      isLoading: cashPerPointIsLoading,
+      isError: cashPerPointIsError,
+    },
+  ] = useCashPerPointMutation();
+
+  const [
     getOrderDetailsByTypeFunc,
     {
       data: getOrderDetailsByTypeData,
@@ -83,6 +100,16 @@ const ExtraPointHistory = ({ navigation }) => {
       isError: getOrderDetailsByTypeIsError,
     },
   ] = useGetOrderDetailsByTypeMutation();
+
+  useEffect(() => {
+    (async () => {
+      const credentials = await Keychain.getGenericPassword();
+      const token = credentials.username;
+      const userId = userData.id;
+      cashPerPointFunc(token);
+     
+    })();
+  }, [focused]);
 
   
 
@@ -154,6 +181,7 @@ const ExtraPointHistory = ({ navigation }) => {
       console.log("userPointError", userPointError);
     }
   }, [userPointData, userPointError]);
+  
 
   useEffect(() => {
     if (getPointSharingData) {
@@ -169,6 +197,20 @@ const ExtraPointHistory = ({ navigation }) => {
       setIsLoading(true);
     }
   }, [getPointSharingData, getPointSharingError]);
+
+  useEffect(() => {
+    if (cashPerPointData) {
+      console.log("cashPerPointData", cashPerPointData);
+      if (cashPerPointData.success) {
+        const temp = cashPerPointData?.body;
+        setRedemptionStartDate(temp?.redeem_start_date);
+        setRedemptionEndDate(temp?.redeem_end_date);
+        setMinRedemptionPoints(temp?.min_point_redeem);
+      }
+    } else if (cashPerPointError) {
+      console.log("cashPerPointError", cashPerPointError);
+    }
+  }, [cashPerPointData, cashPerPointError]);
 
   useEffect(() => {
     if (getOrderDetailsByTypeData) {
@@ -529,6 +571,34 @@ const ExtraPointHistory = ({ navigation }) => {
     );
   };
 
+  const handleRedeemButtonPress = () => {
+    if (
+      Number(new Date(redemptionStartData).getTime()) <=
+        Number(new Date().getTime()) &&
+      Number(new Date().getTime()) <=
+        Number(new Date(redemptionEndDate).getTime())
+    ) {
+      console.log(
+        "correct redemption date",
+        new Date().getTime(),
+        new Date(redemptionStartData).getTime(),
+        new Date(redemptionEndDate).getTime()
+      );
+
+      console.log("cashPerPointData", cashPerPointData);
+      navigation.navigate("RewardMenu");
+    } else {
+      setError(true);
+      setMessage(
+        "Redemption window starts from " +
+          dayjs(redemptionStartData).format("DD-MMM-YYYY") +
+          " and ends on " +
+          dayjs(redemptionEndDate).format("DD-MMM-YYYY")
+      );
+      setNavigateTo("CashbackHistory");
+    }
+  };
+
   const ListItem = (props) => {
    const orderNumber = props.orderNumber
    const sku = props.sku
@@ -603,32 +673,50 @@ const ExtraPointHistory = ({ navigation }) => {
       <View
         style={{
           backgroundColor: secondaryThemeColor,
-          height: 100,
+          height: 70,
           width: "100%",
           flexDirection: "row",
           justifyContent: "space-between",
         }}
       >
-        {/* <View style={{ margin: 20, flexDirection: "row" }}>
+        {userPointData && <View style={{ margin: 10, flexDirection: "row", justifyContent:"center" }}>
           <Image source={require("../../../assets/images/coin.png")}></Image>
           <View style={{ marginLeft: 10 }}>
             <PoppinsTextLeftMedium
               style={{ fontSize: 18, color: "black", fontWeight: "800" }}
-              content={"1600"}
+              content={Math.trunc(userPointData?.body?.point_balance)}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
-              style={{ color: "black", fontWeight: "600", fontSize: 16 }}
-              content={"Recieved Points"}
+              style={{ color: "black", fontWeight: "700", fontSize: 16 }}
+              content={"Wallet Points"}
             ></PoppinsTextLeftMedium>
           </View>
-          {
-            (userData?.user_type)?.toLowerCase()!='carpenter' && (userData?.user_type)?.toLowerCase()!='contractor' && (userData?.user_type)?.toLowerCase()!='oem' && (userData?.user_type)?.toLowerCase()!='directoem' && 
-            <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:140,marginLeft:20}} onPress={()=>{}}>
-            <PoppinsTextMedium style={{color:'white', fontSize:16, fontWeight:'bold'}} content={"Points Transfer"}></PoppinsTextMedium>
-        </TouchableOpacity>
-          }
+          <TouchableOpacity
+              onPress={() => {
+                handleRedeemButtonPress();
+              }}
+              style={{
+                height: 36,
+                width: 100,
+                backgroundColor: "#B6202D",
+                alignItems: "center",
+                justifyContent: 'space-around',
+                borderRadius: 18,
+                flexDirection:'row',
+                padding:4,
+                margin:4,
+                marginLeft:60
+              }}
+            >
+          <Image style={{ height: 16, width: 16, resizeMode: "contain" }} source={require('../../../assets/images/giftWhite.png')}></Image>
+
+              <PoppinsTextMedium
+                style={{ fontSize: 16, fontWeight: "600", color: "white" }}
+                content={t("redeem")}
+              ></PoppinsTextMedium>
+            </TouchableOpacity>
        
-        </View> */}
+        </View>}
       </View>
 
       <Header></Header>

@@ -1,5 +1,5 @@
 //import liraries
-import React, { Component, useEffect,useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { Image, ScrollView } from "react-native";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
@@ -8,18 +8,20 @@ import { useOrderHistoryDetailsMutation } from "../../apiServices/workflow/rewar
 import * as Keychain from "react-native-keychain";
 import ErrorModal from "../../components/modals/ErrorModal";
 import MessageModal from "../../components/modals/MessageModal";
-
+import Date from "react-native-vector-icons/MaterialIcons";
+import Time from "react-native-vector-icons/Entypo";
+import moment from "moment";
 
 // create a component
 const OrderDetails = (params) => {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState();
-  const navigation = useNavigation()
-  console.log("praaaaa",params?.route?.params?.item?.id)
-  const orderNo = params?.route?.params?.item?.id
-  const item = params?.route?.params?.item
-  console.log("item params", item)
+  const navigation = useNavigation();
+  console.log("praaaaa", params?.route?.params?.item?.id);
+  const orderNo = params?.route?.params?.item?.id;
+  const item = params?.route?.params?.item;
+  console.log("item params", item);
   const [
     fetchOrderDetails,
     {
@@ -30,31 +32,30 @@ const OrderDetails = (params) => {
     },
   ] = useOrderHistoryDetailsMutation();
 
-  useEffect(()=>{
+  useEffect(() => {
     (async () => {
       const credentials = await Keychain.getGenericPassword();
       const token = credentials.username;
       const data = {
-        id:orderNo,
-        token:token
-      }
-      fetchOrderDetails(data)
-
-
+        id: orderNo,
+        token: token,
+      };
+      fetchOrderDetails(data);
     })();
-  },[])
+  }, []);
 
-  useEffect(()=>{
-    if(fetchOrderDetailsData){
-      console.log("fetchOrderDetailsData", JSON.stringify(fetchOrderDetailsData));
-      
-    }
-    else if(fetchOrderDetailsError){
+  useEffect(() => {
+    if (fetchOrderDetailsData) {
+      console.log(
+        "fetchOrderDetailsData",
+        JSON.stringify(fetchOrderDetailsData)
+      );
+    } else if (fetchOrderDetailsError) {
       console.log("fetchOrderDetailsError", fetchOrderDetailsError);
-      setError(true)
-      setMessage("Unable to fetch order history details")
+      setError(true);
+      setMessage("Unable to fetch order history details");
     }
-  },[fetchOrderDetailsData,fetchOrderDetailsError])
+  }, [fetchOrderDetailsData, fetchOrderDetailsError]);
 
   const modalClose = () => {
     setError(false);
@@ -83,10 +84,8 @@ const OrderDetails = (params) => {
           justifyContent: "flex-start",
           flexDirection: "row",
           width: "100%",
-          marginTop: 10,
-          height: 40,
-          marginLeft: 20,
-          backgroundColor: "white",
+          height: 60,
+          backgroundColor: "#FFF8E7",
         }}
       >
         <TouchableOpacity
@@ -117,6 +116,7 @@ const OrderDetails = (params) => {
       </View>
 
       <ScrollView>
+
         <View style={{ alignItems: "center", width: "100%" }}>
           {/* <View
             style={{
@@ -150,19 +150,91 @@ const OrderDetails = (params) => {
               Points :{" "}
             </Text>
 
-            {params?.route?.params?.item &&  <Text
+            {params?.route?.params?.item && (
+              <View
+                style={{
+                  backgroundColor: "#B6202D",
+                  borderRadius: 20,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  minWidth:60
+                }}
+              >
+                <Text
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                    fontSize: 20,
+                  }}
+                >
+                  {Math.trunc(params?.route?.params?.item?.points)}
+                </Text>
+              </View>
+            )}
+          </View>
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "row",
+              marginTop: 10,
+            }}
+          >
+            <View
               style={{
-                backgroundColor: "#FFD11E",
-                padding: 8,
-                paddingHorizontal: 15,
-                borderRadius: 20,
-                color: "black",
-                fontWeight: "bold",
-                fontSize: 20,
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "row",
               }}
             >
-              {params?.route?.params?.item?.points}
-            </Text>}
+              <Date name="date-range" size={22} color={"grey"}></Date>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: "black",
+                  fontWeight: "600",
+                  marginLeft: 4,
+                }}
+              >
+                {moment(params?.route?.params?.item?.voucher_date).format(
+                  "DD-MMM-YYYY"
+                )}
+              </Text>
+            </View>
+
+            <View
+              style={{
+                height: "70%",
+                alignItems: "center",
+                justifyContent: "center",
+                width: 2,
+                backgroundColor: "black",
+                marginLeft: 4,
+              }}
+            ></View>
+
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "row",
+                marginLeft: 4,
+              }}
+            >
+              <Time name="back-in-time" size={22} color={"grey"}></Time>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: "black",
+                  fontWeight: "600",
+                  marginLeft: 4,
+                }}
+              >
+                {moment(params?.route?.params?.item?.voucher_date).format(
+                  "hh:mm a"
+                )}
+              </Text>
+            </View>
           </View>
           {/* <View
             style={{
@@ -212,43 +284,90 @@ const OrderDetails = (params) => {
         <View
           style={{
             width: "100%",
-            backgroundColor: "#D1DFEA",
+            backgroundColor: "#F7F7F7",
             padding: 10,
-            marginTop: 10,
+            marginTop: 20,
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <View style={{ flexDirection: "row", marginTop: 10,width: "100%",flexWrap:'wrap' }}>
-            <Text style={{ fontSize: 14, marginLeft: 10, color: "black",fontWeight:'400' }}>
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: 10,
+              width: "100%",
+              flexWrap: "wrap",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 13,
+                marginLeft: 10,
+                color: "black",
+                fontWeight: "600",
+              }}
+            >
               Order No :
             </Text>
-            <Text style={{ fontSize: 14, marginLeft: 7, color: "black",fontWeight:'400' }}>
+            <Text
+              style={{
+                fontSize: 13,
+                marginLeft: 7,
+                color: "black",
+                fontWeight: "600",
+              }}
+            >
               {item?.order_no}
             </Text>
           </View>
-          <View style={{ flexDirection: "row", marginTop: 10,width: "100%",flexWrap:'wrap' }}>
-            <Text style={{ fontSize: 16, marginLeft: 10, color: "black" ,fontWeight:'400'}}>
-              Total SKU :
-            </Text>
-            <Text style={{ fontSize: 16, marginLeft: 7, color: "black",fontWeight:'400' }}>
-              {item?.total_sku}
-            </Text>
-          </View>
-          <View style={{ flexDirection: "row", marginTop: 10,width: "100%",flexWrap:'wrap' }}>
-            <Text style={{ fontSize: 16, marginLeft: 10, color: "black",fontWeight:'400' }}>
-              Quantity :
-            </Text>
-            <Text style={{ fontSize: 16, marginLeft: 7, color: "black" ,fontWeight:'400'}}>
-          {item?.qty}
-            </Text>
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "flex-start",
+              width: "100%",
+              flexDirection: "row",
+              marginTop: 10,
+            }}
+          >
+            <View
+              style={{ flexDirection: "row", flexWrap: "wrap", marginLeft: 8 }}
+            >
+              <Text style={{ fontSize: 13, color: "black", fontWeight: "600" }}>
+                Total SKU :
+              </Text>
+              <Text style={{ fontSize: 13, color: "black", fontWeight: "600" }}>
+                {item?.total_sku}
+              </Text>
+            </View>
+            <View
+              style={{
+                height: "80%",
+                width: 2,
+                backgroundColor: "grey",
+                alignItems: "center",
+                justifyContent: "center",
+                marginLeft: 4,
+                marginRight: 8,
+              }}
+            ></View>
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+              <Text style={{ fontSize: 14, color: "black", fontWeight: "600" }}>
+                Quantity :
+              </Text>
+              <Text style={{ fontSize: 14, color: "black", fontWeight: "600" }}>
+                {item?.qty}
+              </Text>
+            </View>
           </View>
         </View>
 
         <ScrollView
           horizontal={true}
-          contentContainerStyle={{ flexDirection: "column" ,paddingBottom:40 }}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ flexDirection: "column", paddingBottom: 40 }}
           style={{
             marginTop: 30,
-            width: "90%",
+            width: "98%",
 
             alignSelf: "center",
           }}
@@ -256,7 +375,7 @@ const OrderDetails = (params) => {
           <View
             style={{
               height: 70,
-              backgroundColor: "#67B145",
+              backgroundColor: "#B6202D",
               flexDirection: "row",
               alignItems: "center",
             }}
@@ -266,7 +385,7 @@ const OrderDetails = (params) => {
                 height: 70,
                 alignItems: "center",
                 justifyContent: "center",
-                paddingHorizontal: 70,
+                paddingHorizontal: 40,
                 borderRightWidth: 1,
                 borderColor: "white",
               }}
@@ -286,7 +405,9 @@ const OrderDetails = (params) => {
                 borderColor: "white",
               }}
             >
-              <Text style={{ color: "white", fontWeight: "600" }}>Thickness</Text>
+              <Text style={{ color: "white", fontWeight: "600" }}>
+                Thickness(MM)
+              </Text>
             </View>
 
             <View
@@ -312,60 +433,87 @@ const OrderDetails = (params) => {
                 borderColor: "white",
               }}
             >
-              <Text style={{ color: "white", fontWeight: "600" }}>Pts</Text>
+              <Text style={{ color: "white", fontWeight: "600" }}>PTS</Text>
             </View>
           </View>
-              
+
           {fetchOrderDetailsData?.body.orderLine?.map((item, index) => {
-            return(
-              <View style={{ backgroundColor: "#E7E5C5", flexDirection: "row" }}>
+            return (
               <View
-                style={{
-                  alignItems: "center",
-                  width: 225,
-                  height: 40,
-                  justifyContent: "center",
-                  marginLeft:6
-                }}
+                style={{ backgroundColor: "#EDEDED", flexDirection: "row" }}
               >
-                <Text style={{color:'#000000', fontWeight: item['rank']>1 ? '800':'600'}}>{item.product_name}</Text>
-              </View>
+                <View
+                  style={{
+                    alignItems: "center",
+                    width: 175,
+                    height: 40,
+                    justifyContent: "center",
+                    marginLeft: 0,
+                    
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#000000",
+                      fontWeight: item["rank"] > 1 ? "800" : "600",
+                      fontSize:12
+                    }}
+                  >
+                    {item.product_name}
+                  </Text>
+                </View>
 
-              <View
-                style={{
-                  alignItems: "center",
-                  width: 104,
-                  height: 40,
-                  justifyContent: "center",
-                }}
-              >
-                <Text style={{color:'#000000', fontWeight:'600'}}>{item.classification}</Text>
-              </View>
+                <View
+                  style={{
+                    alignItems: "center",
+                    width: 104,
+                    height: 40,
+                    justifyContent: "center",
+                    left:40,
+                    
+                  }}
+                >
+                  <Text style={{ color: "#000000", fontWeight: "600" }}>
+                    {item.classification}
+                  </Text>
+                </View>
 
-              <View
-                style={{
-                  alignItems: "center",
-                  width: 109,
-                  height: 40,
-                  justifyContent: "center",
-                }}
-              >
-                <Text style={{color:'#000000', fontWeight:'600'}}>{item.qty}</Text>
-              </View>
+                <View
+                  style={{
+                    alignItems: "center",
+                    width: 109,
+                    height: 40,
+                    justifyContent: "center",
+                    left:70
+                  }}
+                >
+                  <Text style={{ color: "#000000", fontWeight: "600" }}>
+                    {item.qty}
+                  </Text>
+                </View>
 
-              <View
-                style={{
-                  alignItems: "center",
-                  width: 129,
-                  height: 40,
-                  justifyContent: "center",
-                }}
-              >
-                <Text  style={{color:'#000000', fontWeight:'600',textAlign:'right', marginLeft:20}}>{item.points}</Text>
+                <View
+                  style={{
+                    alignItems: "center",
+                    width: 109,
+                    height: 40,
+                    justifyContent: "center",
+                    left:60
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#000000",
+                      fontWeight: "600",
+                      textAlign: "right",
+                      marginLeft: 20,
+                    }}
+                  >
+                    {Math.trunc(item.points)}
+                  </Text>
+                </View>
               </View>
-            </View>
-            )
-          
+            );
           })}
         </ScrollView>
       </ScrollView>

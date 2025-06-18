@@ -22,6 +22,7 @@ import VersionCheck from "react-native-version-check";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import DeleteModal from "../../components/modals/DeleteModal";
 import Delete from "react-native-vector-icons/AntDesign";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Setting = ({navigation}) => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -150,7 +151,22 @@ const Setting = ({navigation}) => {
       <View style={{alignItems:'center', justifyContent:'center',width:'100%',marginTop:20}}>
           <LanguageBar></LanguageBar>
           <View style={{width:'90%',alignItems:'center', justifyContent:'space-between',height:50,flexDirection:'row',marginTop:10}}>
-          <TouchableOpacity style={{height:40,width:100,backgroundColor:"#B6202D",borderRadius:30,alignItems:"center", justifyContent:'center'}}>
+          <TouchableOpacity onPress={()=>{
+            const handleLogout = async () => {
+              try {
+                await AsyncStorage.removeItem("loginData");
+                await AsyncStorage.removeItem("storedBanner");
+                await AsyncStorage.removeItem("userMpin");
+          
+                navigation.reset({ index: "0", routes: [{ name: "SelectUser" }] });
+              } catch (e) {
+                console.log("error deleting loginData", e);
+              }
+          
+              console.log("Done.");
+            };
+            handleLogout()
+          }} style={{height:40,width:100,backgroundColor:"#B6202D",borderRadius:30,alignItems:"center", justifyContent:'center'}}>
           <PoppinsTextMedium
           content="Log Out"
           style={{
@@ -173,7 +189,7 @@ const Setting = ({navigation}) => {
           
       </View>
 
-      <SocialBottomBar></SocialBottomBar>
+      <SocialBottomBar ></SocialBottomBar>
         </View>
     );
 }

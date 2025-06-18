@@ -14,11 +14,11 @@ const RewardMenu = ({navigation}) => {
             <PoppinsTextMedium style={{width:300, marginTop:25, fontSize:18, color:'black', }} content={"Unlock the magic of your points and redeem them for exciting rewards!"}></PoppinsTextMedium>
 
             <View style={{alignItems:'center',marginTop:30,width:'100%'}}>
-                <TouchableOpacity style={{alignItems:'center',width:'90%'}} onPress={()=>{navigation.navigate('RedeemGifts',{schemeType : "yearly"})}}> 
-                <Image style={{height:150, width:'100%',resizeMode:'contain'}} source={require("../../../assets/images/redeemBox.png")}></Image>
+                <TouchableOpacity style={{alignItems:'center',width:'100%'}} onPress={()=>{navigation.navigate('RedeemGifts',{schemeType : "yearly"})}}> 
+                <Image style={{height:150, width:'100%',resizeMode:'stretch'}} source={require("../../../assets/images/redeemBox.png")}></Image>
                 </TouchableOpacity>
-                <TouchableOpacity style={{alignItems:'center',width:'90%',bottom:20}} onPress={()=>{navigation.navigate('RedeemCashback')}}> 
-                <Image style={{height:150, width:'90%',resizeMode:'contain'}} source={require("../../../assets/images/cashbackBox.png")}></Image>
+                <TouchableOpacity style={{alignItems:'center',width:'100%',bottom:10}} onPress={()=>{navigation.navigate('RedeemCashback')}}> 
+                <Image style={{height:110, width:'90%',resizeMode:'stretch'}} source={require("../../../assets/images/cashbackBox.png")}></Image>
 
                 </TouchableOpacity>
              
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor:'white',
-        alignItems:'center'
+        alignItems:'center',
     },
 });
 

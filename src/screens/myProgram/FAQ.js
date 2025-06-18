@@ -82,8 +82,8 @@ const FAQ = ({ navigation }) => {
                     setQueVisible(!queVisible)
                 }} style={{ flexDirection: 'row' }}>
                     <Image style={{ height: 14, width: 14, resizeMode: "contain", position: "absolute", right: 10, top: 10 }} source={require('../../../assets/images/arrowDown.png')}></Image>
-                    <View >
-                        <PoppinsTextLeftMedium style={{ fontSize: 20, color: '#000000', fontWeight: '800' }} content={item?.question}></PoppinsTextLeftMedium>
+                    <View style={{width:'90%'}}>
+                        <PoppinsTextLeftMedium style={{ fontSize: 16, color: '#000000', fontWeight: '800' }} content={item?.question}></PoppinsTextLeftMedium>
                     </View>
                 </TouchableOpacity>
 

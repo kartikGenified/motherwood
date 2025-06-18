@@ -299,7 +299,9 @@ const CustomDrawer = (props) => {
               else if (props.title.toLowerCase() === "gift catalogue") {
                 navigation.navigate("GiftCatalogue");
               }
-       
+              else if (props.title.toLowerCase() === "app tutorial") {
+                navigation.navigate("CommingSoon");
+              }
               else if (
                 props.title.toLowerCase() === "bank details" ||
                 props.title.toLowerCase() === "bank account"
@@ -639,7 +641,7 @@ const CustomDrawer = (props) => {
           {
           getActiveMembershipData  && <PoppinsTextMedium
             style={{ color: "black" }}
-            content={getActiveMembershipData?.body?.tier?.name}
+            content={getActiveMembershipData?.body?.tier?.name + " Member"}
           ></PoppinsTextMedium>
           }
         </View>
@@ -691,7 +693,7 @@ const CustomDrawer = (props) => {
         ></PoppinsTextMedium>
       </View>
       <ScrollView
-        contentContainerStyle={{ width: "100%", paddingBottom:30}}
+        contentContainerStyle={{ width: "100%", paddingBottom:160}}
         style={{ width: "100%" }}
       >
         {drawerData !== undefined &&

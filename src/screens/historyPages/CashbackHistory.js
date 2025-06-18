@@ -672,7 +672,7 @@ const CashbackHistory = ({ navigation }) => {
           ></Image>
         </TouchableOpacity>
         <PoppinsTextMedium
-          content={t("Redemption history")}
+          content={t("Redemption Summary")}
           style={{
             marginLeft: 10,
             fontSize: 16,
@@ -691,8 +691,8 @@ const CashbackHistory = ({ navigation }) => {
           justifyContent: "flex-start",
           width: "100%",
           flexDirection: "row",
-          backgroundColor:'#FFF8E7'
-
+          backgroundColor:'#FFF8E7',
+          height:80
         }}
       >
         <Image
@@ -709,17 +709,17 @@ const CashbackHistory = ({ navigation }) => {
                 fontWeight: "600",
                 color: "#373737",
               }}
-              content={pointBalance}
+              content={Math.trunc(pointBalance)}
             ></PoppinsText>
           )}
           <PoppinsTextMedium
             style={{
               marginLeft: 10,
               fontSize: 14,
-              fontWeight: "600",
-              color: "#6E6E6E",
+              fontWeight: "700",
+              color: "black",
             }}
-            content={t("Wallet points")}
+            content={t("Wallet Points")}
           ></PoppinsTextMedium>
         </View>
         <View
@@ -735,16 +735,21 @@ const CashbackHistory = ({ navigation }) => {
                 handleRedeemButtonPress();
               }}
               style={{
-                height: 30,
+                height: 36,
                 width: 100,
-                backgroundColor: "black",
+                backgroundColor: "#B6202D",
                 alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 10,
+                justifyContent: 'space-around',
+                borderRadius: 18,
+                flexDirection:'row',
+                padding:4,
+                margin:4
               }}
             >
+          <Image style={{ height: 16, width: 16, resizeMode: "contain" }} source={require('../../../assets/images/giftWhite.png')}></Image>
+
               <PoppinsTextMedium
-                style={{ fontSize: 16, fontWeight: "bold", color: "white" }}
+                style={{ fontSize: 16, fontWeight: "600", color: "white" }}
                 content={t("redeem")}
               ></PoppinsTextMedium>
             </TouchableOpacity>

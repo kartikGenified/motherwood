@@ -762,10 +762,9 @@ useEffect(()=>{
 
   return (
     <KeyboardAvoidingView
-    style={{ flex: 1 }}
+    style={{ height:'100%'}}
     behavior={Platform.OS === "ios" ? "padding" : undefined}
   >
-    <View style={{ flex: 1 }}>
     <ScrollView contentContainerStyle={{backgroundColor:"#F0F8F6",alignItems:'center'}} style={styles.container}>
       <View
         style={{
@@ -920,12 +919,11 @@ useEffect(()=>{
         Verify OTP
             </Text>
         </TouchableOpacity>
-        <View style={{marginTop:110}}>
+        <View style={{marginTop:110,alignItems:'center',justifyContent:'center',width:'100%'}}>
         <SocialBottomBar showRelative={true}/>
 
         </View>
     </ScrollView>
-    </View>
     </KeyboardAvoidingView>
   );
 };

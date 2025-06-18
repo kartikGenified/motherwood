@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   Platform,
+  ScrollView,
 } from "react-native";
 import TopHeader from "../../components/topBar/TopHeader";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
@@ -284,9 +285,106 @@ const PointsTransferNext = (params) => {
     getPointTransferFunc({ token, requestData });
   };
 
+  const UiList = ({
+    index,
+    data,
+    thicknessOptions,
+    handleSearch,
+    selected,
+    handleThicknessSearch,
+    qty,
+    onProductChange,
+    onCategoryChange,
+    onQtyChange,
+    onDeleteRow,
+    onThicknessChange,
+    row,
+  }) => {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-around",
+          marginTop: 20,
+          marginHorizontal: 10,
+        }}
+      >
+        <View>
+          <PoppinsTextLeftMedium
+            style={{ color: "black", fontWeight: "bold" }}
+            content={"Product/ SKU"}
+          />
+          <View style={{ width: 170, marginRight: 14 }}>
+            <DropDownWithSearch
+              handleSearchData={(t) => handleSearch(t)}
+              handleData={(data) => onCategoryChange(data)}
+              placeholder={"Select Product"}
+              data={data}
+              value={row.category}
+            />
+          </View>
+        </View>
+        <View>
+          <View
+                     style={{
+              width: 80,
+              alignItems: "center",
+              justifyContent: "center",
+              marginRight: 10,
+            }}
+          >
+            <PoppinsTextLeftMedium
+              style={{ color: "black", fontWeight: "bold" }}
+              content={"Thickness"}
+            />
+            <View style={{ width: 80 }}>
+              <DropDownWithSearch
+                  handleSearchData={(t) => handleThicknessSearch(t)}
+                handleData={(data) => onThicknessChange(data)}
+                placeholder={"select"}
+                data={thicknessOptions}
+                value={row.thickness}
+              />
+            </View>
+          </View>
+        </View>
+        <View style={{marginLeft:4}}>
+          <PoppinsTextMedium
+            style={{ color: "black", fontWeight: "bold" }}
+            content={"Qty"}
+          />
+          <TextInput
+            onChangeText={onQtyChange}
+            style={{
+              backgroundColor: "#F1F1F1",
+              marginTop: 10,
+              textAlign: "center",
+              paddingHorizontal: 10,
+              borderRadius: 8,
+              color: "black",
+            }}
+            value={qty.toString()}
+            keyboardType="numeric"
+          />
+        </View>
+        <TouchableOpacity
+          onPress={() => {
+            onDeleteRow(index);
+          }}
+        >
+          <Image
+            style={{ height: 30, width: 30, marginTop: 37, marginLeft: 20 }}
+            source={require("../../../assets/images/delete.png")}
+          ></Image>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <TopHeader title={"Points Transfer"} />
+      <ScrollView>
       {productRows.map((row, index) => (
         <UiList
           key={index}
@@ -323,14 +421,13 @@ const PointsTransferNext = (params) => {
       >
         <Text style={{ color: "white", fontSize: 18 }}>+ Add Product</Text>
       </TouchableOpacity>
-
+      
+      </ScrollView>
       <View
         style={{
           backgroundColor: "#B6202D",
           width: "100%",
           height: 50,
-          position: "absolute",
-          bottom: 150,
           flexDirection: "row",
           justifyContent: "space-between",
         }}
@@ -338,7 +435,7 @@ const PointsTransferNext = (params) => {
         <View
           style={{ flexDirection: "row", alignItems: "center", marginLeft: 20 }}
         >
-   <Text style={{ color: "white", fontSize: 16 }}>Total Qty : </Text>
+          <Text style={{ color: "white", fontSize: 16 }}>Total Qty : </Text>
           <Text style={{ color: "white", fontSize: 16 }}>{totalQty}</Text>
         </View>
 
@@ -395,10 +492,8 @@ const PointsTransferNext = (params) => {
           alignSelf: "center",
           backgroundColor: "black",
           marginHorizontal: 20,
-          position: "absolute",
-          bottom: 65,
           height: 60,
-          width: "95%",
+          width: "90%",
           marginTop: 30,
           alignItems: "center",
           justifyContent: "center",
@@ -407,109 +502,15 @@ const PointsTransferNext = (params) => {
       >
         <PoppinsTextLeftMedium
           style={{ color: "white", fontSize: 23, fontWeight: "bold" }}
-          content="NEXT"
+          content="Next"
         ></PoppinsTextLeftMedium>
       </TouchableOpacity>
-      <SocialBottomBar />
+      <SocialBottomBar showRelative={true} />
     </View>
   );
 };
 
-const UiList = ({
-  index,
-  data,
-  thicknessOptions,
-  handleSearch,
-  selected,
-  handleThicknessSearch,
-  qty,
-  onProductChange,
-  onCategoryChange,
-  onQtyChange,
-  onDeleteRow,
-  onThicknessChange,
-  row,
-}) => {
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-around",
-        marginTop: 20,
-        marginHorizontal: 10,
-      }}
-    >
-      <View>
-        <PoppinsTextLeftMedium
-          style={{ color: "black", fontWeight: "bold" }}
-          content={"Product/ SKU"}
-        />
-        <View style={{ width: 170, marginRight: 14 }}>
-          <DropDownWithSearch
-            handleSearchData={(t) => handleSearch(t)}
-            handleData={(data) => onCategoryChange(data)}
-            placeholder={"Select Product"}
-            data={data}
-            value={row.category}
-          />
-        </View>
-      </View>
-      <View>
-        <View
-                   style={{
-            width: 80,
-            alignItems: "center",
-            justifyContent: "center",
-            marginRight: 10,
-          }}
-        >
-          <PoppinsTextLeftMedium
-            style={{ color: "black", fontWeight: "bold" }}
-            content={"Thickness"}
-          />
-          <View style={{ width: 80 }}>
-            <DropDownWithSearch
-                handleSearchData={(t) => handleThicknessSearch(t)}
-              handleData={(data) => onThicknessChange(data)}
-              placeholder={"select"}
-              data={thicknessOptions}
-              value={row.thickness}
-            />
-          </View>
-        </View>
-      </View>
-      <View style={{marginLeft:4}}>
-        <PoppinsTextMedium
-          style={{ color: "black", fontWeight: "bold" }}
-          content={"Qty"}
-        />
-        <TextInput
-          onChangeText={onQtyChange}
-          style={{
-            backgroundColor: "#F1F1F1",
-            marginTop: 10,
-            textAlign: "center",
-            paddingHorizontal: 10,
-            borderRadius: 8,
-            color: "black",
-          }}
-          value={qty.toString()}
-          keyboardType="numeric"
-        />
-      </View>
-      <TouchableOpacity
-        onPress={() => {
-          onDeleteRow(index);
-        }}
-      >
-        <Image
-          style={{ height: 30, width: 30, marginTop: 37, marginLeft: 20 }}
-          source={require("../../../assets/images/delete.png")}
-        ></Image>
-      </TouchableOpacity>
-    </View>
-  );
-};
+
 
 // define your styles
 const styles = StyleSheet.create({

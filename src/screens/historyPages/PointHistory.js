@@ -579,7 +579,9 @@ const PointHistory = ({ navigation }) => {
         borderBottomWidth:1,
         paddingBottom:10,
         flexDirection:'row',
-        paddingTop:10
+        paddingTop:10,
+        borderColor:'#DDDDDD'
+
       }}
     >
       
@@ -609,7 +611,7 @@ const PointHistory = ({ navigation }) => {
       <View style={{width:'20%',flexDirection:'row', alignItems:'center', justifyContent:'center', height:'100%',}}>
         <Image style={{height:25,width:25,resizeMode:'contain', marginRight:10}} source={require('../../../assets/images/coin.png')}></Image>
       <PoppinsTextMedium
-        style={{ fontWeight: "400", fontSize: 14, color: "black" , marginTop:3}}
+        style={{ fontWeight: "700", fontSize: 15, color: "#91B406" , marginTop:3}}
         content={`+ ${points}`}
       ></PoppinsTextMedium>
       </View>
@@ -627,18 +629,18 @@ const PointHistory = ({ navigation }) => {
         height: "100%",
       }}
     >
-      <TopHeader title={"Points History"} />
+      <TopHeader title={"Received Points Summary"} />
 
       <View
         style={{
           backgroundColor: secondaryThemeColor,
-          height: 100,
+          height: 70,
           width: "100%",
           flexDirection: "row",
           justifyContent: "space-between",
         }}
       >
-        {getOrderDetailsByTypeData &&<View style={{ margin: 20, flexDirection: "row" }}>
+        {getOrderDetailsByTypeData &&<View style={{ margin: 10, flexDirection: "row" }}>
           <Image source={require("../../../assets/images/coin.png")}></Image>
            <View style={{ marginLeft: 10 }}>
             <PoppinsTextLeftMedium
@@ -646,7 +648,7 @@ const PointHistory = ({ navigation }) => {
               content={getOrderDetailsByTypeData?.body?.totalPoints}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
-              style={{ color: "black", fontWeight: "600", fontSize: 16 }}
+              style={{ color: "black", fontWeight: "700", fontSize: 16 }}
               content={"Received Points"}
             ></PoppinsTextLeftMedium>
           </View>
@@ -656,7 +658,7 @@ const PointHistory = ({ navigation }) => {
               navigation.navigate('PointsTransfer')
   
           }}>
-              <Image style={{height:20,width:20,resizeMode:'contain'}} source={require("../../../assets/images/transferable.png")}></Image>
+              <Image style={{height:20,width:20,resizeMode:'contain'}} source={require("../../../assets/images/gg.png")}></Image>
               <PoppinsTextMedium style={{color:'white', fontSize:12, fontWeight:'bold',marginLeft:8}} content={"Points Transfer"}></PoppinsTextMedium>
           </TouchableOpacity>
           }
@@ -721,7 +723,7 @@ const PointHistory = ({ navigation }) => {
               orderNumber={item.order_no}
               sku = {item.total_sku}
               quantity = {item.qty}
-              points={item.points}
+              points={Math.trunc(item.points)}
                 date={dayjs(item.created_at).format("DD-MMM-YYYY")}
                 time={dayjs(item.created_at).format("HH:mm a")}
               />

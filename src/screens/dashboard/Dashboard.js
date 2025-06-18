@@ -101,6 +101,7 @@ const Dashboard = ({ navigation }) => {
   const [error, setError] = useState(false);
   const [isTertiary, setIsTertiary] = useState();
   const [walkThrough, setWalkThrough] = useState(false);
+  const [isSales, setIsSales] = useState();
   const stepId = useSelector((state) => state.walkThrough.stepId);
   const { date, time, month, year } = useCurrentDateTime();
 
@@ -129,6 +130,8 @@ const Dashboard = ({ navigation }) => {
   const userId = useSelector((state) => state.appusersdata.userId);
   const userData = useSelector((state) => state.appusersdata.userData);
 
+
+
   useEffect(() => {
     if (
       userData?.user_type?.toLowerCase() == "contractor" ||
@@ -142,6 +145,10 @@ const Dashboard = ({ navigation }) => {
 
       dispatch(setSecondaryThemeColor("#F0F8F6"));
     } else {
+      if(userData?.user_type?.toLowerCase() == "sales")
+      {
+        setIsSales(true)
+      }
       setIsTertiary(false);
     }
   }, [userData]);
@@ -666,7 +673,7 @@ const Dashboard = ({ navigation }) => {
               justifyContent: "space-between",
             }}
           >
-            <View
+            {!isSales && <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
@@ -699,9 +706,9 @@ const Dashboard = ({ navigation }) => {
               >
                 {userData?.name}
               </Text>
-            </View>
+            </View>}
 
-            <TouchableOpacity
+            {!isSales && <TouchableOpacity
               onPress={() => {
                 setMemberShipModal(true);
               }}
@@ -725,7 +732,7 @@ const Dashboard = ({ navigation }) => {
                 }}
                 content={t("Earn Badge")}
               ></PoppinsTextLeftMedium>
-            </TouchableOpacity>
+            </TouchableOpacity>}
           </View>
 
           {userData?.user_type?.toLowerCase() !== "dealer" ? (
@@ -746,7 +753,7 @@ const Dashboard = ({ navigation }) => {
             <></>
           )}
 
-          <RewardBoxDashboard />
+          {!isSales && <RewardBoxDashboard />}
 
           {dashboardData && !userPointIsLoading && (
             <DashboardMenuBox
@@ -755,9 +762,12 @@ const Dashboard = ({ navigation }) => {
               data={dashboardData}
             ></DashboardMenuBox>
           )}
-          <DreamCard />
+          {
+            !isSales && <DreamCard />
+          }
+          
 
-          <View
+          {!isSales && <View
             style={{
               width: "100%",
               backgroundColor: "white",
@@ -784,7 +794,7 @@ const Dashboard = ({ navigation }) => {
                 }
               ></Image>
             </TouchableOpacity>
-          </View>
+          </View>}
 
           {userPointIsLoading && (
             <View style={{ height: 200, width: "100%" }}>
@@ -812,6 +822,7 @@ const Dashboard = ({ navigation }) => {
               justifyContent: "space-evenly",
               bottom: 30,
               paddingBottom: 40,
+              marginTop:100
             }}
           >
             <DashboardSupportBox

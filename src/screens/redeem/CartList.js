@@ -318,26 +318,18 @@ const CartList = ({ navigation, route }) => {
           //   navigation.navigate('CartList');
         }}
         style={{
-          height: 90,
+          height: 80,
           width: '90%',
           alignItems: 'center',
           justifyContent: 'center',
           borderWidth: 1,
           borderColor: '#EEEEEE',
           backgroundColor: '#FFFFFF',
-          paddingTop:10,
           elevation: 1,
-          borderRadius: 10
+          borderRadius: 10,flexDirection:"row"
         }}>
-        <View
-          style={{
-            height: '40%',
-            width: '100%',
-            backgroundColor: secondaryThemeColor,
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            flexDirection: 'row',
-          }}>
+          
+        
           <View
             style={{
               height: '100%',
@@ -345,14 +337,26 @@ const CartList = ({ navigation, route }) => {
               alignItems: 'center',
               justifyContent: 'center',
               marginLeft: 10,
-              
             }}>
             <Image
               style={{ height: 60, width: 60, resizeMode: 'center' }}
               source={{ uri: image }}></Image>
           </View>
           
-            <Image
+          
+            <View style={{alignItems:'flex-start', justifyContent:'center',width:'80%',height:'100%'}}>
+          <PoppinsTextMedium
+            style={{ color: 'black', fontSize: 13, fontWeight:'700',marginLeft:20 }}
+            content={product}></PoppinsTextMedium>
+        <View
+          style={{
+            marginLeft:20,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 10,
+            flexDirection:'row'
+          }}>
+          <Image
               style={{ height: 20, width: 20, resizeMode: 'contain' }}
               source={require('../../../assets/images/coin.png')}></Image>
             <PoppinsTextMedium
@@ -368,43 +372,19 @@ const CartList = ({ navigation, route }) => {
               handleDelete(props.data);
             }}
             style={{
-              height: 30,
-              width: 30,
+              height: 20,
+              width: 20,
               backgroundColor: '#CD0505',
-              position: 'absolute',
-              right: 20,
-              borderRadius: 4,
+              borderRadius: 10,
               alignItems: 'center',
               justifyContent: 'center',
+              marginLeft:20
             }}>
             <Image
               style={{ height: 28, width: 28, resizeMode: 'contain' }}
               source={require('../../../assets/images/delete.png')}></Image>
           </TouchableOpacity>
         </View>
-        <View
-          style={{
-            height: '60%',
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 4,
-          }}>
-          <PoppinsTextMedium
-            style={{ color: 'black', fontSize: 13, width: '90%', marginLeft: 4, fontWeight:'700' }}
-            content={product}></PoppinsTextMedium>
-          <View
-            style={{
-              alignItems: 'flex-start',
-              justifyContent: 'center',
-              marginTop: 4,
-              marginLeft: 4,
-              marginBottom:8
-            }}>
-            <PoppinsTextMedium
-              style={{ color: '#919191', fontSize: 13, width: '90%' , fontWeight:'700'}}
-              content={category}></PoppinsTextMedium>
-          </View>
         </View>
       </TouchableOpacity>
     );
@@ -464,7 +444,7 @@ const CartList = ({ navigation, route }) => {
         </TouchableOpacity>
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <PoppinsTextMedium
-            content={t("Redeem Points")}
+            content={t("Add to Cart")}
             style={{
               marginLeft: 10,
               fontSize: 16,

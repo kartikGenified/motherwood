@@ -1,7 +1,7 @@
 //import liraries
 import { Link } from "@react-navigation/native";
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, Linking } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, Linking, KeyboardAvoidingView } from "react-native";
 import { useSelector } from "react-redux";
 
 // create a component
@@ -24,11 +24,12 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
 
       console.log("socials", socials, website)
   return (
+    <KeyboardAvoidingView style={{width: "100%",position: showRelative == true ? "relative" : "absolute",bottom: 0,}}>
     <View
       style={{
-        position: showRelative == true ? "relative" : "absolute",
+        
         width: "100%",
-        bottom: 0,
+        
         height: 50,
         borderTopColor: "#B6202D",
         borderTopWidth: 1,
@@ -181,6 +182,7 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
         ></View>
       </TouchableOpacity>
     </View>
+    </KeyboardAvoidingView>
   );
 };
 

@@ -108,6 +108,7 @@ import DreamGift from "../screens/dreamGift/DreamGift";
 import DreamGiftDetails from "../screens/dreamGift/DreamGiftDetails";
 import PointsTransferSuccess from "../screens/dashmenu/PointTransferSuccess";
 import Setting from "../screens/settingsPage/Setting";
+import ComingSoonScreen from "../screens/comingsoon/ComingSoonScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -143,6 +144,13 @@ const StackNavigator = () => {
           }}
           name="KycMotherhood"
           component={KycMotherhood}
+        ></Stack.Screen>
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="CommingSoon"
+          component={ComingSoonScreen}
         ></Stack.Screen>
         <Stack.Screen
           options={{

@@ -104,7 +104,7 @@ const DashboardMenuBox = (props) => {
     } else if (data.toLowerCase() === "report an issue") {
       navigation.navigate("QueryList");
     } else if (data.toLowerCase() === "refer & earn") {
-      navigation.navigate("ReferAndEarn");
+      navigation.navigate("CommingSoon");
     } else if (data.toLowerCase() === "points calculator") {
       navigation.navigate("PointsCalculator");
     } else if (data.toLowerCase() === "about") {
@@ -117,6 +117,14 @@ const DashboardMenuBox = (props) => {
     } 
     else if (data.toLowerCase() === "motherwood program name") {
       navigation.navigate("PdfComponent", { pdf: getDetailsData })
+
+    } 
+    else if (data.toLowerCase() === "playzone") {
+      navigation.navigate("CommingSoon");
+
+    } 
+    else if (data.toLowerCase() === "events") {
+      navigation.navigate("CommingSoon");
 
     } 
     else if (data.toLowerCase() === "points transfer") {

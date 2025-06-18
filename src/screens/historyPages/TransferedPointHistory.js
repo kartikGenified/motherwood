@@ -477,7 +477,7 @@ const TransferredPointHistory = ({ navigation }) => {
             left: 10,
             color: "black",
           }}
-          content="Orders Overview"
+          content="Transfers Overview"
         ></PoppinsTextMedium>
 
         <TouchableOpacity
@@ -609,8 +609,8 @@ const TransferredPointHistory = ({ navigation }) => {
       <View style={{width:'20%',flexDirection:'row', alignItems:'center', justifyContent:'center', height:'100%'}}>
         <Image style={{height:25,width:25,resizeMode:'contain'}} source={require('../../../assets/images/coin.png')}></Image>
       <PoppinsTextMedium
-        style={{ fontWeight: "400", fontSize: 14, color: "black" , marginTop:3}}
-        content={`+ ${points}`}
+        style={{ fontWeight: "700", fontSize: 15, color: "#91B406" , marginLeft:6}}
+        content={`${Math.trunc(points)}`}
       ></PoppinsTextMedium>
       </View>
       
@@ -632,7 +632,7 @@ const TransferredPointHistory = ({ navigation }) => {
       <View
         style={{
           backgroundColor: secondaryThemeColor,
-          height: 100,
+          height: 70,
           width: "100%",
           flexDirection: "row",
           justifyContent: "space-between",
@@ -646,18 +646,19 @@ const TransferredPointHistory = ({ navigation }) => {
               content={getOrderDetailsByTypeData?.body?.totalPoints}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
-              style={{ color: "black", fontWeight: "600", fontSize: 14 }}
-              content={"Transferred Points"}
+              style={{ color: "black", fontWeight: "700", fontSize: 14 }}
+              content={"Transferable Points"}
             ></PoppinsTextLeftMedium>
           </View>
           {
             (userData?.user_type)?.toLowerCase()!='carpenter' && (userData?.user_type)?.toLowerCase()!='contractor' && (userData?.user_type)?.toLowerCase()!='oem' && (userData?.user_type)?.toLowerCase()!='directoem' && 
-            <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:140,marginLeft:20}} onPress={()=>{
+            <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:150,marginLeft:10,flexDirection:'row'}} onPress={()=>{
               navigation.navigate('PointsTransfer')
   
           }}>
-              {/* <Image source={require("../")}></Image> */}
-              <PoppinsTextMedium style={{color:'white', fontSize:16, fontWeight:'bold'}} content={"Points Transfer"}></PoppinsTextMedium>
+                       <Image style={{ height: 20, width: 20, resizeMode: "contain" }} source={require('../../../assets/images/gg.png')}></Image>
+
+              <PoppinsTextMedium style={{color:'white', fontSize:14, fontWeight:'600',marginLeft:8}} content={"Points Transfer"}></PoppinsTextMedium>
           </TouchableOpacity>
           }
         
