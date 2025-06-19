@@ -110,6 +110,7 @@ import PointsTransferSuccess from "../screens/dashmenu/PointTransferSuccess";
 import Setting from "../screens/settingsPage/Setting";
 import ComingSoonScreen from "../screens/comingsoon/ComingSoonScreen";
 import UserManagement from "../screens/userManagement/UserManagement";
+import UserManagementDetails from "../screens/userManagement/UserManagementDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -891,6 +892,13 @@ const StackNavigator = () => {
           }}
           name="Dashboard"
           component={DrawerNavigator}
+        ></Stack.Screen>
+              <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="UserManagementDetails"
+          component={UserManagementDetails}
         ></Stack.Screen>
           <Stack.Screen
           options={{
