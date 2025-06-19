@@ -36,6 +36,7 @@ import PoppinsText from "../../components/electrons/customFonts/PoppinsText";
 import {
   useFetchUserPointsHistoryMutation,
   useFetchUserPointsMutation,
+  useSalesPointsDashboardMutation,
 } from "../../apiServices/workflow/rewards/GetPointsApi";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
 import { setQrIdList } from "../../../redux/slices/qrCodeDataSlice";
@@ -80,6 +81,7 @@ import {
   setTernaryThemeColor,
 } from "../../../redux/slices/appThemeSlice";
 import Info from "react-native-vector-icons/AntDesign";
+import DashboardSalesBox from "../../components/molecules/DashboardSalesBox";
 
 const Dashboard = ({ navigation }) => {
   const [dashboardItems, setDashboardItems] = useState();
@@ -130,8 +132,6 @@ const Dashboard = ({ navigation }) => {
   const userId = useSelector((state) => state.appusersdata.userId);
   const userData = useSelector((state) => state.appusersdata.userData);
 
-
-
   useEffect(() => {
     if (
       userData?.user_type?.toLowerCase() == "contractor" ||
@@ -145,9 +145,8 @@ const Dashboard = ({ navigation }) => {
 
       dispatch(setSecondaryThemeColor("#F0F8F6"));
     } else {
-      if(userData?.user_type?.toLowerCase() == "sales")
-      {
-        setIsSales(true)
+      if (userData?.user_type?.toLowerCase() == "sales") {
+        setIsSales(true);
       }
       setIsTertiary(false);
     }
@@ -209,6 +208,9 @@ const Dashboard = ({ navigation }) => {
     },
   ] = useGetkycStatusMutation();
 
+
+
+
   const [
     userPointFunc,
     {
@@ -219,6 +221,18 @@ const Dashboard = ({ navigation }) => {
     },
   ] = useFetchUserPointsMutation();
 
+
+  const [
+    salesPointFunc,
+    {
+      data: salesPointData,
+      error: salesPointError,
+  
+    },
+  ] = useSalesPointsDashboardMutation();
+
+
+  
   const [
     fetchUserPointsHistoryFunc,
     {
@@ -301,6 +315,7 @@ const Dashboard = ({ navigation }) => {
       const token = credentials.username;
 
       getAppCampaign(token);
+      salesPointFunc({token})
     };
     getToken();
   }, []);
@@ -315,6 +330,14 @@ const Dashboard = ({ navigation }) => {
 
     return () => backHandler.remove(); // Cleanup on unmount
   }, []);
+
+  useEffect(()=>{
+    if(salesPointData){
+      console.log("salesPointData",salesPointData)
+    }else if(salesPointError){
+      console.log("salesPointError")
+    }
+  },[salesPointData,salesPointError])
 
   useEffect(() => {
     if (getAppCampaignData) {
@@ -673,66 +696,70 @@ const Dashboard = ({ navigation }) => {
               justifyContent: "space-between",
             }}
           >
-            {!isSales && <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginHorizontal: 10,
-              }}
-            >
+            {!isSales && (
               <View
                 style={{
-                  backgroundColor: "white",
-                  width: 30,
-                  height: 30,
-                  borderRadius: 15,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginHorizontal: 10,
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: "white",
+                    width: 30,
+                    height: 30,
+                    borderRadius: 15,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "row",
+                  }}
+                >
+                  <Image
+                    style={{ height: 14, width: 14 }}
+                    source={require("../../../assets/images/userGrey.png")}
+                  ></Image>
+                </View>
+                <Text
+                  style={{
+                    color: "#1A1818",
+                    marginLeft: 5,
+                    fontWeight: "bold",
+                    fontSize: 12,
+                  }}
+                >
+                  {userData?.name}
+                </Text>
+              </View>
+            )}
+
+            {!isSales && (
+              <TouchableOpacity
+                onPress={() => {
+                  setMemberShipModal(true);
+                }}
+                style={{
+                  flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "center",
-                  flexDirection: "row",
                 }}
               >
-                <Image
-                  style={{ height: 14, width: 14 }}
-                  source={require("../../../assets/images/userGrey.png")}
-                ></Image>
-              </View>
-              <Text
-                style={{
-                  color: "#1A1818",
-                  marginLeft: 5,
-                  fontWeight: "bold",
-                  fontSize: 12,
-                }}
-              >
-                {userData?.name}
-              </Text>
-            </View>}
-
-            {!isSales && <TouchableOpacity
-              onPress={() => {
-                setMemberShipModal(true);
-              }}
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Info
-                name="infocirlceo"
-                size={13}
-                color={ternaryThemeColor}
-              ></Info>
-              <PoppinsTextLeftMedium
-                style={{
-                  color: ternaryThemeColor,
-                  fontWeight: "700",
-                  fontSize: 13,
-                  marginLeft: 4,
-                }}
-                content={t("Earn Badge")}
-              ></PoppinsTextLeftMedium>
-            </TouchableOpacity>}
+                <Info
+                  name="infocirlceo"
+                  size={13}
+                  color={ternaryThemeColor}
+                ></Info>
+                <PoppinsTextLeftMedium
+                  style={{
+                    color: ternaryThemeColor,
+                    fontWeight: "700",
+                    fontSize: 13,
+                    marginLeft: 4,
+                  }}
+                  content={t("Earn Badge")}
+                ></PoppinsTextLeftMedium>
+              </TouchableOpacity>
+            )}
           </View>
 
           {userData?.user_type?.toLowerCase() !== "dealer" ? (
@@ -755,6 +782,56 @@ const Dashboard = ({ navigation }) => {
 
           {!isSales && <RewardBoxDashboard />}
 
+          {isSales && (
+            <View style={{ width: "95%" }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                }}
+              >
+                <DashboardSalesBox
+                  backgroundColor={"#FFE8EA"}
+                  borderColor={"#F9BEC3"}
+                  scoreOutOf={salesPointData?.body?.users?.total_users}
+                  score={salesPointData?.body?.users?.today_pending_users}
+                  title={"Approval's Pending"}
+                  icon={require("../../../assets/images/aprovalPending.png")}
+                />
+                <DashboardSalesBox
+                  backgroundColor={"#FFFCCF"}
+                  borderColor={"#F6F19D"}
+                  title={"User's Collected Points"}
+                  scoreOutOf={salesPointData?.body?.users?.total_users}
+                  score={salesPointData?.body?.users?.today_pending_users}
+                  icon={require("../../../assets/images/coinSales.png")}
+                />
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: 10,
+                }}
+              >
+                <DashboardSalesBox
+                  backgroundColor={"#DDE8D2"}
+                  borderColor={"#9BBF76"}
+                  title={"Points Earned"}
+                  scoreOutOf={Math.floor(salesPointData?.body?.points?.total_point)}
+                  score={Math.floor(salesPointData?.body?.points?.today_point)}
+                  icon={require("../../../assets/images/handPoint.png")}
+                />
+                <DashboardSalesBox
+                  backgroundColor={"#E4FFFB"}
+                  borderColor={"#B1F8EE"}
+                  icon={require("../../../assets/images/giftSales.png")}
+                  scoreOutOf={salesPointData?.body?.redemption?.total_redemption}
+                  score={salesPointData?.body?.redemption?.today_redemption}
+                  title={"Number of Redemption"}
+                />
+              </View>
+            </View>
+          )}
+
           {dashboardData && !userPointIsLoading && (
             <DashboardMenuBox
               requiresLocation={requiresLocation}
@@ -762,39 +839,38 @@ const Dashboard = ({ navigation }) => {
               data={dashboardData}
             ></DashboardMenuBox>
           )}
-          {
-            !isSales && <DreamCard />
-          }
-          
+          {!isSales && <DreamCard />}
 
-          {!isSales && <View
-            style={{
-              width: "100%",
-              backgroundColor: "white",
-              bottom: 4,
-              marginBottom: 4,
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("DreamGift");
+          {!isSales && (
+            <View
+              style={{
+                width: "100%",
+                backgroundColor: "white",
+                bottom: 4,
+                marginBottom: 4,
               }}
             >
-              <Image
-                style={{
-                  width: "90%",
-                  alignSelf: "center",
-                  resizeMode: "contain",
-                  height: 120,
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("DreamGift");
                 }}
-                source={
-                  isTertiary
-                    ? require("../../../assets/images/DreamCardBlue.png")
-                    : require("../../../assets/images/DreamCardRed.png")
-                }
-              ></Image>
-            </TouchableOpacity>
-          </View>}
+              >
+                <Image
+                  style={{
+                    width: "90%",
+                    alignSelf: "center",
+                    resizeMode: "contain",
+                    height: 120,
+                  }}
+                  source={
+                    isTertiary
+                      ? require("../../../assets/images/DreamCardBlue.png")
+                      : require("../../../assets/images/DreamCardRed.png")
+                  }
+                ></Image>
+              </TouchableOpacity>
+            </View>
+          )}
 
           {userPointIsLoading && (
             <View style={{ height: 200, width: "100%" }}>
@@ -812,35 +888,36 @@ const Dashboard = ({ navigation }) => {
               />
             </View>
           )}
+          {!(userData?.user_type == "sales") && (
+            <View
+              style={{
+                flexDirection: "row",
+                width: "100%",
+                backgroundColor: "white",
+                alignItems: "center",
+                justifyContent: "space-evenly",
+                bottom: 30,
+                paddingBottom: 40,
+                marginTop: 100,
+              }}
+            >
+              <DashboardSupportBox
+                title={t("customer support")}
+                text="Customer Support"
+                backgroundColor={secondaryThemeColor}
+                borderColor={ternaryThemeColor}
+                image={require("../../../assets/images/user_red.png")}
+              ></DashboardSupportBox>
 
-          <View
-            style={{
-              flexDirection: "row",
-              width: "100%",
-              backgroundColor: "white",
-              alignItems: "center",
-              justifyContent: "space-evenly",
-              bottom: 30,
-              paddingBottom: 40,
-              marginTop:100
-            }}
-          >
-            <DashboardSupportBox
-              title={t("customer support")}
-              text="Customer Support"
-              backgroundColor={secondaryThemeColor}
-              borderColor={ternaryThemeColor}
-              image={require("../../../assets/images/user_red.png")}
-            ></DashboardSupportBox>
-
-            <DashboardSupportBox
-              title={t("Rating/Feedback")}
-              text="Rating/Feedback"
-              backgroundColor={secondaryThemeColor}
-              borderColor={ternaryThemeColor}
-              image={require("../../../assets/images/feedback_red.png")}
-            ></DashboardSupportBox>
-          </View>
+              <DashboardSupportBox
+                title={t("Rating/Feedback")}
+                text="Rating/Feedback"
+                backgroundColor={secondaryThemeColor}
+                borderColor={ternaryThemeColor}
+                image={require("../../../assets/images/feedback_red.png")}
+              ></DashboardSupportBox>
+            </View>
+          )}
         </View>
       </ScrollView>
       <SocialBottomBar backgroundColor={"white"} />

@@ -433,6 +433,7 @@ useEffect(()=>{
       console.log("getDashboardData", getDashboardData, parsedJsonValue.token);
       getDashboardCachedDispatch(dispatch, getDashboardData);
       storeData("getDashboardData", getDashboardData);
+        dispatch(setDashboardData(getDashboardData?.body?.app_dashboard));
       parsedJsonValue && getBannerFunc(parsedJsonValue?.token);
     } else if (getDashboardError) {
       setError(true);

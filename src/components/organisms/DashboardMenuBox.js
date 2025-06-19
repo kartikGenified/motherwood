@@ -18,6 +18,10 @@ const DashboardMenuBox = (props) => {
   const navigation = props.navigation;
   const width = Dimensions.get("window").width;
   const requiresLocation = props.requiresLocation;
+    const userData = useSelector((state) => state.appusersdata.userData);
+  const secondaryThemeColor = useSelector(
+    (state) => state.apptheme.secondaryThemeColor
+  );
 
 
   const getAboutData = useSelector((state) => state.termsPolicy.about);
@@ -113,7 +117,6 @@ const DashboardMenuBox = (props) => {
       navigation.navigate("PointsTransfer");
     }else if (data.toLowerCase() === "about motherwood") {
       navigation.navigate("PdfComponent", { pdf: getAboutData })
-
     } 
     else if (data.toLowerCase() === "motherwood program name") {
       navigation.navigate("PdfComponent", { pdf: getDetailsData })
@@ -138,6 +141,9 @@ const DashboardMenuBox = (props) => {
     } else if (data.toLowerCase() === "redeem") {
       navigation.navigate("RewardMenu");
     }
+    else if(data.toLowerCase()== "user management"){
+        navigation.navigate("UserManagement")
+    }
   };
 
   return (
@@ -148,8 +154,9 @@ const DashboardMenuBox = (props) => {
         width: width,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "white",
-        padding: 4,
+        backgroundColor: userData?.user_type == "sales" ? secondaryThemeColor : "white",
+        padding: userData?.user_type == "sales" ? 30 : 4,
+        marginBottom:userData?.user_type == "sales" ? 50 : 0
       }}
     >
       <View
