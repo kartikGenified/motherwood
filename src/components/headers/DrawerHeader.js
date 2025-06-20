@@ -22,9 +22,6 @@ const DrawerHeader = () => {
         ? useSelector(state => state.apptheme.ternaryThemeColor)
         : 'grey';
     const icon = useSelector(state => state.apptheme.icon)
-
-
-
     const stepId = useSelector((state) => state.walkThrough.stepId);
 
         //asynch storage data saving
@@ -122,7 +119,7 @@ const DrawerHeader = () => {
             </TouchableOpacity>
                 </Tooltip>
          
-            <Image style={{height:60,width:80,resizeMode:"contain",marginLeft:10}} source={{uri: icon}}></Image>
+            <Image style={{height:50,width:80,resizeMode:"cover",marginLeft:10}} source={{uri: icon}}></Image>
            
                 <RotateViewAnimation outputRange={["0deg","30deg", "-30deg","0deg"]} inputRange={[0,1,2,3]} comp={BellComponent} style={{height:30,width:30,position:'absolute',right:30}}>
                     

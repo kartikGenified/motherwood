@@ -364,12 +364,16 @@ const CustomDrawer = (props) => {
                 navigation.navigate("RedeemCoupons");
               } else if (props.title.toLowerCase() === "add user") {
                 navigation.navigate("ListUsers");
-              } else if (props.title.toLowerCase() === "query list") {
+              }
+              else if (props.title.toLowerCase() === "training library") {
+                navigation.navigate("Training");
+              }
+               else if (props.title.toLowerCase() === "query list") {
                 navigation.navigate("QueryList");
               } else if (props.title.toLowerCase() === "about motherwood") {
                 navigation.navigate("PdfComponent", { pdf: getAboutData })
               }
-              else if (props.title.toLowerCase() === "motherwood program name") {
+              else if (props.title.toLowerCase() === "motherwood sathi") {
                 navigation.navigate("PdfComponent", { pdf: getDetailsData })
               }
               else if (props.title.toLowerCase() === "share app") {
@@ -639,10 +643,16 @@ const CustomDrawer = (props) => {
             content={userData.user_id}
           ></PoppinsTextMedium>}
           {
-          getActiveMembershipData  && <PoppinsTextMedium
-            style={{ color: "black" }}
+          getActiveMembershipData
+            &&
+            <View style={{flexDirection:'row',alignItems:'center', justifyContent:'center'}}>
+              <Image style={{height:20,width:20,resizeMode:'contain'}} source={require('../../assets/images/mem.png')}></Image>
+          <PoppinsTextMedium
+            style={{ color: "black",marginTop:2 }}
             content={getActiveMembershipData?.body?.tier?.name + " Member"}
           ></PoppinsTextMedium>
+            </View>
+            
           }
         </View>
 

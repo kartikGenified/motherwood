@@ -111,6 +111,7 @@ import Setting from "../screens/settingsPage/Setting";
 import ComingSoonScreen from "../screens/comingsoon/ComingSoonScreen";
 import UserManagement from "../screens/userManagement/UserManagement";
 import UserManagementDetails from "../screens/userManagement/UserManagementDetails";
+import Training from "../screens/training/Training";
 
 const Stack = createNativeStackNavigator();
 
@@ -146,6 +147,13 @@ const StackNavigator = () => {
           }}
           name="KycMotherhood"
           component={KycMotherhood}
+        ></Stack.Screen>
+         <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="Training"
+          component={Training}
         ></Stack.Screen>
         <Stack.Screen
           options={{
