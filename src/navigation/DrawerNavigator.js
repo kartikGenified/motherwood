@@ -74,7 +74,7 @@ const CustomDrawer = (props) => {
   const userData = useSelector((state) => state.appusersdata.userData);
   const kycData = useSelector((state) => state.kycDataSlice.kycData);
 
-  console.log("drawer data tabs", drawerData, kycData);
+  console.log("drawer data tabs", userData);
 
   const [
     getFAQ,
@@ -324,7 +324,7 @@ const CustomDrawer = (props) => {
               else if (props.title.toLowerCase() === "feedback selection") {
                 navigation.navigate("FeedbackSelection");
               } else if (props.title.toLowerCase() === "refer and earn") {
-                navigation.navigate("ReferAndEarn");
+                navigation.navigate("CommingSoon");
               } else if (props.title.toLowerCase() === "warranty list") {
                 navigation.navigate("WarrantyHistory");
               } else if (props.title.toLowerCase() === "complaint list") {
@@ -420,7 +420,7 @@ const CustomDrawer = (props) => {
                 : props.title == "My Rewards"
                 ? `${t("My Rewards")}`
                 : props.title.toLowerCase().trim() == "refer and earn"
-                ? `${t("Earn Extra Points")}`
+                ? `${t("Refer and Earn")}`
                 : props.title == "Earn Extra Points"
                 ? `${t("Earn Extra Points")}`
                 : props.title == "My Points"
@@ -605,7 +605,7 @@ const CustomDrawer = (props) => {
           </View>
         )}
         <View>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row",alignItems:'center',justifyContent:'center'}}>
             <PoppinsTextMedium
               style={{
                 marginTop: 10,
@@ -634,10 +634,10 @@ const CustomDrawer = (props) => {
               <Edit name="edit" size={8} color={"black"}></Edit>
             </TouchableOpacity>
           </View>
-          <PoppinsTextMedium
+          {userData.user_id && <PoppinsTextMedium
             style={{ color: "black" }}
-            content={"MWEDKSKD"}
-          ></PoppinsTextMedium>
+            content={userData.user_id}
+          ></PoppinsTextMedium>}
           {
           getActiveMembershipData  && <PoppinsTextMedium
             style={{ color: "black" }}

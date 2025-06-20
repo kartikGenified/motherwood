@@ -102,7 +102,7 @@ const PointsTransfer = () => {
       <RewardBox />
 
       {/* Red Strip */}
-      <View
+      {/* <View
         style={{
           backgroundColor: "#B6202D",
           width: "95%",
@@ -138,7 +138,7 @@ const PointsTransfer = () => {
             {Math.trunc(userPointData?.body?.transfer_points)}
           </Text>
         </View>
-      </View>
+      </View> */}
 
       {/* Mobile Input  */}
       <View style={{ height: 120, marginTop: 10 }}>

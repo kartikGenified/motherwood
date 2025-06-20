@@ -11,7 +11,7 @@ const RewardSquare = (props) => {
     const imageWidth = title ==="Cashback" ? 60:40
 
     return (
-        <View style={{height:150,width:110,borderRadius:10,alignItems:"center",justifyContent:"center",backgroundColor:color,margin:4,padding:10}}>
+        <View style={{height:150,width:'49%',borderRadius:10,alignItems:"center",justifyContent:"center",backgroundColor:color,margin:4,padding:10}}>
             <Image style={{height:imageHeight,width:imageWidth,resizeMode:"contain",margin:10}} source={image}></Image>
             <PoppinsText content ={amount} style={{fontSize:16,color:'black'}}></PoppinsText>
             <PoppinsTextMedium content={title} style={{fontSize:13,color:'black', fontWeight:'800'}}></PoppinsTextMedium>

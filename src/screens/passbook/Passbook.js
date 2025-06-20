@@ -397,7 +397,7 @@ const Passbook = ({ navigation }) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{}} style={{ width: "100%" }}>
+    <ScrollView contentContainerStyle={{flex:1}} style={{ width: "100%" }}>
       <View
         style={{
           alignItems: "center",
@@ -465,7 +465,8 @@ const Passbook = ({ navigation }) => {
               borderWidth: 1,
               borderColor: "#EEEEEE",
               borderRadius: 20,
-              marginTop: 30,
+              marginTop: 10,
+              marginBottom:20
             }}
           >
             <View
@@ -750,6 +751,7 @@ const Passbook = ({ navigation }) => {
                 flexWrap: "wrap",
                 alignItems: "center",
                 justifyContent: "center",
+                marginBottom:20
               }}
             >
               {
@@ -833,8 +835,8 @@ const Passbook = ({ navigation }) => {
           getActiveMembershipData={getActiveMembershipData}
         />
       )}
-
-      <SocialBottomBar showRelative={true} />
+      
+      <SocialBottomBar />
     </ScrollView>
   );
 };

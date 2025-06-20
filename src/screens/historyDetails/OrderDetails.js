@@ -11,6 +11,7 @@ import MessageModal from "../../components/modals/MessageModal";
 import Date from "react-native-vector-icons/MaterialIcons";
 import Time from "react-native-vector-icons/Entypo";
 import moment from "moment";
+import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 
 // create a component
 const OrderDetails = (params) => {
@@ -517,6 +518,7 @@ const OrderDetails = (params) => {
           })}
         </ScrollView>
       </ScrollView>
+      <SocialBottomBar></SocialBottomBar>
       {error && (
         <ErrorModal
           modalClose={modalClose}

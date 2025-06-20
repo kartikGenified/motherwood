@@ -152,6 +152,7 @@ const StackNavigator = () => {
           name="CommingSoon"
           component={ComingSoonScreen}
         ></Stack.Screen>
+        
         <Stack.Screen
           options={{
             headerShown: false,

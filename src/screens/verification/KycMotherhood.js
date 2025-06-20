@@ -7,15 +7,18 @@ import {
   Touchable,
   ScrollView,
   TextInput,
-  Text
+  Text,
 } from "react-native";
-import Info from 'react-native-vector-icons/AntDesign';
+import Info from "react-native-vector-icons/AntDesign";
 import { useDispatch, useSelector } from "react-redux";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import { useTranslation } from "react-i18next";
 import BottomModal from "../../components/modals/BottomModal";
 import { useVerifyGstMutation } from "../../apiServices/verification/GstinVerificationApi";
-import { useGetkycStatusMutation, useUpdateKycStatusMutation } from "../../apiServices/kyc/KycStatusApi";
+import {
+  useGetkycStatusMutation,
+  useUpdateKycStatusMutation,
+} from "../../apiServices/kyc/KycStatusApi";
 import {
   useSendAadharOtpMutation,
   useVerifyAadharMutation,
@@ -38,16 +41,16 @@ const KycMotherhood = ({ navigation }) => {
   const [modalContent, setModalContent] = useState();
   const [modal, setModal] = useState(false);
   const [kycArray, setKycArray] = useState([]);
-  const [panVerified, setPanVerified] = useState(false)
-  const [aadharVerified, setAadharVerified] = useState(false)
-  const [gstinVerified, setGstinVerified] = useState(false)
+  const [panVerified, setPanVerified] = useState(false);
+  const [aadharVerified, setAadharVerified] = useState(false);
+  const [gstinVerified, setGstinVerified] = useState(false);
   const [upiVerified, setUpiVerified] = useState(false);
   const [bankAccountVerified, setBankAccountVerified] = useState(false);
-  const [verifiedArray, setVerifiedArray] = useState([])
+  const [verifiedArray, setVerifiedArray] = useState([]);
   const inpref = useRef(null);
-  const focused = useIsFocused()
+  const focused = useIsFocused();
   const kycData = useSelector((state) => state.kycDataSlice.kycData);
-    console.log("kycData data final",kycData)
+  console.log("kycData data final", kycData);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -69,7 +72,7 @@ const KycMotherhood = ({ navigation }) => {
       isError: listAccountIsError,
     },
   ] = useListAccountsMutation();
-  
+
   const [
     getKycStatusFunc,
     {
@@ -90,10 +93,9 @@ const KycMotherhood = ({ navigation }) => {
           //   'Credentials successfully loaded for user ' + credentials?.username
           // );
           const token = credentials?.username;
-          console.log("token from dashboard getKycStatusFunc ", token)
-          
+          console.log("token from dashboard getKycStatusFunc ", token);
+
           token && getKycStatusFunc(token);
-          
         } else {
           // console.log('No credentials stored');
         }
@@ -101,10 +103,10 @@ const KycMotherhood = ({ navigation }) => {
         // console.log("Keychain couldn't be accessed!", error);
       }
     };
-    
-      fetchOnPageActive();
-      console.log("uyghjcghjasvhjfbjkhgqwgfjgcqwjkbjkckj")
-  }, [focused, modal,panVerified,aadharVerified,gstinVerified]);
+
+    fetchOnPageActive();
+    console.log("uyghjcghjasvhjfbjkhgqwgfjgcqwjkbjkckj");
+  }, [focused, modal, panVerified, aadharVerified, gstinVerified]);
 
   useEffect(() => {
     if (getKycStatusData) {
@@ -155,8 +157,7 @@ const KycMotherhood = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-
-    console.log("firstlistAccountData",JSON.stringify(listAccountData))
+    console.log("firstlistAccountData", JSON.stringify(listAccountData));
 
     listAccountData &&
       listAccountData?.body.map((item, index) => {
@@ -169,16 +170,14 @@ const KycMotherhood = ({ navigation }) => {
       });
   }, [listAccountData]);
 
-  useEffect(()=>{
-    if(upiVerified)
-    {
-        setVerifiedArray([...verifiedArray, "upi"])
+  useEffect(() => {
+    if (upiVerified) {
+      setVerifiedArray([...verifiedArray, "upi"]);
     }
-    if(bankAccountVerified)
-    {
-        setVerifiedArray([...verifiedArray, "bank"])
+    if (bankAccountVerified) {
+      setVerifiedArray([...verifiedArray, "bank"]);
     }
-  },[upiVerified, bankAccountVerified])
+  }, [upiVerified, bankAccountVerified]);
 
   const modalClose = () => {
     setModal(false);
@@ -223,21 +222,17 @@ const KycMotherhood = ({ navigation }) => {
       },
     ] = useVerifyAadharMutation();
 
-    
-
     useEffect(() => {
       if (updateKycStatusData) {
         console.log("updateKycStatusData", updateKycStatusData);
         if (updateKycStatusData.success) {
-          setModal(false)
-          setAadhaarVerified(true)
+          setModal(false);
+          setAadhaarVerified(true);
         }
       } else if (updateKycStatusError) {
         console.log("updateKycStatusError", updateKycStatusError);
       }
     }, [updateKycStatusData, updateKycStatusError]);
-
-    
 
     useEffect(() => {
       if (verifyAadharData) {
@@ -712,8 +707,8 @@ const KycMotherhood = ({ navigation }) => {
       if (updateKycStatusData) {
         console.log("updateKycStatusData", updateKycStatusData);
         if (updateKycStatusData.success) {
-          setModal(false)
-          setPanVerified(true)
+          setModal(false);
+          setPanVerified(true);
         }
       } else if (updateKycStatusError) {
         console.log("updateKycStatusError", updateKycStatusError);
@@ -1026,11 +1021,9 @@ const KycMotherhood = ({ navigation }) => {
 
     useEffect(() => {
       if (verifyGstData) {
-        
         console.log("verifyGstData", verifyGstData);
         if (verifyGstData.success) {
           setGstVerified(true);
-
         }
       }
       if (verifyGstError) {
@@ -1043,8 +1036,8 @@ const KycMotherhood = ({ navigation }) => {
       if (updateKycStatusData) {
         console.log("updateKycStatusData", updateKycStatusData);
         if (updateKycStatusData.success) {
-            setModal(false)
-            setGstVerified(true)
+          setModal(false);
+          setGstVerified(true);
         }
       } else if (updateKycStatusError) {
         console.log("updateKycStatusError", updateKycStatusError);
@@ -1524,12 +1517,12 @@ const KycMotherhood = ({ navigation }) => {
       >
         <BankDetails></BankDetails>
         <AccountDetails></AccountDetails>
-        {
-            addBankDetailsError && <PoppinsTextMedium
+        {addBankDetailsError && (
+          <PoppinsTextMedium
             style={{ color: "red", fontSize: 16, width: "80%" }}
             content={addBankDetailsError.data.message}
           ></PoppinsTextMedium>
-        }
+        )}
         <TouchableOpacity
           style={{
             alignItems: "center",
@@ -1582,7 +1575,7 @@ const KycMotherhood = ({ navigation }) => {
         const data = {
           upi_id: upi,
           transfer_mode: "upi",
-          action : action
+          action: action,
         };
         console.log(data);
         const params = { token: token, data: data };
@@ -1591,10 +1584,10 @@ const KycMotherhood = ({ navigation }) => {
       }
     };
 
-    const getUpiId = data => {
-        console.log(data);
-        setUpi(data);
-      };
+    const getUpiId = (data) => {
+      console.log(data);
+      setUpi(data);
+    };
 
     const getInitials = (name) => {
       const initialsArray = name?.split(" ");
@@ -1615,9 +1608,8 @@ const KycMotherhood = ({ navigation }) => {
           setName(addBankDetailsData.body.bene_details.bene_name);
           setData(addBankDetailsData.body);
         }
-        if(addBankDetailsData.message === "UPI Added")
-        {
-            setModal(false)
+        if (addBankDetailsData.message === "UPI Added") {
+          setModal(false);
         }
       } else if (addBankDetailsError) {
         console.log("addBankDetailsError", addBankDetailsError);
@@ -1632,49 +1624,47 @@ const KycMotherhood = ({ navigation }) => {
           width: "90%",
           backgroundColor: "white",
           paddingTop: 40,
-          marginTop:20
+          marginTop: 20,
         }}
       >
         <TextInputRectangularWithPlaceholder
           handleData={getUpiId}
           placeHolder={t("Enter UPI ID")}
         ></TextInputRectangularWithPlaceholder>
-        {
-            addBankDetailsError && <PoppinsTextMedium
+        {addBankDetailsError && (
+          <PoppinsTextMedium
             style={{ color: "red", fontSize: 16, width: "80%" }}
             content={addBankDetailsError.data.message}
           ></PoppinsTextMedium>
-        }
+        )}
         <View
           style={{
             width: "100%",
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "row",
-            marginTop:20
+            marginTop: 20,
           }}
         >
-                
-
-                <TouchableOpacity
-              onPress={() => {
-                submitData("verify")
-              }}
-              style={{
-                height: 50,
-                width: 160,
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "#171717",
-                borderWidth: 1,
-                borderColor: "black",
-              }}
-            >
-              <PoppinsTextMedium
-                style={{ color: "white", fontSize: 16, width: "80%" }}
-                content="Verify"
-              ></PoppinsTextMedium>
-            </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              submitData("verify");
+            }}
+            style={{
+              height: 50,
+              width: 160,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "#171717",
+              borderWidth: 1,
+              borderColor: "black",
+            }}
+          >
+            <PoppinsTextMedium
+              style={{ color: "white", fontSize: 16, width: "80%" }}
+              content="Verify"
+            ></PoppinsTextMedium>
+          </TouchableOpacity>
         </View>
 
         <View
@@ -1685,24 +1675,24 @@ const KycMotherhood = ({ navigation }) => {
             marginTop: 50,
           }}
         >
-         {nameInitialsCapital && <View
-            style={{
-              height: 50,
-              width: 50,
-              borderRadius: 2,
-              backgroundColor: ternaryThemeColor,
-              alignItems: "center",
-              justifyContent: "center",
-              marginLeft: 20,
-            }}
-          >
-             
+          {nameInitialsCapital && (
+            <View
+              style={{
+                height: 50,
+                width: 50,
+                borderRadius: 2,
+                backgroundColor: ternaryThemeColor,
+                alignItems: "center",
+                justifyContent: "center",
+                marginLeft: 20,
+              }}
+            >
               <PoppinsTextMedium
                 style={{ color: "white", fontSize: 22, fontWeight: "700" }}
                 content={nameInitialsCapital}
               ></PoppinsTextMedium>
-          </View>
-  }
+            </View>
+          )}
           <View
             style={{
               width: "100%",
@@ -1737,37 +1727,39 @@ const KycMotherhood = ({ navigation }) => {
               ></PoppinsTextMedium>
             )}
           </View>
-        
-          {nameInitialsCapital && <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-evenly",
-              marginTop: 20,
-              paddingBottom: 10,
-              width: "100%",
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                submitData()
-              }}
+
+          {nameInitialsCapital && (
+            <View
               style={{
-                height: 50,
-                width: 160,
+                flexDirection: "row",
                 alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "#171717",
-                borderWidth: 1,
-                borderColor: "black",
+                justifyContent: "space-evenly",
+                marginTop: 20,
+                paddingBottom: 10,
+                width: "100%",
               }}
             >
-              <PoppinsTextMedium
-                style={{ color: "white", fontSize: 16, width: "80%" }}
-                content="Confirm"
-              ></PoppinsTextMedium>
-            </TouchableOpacity>
-          </View>}
+              <TouchableOpacity
+                onPress={() => {
+                  submitData();
+                }}
+                style={{
+                  height: 50,
+                  width: 160,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "#171717",
+                  borderWidth: 1,
+                  borderColor: "black",
+                }}
+              >
+                <PoppinsTextMedium
+                  style={{ color: "white", fontSize: 16, width: "80%" }}
+                  content="Confirm"
+                ></PoppinsTextMedium>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </View>
     );
@@ -1939,25 +1931,25 @@ const KycMotherhood = ({ navigation }) => {
           handlePress={handleAadhaarCompPress}
           image={require("../../../assets/images/aadhaarkyc.png")}
           title="Aadhaar"
-          verified = {kycData?.aadhar}
+          verified={kycData?.aadhar}
         ></KycComp>
         <KycComp
           handlePress={handlePanCompPress}
           image={require("../../../assets/images/pankyc.png")}
           title="PAN Card"
-          verified = {kycData?.pan}
+          verified={kycData?.pan}
         ></KycComp>
         <KycComp
           handlePress={handleGstinCompPress}
           image={require("../../../assets/images/gstinkyc.png")}
           title="GSTIN"
-          verified = {kycData?.gstin}
+          verified={kycData?.gstin}
         ></KycComp>
         <KycComp
           handlePress={handleBankAccountCompPress}
           image={require("../../../assets/images/bankaccount.png")}
           title="Add Bank Account"
-          verified = {bankAccountVerified}
+          verified={bankAccountVerified}
         ></KycComp>
         <KycComp
           handlePress={handleUpiCompPress}
@@ -1965,7 +1957,10 @@ const KycMotherhood = ({ navigation }) => {
           title="Add UPI"
           verified={upiVerified}
         ></KycComp>
-        <PoppinsTextMedium style={{color:"black",margin:10}} content="For any issues with KYC approvals, please contact our help and support team at +91-9258262524."></PoppinsTextMedium>
+        <Text style={{ color: "black", margin: 10 }}>
+          For any issues with KYC approvals, please contact our help and support
+          team at <Text style={{ color: "#B6202D" }}>+91-9258262524</Text>.
+        </Text>
         <SocialBottomBar showRelative={true}></SocialBottomBar>
       </ScrollView>
     </View>

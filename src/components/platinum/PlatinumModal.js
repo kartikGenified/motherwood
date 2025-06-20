@@ -76,32 +76,32 @@ const PlatinumModal = ({ isVisible, onClose, getActiveMembershipData }) => {
               <Icon name="close" size={30} color={ternaryThemeColor} />
             </TouchableOpacity>
           </View>
-          <View style={{flexDirection:'row', alignItems:'center' ,justifyContent:'center',marginTop:10}}>
-            <View style={{alignItems:'flex-start', justifyContent:'center',backgroundColor:ternaryThemeColor,padding:10,margin:1,width:90}}>
+          <View style={{flexDirection:'row', alignItems:'center' ,justifyContent:'center',marginTop:10,width:'100%'}}>
+            <View style={{alignItems:'flex-start', justifyContent:'center',backgroundColor:ternaryThemeColor,padding:10,margin:1,width:'32%',height:40}}>
             <PoppinsTextMedium
               style={{
                 color: "white",
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: "600",
               }}
               content="Club"
             ></PoppinsTextMedium>
             </View>
-            <View style={{alignItems:'center', justifyContent:'center',backgroundColor:ternaryThemeColor,padding:10,margin:1}}>
+            <View style={{alignItems:'center', justifyContent:'center',backgroundColor:ternaryThemeColor,padding:10,margin:1,width:'32%',height:40}}>
             <PoppinsTextMedium
               style={{
                 color: "white",
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: "600",
               }}
               content="Milestone"
             ></PoppinsTextMedium>
             </View>
-            <View style={{alignItems:'center', justifyContent:'center',backgroundColor:ternaryThemeColor,padding:10,margin:1}}>
+            <View style={{alignItems:'center', justifyContent:'center',backgroundColor:ternaryThemeColor,padding:2,margin:1,width:'32%',height:40}}>
             <PoppinsTextMedium
               style={{
                 color: "white",
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: "600",
               }}
               content="Bonus Points"
@@ -116,7 +116,7 @@ const PlatinumModal = ({ isVisible, onClose, getActiveMembershipData }) => {
               style={{
                 position:'absolute',
                 color: "black",
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: "600",
                 left:10
                 
@@ -129,7 +129,7 @@ const PlatinumModal = ({ isVisible, onClose, getActiveMembershipData }) => {
               style={{
                 position:'absolute',
                 color: "black",
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: "600",
               }}
               content={item?.range_start}
@@ -140,7 +140,7 @@ const PlatinumModal = ({ isVisible, onClose, getActiveMembershipData }) => {
               style={{
                 position:'absolute',
                 color: "black",
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: "600",
               }}
               content={item.per_month}

@@ -265,7 +265,7 @@ const Dashboard = ({ navigation }) => {
 
   useEffect(() => {
     const handleBackPress = () => {
-      navigation.goBack(); // Navigate back when back button is pressed
+      // Navigate back when back button is pressed
       return true; // Prevent default back press behavior
     };
     const backHandler = BackHandler.addEventListener(
@@ -822,7 +822,7 @@ const Dashboard = ({ navigation }) => {
               justifyContent: "space-evenly",
               bottom: 30,
               paddingBottom: 40,
-              marginTop:100
+              marginTop:20
             }}
           >
             <DashboardSupportBox

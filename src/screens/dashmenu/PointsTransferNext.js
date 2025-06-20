@@ -300,6 +300,8 @@ const PointsTransferNext = (params) => {
     onThicknessChange,
     row,
   }) => {
+
+    console.log("thicknessOptions",thicknessOptions)
     return (
       <View
         style={{

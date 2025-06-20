@@ -8,7 +8,7 @@ import {name as appName} from './app.json';
 import 'react-native-gesture-handler';
 import 'react-native-reanimated'
 import messaging from '@react-native-firebase/messaging';
-
+import { Text } from 'react-native';
 
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
@@ -35,4 +35,6 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
       }
       
     });
+    Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
 AppRegistry.registerComponent(appName, () => App);

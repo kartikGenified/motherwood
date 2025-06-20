@@ -279,9 +279,9 @@ const DreamGift = () => {
         <TouchableOpacity
           style={{
             height: 50,
-            width: "70%",
+            width: "90%",
             alignSelf:'center',
-            backgroundColor: "#D5B60B",
+            backgroundColor: "black",
             marginBottom: 20,
             marginTop: 20,
             alignItems: "center",

@@ -9,6 +9,7 @@ import * as Keychain from "react-native-keychain";
 import ErrorModal from "../../components/modals/ErrorModal";
 import MessageModal from "../../components/modals/MessageModal";
 import moment from "moment";
+import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 
 // create a component
 const PointsTransferSuccess = (params) => {
@@ -86,7 +87,7 @@ const PointsTransferSuccess = (params) => {
         <View style={{ alignItems: "center", width: "100%" }}>
           <View
             style={{
-              height: 60,
+              height: 40,
               width: 240,
               // backgroundColor:'red'
               borderWidth: 1,
@@ -96,7 +97,7 @@ const PointsTransferSuccess = (params) => {
               alignItems: "center",
               paddingHorizontal: 30,
               backgroundColor: "#EBF3FA",
-              marginTop: 20,
+              marginTop: 10,
               borderRadius: 10,
             }}
           >
@@ -124,8 +125,8 @@ const PointsTransferSuccess = (params) => {
                 : ""}
             </Text>
           </View>
-          <View style={{ flexDirection: "row", marginTop: 20 }}>
-            <Text style={{ fontSize: 22, marginTop: 7, color: "black" }}>
+          <View style={{ flexDirection: "row", marginTop: 10 }}>
+            <Text style={{ fontSize: 22, marginTop: 7, color: "black",fontWeight:'600' }}>
               Transfer Points :{" "}
             </Text>
 
@@ -133,7 +134,7 @@ const PointsTransferSuccess = (params) => {
               <Text
                 style={{
                   backgroundColor: "#B6202D",
-                  padding: 8,
+                  padding: 4,
                   paddingHorizontal: 15,
                   borderRadius: 20,
                   color: "white",
@@ -141,15 +142,17 @@ const PointsTransferSuccess = (params) => {
                   fontSize: 20,
                 }}
               >
-                {data?.orderDetail?.points}
+                {Math.trunc(data?.orderDetail?.points)}
               </Text>
             )}
           </View>
-          <View style={{width:'100%', flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
-            <Image source={require("../../../assets/images/Date.png")} style={{height:20,width:50,resizeMode:'contain',marginTop:20}}></Image>
-            <Text style={{color:'black',width:100,marginTop:19}}>{moment(data?.orderDetail?.voucher_date).format("DD MMM YYYY")}</Text>
-                      <Image source={require("../../../assets/images/clock.png")} style={{height:20,width:50,resizeMode:'contain',marginTop:20}}></Image>
-            <Text style={{color:'black',width:100,marginTop:19}}>{moment(data?.orderDetail?.voucher_date).format("HH:MM")}</Text>
+          <View style={{width:'100%', flexDirection:'row',alignItems:'center',justifyContent:'center',marginTop:4,left:10}}>
+
+            <Image source={require("../../../assets/images/Date.png")} style={{height:20,width:20,resizeMode:'contain'}}></Image>
+            <Text style={{color:'black',width:90}}>{moment(data?.orderDetail?.voucher_date).format("DD MMM YYYY")}</Text>
+            <View style={{height:'60%',width:1, backgroundColor:'black',marginRight:10}}></View>
+            <Image source={require("../../../assets/images/clock.png")} style={{height:20,width:20,resizeMode:'contain',marginRight:4}}></Image>
+            <Text style={{color:'black',width:90}}>{moment(data?.orderDetail?.voucher_date).format("hh:mm a")}</Text>
           </View>
           {/* <View
             style={{
@@ -202,6 +205,10 @@ const PointsTransferSuccess = (params) => {
             backgroundColor: "#F7F7F7",
             padding: 10,
             marginTop: 10,
+            borderTopWidth:1,
+            borderColor:'#DDDDDD',
+            borderBottomWidth:1
+            
           }}
         >
           {console.log("body", data)}
@@ -231,14 +238,75 @@ const PointsTransferSuccess = (params) => {
                 fontWeight: "400",
               }}
             >
-              {data?.orderDetail?.seller_app_user_id}
+              {data?.orderDetail?.buyer_code}
             </Text>
+
           </View>
           <View
             style={{
               flexDirection: "row",
               marginTop: 10,
               width: "100%",
+              flexWrap: "wrap",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+                marginLeft: 10,
+                color: "black",
+                fontWeight: "400",
+              }}
+            >
+              Channel/ Partner ID :
+            </Text>
+            <Text
+              style={{
+                fontSize: 16,
+                marginLeft: 7,
+                color: "black",
+                fontWeight: "400",
+              }}
+            >
+              {data?.orderDetail?.buyer_name}
+            </Text>
+            
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: 10,
+              width: "100%",
+              flexWrap: "wrap",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+                marginLeft: 10,
+                color: "black",
+                fontWeight: "400",
+              }}
+            >
+              Reference :
+            </Text>
+            <Text
+              style={{
+                fontSize: 16,
+                marginLeft: 7,
+                color: "black",
+                fontWeight: "400",
+              }}
+            >
+              {data?.orderDetail?.order_no}
+            </Text>
+            
+          </View>
+          <View style={{flexDirection:'row'}}>
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: 10,
               flexWrap: "wrap",
             }}
           >
@@ -263,11 +331,12 @@ const PointsTransferSuccess = (params) => {
               {item?.orderDetail?.total_sku}
             </Text>
           </View>
+          <View style={{height:'50%',width:2,backgroundColor:'grey',marginTop:14,marginLeft:8}}></View>
           <View
             style={{
               flexDirection: "row",
               marginTop: 10,
-              width: "100%",
+             
               flexWrap: "wrap",
             }}
           >
@@ -292,6 +361,8 @@ const PointsTransferSuccess = (params) => {
               {item?.orderDetail?.qty}
             </Text>
           </View>
+          </View>
+         
         </View>
 
         <ScrollView
@@ -381,7 +452,7 @@ const PointsTransferSuccess = (params) => {
             
             return (
               <View
-                style={{ backgroundColor: "#E7E5C5", flexDirection: "row" }}
+                style={{ backgroundColor: "#DDDDDD", flexDirection: "row" }}
                 key={index}
               >
                 <View
@@ -462,6 +533,9 @@ const PointsTransferSuccess = (params) => {
             );
           })}
         </ScrollView>
+        <TouchableOpacity style={{alignSelf:'center',width:120, backgroundColor:'black',alignItems:'center',height:40,justifyContent:'center', borderRadius:20,marginBottom:30}} onPress={()=>{navigation.replace("Dashboard")}}>
+        <Text style={{color:'white',width:160, textAlign:'center'}}>Done</Text>
+      </TouchableOpacity>
       </ScrollView>
       {error && (
         <ErrorModal
@@ -477,9 +551,9 @@ const PointsTransferSuccess = (params) => {
           openModal={success}
         ></MessageModal>
       )}
-      <TouchableOpacity style={{alignSelf:'center',width:160, backgroundColor:'black',alignItems:'center',height:40,justifyContent:'center', borderRadius:20,marginBottom:30}} onPress={()=>{navigation.replace("Dashboard")}}>
-        <Text style={{color:'white',width:160, textAlign:'center'}}>Done</Text>
-      </TouchableOpacity>
+     
+
+      <SocialBottomBar showRelative={true}></SocialBottomBar>
     </View>
   );
 };

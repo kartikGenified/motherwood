@@ -155,23 +155,13 @@ const SelectUser = ({ navigation }) => {
         setNeedsApproval(true);
         console.log("registration required");
         setTimeout(() => {
-          navigation.navigate("OtpLogin", {
-            needsApproval: true,
-            userType: users[0]?.name,
-            userId: users[0]?.user_type_id,
-            registrationRequired: registrationRequired,
-          });
+          navigation.navigate("VerifyOtp", route.params);
         }, 1000);
       } else {
         setNeedsApproval(false);
         console.log("registration not required");
         setTimeout(() => {
-          navigation.navigate("OtpLogin", {
-            needsApproval: false,
-            userType: users[0]?.name,
-            userId: users[0]?.user_type_id,
-            registrationRequired: registrationRequired,
-          });
+          navigation.navigate("VerifyOtp", route.params);
         }, 1000);
       }
     }

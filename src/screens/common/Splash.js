@@ -485,7 +485,7 @@ const Splash = ({ navigation }) => {
           const missingApis = allApiArray.filter(api => !apiCallStatus?.includes(api));
           console.log("Timeout: Missing APIs:", missingApis);
   
-          navigation.reset({ index: 0, routes: [{ name: "SelectUser" }] });
+          navigation.reset({ index: 0, routes: [{ name: "OtpLogin" }] });
         }, 4000); // wait for all async calls (4 sec)
       }
     }
@@ -494,7 +494,7 @@ const Splash = ({ navigation }) => {
         const missingApis = allApiArray.filter(api => !apiCallStatus?.includes(api));
         console.log("Timeout: Missing APIs:", missingApis);
 
-        navigation.reset({ index: 0, routes: [{ name: "SelectUser" }] });
+        navigation.reset({ index: 0, routes: [{ name: "OtpLogin" }] });
       }, 4000); // wait for all async calls (4 sec)
     }
   
@@ -534,7 +534,7 @@ const Splash = ({ navigation }) => {
   // removing session data in case of session expired
   const removerTokenData = async () => {
     await AsyncStorage.removeItem("loginData").then(() => {
-      navigation.navigate("SelectUser");
+      navigation.navigate("OtpLogin");
       setShowLoading(false);
     });
   };

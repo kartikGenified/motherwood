@@ -23,6 +23,7 @@ import { setPointConversionF,setCashConversionF, setRedemptionFrom } from '../..
 import { useCheckBeforeRedeemMutation, useGetWalletBalanceMutation } from '../../apiServices/cashback/CashbackRedeemApi';
 import { setWalletBalance } from '../../../redux/slices/pointWalletSlice';
 import { useTranslation } from 'react-i18next';
+import SocialBottomBar from '../../components/socialBar/SocialBottomBar';
 
 const RedeemCashback = ({navigation,route}) => {
   const [message, setMessage] = useState();
@@ -415,7 +416,7 @@ const [checkBeforeRedeem, {
           justifyContent: 'flex-start',
           flexDirection: 'row',
           width: '100%',
-
+          backgroundColor:'#FFF8E7',
           height: '10%',
           position: 'absolute',
           top: 0,
@@ -461,8 +462,8 @@ const [checkBeforeRedeem, {
           content={t("Wallet Points")}
           style={{
             color: 'black',
-            fontWeight: '600',
-            marginBottom: 20,
+            fontWeight: '700',
+            marginBottom: 10,
           }}></PoppinsTextMedium>
           </View> 
           }
@@ -526,7 +527,7 @@ const [checkBeforeRedeem, {
             justifyContent: 'center',
             borderWidth: 0.8,
             borderColor: '#DDDDDD',
-            height: 70,
+            height: 60,
             borderRadius: 10,
             backgroundColor: '#F5F7F9',
             flexDirection: 'row',
@@ -547,8 +548,9 @@ const [checkBeforeRedeem, {
                 color: '#909090',
                 fontWeight: '600',
                 fontSize: 14,
+                top:8
               }}></PoppinsTextMedium>
-           <TextInput keyboardType="number-pad" value={pointsConversion + ""} style={{color:'black',height:50, fontWeight:'bold', fontSize:14,width:'50%'}} onChangeText={(text)=>{setPointsConversion(text),dispatch(setPointConversionF(text))}} placeholder='Enter Points'></TextInput>
+           <TextInput keyboardType="number-pad" value={pointsConversion + ""} style={{color:'black',height:50, fontWeight:'600', fontSize:18,width:'50%',left:30}} onChangeText={(text)=>{setPointsConversion(text),dispatch(setPointConversionF(text))}} placeholder='Enter Points'></TextInput>
           </View>
           <Image
             style={{height: 24, width: 24, resizeMode: 'contain', right: 12}}
@@ -567,11 +569,11 @@ const [checkBeforeRedeem, {
                 color: '#909090',
                 fontWeight: '600',
                 fontSize: 14,
-                marginBottom:12
+                marginBottom:8
               }}></PoppinsTextMedium>
-            <PoppinsText
-              style={{fontSize: 20, color: 'black'}}
-              content={(Math.round(cashConversion * 10) / 10)}></PoppinsText>
+            <PoppinsTextMedium
+              style={{fontSize: 16, color: 'black',fontWeight:'700',bottom:2}}
+              content={(Math.round(cashConversion * 10) / 10)}></PoppinsTextMedium>
           </View>
         </View>
 
@@ -710,7 +712,8 @@ const [checkBeforeRedeem, {
           borderRadius: 6,
           height: 50,
           flexDirection: 'row',
-          marginTop:20
+          marginTop:20,
+          
         }}>
         <PoppinsTextMedium
           content={t("redeem now")}
@@ -724,6 +727,7 @@ const [checkBeforeRedeem, {
       
         </View>
         </ScrollView>
+        <SocialBottomBar showRelative={true}></SocialBottomBar>
     </View>
   );
 };

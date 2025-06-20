@@ -135,8 +135,8 @@ const BasicInfo = ({ navigation, route }) => {
   const appUsers = useSelector((state) => state.appusers.value);
   const manualApproval = useSelector((state) => state.appusers.manualApproval);
   const appVersion = useSelector((state) => state.appusers.app_version);
-  const userType = route.params.user_type;
-  const userTypeId = route.params.user_type_id;
+  const userType = route.params.userType;
+  const userTypeId = route.params.userId;
   const needsApproval = route.params.needsApproval;
   const navigatingFrom = route.params.navigatingFrom;
   const registrationRequired = route.params.registrationRequired;
@@ -1739,6 +1739,7 @@ const BasicInfo = ({ navigation, route }) => {
                               placeHolder={item.name}
                               label={item.label}
                               value={userMobile}
+                              maxLength={10}
                             >
                               {" "}
                             </TextInputRectangle>
@@ -1827,7 +1828,7 @@ const BasicInfo = ({ navigation, route }) => {
                 handleRegistrationFormSubmission();
               }}
               backgroundColor="black"
-              content={t("Well Done! One more Step")}
+              content={t("Great! It's the final Step")}
               style={{
                 paddingLeft: 30,
                 paddingRight: 30,

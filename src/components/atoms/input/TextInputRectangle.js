@@ -61,6 +61,7 @@ console.log("asdhgasghfdghfsaghfcghvasghcghvsaghvchjvasghvchjs",placeHolder)
         ></PoppinsTextMedium>
       </View>
       <TextInput
+      maxLength={props.maxLength}
         editable={props.editable}
         onEndEditing={(text) => {
           handleInputEnd();

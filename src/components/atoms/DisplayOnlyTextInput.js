@@ -15,7 +15,7 @@ const DisplayOnlyTextInput = (props) => {
 
     console.log("DisplayOnlyTextInput",title,data)
     return (
-        <View style={{width:"90%",alignItems:"flex-start",justifyContent:"center",borderBottomWidth:1,marginBottom:4,paddingBottom:10,borderColor:'#DDDDDD',marginTop:10}}>
+        <View style={{width:"90%",alignItems:"flex-start",justifyContent:"center",borderBottomWidth:1,marginBottom:10,paddingBottom:10,borderColor:'#DDDDDD',marginTop:10}}>
             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
                 
                 <PoppinsTextMedium style={{fontSize:16,fontWeight:'600',color:'grey',marginLeft:10}} content={t(title)}></PoppinsTextMedium>

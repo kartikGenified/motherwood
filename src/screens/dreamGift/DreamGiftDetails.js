@@ -55,7 +55,7 @@ const navigation = useNavigation()
           borderWidth: 1,
           backgroundColor: "white",
           width: "80%",
-          marginTop: 30,
+          marginTop: 10,
           borderStyle: "dotted",
         }}
       >
@@ -76,13 +76,13 @@ const navigation = useNavigation()
               fontWeight: "600",
             }}
           >
-            You Currently Have
+            Points in Your Wallet
           </Text>
 
           <View
             style={{
               flexDirection: "row",
-              backgroundColor: "#D5B60B",
+              backgroundColor: "#B6202D",
               padding: 5,
               borderRadius: 20,
               paddingHorizontal: 10,
@@ -126,13 +126,13 @@ const navigation = useNavigation()
               fontWeight: "600",
             }}
           >
-            Your Dream Gift is just
+            Dream Gift Points
           </Text>
 
           <View
             style={{
               flexDirection: "row",
-              backgroundColor: "#D5B60B",
+              backgroundColor: "#B6202D",
               padding: 5,
               borderRadius: 20,
               paddingHorizontal: 10,
@@ -176,7 +176,7 @@ const navigation = useNavigation()
             style={{
               height: 30,
               alignItems: "center",
-              backgroundColor: ternaryThemeColor,
+              backgroundColor: "black",
               flexDirection: "row",
               paddingHorizontal: 10,
               borderRadius: 20,
@@ -209,7 +209,7 @@ const navigation = useNavigation()
       resizeMode='cover'
       source={isTertiary ? require('../../../assets/images/transparentBackgroundBlue.png') : require('../../../assets/images/transparentBackgroundred.png')}
     >
-      <ScrollView contentContainerStyle={{ alignItems: "center",marginTop:30 }}>
+      <ScrollView contentContainerStyle={{ alignItems: "center",marginTop:10 }}>
         <Image
           style={{
             marginLeft: 10,
@@ -226,7 +226,7 @@ const navigation = useNavigation()
           style={{
             // marginLeft: 10,
             height: 40,
-            marginTop: 15,
+            marginTop: 5,
             width: 30,
             resizeMode: "contain",
           }}
@@ -238,7 +238,7 @@ const navigation = useNavigation()
             fontSize: 29,
             width:'60%',
             fontWeight: "bold",
-            marginTop: 15,
+            marginTop: 5,
             textAlign:'center',
             letterSpacing: 1.2,
           }}
@@ -249,8 +249,8 @@ const navigation = useNavigation()
           <Image
             style={{
               // marginLeft: 10,
-              height: 270,
-              marginTop: 60,
+              height: 200,
+              marginTop: 0,
               width: "80%",
               borderRadius:20,
               resizeMode: "contain",
@@ -262,8 +262,8 @@ const navigation = useNavigation()
         <DottedBorder></DottedBorder>
         <TouchableOpacity onPress={()=>{
             navigation.navigate("Dashboard")
-        }} style={{alignItems:'center', justifyContent:'center',marginTop:40,marginBottom:100,backgroundColor:'#F0692B', width:150, height:60, borderRadius:5}}>
-            <Text style={{color:'white', fontSize:15}}>OK</Text>
+        }} style={{alignItems:'center', justifyContent:'center',marginTop:40,marginBottom:100,backgroundColor:'black', width:100, height:40, borderRadius:5}}>
+            <Text style={{color:'white', fontSize:15}}>Submit</Text>
       </TouchableOpacity>
 
   
