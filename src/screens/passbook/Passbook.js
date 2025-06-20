@@ -663,8 +663,9 @@ const Passbook = ({ navigation }) => {
               borderWidth: 1,
               borderColor: "#EEEEEE",
               borderRadius: 20,
-              marginTop: 100,
+              marginTop: 10,
               alignItems: "center",
+              marginBottom:10
             }}
           >
             <View
@@ -695,7 +696,7 @@ const Passbook = ({ navigation }) => {
               ) : (
                 <PoppinsTextMedium
                   style={{ fontWeight: "bold", position: "absolute", left: 20 }}
-                  content="What do you want to do?"
+                  content="Overview"
                 ></PoppinsTextMedium>
               )}
               <View

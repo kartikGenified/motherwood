@@ -158,7 +158,10 @@ const OrderDetails = (params) => {
                   borderRadius: 20,
                   alignItems: "center",
                   justifyContent: "center",
-                  minWidth:60
+                  minWidth:60,
+                  paddingLeft:4,
+                  paddingRight:4
+
                 }}
               >
                 <Text

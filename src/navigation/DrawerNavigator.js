@@ -315,12 +315,7 @@ const CustomDrawer = (props) => {
               } 
                  else if (props.title.toLowerCase() === "points calculator") {
                 navigation.navigate("PointsCalculator");
-              } 
-
-                 else if (props.title.toLowerCase() === "about motherwood") {
-                  Linking.openURL("https://motherwood.in/")
-              } 
-              
+              }     
               else if (props.title.toLowerCase() === "feedback selection") {
                 navigation.navigate("FeedbackSelection");
               } else if (props.title.toLowerCase() === "refer and earn") {
@@ -643,7 +638,7 @@ const CustomDrawer = (props) => {
             content={userData.user_id}
           ></PoppinsTextMedium>}
           {
-          getActiveMembershipData
+          getActiveMembershipData?.body?.tier?.name
             &&
             <View style={{flexDirection:'row',alignItems:'center', justifyContent:'center'}}>
               <Image style={{height:20,width:20,resizeMode:'contain'}} source={require('../../assets/images/mem.png')}></Image>

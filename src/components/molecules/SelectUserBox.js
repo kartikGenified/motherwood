@@ -21,6 +21,7 @@ const SelectUserBox = (props) => {
     // console.log(image)
     const color = props.color
     const otpLogin = props.otpLogin
+    const mobile= props.mobile
     const dispatch = useDispatch()
     // const passwordLogin = props.passwordLogin
     // const autoApproval = props.autoApproval
@@ -75,7 +76,7 @@ const SelectUserBox = (props) => {
 
     const handleNavigation=(needsApproval,registrationRequired)=>{
 
-        props.navigation.navigate("BasicInfo",{ needsApproval: needsApproval, userType: props.content, userId: props.id,navigatingFrom:"OtpLogin" })
+        props.navigation.navigate("BasicInfo",{ needsApproval: needsApproval, userType: props.content, userId: props.id,navigatingFrom:"OtpLogin", mobile:mobile })
         console.log("Needs Approval",needsApproval)
         // if(otpLogin.includes(props.content)
         // ){

@@ -58,7 +58,7 @@ const TextInputNumericRectangle = (props) => {
     <View
       style={{
         height: 50,
-        width: "86%",
+        width: "90%",
         borderWidth: 1,
         borderColor: "#DDDDDD",
         alignItems: "center",

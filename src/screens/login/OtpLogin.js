@@ -39,6 +39,7 @@ import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 const OtpLogin = ({ navigation, route }) => {
   const [mobile, setMobile] = useState("");
   const [name, setName] = useState();
+  const [nameData, setNameData] = useState()
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState();
   const [error, setError] = useState(false);
@@ -113,6 +114,8 @@ const OtpLogin = ({ navigation, route }) => {
     },
   ] = useGetNameMutation();
 
+  
+
   const needsApproval = route?.params?.needsApproval;
   
   const registrationRequired = route?.params?.registrationRequired;
@@ -131,6 +134,26 @@ const OtpLogin = ({ navigation, route }) => {
   }, [focused, registrationRequired]);
 
   useEffect(() => {
+    if (sendOtpData && nameData) {
+      console.log("sendOtpData", sendOtpData);
+      if (sendOtpData?.success === true) {
+        if (Object.keys(nameData).length != 0) {
+          navigation.navigate("VerifyOtp", navigationParams );
+        }
+      } else {
+        console.log("Trying to open error modal");
+      }
+      setHideButton(false);
+    } else if (sendOtpError) {
+      console.log("err", sendOtpError);
+      if (sendOtpError.status == 400) setAlert(true);
+      else setError(true);
+      setHideButton(false);
+      setMessage(sendOtpError?.data?.message);
+    }
+  }, [sendOtpData, sendOtpError]);
+
+  useEffect(() => {
     if (getTermsData) {
       console.log("getTermsData", getTermsData?.body?.data?.[0]?.files[0]);
     } else if (getTermsError) {
@@ -141,10 +164,11 @@ const OtpLogin = ({ navigation, route }) => {
   useEffect(() => {
     if (getNameData) {
       console.log("getNameData", getNameData);
-      if (getNameData?.success) {
+      if (getNameData?.success && getNameData?.body) {
         if(Object.keys(getNameData?.body).length!=0)
         {
           setName(getNameData?.body?.name);
+          setNameData(getNameData?.body)
           const tempNavigationParams = {
             needsApproval: needsApproval,
             user_type_id: getNameData?.body?.user_type_id,
@@ -155,11 +179,37 @@ const OtpLogin = ({ navigation, route }) => {
           };
           setNavigationParams(tempNavigationParams)
         }
+        else{
+          const tempNavigationParams = {
+            needsApproval: needsApproval,
+            
+            mobile: mobile,
+            
+            registrationRequired: registrationRequired,
+          };
+          setNavigationParams(tempNavigationParams)
+        }
       }
     } else if (getNameError) {
       console.log("getNameError", getNameError);
     }
   }, [getNameData, getNameError]);
+
+  const navigateToOtp = (data,mob) => {
+    if(data)
+    {
+      console.log("navigateToOtp",data)
+      console.log("isRunning?")
+      const mobile = mob
+      const name = data?.name.trim()
+      const user_type = data?.user_type.trim()
+      const user_type_id = String(data?.user_type_id)
+      sendOtpFunc({ mobile, name, user_type, user_type_id });
+      setHideButton(true);
+    }
+    
+    // navigation.navigate('VerifyOtp',{navigationParams})
+  };
 
   const getMobile = (data) => {
     // console.log(data)
@@ -197,11 +247,12 @@ const OtpLogin = ({ navigation, route }) => {
   };
 
   const handleNavigation=()=>{
-    if(name)
+    if(name && nameData)
     {
-      navigation.navigate("VerifyOtp",{...navigationParams, isExisting:true})
+      navigateToOtp(nameData, mobile);
     }
     else{
+      
       navigation.navigate("SelectUser",navigationParams)
     }
   }
@@ -214,11 +265,21 @@ const OtpLogin = ({ navigation, route }) => {
     setAlert(false);
   };
   return (
-    <KeyboardAvoidingView style={{height:'100%'}}>
-    <ScrollView
-      contentContainerStyle={{alignItems:'center', justifyContent:'center'}}
-      style={{ width: "100%" }}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"} // Or "position"
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -20}
     >
+    <View style={{ flex: 1 }}>
+    <ScrollView
+          contentContainerStyle={{
+            alignItems: "center",
+            justifyContent: "flex-start",
+            paddingBottom: 80, // Leave space for the fixed SocialBottomBar
+          }}
+          style={{ width: "100%" }}
+          keyboardShouldPersistTaps="handled"
+        >
       <View
         style={{
           width: "100%",
@@ -228,7 +289,7 @@ const OtpLogin = ({ navigation, route }) => {
       >
         
          
-        <View style={{alignItems:'flex-start',width:'100%'}}>
+        <View style={{alignItems:'',width:'100%'}}>
           <Image
             style={{
               height:200,
@@ -294,12 +355,7 @@ const OtpLogin = ({ navigation, route }) => {
             handleData={getMobile}
           />
 
-          {/* <TextInputRectangularWithPlaceholder
-              placeHolder={t("name")}
-              handleData={getName}
-              value={name}
-              specialCharValidation={true}
-            ></TextInputRectangularWithPlaceholder> */}
+        
         </View>
         <View style={{alignItems:'center', justifyContent:'center',backgroundColor:"white",height:70,width:'10%'}}>
           <Mobile name="mobile1" size={30} color={"grey"}></Mobile>
@@ -348,24 +404,7 @@ const OtpLogin = ({ navigation, route }) => {
             ></PoppinsTextLeftMedium>
           </TouchableOpacity>
         </View>
-        {/* <View style={{ marginHorizontal: 20, marginRight: 40 }}>
-          <ButtonNavigateArrow
-            success={success}
-            handleOperation={handleButtonPress}
-            backgroundColor={isChecked ? "black" : "#000000"}
-            style={{ color: "white", fontSize: 16 }}
-            isLoading={sendOtpIsLoading}
-            content={t("Send OTP")}
-            navigateTo="VerifyOtp"
-            navigationParams={navigationParams}
-            mobileLength={mobile}
-            needArrow={false}
-            isChecked={
-              isChecked && mobile?.length == 10 && name != "" && !hideButton
-            }
-          ></ButtonNavigateArrow>
-        </View> */}
-
+      
         {sendOtpIsLoading && (
           <FastImage
             style={{
@@ -384,44 +423,20 @@ const OtpLogin = ({ navigation, route }) => {
       </View>
       
           
-            {/* <ButtonNavigate
-              handleOperation={() => {
-                navigation.navigate("BasicInfo", {
-                  needsApproval: needsApproval,
-                  userType: user_type,
-                  userId: user_type_id,
-                  name: name,
-                  mobile: mobile,
-                  registrationRequired:registrationRequired,
-                  navigatingFrom: "OtpLogin",
-                });
-              }}
-              backgroundColor="#353535"
-              style={{ color: "white", fontSize: 16 }}
-              content="Register"
-              navigateTo="BasicInfo"
-              properties={{
-                needsApproval: needsApproval,
-                userType: user_type,
-                userId: user_type_id,
-                name: name,
-                mobile: mobile,
-                navigatingFrom: "OtpLogin",
-              }}
-            ></ButtonNavigate> */}
+           
 
             {
               <TouchableOpacity onPress={()=>{
                 handleNavigation()
               }} style={{alignItems:'center', justifyContent:'center', height:50,width:'86%',backgroundColor:"black",borderRadius:4}}>
-                <PoppinsTextLeftMedium style={{color:'white', fontSize:20}} content ="Send OTP"></PoppinsTextLeftMedium>
+                <PoppinsTextLeftMedium style={{color:'white', fontSize:20}} content ="Proceed"></PoppinsTextLeftMedium>
               </TouchableOpacity>
             }
 
        
-        
     </ScrollView>
-    <SocialBottomBar />
+          <SocialBottomBar />
+    </View>
     </KeyboardAvoidingView>
   );
 };
