@@ -78,6 +78,7 @@ const DropDownWithSearch = (props) => {
         borderWidth: 1,
         borderColor: "#DDDDDD",
         borderRadius: 7,
+        ...props?.style
       }}
     >
       {/* <View style={{width:'100%',alignItems:'flex-start',justifyContent:'center'}}>
@@ -132,7 +133,9 @@ const DropDownWithSearch = (props) => {
               width: "100%",
             }}
           >
-            <TextInput
+            {props?.isSearchable != "false"  &&
+            
+              <TextInput
               style={{
                 backgroundColor: "white",
                 width: "100%",
@@ -145,7 +148,8 @@ const DropDownWithSearch = (props) => {
               }}
               placeholderTextColor="grey"
               placeholder="Search"
-            ></TextInput>
+            ></TextInput>}
+          
             {data &&
               data.map((item, index) => {
                 return (

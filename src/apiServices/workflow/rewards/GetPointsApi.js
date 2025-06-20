@@ -114,8 +114,25 @@ export const GetForms = baseApi.injectEndpoints({
         };
       },
     }),
+
+        salesPointsDashboard: builder.mutation({
+      query: params => {
+        console.log('salesPointsDashboard', params);
+        return {
+          method: 'get',
+          url: `/api/app/employee/stats`,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + params.token,
+            slug: slug,
+          },
+        };
+      },
+    }),
+
+
   }),
   
 });
 
-export const {useAllUserPointsEntryMutation,useCheckUserPointMutation,useFetchUserPointsHistoryMutation,useFetchUserPointsMutation,useUserPointsEntryMutation,useCashPerPointMutation,usePreviousTransactionsMutation,useOrderHistoryDetailsMutation} = GetForms;
+export const {useAllUserPointsEntryMutation,useCheckUserPointMutation,useFetchUserPointsHistoryMutation,useFetchUserPointsMutation,useUserPointsEntryMutation,useCashPerPointMutation,usePreviousTransactionsMutation,useOrderHistoryDetailsMutation, useSalesPointsDashboardMutation} = GetForms;
