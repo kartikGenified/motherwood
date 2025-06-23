@@ -63,7 +63,7 @@ const fetchPoints = async () => {
           alignItems: "center",
           marginTop:20,
           height:110, 
-          width:86,
+          width:'25%',
           borderRightWidth:0.4,
           borderRightColor:'red',
           padding:4
@@ -160,19 +160,8 @@ const fetchPoints = async () => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{width:'100%',}}>
-        <ScrollView
-          horizontal={true}
-          style={{}}
-          contentContainerStyle={
-            {
-              flexDirection:'row',
-              justifyContent:'center',
-              marginBottom: 10,
-          }
-          }
-
-        >
+      <View style={{width:'100%',flexDirection:'row'}}>
+        
           <IconBox
             image={require("../../../assets/images/hand_coin_white.png")}
             points={isNaN(Math.floor(userPointData?.body.point_earned)) ? '0' : Math.floor(userPointData?.body.point_earned)}
@@ -193,7 +182,6 @@ const fetchPoints = async () => {
             points={isNaN(Math.floor(userPointData?.body?.point_redeemed)) ? '0' : Math.floor(userPointData?.body?.point_redeemed)}
             title={"Redeemed Points"}
           ></IconBox>
-        </ScrollView>
       </View>
     </LinearGradient>
   );

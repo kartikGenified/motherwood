@@ -236,7 +236,7 @@ const DreamCard = () => {
                 <View style={{ width: "50%", justifyContent: "center" }}>
                   <Image
                     style={{
-                      height: 120,
+                      height: 100,
                       width: 140,
                       resizeMode: "contain",
                     }}
@@ -246,7 +246,7 @@ const DreamCard = () => {
                 <View style={{ width: "50%", alignItems: "center" }}>
                   <Image
                     style={{
-                      height: 40,
+                      height: 30,
                       width: "80%",
                       resizeMode: "contain",
                     }}
@@ -428,7 +428,7 @@ const DreamCard = () => {
             <TouchableOpacity style={{ position: 'absolute', right: 10, bottom: 70 }} onPress={() => {
               setModalVisible(!modalVisible)
             }}>
-              <Delete name="delete-circle" size={40} color={"#DDDDDD"} />
+              <Delete name="delete-circle" size={30} color={"#DDDDDD"} />
             </TouchableOpacity>
           </View>
         )}

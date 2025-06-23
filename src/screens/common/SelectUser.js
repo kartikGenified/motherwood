@@ -36,7 +36,7 @@ import PoppinsTextLeftMedium from "../../components/electrons/customFonts/Poppin
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import { useIsFocused } from "@react-navigation/native";
 
-const SelectUser = ({ navigation }) => {
+const SelectUser = ({ navigation,route }) => {
   const [listUsers, setListUsers] = useState();
   const [showSplash, setShowSplash] = useState(true);
   const [connected, setConnected] = useState(true);
@@ -67,7 +67,7 @@ const SelectUser = ({ navigation }) => {
   const manualApproval = useSelector((state) => state.appusers.manualApproval);
   const autoApproval = useSelector((state) => state.appusers.autoApproval);
   const apiCallStatus = useSelector((state) => state.splashApi.apiCallStatus);
-    console.log("select user screen apicall status", apiCallStatus)
+    console.log("select user screen apicall status", route.params)
   const registrationRequired = useSelector(
     (state) => state.appusers.registrationRequired
   );
@@ -120,7 +120,7 @@ const SelectUser = ({ navigation }) => {
     if (getUsersData) {
       console.log("type of users", getUsersData?.body);
       const tempUsers = getUsersData?.body.filter(
-        (item) => !hideUserFromLogin.includes(item.user_type)
+        (item) => !hideUserFromLogin.includes((item.user_type).toLowerCase())
       );
       console.log(
         "new user data array after removing NON REQUIRED users",
@@ -141,41 +141,31 @@ const SelectUser = ({ navigation }) => {
     }
   }, [getUsersData, getUsersError]);
 
-  useEffect(() => {
-    if (isSingleUser && users) {
-      console.log(
-        "IS SINGLE USER",
-        manualApproval,
-        autoApproval,
-        registrationRequired,
-        users
-      );
+  // useEffect(() => {
+  //   if (isSingleUser && users) {
+  //     console.log(
+  //       "IS SINGLE USER",
+  //       manualApproval,
+  //       autoApproval,
+  //       registrationRequired,
+  //       users
+  //     );
 
-      if (registrationRequired.includes(users[0]?.name)) {
-        setNeedsApproval(true);
-        console.log("registration required");
-        setTimeout(() => {
-          navigation.navigate("OtpLogin", {
-            needsApproval: true,
-            userType: users[0]?.name,
-            userId: users[0]?.user_type_id,
-            registrationRequired: registrationRequired,
-          });
-        }, 1000);
-      } else {
-        setNeedsApproval(false);
-        console.log("registration not required");
-        setTimeout(() => {
-          navigation.navigate("OtpLogin", {
-            needsApproval: false,
-            userType: users[0]?.name,
-            userId: users[0]?.user_type_id,
-            registrationRequired: registrationRequired,
-          });
-        }, 1000);
-      }
-    }
-  }, [isSingleUser, users]);
+  //     if (registrationRequired.includes(users[0]?.name)) {
+  //       setNeedsApproval(true);
+  //       console.log("registration required");
+  //       setTimeout(() => {
+  //         navigation.navigate("VerifyOtp", route.params);
+  //       }, 1000);
+  //     } else {
+  //       setNeedsApproval(false);
+  //       console.log("registration not required");
+  //       setTimeout(() => {
+  //         navigation.navigate("VerifyOtp", route.params);
+  //       }, 1000);
+  //     }
+  //   }
+  // }, [isSingleUser, users]);
 
   const getData = async () => {
     try {
@@ -278,6 +268,7 @@ const SelectUser = ({ navigation }) => {
                       manualApproval={manualApproval}
                       registrationRequired={registrationRequired}
                       key={index}
+                      mobile={route.params.mobile}
                       color={ternaryThemeColor}
                       image={item.user_type_logo}
                       content={item.user_type}

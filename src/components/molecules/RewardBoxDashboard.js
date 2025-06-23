@@ -64,7 +64,7 @@ const RewardBoxDashboard = () => {
                 />
             }
 
-            <View style={{width:'100%',flexDirection:'row'}}>
+            <View style={{width:'100%',flexDirection:'row',alignItems:"center",justifyContent:'center'}}>
                 {
                     workflow?.includes("Static Coupon") && <RewardRectangular color="#FFE2E6" image={require('../../../assets/images/voucher.png')} title="My Coupons"></RewardRectangular>
                 }

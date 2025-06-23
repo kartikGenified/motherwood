@@ -88,7 +88,7 @@ const CampaignVideoModal = ({ dontShow,isVisible, onClose }) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
                     {getAppCampaignData &&
-                        <Image style={{ width: '100%', height: '100%', resizeMode: "cover" }} source={{ uri: BaseUrlImages + getAppCampaignData?.body?.data?.[0]?.image }}></Image>
+                        <Image style={{ width: '100%', height: '100%', resizeMode: "contain" }} source={{ uri: BaseUrlImages + getAppCampaignData?.body?.data?.[0]?.image }}></Image>
                     }
 
 

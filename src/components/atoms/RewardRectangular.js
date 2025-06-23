@@ -11,7 +11,7 @@ const RewardRectangular = (props) => {
     const imageWidth = title ==="Cashback" ? 30:20
 
     return (
-        <View style={{width:110,borderRadius:8,alignItems:"center",justifyContent:"center",backgroundColor:color,margin:4, flexDirection:'row',padding:4,height:70}}>
+        <View style={{width:'31%',borderRadius:8,alignItems:"center",justifyContent:"center",backgroundColor:color,margin:4, flexDirection:'row',padding:4,height:70}}>
             <Image style={{height:imageHeight,width:'25%',resizeMode:"contain",margin:2}} source={image}></Image>
             <View style={{marginLeft:4,alignItems:'center',justifyContent:'center',width:'70%'}}>
             <PoppinsTextMedium content ={amount} style={{fontSize:12,color:'black',fontWeight:'700'}}></PoppinsTextMedium>

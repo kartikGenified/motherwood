@@ -24,6 +24,8 @@ export const appUserDataSlice = createSlice({
       state.name = action.payload
   },
     setUserData:(state, action)=>{
+
+      
       state.userData = action.payload
     },
     setId: (state, action) => {

@@ -24,7 +24,6 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
 
       console.log("socials", socials, website)
   return (
-    <KeyboardAvoidingView style={{width: "100%",position: showRelative == true ? "relative" : "absolute",bottom: 0,}}>
     <View
       style={{
         
@@ -182,7 +181,6 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
         ></View>
       </TouchableOpacity>
     </View>
-    </KeyboardAvoidingView>
   );
 };
 

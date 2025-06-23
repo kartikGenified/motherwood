@@ -36,7 +36,7 @@ console.log("asdhgasghfdghfsaghfcghvasghcghvsaghvchjvasghvchjs",placeHolder)
     <View
       style={{
         height: 50,
-        width: "86%",
+        width: "90%",
         borderWidth: 0.6,
         borderColor: "#DDDDDD",
         alignItems: "center",
@@ -61,6 +61,7 @@ console.log("asdhgasghfdghfsaghfcghvasghcghvsaghvchjvasghvchjs",placeHolder)
         ></PoppinsTextMedium>
       </View>
       <TextInput
+      maxLength={props.maxLength}
         editable={props.editable}
         onEndEditing={(text) => {
           handleInputEnd();

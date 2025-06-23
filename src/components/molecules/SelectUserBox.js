@@ -21,12 +21,13 @@ const SelectUserBox = (props) => {
     // console.log(image)
     const color = props.color
     const otpLogin = props.otpLogin
+    const mobile= props.mobile
     const dispatch = useDispatch()
     // const passwordLogin = props.passwordLogin
     // const autoApproval = props.autoApproval
     const manualApproval = props.manualApproval
     const registrationRequired = props.registrationRequired
-    console.log(props.content, registrationRequired)
+    console.log("Select user props",props)
 
     useEffect(()=>{
         setBoxColor("white")
@@ -75,16 +76,16 @@ const SelectUserBox = (props) => {
 
     const handleNavigation=(needsApproval,registrationRequired)=>{
 
-        
+        props.navigation.navigate("BasicInfo",{ needsApproval: needsApproval, userType: props.content, userId: props.id,navigatingFrom:"OtpLogin", mobile:mobile })
         console.log("Needs Approval",needsApproval)
-        if(otpLogin.includes(props.content)
-        ){
-            props.navigation.navigate('OtpLogin',{needsApproval:needsApproval, userType:props.content, userId:props.id,registrationRequired:registrationRequired})
-        }
-        else{
-            props.navigation.navigate('PasswordLogin',{needsApproval:needsApproval, userType:props.content, userId:props.id,registrationRequired:registrationRequired})
-        console.log("Password Login",props.content,props.id,registrationRequired,needsApproval)
-        }
+        // if(otpLogin.includes(props.content)
+        // ){
+        //     props.navigation.navigate('VerifyOtp',{needsApproval:needsApproval, userType:props.content, userId:props.id,registrationRequired:registrationRequired})
+        // }
+        // else{
+        //     props.navigation.navigate('VerifyOtp',{needsApproval:needsApproval, userType:props.content, userId:props.id,registrationRequired:registrationRequired})
+        // console.log("Password Login",props.content,props.id,registrationRequired,needsApproval)
+        // }
 
     }
 

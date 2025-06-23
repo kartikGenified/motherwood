@@ -109,7 +109,7 @@ const PrefilledTextInput = (props) => {
     }
 
     return (
-        <View style={{height:60,width:'86%',borderWidth:0.6,borderColor:'#DDDDDD',alignItems:"center",justifyContent:"center",backgroundColor:'white',margin:10}}>
+        <View style={{height:60,width:'100%',borderWidth:0.6,borderColor:'#DDDDDD',alignItems:"center",justifyContent:"center",backgroundColor:'white',marginBottom:10,marginTop:10}}>
             <View style={{alignItems:"center",justifyContent:'center',backgroundColor:'white',position:"absolute",top:-15,left:16}}>
                 <PoppinsTextMedium style={{color:"#919191",padding:4,fontSize:18}} content = {t(displayText)}></PoppinsTextMedium>
             </View>

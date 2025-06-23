@@ -158,7 +158,7 @@ const Setting = ({navigation}) => {
                 await AsyncStorage.removeItem("storedBanner");
                 await AsyncStorage.removeItem("userMpin");
           
-                navigation.reset({ index: "0", routes: [{ name: "SelectUser" }] });
+                navigation.reset({ index: "0", routes: [{ name: "OtpLogin" }] });
               } catch (e) {
                 console.log("error deleting loginData", e);
               }

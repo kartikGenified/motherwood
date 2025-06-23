@@ -19,9 +19,12 @@ import PoppinsTextLeftMedium from "../../components/electrons/customFonts/Poppin
 import FastImage from "react-native-fast-image";
 import DataNotFound from "../data not found/DataNotFound";
 import { useTranslation } from "react-i18next";
+import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 
 // create a component
 const Events = ({navigation}) => {
+  const [selected, setSelected] = useState("current")
+  const [data, setData] = useState()
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );
@@ -42,14 +45,40 @@ useEffect(()=>{
     fetchMediaData()
 },[])
 useEffect(() => {
-    if (getMediaData) {
-        console.log("getMediaData", getMediaData);
-    }
-    else {
-        console.log("getMediaError", getMediaError)
-    }
+  if (getMediaData) {
+    const now = new Date().getTime();
+    console.log("getMediaData", getMediaData);
 
-}, [getMediaData, getMediaError])
+    const filteredData = getMediaData?.body.filter((item) => {
+      const startDate = item.start_date ? new Date(item.start_date).getTime() : null;
+      const endDate = item.end_date ? new Date(item.end_date).getTime() : null;
+
+      if (selected === "current") {
+        // Only show if both dates exist and now is between them
+        return startDate !== null && endDate !== null &&
+               startDate <= now && endDate >= now;
+      } else {
+        // Show if start_date is in future OR both dates are null/undefined
+        return (startDate !== null && startDate > now) ||
+               (startDate === null && endDate === null);
+      }
+    });
+
+    // Optional: sort by start_date (nulls go last)
+    const sortedData = filteredData.sort((a, b) => {
+      const aTime = a.start_date ? new Date(a.start_date).getTime() : Infinity;
+      const bTime = b.start_date ? new Date(b.start_date).getTime() : Infinity;
+      return aTime - bTime;
+    });
+
+    setData(sortedData);
+  } else {
+    console.log("getMediaError", getMediaError);
+  }
+}, [getMediaData, getMediaError, selected]);
+
+
+console.log("selected events selected", data, selected)
 
 const fetchMediaData = async () => {
     const credentials = await Keychain.getGenericPassword();
@@ -65,27 +94,29 @@ const fetchMediaData = async () => {
     const image = props.data.images[0]
     const desc = props.data.description
     const title = props.data.title
-    const width = Dimensions.get('window').width
 
     console.log("event comp ", props.data, image)
     return (
       <View
         style={{
-          height: 220,
-          width: width-24,
+          height: 160,
           alignItems: "center",
           justifyContent: "center",
           borderRadius:26,
-          margin:20,
           borderWidth:0.8,
-          borderColor:'#DDDDDD'
-
+          borderColor:'#DDDDDD',
+          width:Dimensions.get('window').width-40,
+          marginBottom:10,
+          marginTop:10
         }}
       >
+        <View style={{borderTopLeftRadius:26,borderTopRightRadius:26, height: '69%', width: '100%'}}>
         <Image
-          style={{ height: 150, width: 220, resizeMode: 'stretch' }}
+          style={{height:'100%', width:'100%', resizeMode: 'stretch' }}
           source={{uri:image}}
         ></Image>
+        </View>
+        
 
         <View style={{height:2,width:'100%',backgroundColor:'white'}}></View>
         <View style={{alignItems:'center', justifyContent:'flex-start',height:'30%',width:'100%',backgroundColor:ternaryThemeColor,flexDirection:'row',borderBottomRightRadius:25,borderBottomLeftRadius:25}}>
@@ -95,18 +126,18 @@ const fetchMediaData = async () => {
         </TouchableOpacity> */}
         
         </View>
-        <View style={{alignItems:'center', justifyContent:'center',position:'absolute',top:0,left:18 ,backgroundColor:'white',height:30,width:100,borderBottomLeftRadius:30,borderBottomRightRadius:30 }}>
-        <PoppinsTextLeftMedium style={{ color: 'black', fontWeight: '600',width:'60%',fontSize:9 }} content={`${desc}`}></PoppinsTextLeftMedium>
+        <View style={{alignItems:'center', justifyContent:'center',backgroundColor:'white',height:30,width:90,borderBottomLeftRadius:30,borderBottomRightRadius:30,position:'absolute', top:0, left:18 }}>
+        <PoppinsTextLeftMedium style={{ color: 'black', fontWeight: '700',fontSize:9 }} content={`${desc}`}></PoppinsTextLeftMedium>
         </View>
       </View>
     );
   };
 
   return (
-    <View>
+    <View style={{width:'100%',height:'100%'}}>
       <View
         style={{
-          height: 70,
+          height: '10%',
           width: "100%",
           backgroundColor: secondaryThemeColor,
           alignItems: "flex-start",
@@ -144,18 +175,32 @@ const fetchMediaData = async () => {
           content={t("Events")}
         ></PoppinsTextMedium>
       </View>
+      <View style={{width:'100%',alignItems:'center', justifyContent:'center',flexDirection:"row",height:'10%'}}>
+          <TouchableOpacity onPress={()=>{
+            setSelected("current")
+          }} style={{width:'49%',alignItems:'center', justifyContent:'center',height:40,borderBottomWidth:selected == "current" ? 2 : 0, borderColor:selected == "current" ? ternaryThemeColor : ""}}>
+            <PoppinsTextLeftMedium content="Events" style={{color:"black",fontSize:16, fontWeight:'600'}}></PoppinsTextLeftMedium>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>{
+            setSelected("upcoming")
+          }} style={{width:'49%',alignItems:'center', justifyContent:'center',height:40,borderBottomWidth:selected == "upcoming" ? 2 : 0, borderColor:selected == "upcoming" ? ternaryThemeColor : ""}}>
+            <PoppinsTextLeftMedium content="Upcoming Events" style={{color:"black",fontSize:16, fontWeight:'600'}}></PoppinsTextLeftMedium>
+          </TouchableOpacity>
+      </View>
 
-      {getMediaData && <FlatList
+        <View style={{width:'100%',marginTop:0}}>
+      {data && <FlatList
               initialNumToRender={20}
-              contentContainerStyle={{alignItems:"center",justifyContent:"center"}}
-              style={{width:'100%',}}
-                data={getMediaData?.body}
+              contentContainerStyle={{alignItems:'center', justifyContent:'center'}}
+              style={{width:'100%',height:'70%'}}
+                data={data}
                 renderItem={({ item, index }) => (
                  <EventComp data = {item}></EventComp>
                 )}
                 keyExtractor={(item,index) => index}
               />}
-      
+      </View>
+      {data && <SocialBottomBar showRelative={true}></SocialBottomBar>}
     </View>
   );
 };

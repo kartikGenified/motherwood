@@ -72,7 +72,7 @@ Keyboard.addListener('keyboardDidHide',()=>{
     }
 
     return (
-        <View style={{height:60,width:'86%',borderWidth:0.6,borderColor:'#DDDDDD',alignItems:"center",justifyContent:"center",backgroundColor:'white',margin:10}}>
+        <View style={{height:60,width:'90%',borderWidth:0.6,borderColor:'#DDDDDD',alignItems:"center",justifyContent:"center",backgroundColor:'white',margin:10}}>
             <Modal
         animationType="slide"
         transparent={true}
@@ -83,7 +83,7 @@ Keyboard.addListener('keyboardDidHide',()=>{
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Pan Verified Succesfully</Text>
+            <Text style={styles.modalText}>Gstin Verified Succesfully</Text>
             <ZoomImageAnimation style={{marginBottom:20}} zoom={100} duration={1000}  image={require('../../../../assets/images/greenTick.png')}></ZoomImageAnimation>
 
             <Pressable

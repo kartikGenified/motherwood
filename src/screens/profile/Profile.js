@@ -39,7 +39,7 @@ const Profile = ({ navigation }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const options = ["Basic Details", "Address"];
   const kycData = useSelector((state) => state.kycDataSlice.kycData);
-  const addressArr = ["city", "state", "district", "pincode","deliveryAddress","deliveryPincode","deliveryState","deliveryCity","deliveryaddress","deliverypincode","deliverystate","deliverycity","sameAddress", "sameaddress"]
+  const addressArr = ["city", "state", "district", "pincode","deliveryAddress","deliveryPincode","deliveryState","deliveryCity","deliveryaddress","deliverypincode","deliverystate","deliverycity","sameAddress", "sameaddress","address1"]
   const { t } = useTranslation();
 
   const ternaryThemeColor = useSelector(

@@ -557,20 +557,9 @@ useEffect(()=>{
     setModalWithBorder(false);
     setMessage("");
     console.log("firmodalWithBorderClosenavigationparams", navigationParams)
-    if(navigationParams?.isExisting)
-    {
+    
       navigation.reset({ index: "0", routes: [{ name: "Dashboard" }] });
-    }
-    else{
-     
-        navigation.reset({ index: "0", routes: [{
-          name: "BasicInfo",
-          params: navigationParams, // your JSON object
-        },] });
-      
-      
-
-    }
+    
   };
 
   const ModalContent = () => {

@@ -32,6 +32,7 @@ import {
 import ErrorModal from "../../components/modals/ErrorModal";
 import { useFetchGiftsRedemptionsOfUserMutation } from "../../apiServices/workflow/RedemptionApi";
 import { useGetkycStatusMutation } from "../../apiServices/kyc/KycStatusApi";
+import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 
 const CashbackHistory = ({ navigation }) => {
   const [showNoDataFound, setShowNoDataFound] = useState(false);

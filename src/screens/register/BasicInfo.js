@@ -70,7 +70,7 @@ import SuccessConfettiModal from "../../components/modals/SuccessConfettiModal";
 
 const BasicInfo = ({ navigation, route }) => {
   const [userName, setUserName] = useState();
-  const [userMobile, setUserMobile] = useState(route.params.mobile);
+  const [userMobile, setUserMobile] = useState();
   const [message, setMessage] = useState();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
@@ -86,7 +86,7 @@ const BasicInfo = ({ navigation, route }) => {
   const [otpVerified, setOtpVerified] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [otpModal, setOtpModal] = useState(false);
-  const [otpVisible, setOtpVisible] = useState(false);
+  const [otpVisible, setOtpVisible] = useState(true);
   const [isValid, setIsValid] = useState(true);
   const [hideButton, setHideButton] = useState(false);
   const [timer, setTimer] = useState(0);
@@ -135,8 +135,8 @@ const BasicInfo = ({ navigation, route }) => {
   const appUsers = useSelector((state) => state.appusers.value);
   const manualApproval = useSelector((state) => state.appusers.manualApproval);
   const appVersion = useSelector((state) => state.appusers.app_version);
-  const userType = route.params.user_type;
-  const userTypeId = route.params.user_type_id;
+  const userType = route.params.userType;
+  const userTypeId = route.params.userId;
   const needsApproval = route.params.needsApproval;
   const navigatingFrom = route.params.navigatingFrom;
   const registrationRequired = route.params.registrationRequired;
@@ -652,27 +652,33 @@ const BasicInfo = ({ navigation, route }) => {
   }, [sendOtpData, sendOtpError]);
 
   const handleTimer = () => {
-    if (userName.length != 0) {
-      if (userMobile) {
-        if (userMobile.length == 10) {
-          if (timer === 60) {
-            getOTPfunc();
-            setOtpVisible(true);
-          }
-          if (timer === 0 || timer === -1) {
-            setTimer(60);
-            getOTPfunc();
-            setOtpVisible(true);
+    if(userName)
+    {
+      if (userName.length != 0) {
+        if (userMobile) {
+          if (userMobile.length == 10) {
+            if (timer === 60) {
+              getOTPfunc();
+              setOtpVisible(true);
+            }
+            if (timer === 0 || timer === -1) {
+              setTimer(60);
+              getOTPfunc();
+              setOtpVisible(true);
+            }
+          } else {
+            setError(true);
+            setMessage(t("Mobile number length must be 10"));
           }
         } else {
           setError(true);
-          setMessage(t("Mobile number length must be 10"));
+          setMessage(t("Kindly enter mobile number"));
         }
-      } else {
-        setError(true);
-        setMessage(t("Kindly enter mobile number"));
-      }
-    } else {
+      } 
+    }
+    
+    
+    else {
       alert("Name could not be empty");
     }
   };
@@ -1324,7 +1330,7 @@ const BasicInfo = ({ navigation, route }) => {
                     return (
                       <>
                         <View style={{ flexDirection: "row", flex: 1 }}>
-                          <View style={{ flex: 0.75 }}>
+                          <View style={{ flex: 0.8 }}>
                             <TextInputNumericRectangle
                               jsonData={item}
                               key={index}
@@ -1488,6 +1494,7 @@ const BasicInfo = ({ navigation, route }) => {
                     );
                   } else if (item.name.trim().toLowerCase() === "name") {
                     return (
+                      <View style={{width:'90%',alignItems:'center',justifyContent:'center'}}>
                       <PrefilledTextInput
                         jsonData={item}
                         key={index}
@@ -1498,6 +1505,7 @@ const BasicInfo = ({ navigation, route }) => {
                         label={item.label}
                         isEditable={true}
                       ></PrefilledTextInput>
+                      </View>
                     );
                   } else if (item.name.trim().toLowerCase() === "email") {
                     return (
@@ -1562,6 +1570,7 @@ const BasicInfo = ({ navigation, route }) => {
                     );
                   } else if (item.name.trim().toLowerCase() === "city") {
                     return (
+                      <View style={{width:'90%',alignItems:'center',justifyContent:'center'}}>
                       <PrefilledTextInput
                         jsonData={item}
                         key={index}
@@ -1572,9 +1581,11 @@ const BasicInfo = ({ navigation, route }) => {
                         label={item.label}
                         isEditable={true}
                       ></PrefilledTextInput>
+                      </View>
                     );
                   } else if (item.name.trim().toLowerCase() === "pincode") {
                     return (
+                      <View style={{width:'90%',alignItems:'center',justifyContent:'center'}}>
                       <PincodeTextInput
                         jsonData={item}
                         key={index}
@@ -1586,6 +1597,7 @@ const BasicInfo = ({ navigation, route }) => {
                         displayText={item.name}
                         maxLength={6}
                       ></PincodeTextInput>
+                      </View>
                     );
                   }
 
@@ -1606,6 +1618,7 @@ const BasicInfo = ({ navigation, route }) => {
                   // }
                   else if (item.name.trim().toLowerCase() === "state") {
                     return (
+                      <View style={{width:'90%',alignItems:'center',justifyContent:'center'}}>
                       <PrefilledTextInput
                         jsonData={item}
                         key={index}
@@ -1616,6 +1629,7 @@ const BasicInfo = ({ navigation, route }) => {
                         displayText={item.name}
                         isEditable={false}
                       ></PrefilledTextInput>
+                      </View>
                     );
                   } else if (item.name.trim().toLowerCase() === "district") {
                     return (
@@ -1739,6 +1753,7 @@ const BasicInfo = ({ navigation, route }) => {
                               placeHolder={item.name}
                               label={item.label}
                               value={userMobile}
+                              maxLength={10}
                             >
                               {" "}
                             </TextInputRectangle>
@@ -1827,7 +1842,7 @@ const BasicInfo = ({ navigation, route }) => {
                 handleRegistrationFormSubmission();
               }}
               backgroundColor="black"
-              content={t("Well Done! One more Step")}
+              content={t("Great! It's the final Step")}
               style={{
                 paddingLeft: 30,
                 paddingRight: 30,

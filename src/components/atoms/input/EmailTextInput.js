@@ -94,7 +94,7 @@ const EmailTextInput = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "86%",
+    width: "90%",
     alignItems: "center",
     justifyContent: "center",
   },

@@ -126,12 +126,15 @@ const DashboardMenuBox = (props) => {
       navigation.navigate("CommingSoon");
 
     } 
-    else if (data.toLowerCase() === "events") {
-      navigation.navigate("CommingSoon");
+    // else if (data.toLowerCase() === "events") {
+    //   navigation.navigate("CommingSoon");
 
-    } 
+    // } 
     else if (data.toLowerCase() === "points transfer") {
       navigation.navigate("PointsTransfer");
+    }
+    else if (data.toLowerCase() === "events") {
+      navigation.navigate("Events");
     }
     else if (
       data.toLowerCase() === "media gallary" ||

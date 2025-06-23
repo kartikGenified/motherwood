@@ -67,6 +67,7 @@ const EditProfile = ({ navigation, route }) => {
     "sameaddress",
     "sameAddress",
     "address",
+    "address1"
   ];
   const options = ["Basic Details", "Address"];
 

@@ -279,7 +279,7 @@ const Dashboard = ({ navigation }) => {
 
   useEffect(() => {
     const handleBackPress = () => {
-      navigation.goBack(); // Navigate back when back button is pressed
+      // Navigate back when back button is pressed
       return true; // Prevent default back press behavior
     };
     const backHandler = BackHandler.addEventListener(
@@ -857,7 +857,7 @@ const Dashboard = ({ navigation }) => {
               >
                 <Image
                   style={{
-                    width: "90%",
+                    width: "96%",
                     alignSelf: "center",
                     resizeMode: "contain",
                     height: 120,
@@ -898,7 +898,7 @@ const Dashboard = ({ navigation }) => {
                 justifyContent: "space-evenly",
                 bottom: 30,
                 paddingBottom: 40,
-                marginTop: 100,
+                marginTop: 10,
               }}
             >
               <DashboardSupportBox
