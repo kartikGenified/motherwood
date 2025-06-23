@@ -475,7 +475,7 @@ useEffect(()=>{
 
   useEffect(() => {
     if (getBannerData) {
-      // console.log("getBannerData", getBannerData?.body)
+      console.log("getBannerData", getBannerData?.body)
       getBannerCachedDispatch(dispatch, getBannerData);
       storeData("getBannerData", getBannerData);
       console.log("parsedJsonValue", parsedJsonValue);
@@ -718,7 +718,7 @@ useEffect(()=>{
       is_approved_needed,
       app_version
     );
-    if (navigationParams.isExisting == true) {
+    
       verifyLoginOtpFunc({
         mobile,
         name,
@@ -729,17 +729,7 @@ useEffect(()=>{
         fcm_token,
         currentVersion,
       });
-    } else {
-      const params = {
-        mobile: mobile,
-        name: name,
-        otp: otp,
-        user_type_id: user_type_id,
-        user_type: user_type,
-        type:'registration'
-      };
-      sendOtpFuncReg(params);
-    }
+    
   };
 
   const saveToken = async (data) => {
