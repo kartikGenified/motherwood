@@ -147,6 +147,9 @@ const DashboardMenuBox = (props) => {
     else if(data.toLowerCase()== "user management"){
         navigation.navigate("UserManagement")
     }
+        else if(data.toLowerCase()== "points distribution"){
+        navigation.navigate("PointsDistribution")
+    }
   };
 
   return (

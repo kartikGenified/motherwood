@@ -17,7 +17,22 @@ export const recievedOrderApi = baseApi.injectEndpoints({
         };
       },
     }),
+
+      getRetailerHistoryFromSales: builder.mutation({
+      query(data) {
+        console.log("getOrderDetailsByType", data);
+        return {
+          url: `/api/tenant/orders/ordersByType?user_id=${data.id}&type=received_point`,
+          method: "get",
+          headers: {
+            slug: slug,
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + data.token,
+          },
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetOrderDetailsByTypeMutation } = recievedOrderApi;
+export const { useGetOrderDetailsByTypeMutation, useGetRetailerHistoryFromSalesMutation } = recievedOrderApi;
