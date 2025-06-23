@@ -111,6 +111,7 @@ import Setting from "../screens/settingsPage/Setting";
 import ComingSoonScreen from "../screens/comingsoon/ComingSoonScreen";
 import UserManagement from "../screens/userManagement/UserManagement";
 import UserManagementDetails from "../screens/userManagement/UserManagementDetails";
+import PointsDistribution from "../screens/pointsDistribution/PointsDistribution";
 
 const Stack = createNativeStackNavigator();
 
@@ -899,6 +900,14 @@ const StackNavigator = () => {
           }}
           name="UserManagementDetails"
           component={UserManagementDetails}
+        ></Stack.Screen>
+
+                  <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="PointsDistribution"
+          component={PointsDistribution}
         ></Stack.Screen>
           <Stack.Screen
           options={{
