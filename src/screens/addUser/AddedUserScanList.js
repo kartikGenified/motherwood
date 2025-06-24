@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import TopHeader from "../../components/topBar/TopHeader";
 import { useGetOrderDetailsByTypeMutation, useGetRetailerHistoryFromSalesMutation } from "../../apiServices/order/orderApi";
 
-const AddedUserScanList = ({ navigation }) => {
+const AddedUserScanList = ({ navigation,route }) => {
   const [displayList, setDisplayList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const points = 100;
@@ -43,7 +43,8 @@ const AddedUserScanList = ({ navigation }) => {
   );
   const userData = useSelector((state) => state.appusersdata.userData);
   const userId = useSelector((state) => state.appusersdata.id);
-
+  const routeData = route.params.data
+  console.log("user data is about to be printed", routeData.id)
   const [
     getPointSharingFunc,
     {
@@ -105,7 +106,7 @@ const AddedUserScanList = ({ navigation }) => {
       //   const endDate = dayjs(end).format("YYYY-MM-DD")
       const data = {
         token:token,
-        id:"14"
+        id:String(routeData?.id)
       }
 
       getOrderDetailsByTypeFunc(data);
@@ -126,7 +127,7 @@ const AddedUserScanList = ({ navigation }) => {
       //   const endDate = dayjs(end).format("YYYY-MM-DD")
       const data = {
         token:token,
-        id:"14"
+        id:String(routeData?.id)
       }
 
       getOrderDetailsByTypeFunc(data);
@@ -588,7 +589,7 @@ const AddedUserScanList = ({ navigation }) => {
      
         <View style={{width:'80%', alignItems:'flex-start' ,justifyContent:'flex-start'}}>
         <PoppinsTextLeftMedium
-          style={{ fontWeight: "800", fontSize: 13, color: "black" }}
+          style={{ fontWeight: "800", fontSize: 12, color: "black" }}
           content={`${t("Order No")} : ${orderNumber}`}
         ></PoppinsTextLeftMedium>
         <View style={{flexDirection :'row', marginTop:3}}>
@@ -609,9 +610,9 @@ const AddedUserScanList = ({ navigation }) => {
         </View>
         
       <View style={{width:'20%',flexDirection:'row', alignItems:'center', justifyContent:'center', height:'100%',}}>
-        <Image style={{height:25,width:25,resizeMode:'contain', marginRight:10}} source={require('../../../assets/images/coin.png')}></Image>
+        <Image style={{height:25,width:25,resizeMode:'contain', marginRight:4}} source={require('../../../assets/images/coin.png')}></Image>
       <PoppinsTextMedium
-        style={{ fontWeight: "700", fontSize: 15, color: "#91B406" , marginTop:3}}
+        style={{ fontWeight: "700", fontSize: 15, color: "#91B406" , marginTop:3, }}
         content={`+ ${points}`}
       ></PoppinsTextMedium>
       </View>

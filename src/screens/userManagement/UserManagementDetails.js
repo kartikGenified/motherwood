@@ -79,7 +79,9 @@ const UserManagementDetails = (params) => {
 
 
             <View style={{margin:20, justifyContent:'space-between', flexDirection:'row'}}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>{
+                  navigation.navigate("KycViewOtherUsers",{data:route})
+                }}>
                 <Text style={{fontSize:18, color:"#B6202D"}}>View KYC</Text>
                 </TouchableOpacity>
 

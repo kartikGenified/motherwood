@@ -16,6 +16,20 @@ export const KycStatusApi = baseApi.injectEndpoints({
     };
     },
     }),
+    getkycStatusOfOtherUserByUserId: builder.mutation({
+      query: (data) => {
+        console.log("KycStatusApiqwerty getkycStatusOfOtherUserByUserId",data)
+      return {
+      method: "GET",
+      url: `api/app/kyc?user=${data.userId}`,
+      headers: {
+      Authorization: "Bearer " + data.token,
+      slug: slug,
+      },
+      };
+      },
+      }),
+      
     updateKycStatus: builder.mutation({
         query: (params) => {
           console.log("object-00988900--->",params);
@@ -32,4 +46,4 @@ export const KycStatusApi = baseApi.injectEndpoints({
     }),
    });
    
-   export const { useGetkycStatusMutation,useUpdateKycStatusMutation} = KycStatusApi;
+   export const { useGetkycStatusMutation,useUpdateKycStatusMutation ,useGetkycStatusOfOtherUserByUserIdMutation} = KycStatusApi;

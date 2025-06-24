@@ -17,6 +17,7 @@ import BottomModal from "../../components/modals/BottomModal";
 import { useVerifyGstMutation } from "../../apiServices/verification/GstinVerificationApi";
 import {
   useGetkycStatusMutation,
+  useGetkycStatusOfOtherUserByUserIdMutation,
   useUpdateKycStatusMutation,
 } from "../../apiServices/kyc/KycStatusApi";
 import {
@@ -37,7 +38,7 @@ import { setKycData } from "../../../redux/slices/userKycStatusSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
-const KycMotherhood = ({ navigation }) => {
+const KycViewOtherUsers = ({ navigation, route}) => {
   const [modalContent, setModalContent] = useState();
   const [modal, setModal] = useState(false);
   const [kycArray, setKycArray] = useState([]);
@@ -53,6 +54,7 @@ const KycMotherhood = ({ navigation }) => {
   console.log("kycData data final", kycData);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const dataUser = route.params.data
 
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
@@ -83,7 +85,7 @@ const KycMotherhood = ({ navigation }) => {
       isLoading: getKycStatusIsLoading,
       isError: getKycStatusIsError,
     },
-  ] = useGetkycStatusMutation();
+  ] = useGetkycStatusOfOtherUserByUserIdMutation();
 
   useEffect(() => {
     const fetchOnPageActive = async () => {
@@ -96,8 +98,11 @@ const KycMotherhood = ({ navigation }) => {
           // );
           const token = credentials?.username;
           console.log("token from dashboard getKycStatusFunc ", token);
-
-          token && getKycStatusFunc(token);
+          const data = {
+            token:token,
+            userId:dataUser?.id
+          }
+          data && getKycStatusFunc(data);
         } else {
           // console.log('No credentials stored');
         }
@@ -1796,7 +1801,7 @@ const KycMotherhood = ({ navigation }) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          props.handlePress();
+        //   props.handlePress();
         }}
         style={{
           borderWidth: 1,
@@ -1971,4 +1976,4 @@ const KycMotherhood = ({ navigation }) => {
 
 const styles = StyleSheet.create({});
 
-export default KycMotherhood;
+export default KycViewOtherUsers;

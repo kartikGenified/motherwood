@@ -113,6 +113,7 @@ import UserManagement from "../screens/userManagement/UserManagement";
 import UserManagementDetails from "../screens/userManagement/UserManagementDetails";
 import PointsDistribution from "../screens/pointsDistribution/PointsDistribution";
 import Training from "../screens/training/Training";
+import KycViewOtherUsers from "../screens/verification/KycViewOtherUsers";
 
 const Stack = createNativeStackNavigator();
 
@@ -141,6 +142,13 @@ const StackNavigator = () => {
           }}
           name="Events"
           component={Events}
+        ></Stack.Screen>
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="KycViewOtherUsers"
+          component={KycViewOtherUsers}
         ></Stack.Screen>
         <Stack.Screen
           options={{

@@ -22,7 +22,7 @@ export const recievedOrderApi = baseApi.injectEndpoints({
       query(data) {
         console.log("getOrderDetailsByType", data);
         return {
-          url: `/api/tenant/orders/ordersByType?user_id=${data.id}&type=received_point`,
+          url: `/api/tenant/orders/ordersByType?userId=${data.id}&type=received_point`,
           method: "get",
           headers: {
             slug: slug,
