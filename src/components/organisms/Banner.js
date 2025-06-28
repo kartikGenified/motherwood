@@ -50,8 +50,8 @@ const Banner = (props) => {
       style={{
         alignItems:"center",justifyContent:"center"
       }}>
-      <View style={{ height: 190, width: '90%',alignItems:"center",justifyContent:"center" }}>
-        {showImage && <Image style={{ height: '100%', width: '100%',borderRadius:20,resizeMode:'contain' }} source={{ uri: showImage }} />}
+      <View style={{ height: 230, width: '90%',alignItems:"center",justifyContent:"center" }}>
+        {showImage && <Image style={{ height: 230, width: '100%',resizeMode:'contain' }} source={{ uri: showImage }} />}
         <View style={{position:"absolute",bottom:10}}>
         <DotHorizontalList no = {props.images.length} primaryColor="white" secondaryColor={ternaryThemeColor} selectedNo = {index} ></DotHorizontalList>
         </View>

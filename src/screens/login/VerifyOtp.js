@@ -303,14 +303,14 @@ useEffect(()=>{
   }, [focused, dispatch]);
 
   //modal close
-  useEffect(() => {
-    console.log("running");
-    if (openModalWithBorder == true)
-      setTimeout(() => {
-        console.log("running2");
-        modalWithBorderClose();
-      }, 2000);
-  }, [success, openModalWithBorder]);
+  // useEffect(() => {
+  //   console.log("running");
+  //   if (openModalWithBorder == true)
+  //     setTimeout(() => {
+  //       console.log("running2");
+  //       modalWithBorderClose();
+  //     }, 2000);
+  // }, [success, openModalWithBorder]);
 
   // retrieving data from api calls--------------------------
 
@@ -340,6 +340,9 @@ useEffect(()=>{
     if (sendOtpDataReg) {
       console.log("sendOtpDataReg", sendOtpDataReg);
       setModalWithBorder(true);
+      setTimeout(() => {
+        modalWithBorderClose()
+        }, 2000);
           
     } else if (sendOtpErrorReg) {
       console.log("errReg", sendOtpErrorReg);
@@ -354,6 +357,10 @@ useEffect(()=>{
       getAppmenuCachedDispatch(navigationParams, dispatch, getAppMenuData);
       storeData("getAppMenuData", getAppMenuData);
       setModalWithBorder(true);
+      setTimeout(() => {
+        modalWithBorderClose()
+      }, 2000);
+
     } else if (getAppMenuError) {
       console.log("getAppMenuError", getAppMenuError);
     }
@@ -662,9 +669,9 @@ useEffect(()=>{
         setMessage("Kindly Enter the correct OTP")
       }
     }
-    else{
-      verifyOtp();
-    }
+    // else{
+    //   verifyOtp();
+    // }
   }
   },[otp])
    
@@ -742,55 +749,44 @@ useEffect(()=>{
 
   return (
     <KeyboardAvoidingView
-    style={{ height:'100%'}}
+    style={{ height:'100%',flex:1}}
     behavior={Platform.OS === "ios" ? "padding" : undefined}
   >
-    <ScrollView contentContainerStyle={{backgroundColor:"#F0F8F6",alignItems:'center'}} style={styles.container}>
+    <ScrollView contentContainerStyle={{alignItems:'center'}} style={styles.container}>
       <View
         style={{
           width: "100%",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           backgroundColor: "#F0F8F6",
           // backgroundColor: ternaryThemeColor,
         }}
       >
         <View
           style={{
-            height: 120,
             width: "100%",
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: "flex-start",
+            justifyContent: "flex-start",
             flexDirection: "row",
           }}
+
         >
-          <TouchableOpacity
-            style={{ height: 50, alignItems: "center", justifyContent: 'center', position: "absolute", left: 10, top: 20 }}
-            onPress={() => {
-              navigation.goBack();
-            }}>
-            <Image
-              style={{ height: 20, width: 20, resizeMode: 'contain' }}
-              source={require('../../../assets/images/blackBack.png')}></Image>
-          </TouchableOpacity>
+         
           <Image
             style={{
               height: 220,
               width: 220,
               backgroundColor: "#F0F8F6",
               resizeMode: "cover",
-              top: 0,
-              left: 0,
-              position: "absolute",
+              
             }}
-            source={require("../../../assets/images/MotherWoodCircle.png")}
+            source={require("../../../assets/images/MotherWoodCircleSathi.png")}
           ></Image>
         </View>
         <View
           style={{
             alignItems: "center",
             justifyContent: "center",
-            marginTop: "26%",
             width: "90%",
           }}
         >
@@ -832,17 +828,7 @@ useEffect(()=>{
         )}
       </View>
 
-      {/* {
-        success && <SuccessConfettiModal
-        modalClose={modalWithBorderClose}
-        title="Success"
-        header="You have successfully logged in"
-        // message="For confirmation, you will receive an SMS on your registered mobile number"
-        navigateTo="Dashboard"
-        params={route.params}
-        navigation={navigation}
-        ></SuccessConfettiModal>
-      } */}
+    
 
        
         <OtpInput
@@ -899,19 +885,18 @@ useEffect(()=>{
         Verify OTP
             </Text>
         </TouchableOpacity>
-        <View style={{marginTop:110,alignItems:'center',justifyContent:'center',width:'100%'}}>
-        <SocialBottomBar showRelative={true}/>
 
-        </View>
     </ScrollView>
+    <SocialBottomBar showRelative={true}/>
+
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     width: "100%",
+    height:'90%'
   },
   semicircle: {
     position: "absolute",

@@ -11,6 +11,7 @@ import DataNotFound from '../data not found/DataNotFound';
 import { useTranslation } from 'react-i18next';
 import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium';
 import TopHeader from '../../components/topBar/TopHeader';
+import SocialBottomBar from '../../components/socialBar/SocialBottomBar';
 
 const VideoGallery = ({ navigation }) => {
   const [videoData, setVideoData] = useState([])
@@ -112,20 +113,17 @@ const VideoGallery = ({ navigation }) => {
         alignItems: 'center',
         justifyContent: 'flex-start',
         width: '100%',
-        backgroundColor: ternaryThemeColor,
+        backgroundColor: "white",
         height: '100%',
       }}>
       <TopHeader title={"Corporate Film"}></TopHeader>
-      <ScrollView contentContainerStyle={{height:'100%'}} style={{ width: '100%', height: '100%' }}>
-
-
+      <ScrollView contentContainerStyle={{}} style={{ width: '100%',minHeight:'80%'}}>
         <View
           style={{
             // borderTopRightRadius: 30,
             // borderTopLeftRadius: 30,
             backgroundColor: 'white',
             // minHeight: 650,
-            flex:1,
             flexDirection: "row",
             flexWrap: 'wrap',
             justifyContent:'center'
@@ -163,6 +161,9 @@ const VideoGallery = ({ navigation }) => {
 
         </View>
       </ScrollView>
+      <View style={{height:'10%',width:'100%'}}>
+        <SocialBottomBar></SocialBottomBar>
+      </View>
     </View>
 
   );

@@ -9,7 +9,7 @@ export const baseUrl =  "http://saas-api-dev.genefied.in/"
 // "http://saas-api-dev.genefied.in/" staging
 //icons and images
 export const appIcon = require("../../assets/images/motherwood_white_logo.png");
-export const splash = require("../../assets/gif/Splash-myro.gif");
+export const splash = require("../../assets/gif/Splash-myronew.gif");
 export const supplyUrl = "https://supplybeam.genefied.in/api"
 export const descriptionImages = [
   // require("../../assets/images/Step1.png"),

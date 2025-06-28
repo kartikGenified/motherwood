@@ -1963,8 +1963,9 @@ const KycMotherhood = ({ navigation }) => {
           For any issues with KYC approvals, please contact our help and support
           team at <Text style={{ color: "#B6202D" }}>+91-9258262524</Text>.
         </Text>
-        <SocialBottomBar showRelative={true}></SocialBottomBar>
       </ScrollView>
+      <SocialBottomBar showRelative={true}></SocialBottomBar>
+
     </View>
   );
 };

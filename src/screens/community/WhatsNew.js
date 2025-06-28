@@ -9,6 +9,7 @@ import PoppinsTextLeftMedium from '../../components/electrons/customFonts/Poppin
 import FastImage from 'react-native-fast-image';
 import DataNotFound from '../data not found/DataNotFound';
 import { useTranslation } from 'react-i18next';
+import SocialBottomBar from '../../components/socialBar/SocialBottomBar';
 
 // create a component
 const WhatsNew = ({ navigation }) => {
@@ -176,11 +177,11 @@ const WhatsNew = ({ navigation }) => {
 
 
     return (
-        <View>
+        <View style={{height:'100%'}}>
             {/* Navigator */}
             <View
                 style={{
-                    height: 70,
+                    height: '7%',
                     width: '100%',
                     backgroundColor: secondaryThemeColor,
                     alignItems: 'flex-start',
@@ -204,44 +205,13 @@ const WhatsNew = ({ navigation }) => {
             </View>
             {/* navigator */}
 
-            <ScrollView
-                contentContainerStyle={{
-                    alignItems: "center",
-                    // justifyContent: "center",
-                    marginLeft: 20,
-                    paddingRight: 20,
-                    marginTop: 10,
-                    flexDirection: "row",
-                    // backgroundColor:'blue',
-                }}
-                horizontal={true}
-                style={{
-
-                }}
-            >
-                <FilterComp
-                    handlePress={handlePressAll}
-                    title="All"
-                ></FilterComp>
-
-                {console.log("categories", categories)}
-                {categories &&
-                    categories.map((item, index) => {
-                        return (
-                            <FilterComp
-                                handlePress={() => handlePress(item)}
-                                key={index}
-                                title={item}
-                            ></FilterComp>
-                        );
-                    })}
-            </ScrollView>
+            
 
             {/* Showing Data */}
             {console.log("the media", media)}
 
 
-            <View style={{ height: '100%' }}>
+            <View style={{ height: '83%' }}>
 
                 {mediaIsLoading &&
                     <View style={{height:'100%'}}>
@@ -259,7 +229,7 @@ const WhatsNew = ({ navigation }) => {
                 {
                     media  &&
                         <FlatList
-                        style={{height:'100%'}}
+                        style={{}}
                             data={media}
                             renderItem={({ item }) =>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, height: 120, backgroundColor: "#80808020", borderRadius: 10, marginHorizontal: 10, }}>
@@ -295,7 +265,9 @@ const WhatsNew = ({ navigation }) => {
 
 
             </View>
-
+                <View style={{height:'10%', width:'100%'}}>
+                    <SocialBottomBar></SocialBottomBar>
+                </View>
         </View>
 
     );

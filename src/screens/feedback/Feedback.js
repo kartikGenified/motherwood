@@ -334,6 +334,7 @@ const Feedback = ({ navigation }) => {
           openModal={error}
         ></ErrorModal>
       )}
+      <SocialBottomBar showRelative={true}></SocialBottomBar>
     </View>
   );
 };

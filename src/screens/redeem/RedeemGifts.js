@@ -35,6 +35,7 @@ import CheckIcon from "react-native-vector-icons/AntDesign";
 import { scrollTo } from "react-native-reanimated";
 import { useFetchGiftsRedemptionsOfUserMutation } from "../../apiServices/workflow/RedemptionApi";
 import DropDownRegistration from "../../components/atoms/dropdown/DropDownRegistration";
+import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 
 const RedeemGifts = ({ navigation, route }) => {
   const [search, setSearch] = useState();
@@ -797,6 +798,12 @@ const RedeemGifts = ({ navigation, route }) => {
         height: "100%",
       }}
     >
+      {/* <ScrollView 
+      contentContainerStyle={{alignItems: "center",
+      justifyContent: "flex-start",}}
+       style={{
+        width: "100%",
+        backgroundColor: secondaryThemeColor,}}> */}
       {error && (
         <ErrorModal
           modalClose={modalClose}
@@ -887,13 +894,12 @@ const RedeemGifts = ({ navigation, route }) => {
       </View>
       <View
         style={{
-          height: "90%",
+          height: "80%",
           width: "100%",
           // borderTopRightRadius: 40,
           // borderTopLeftRadius: 40,
           alignItems: "center",
           justifyContent: "flexx-start",
-          backgroundColor: "white",
         }}
       >
         <View
@@ -1132,8 +1138,8 @@ const RedeemGifts = ({ navigation, route }) => {
               {displayContent && (
                 <FlatList
                   data={Object.keys(displayContent)}
-                  style={{ width: "100%" }}
-                  contentContainerStyle={{ width: "100%", paddingBottom: 200 }}
+                  style={{ width: "100%",height:'90%'}}
+                  contentContainerStyle={{ width: "100%", paddingBottom:0 }}
                   renderItem={({ item, index }) => {
                     console.log("pointasdasdqweqw", displayContent);
                     return (
@@ -1194,9 +1200,13 @@ const RedeemGifts = ({ navigation, route }) => {
                   keyExtractor={(item) => item.id}
                 />
               )}
-              {cart && (
-                <View style={{alignItems:'center' ,justifyContent:'center', width:'100%',position: "absolute",
-                bottom: 100,}}>
+              
+            </View>
+          )}
+        </View>
+      </View>
+      {cart && (
+                <View style={{alignItems:'center' ,justifyContent:'center', width:'100%',height:'10%'}}>
                 <TouchableOpacity
                   onPress={onContinueClick}
                   style={{
@@ -1221,10 +1231,8 @@ const RedeemGifts = ({ navigation, route }) => {
                 </TouchableOpacity>
                 </View>
               )}
-            </View>
-          )}
-        </View>
-      </View>
+      <SocialBottomBar showRelative={true}></SocialBottomBar>
+      {/* </ScrollView> */}
     </View>
   );
 };

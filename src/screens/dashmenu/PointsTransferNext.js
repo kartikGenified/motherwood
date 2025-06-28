@@ -95,7 +95,7 @@ const PointsTransferNext = (params) => {
     if (getPointTransferData) {
       console.log("getPointTransferData", JSON.stringify(getPointTransferData));
       navigation.replace("PointsTransferSuccess", { getPointTransferData });
-    } else {
+    } else  {
       if (getPointTransferError) {
         setModalVisible(false);
         setTimeout(() => {
@@ -184,6 +184,7 @@ const PointsTransferNext = (params) => {
   };
 
   const handleSearch = (s) => {
+    console.log("handeling search qwerty", s)
     if (s != "") {
       if (s.length > 1) {
         const filteredData = data.filter((item) =>
@@ -282,6 +283,7 @@ const PointsTransferNext = (params) => {
     };
 
     console.log("requestDataaa", requestData);
+  
     getPointTransferFunc({ token, requestData });
   };
 
@@ -385,8 +387,19 @@ const PointsTransferNext = (params) => {
 
   return (
     <View style={styles.container}>
+      
       <TopHeader title={"Points Transfer"} />
-      <ScrollView>
+      <ScrollView style={{minHeight:'60%'}}>
+      {error && (
+        <ErrorModal
+          warning={true}
+          modalClose={() => {
+            setError(false);
+          }}
+          message={message}
+          openModal={error}
+        ></ErrorModal>
+      )}
       {productRows.map((row, index) => (
         <UiList
           key={index}
@@ -474,21 +487,31 @@ const PointsTransferNext = (params) => {
         }}
       />
 
-      {error && (
-        <ErrorModal
-          warning={true}
-          modalClose={() => {
-            setError(false);
-          }}
-          message={message}
-          openModal={error}
-        ></ErrorModal>
-      )}
+      
 
       {/* Button */}
       <TouchableOpacity
         onPress={() => {
-          setModalVisible(true);
+          console.log("product rows present in cart", productRows)
+          if(productRows.length !=0)
+          {
+            productRows.map((item,index)=>{
+              if(item.category == null)
+              {
+                setError(true)
+                setMessage("Please add products to proceed")
+              }
+              else
+              {
+                setModalVisible(true);
+              }
+            })
+          }
+          else
+          {
+            setError(true)
+            setMessage("Please add products to proceed")
+          }
         }}
         style={{
           alignSelf: "center",
@@ -508,6 +531,7 @@ const PointsTransferNext = (params) => {
         ></PoppinsTextLeftMedium>
       </TouchableOpacity>
       <SocialBottomBar showRelative={true} />
+     
     </View>
   );
 };

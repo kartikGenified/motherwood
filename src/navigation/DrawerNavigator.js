@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Linking,
   Platform,
+  StyleSheet,
 } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Dashboard from "../screens/dashboard/Dashboard";
@@ -37,16 +38,19 @@ import ErrorModal from "../components/modals/ErrorModal";
 import VersionCheck from "react-native-version-check";
 import { useTranslation } from "react-i18next";
 import Edit from "react-native-vector-icons/Entypo";
+import { useGetFormMutation } from "../apiServices/workflow/GetForms";
 const Drawer = createDrawerNavigator();
 const CustomDrawer = (props) => {
   const [profileImage, setProfileImage] = useState();
   const [myProgramVisible, setMyProgramVisibile] = useState(false);
   const [ozoneProductVisible, setOzoneProductVisible] = useState(false);
   const [communityVisible, setCommunityVisible] = useState(false);
+  const [profileData, setProfileData] = useState();
   const [KnowledgeHubVisible, setKnowledgeHubVisible] = useState(false);
   const [message, setMessage] = useState();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [profilePercentage, setProfilePercentafe] = useState(false);
   const [requiresLocation, setRequiresLocation] = useState(false);
 
   const { t } = useTranslation();
@@ -60,6 +64,7 @@ const CustomDrawer = (props) => {
   const getAboutData = useSelector((state) => state.termsPolicy.about);
   const getDetailsData = useSelector((state) => state.termsPolicy.details);
 
+  console.log("getAboutDatagetDetailsData",getAboutData,getDetailsData,getTermsData)
 
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
@@ -85,6 +90,16 @@ const CustomDrawer = (props) => {
       isError: FAQIsError,
     },
   ] = useFetchLegalsMutation();
+
+  const [
+    getFormFunc,
+    {
+      data: getFormData,
+      error: getFormError,
+      isLoading: getFormIsLoading,
+      isError: getFormIsError,
+    },
+  ] = useGetFormMutation();
 
   // console.log("kycCompleted", kycData)
 
@@ -120,6 +135,23 @@ const CustomDrawer = (props) => {
           "Credentials successfully loaded for user " + credentials.username
         );
         const token = credentials.username;
+        const form_type = "6";
+
+        getFormFunc({ form_type, token });
+      }
+    };
+    fetchData();
+    // getMembership()
+  }, [focused]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const credentials = await Keychain.getGenericPassword();
+      if (credentials) {
+        console.log(
+          "Credentials successfully loaded for user " + credentials.username
+        );
+        const token = credentials.username;
         fetchProfileFunc(token);
       }
     };
@@ -127,6 +159,44 @@ const CustomDrawer = (props) => {
     getMembership();
     fetchFaq();
   }, [focused]);
+
+  useEffect(() => {
+    if (getFormData) {
+      if (getFormData.body.length !== 0) {
+        console.log("Form Fields", JSON.stringify(getFormData));
+
+        const filteredData = Object.values(getFormData.body.template).filter(
+          (item, index) => {
+            if (item.name === "profile_pic" || item.name === "picture") {
+              // setShowProfilePic(true);
+            }
+            return item.name !== "profile_pic" || item.name == "picture";
+          }
+        );
+
+        filterNameFromFormFields(filteredData);
+      } else {
+        console.log("no Form");
+        setShowNoDataFoundMessage(true);
+      }
+    } else if (getFormError) {
+      console.log("Form Field Error", getFormError);
+    } else if (fetchProfileData) {
+      console.log("fetchProfileData", fetchProfileData);
+      if (fetchProfileData.success) {
+        setProfileData(fetchProfileData);
+      }
+    } else if (fetchProfileError) {
+      console.log("fetchProfileError", fetchProfileError);
+    }
+  }, [
+    getFormData,
+    getFormError,
+    focused,
+    fetchProfileData,
+    fetchProfileError,
+    profileData,
+  ]);
 
   useEffect(() => {
     if (locationSetup) {
@@ -204,6 +274,59 @@ const CustomDrawer = (props) => {
     setError(false);
   };
 
+  const filterNameFromFormFields = (data) => {
+    console.log("filterNameFromFormFields");
+    const nameFromFormFields = data.map((item) => {
+      if (item.name === "name") {
+        //  setProfileName(true);
+      }
+      return item.name;
+    });
+    // console.log(nameFromFormFields);
+    filterProfileDataAccordingToForm(nameFromFormFields);
+  };
+
+  const filterProfileDataAccordingToForm = (arrayNames) => {
+    console.log("inside filterProfileDataAccordingToForm");
+    if (profileData) {
+      console.log("filterProfileDataAccordingToForm", arrayNames, profileData);
+
+      if (arrayNames) {
+        let temparr = [];
+        arrayNames.map((item) => {
+          temparr.push(profileData.body[item]);
+        });
+        console.log("Form Values", temparr);
+
+
+        let newTempArr = temparr;
+
+        newTempArr.push(fetchProfileData?.body?.profile_pic);
+
+        console.log("Form Values new", newTempArr);
+
+        const totalLength = newTempArr.length;
+        //
+        const nullLength = newTempArr.filter((item) => {
+          return item === null || item === undefined || item === "";
+        }).length;
+
+        const dataPercentage = ((nullLength / totalLength) * 100).toFixed();
+
+        console.log("Null length", nullLength, totalLength, dataPercentage);
+
+        setProfilePercentafe(dataPercentage + "");
+
+        // console.log(temparr);
+      }
+    } else {
+      console.log("filterProfileDataAccordingToForm profileData empty");
+      if (fetchProfileData) {
+        setProfileData(fetchProfileData);
+      }
+    }
+  };
+
   const DrawerItems = (props) => {
     const image = props.image;
     const size = props.size;
@@ -211,7 +334,144 @@ const CustomDrawer = (props) => {
     const accessibilityLabel = props.accessibilityLabel;
     // console.log("image", image)
     return (
-      <View
+      <TouchableOpacity
+      onPress={() => {
+        if (
+          props.title === "Scan QR Code" ||
+          props.title === "Scan and Win"
+        ) {
+          // Platform.OS == 'android' ? navigation.navigate('EnableCameraScreen', {navigateTo:'QrCodeScanner'}) : navigation.navigate("QrCodeScanner")
+          Platform.OS == "android"
+            ? requiresLocation
+              ? navigation.navigate("EnableLocationScreen", {
+                  navigateTo: "QrCodeScanner",
+                })
+              : navigation.navigate("QrCodeScanner")
+            : navigation.navigate("QrCodeScanner");
+        } else if (props.title.toLowerCase() === "passbook") {
+          navigation.navigate("Passbook");
+        }
+        else if (props.title.toLowerCase() === "faqs") {
+          navigation.navigate("FAQ");
+        } else if (props.title.toLowerCase() === "kyc") {
+          // Drawer.navigate("Passbook")
+          navigation.navigate("KycMotherhood");
+        }
+        else if (props.title.toLowerCase() === "settings") {
+          navigation.navigate("Setting");
+        }
+        else if (props.title.toLowerCase() === "redeem") {
+          // Drawer.navigate("Passbook")
+          navigation.navigate("RewardMenu");
+        }
+        else if (props.title.toLowerCase() === "home") {
+          // Drawer.navigate("Passbook")
+          navigation.dispatch(DrawerActions.closeDrawer());
+        } else if (props.title.toLowerCase() === "media") {
+          navigation.navigate("MediaGallery");
+        }else if (props.title.toLowerCase() === "media gallery") {
+          navigation.navigate("MediaGallery");
+        }else if (props.title.toLowerCase() === "terms and conditions") {
+          navigation.navigate("PdfComponent", { pdf: getTermsData, title:"Terms and Condition" })
+        }else if (props.title.toLowerCase() === "privacy policy") {
+          navigation.navigate("PdfComponent", { pdf: getPolicyData, title:"Privacy Policy" })
+        } else if (props.title.toLowerCase() === "rewards") {
+          navigation.navigate("RedeemRewardHistory");
+        } else if (props.title.toLowerCase() === "events") {
+          navigation.navigate("Events");
+        }
+        else if (props.title.toLowerCase() === "gift catalogue") {
+          navigation.navigate("GiftCatalogue");
+        }
+        else if (props.title.toLowerCase() === "app tutorial") {
+          navigation.navigate("CommingSoon");
+        }
+        else if (
+          props.title.toLowerCase() === "bank details" ||
+          props.title.toLowerCase() === "bank account"
+        ) {
+          navigation.navigate("BankAccounts");
+        } else if (props.title.toLowerCase() === "profile") {
+          navigation.navigate("Profile");
+        } 
+         else if (props.title.toLowerCase() === "feedback") {
+          navigation.navigate("FeedbackOptions");
+        } 
+           else if (props.title.toLowerCase() === "points calculator") {
+          navigation.navigate("PointsCalculator");
+        }     
+        else if (props.title.toLowerCase() === "feedback selection") {
+          navigation.navigate("FeedbackSelection");
+        } else if (props.title.toLowerCase() === "refer and earn") {
+          navigation.navigate("CommingSoon");
+        } else if (props.title.toLowerCase() === "warranty list") {
+          navigation.navigate("WarrantyHistory");
+        } else if (props.title.toLowerCase() === "complaint list") {
+          navigation.navigate("QueryList");
+        } else if (props.title.toLowerCase() === "help and support") {
+          navigation.navigate("HelpAndSupport");
+        } else if (props.title.toLowerCase() === "product catalogue") {
+          navigation.navigate("ProductCatalogue");
+        } else if (
+          props.title.toLowerCase() === "video" ||
+          props.title.toLowerCase() === "videos"
+        ) {
+          navigation.navigate("VideoGallery");
+        } else if (props.title.toLowerCase() === "update password") {
+          navigation.navigate("UpdatePassword");
+        } else if (props.title.toLowerCase() === "gallery") {
+          navigation.navigate("ImageGallery");
+        } else if (
+          props.title.substring(0, 4).toLowerCase() === "scan" &&
+          props.title.toLowerCase() !== "scan list"
+        ) {
+          // Platform.OS == 'android' ? navigation.navigate('EnableCameraScreen') : navigation.navigate("QrCodeScanner")
+          Platform.OS == "android"
+            ? requiresLocation
+              ? navigation.navigate("EnableLocationScreen", {
+                  navigateTo: "QrCodeScanner",
+                })
+              : navigation.navigate("QrCodeScanner")
+            : navigation.navigate("QrCodeScanner");
+        } else if (props.title.toLowerCase() === "scheme") {
+          navigation.navigate("Scheme");
+        } else if (props.title.toLowerCase() === "store locator") {
+          navigation.navigate("ScanAndRedirectToWarranty");
+        } else if (props.title.toLowerCase() === "scan list") {
+          navigation.navigate("PointHistory");
+        } else if (props.title.toLowerCase() === "coupons") {
+          navigation.navigate("RedeemCoupons");
+        } else if (props.title.toLowerCase() === "add user") {
+          navigation.navigate("ListUsers");
+        }
+        else if (props.title.toLowerCase() === "training library") {
+          navigation.navigate("Training");
+        }
+         else if (props.title.toLowerCase() === "query list") {
+          navigation.navigate("QueryList");
+        } else if (props.title.toLowerCase() === "about motherwood") {
+          if(getAboutData.length!=0)
+          navigation.navigate("PdfComponent", { pdf: getAboutData, title:"About Motherwood" })
+        }
+        else if (props.title.toLowerCase() === "motherwood saathi") {
+          console.log("hansldasjdjhgsa",getDetailsData)
+          if(getDetailsData.length!=0)
+          navigation.navigate("PdfComponent", { pdf: getDetailsData, title:"MotherWood Saathi" })
+        }
+        else if (props.title.toLowerCase() === "share app") {
+          const options = {
+            title: "Share APP",
+            url: shareAppLink,
+          };
+          Share.open(options)
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => {
+              err && console.log(err);
+            });
+        }
+      }}
         accessibilityLabel={accessibilityLabel}
         style={{
           height: 54,
@@ -288,9 +548,9 @@ const CustomDrawer = (props) => {
               }else if (props.title.toLowerCase() === "media gallery") {
                 navigation.navigate("MediaGallery");
               }else if (props.title.toLowerCase() === "terms and conditions") {
-                navigation.navigate("PdfComponent", { pdf: getTermsData })
+                navigation.navigate("PdfComponent", { pdf: getTermsData, title:"Terms and Condition" })
               }else if (props.title.toLowerCase() === "privacy policy") {
-                navigation.navigate("PdfComponent", { pdf: getPolicyData })
+                navigation.navigate("PdfComponent", { pdf: getPolicyData, title:"Privacy Policy" })
               } else if (props.title.toLowerCase() === "rewards") {
                 navigation.navigate("RedeemRewardHistory");
               } else if (props.title.toLowerCase() === "events") {
@@ -298,6 +558,12 @@ const CustomDrawer = (props) => {
               }
               else if (props.title.toLowerCase() === "gift catalogue") {
                 navigation.navigate("GiftCatalogue");
+              }
+              else if (props.title.toLowerCase() === "training") {
+                navigation.navigate("Training");
+              }
+              else if (props.title.toLowerCase() === "search influencer") {
+                navigation.navigate("SearchInfluencer");
               }
               else if (props.title.toLowerCase() === "app tutorial") {
                 navigation.navigate("CommingSoon");
@@ -366,10 +632,13 @@ const CustomDrawer = (props) => {
                else if (props.title.toLowerCase() === "query list") {
                 navigation.navigate("QueryList");
               } else if (props.title.toLowerCase() === "about motherwood") {
-                navigation.navigate("PdfComponent", { pdf: getAboutData })
+                if(getAboutData.length!=0)
+                navigation.navigate("PdfComponent", { pdf: getAboutData, title:"About Motherwood" })
               }
-              else if (props.title.toLowerCase() === "motherwood sathi") {
-                navigation.navigate("PdfComponent", { pdf: getDetailsData })
+              else if (props.title.toLowerCase() === "motherwood saathi") {
+                console.log("hansldasjdjhgsa",getDetailsData)
+                if(getDetailsData.length!=0)
+                navigation.navigate("PdfComponent", { pdf: getDetailsData, title:"MotherWood Saathi" })
               }
               else if (props.title.toLowerCase() === "share app") {
                 const options = {
@@ -385,6 +654,18 @@ const CustomDrawer = (props) => {
                   });
               }
             }}
+              accessibilityLabel={accessibilityLabel}
+              style={{
+                height: 54,
+                width: "100%",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                backgroundColor: "white",
+                marginTop: 1,
+                borderBottomWidth: 1,
+                borderColor: "#DDDDDD",
+              }}
           >
             {/* {console.log("props.title", props.title)} */}
             <Text style={{ color: "black", fontSize: 15 }}>
@@ -456,7 +737,7 @@ const CustomDrawer = (props) => {
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -701,6 +982,36 @@ const CustomDrawer = (props) => {
         contentContainerStyle={{ width: "100%", paddingBottom:160}}
         style={{ width: "100%" }}
       >
+
+{profilePercentage && (
+  <View style={{width:'100%',alignItems:'center',justifyContent:'center'}}>
+          <View
+            style={{
+              padding: 10,
+              borderBottomColor: "#80808030",
+              borderBottomWidth: 1,
+              paddingBottom: 20,
+              width:'80%'
+            }}
+          >
+            <Text style={{ color: "black", textAlign: "center" }}>
+              Your Profile Is {100 - profilePercentage}% Completed
+            </Text>
+            <View style={styles.progressBar}>
+              <View
+                style={[
+                  styles.progressFill,
+                  {
+                    width: `${100 - profilePercentage}%`,
+                    backgroundColor:
+                      profilePercentage == 0 ? "green" : ternaryThemeColor,
+                  },
+                ]}
+              />
+            </View>
+          </View>
+          </View>
+        )}
         {drawerData !== undefined &&
           drawerData.app_menu.map((item, index) => {
             return (
@@ -1102,5 +1413,23 @@ function DrawerNavigator() {
     </Drawer.Navigator>
   );
 }
-
+const styles = StyleSheet.create({
+  container: {
+    height: "100%",
+    width: "100%",
+    flex: 1,
+  },
+  progressBar: {
+    height: 10,
+    backgroundColor: "#e0e0e0", // Light gray background for the progress bar
+    borderRadius: 5,
+    overflow: "hidden",
+    marginTop: 10,
+  },
+  progressFill: {
+    height: "100%",
+    // backgroundColor: , // Black color for the filled part
+    borderRadius: 5,
+  },
+});
 export default DrawerNavigator;

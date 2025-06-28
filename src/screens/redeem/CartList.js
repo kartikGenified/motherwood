@@ -22,6 +22,7 @@ import MessageModal from '../../components/modals/MessageModal';
 import { useDispatch } from 'react-redux';
 import { additem } from '../../../redux/slices/rewardCartSlice';
 import { useTranslation } from 'react-i18next';
+import SocialBottomBar from '../../components/socialBar/SocialBottomBar';
 
 const CartList = ({ navigation, route }) => {
   const [cart, setCart] = useState(route.params.cart);
@@ -393,7 +394,7 @@ const CartList = ({ navigation, route }) => {
     <View
       style={{
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         width: '100%',
         backgroundColor: secondaryThemeColor,
         height: '100%',
@@ -456,7 +457,7 @@ const CartList = ({ navigation, route }) => {
 
       <View
         style={{
-          height: '90%',
+          height: '82%',
           width: '100%',
           borderTopRightRadius: 40,
           borderTopLeftRadius: 40,
@@ -503,7 +504,7 @@ const CartList = ({ navigation, route }) => {
           {showSubmitButtons && <ConfirmAndCancelButton></ConfirmAndCancelButton>}
         </View>
       </View>
-
+<SocialBottomBar></SocialBottomBar>
     </View>
   );
 };

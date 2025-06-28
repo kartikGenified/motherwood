@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor:'white',
         alignItems:'center',
+        height:'100%'
     },
 });
 

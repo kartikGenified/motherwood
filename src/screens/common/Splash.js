@@ -126,9 +126,9 @@ const Splash = ({ navigation }) => {
   const isConnected = useSelector((state) => state.internet.isConnected);
   const allApiArray = ["getAppThemeData", "getTermsData", "getPolicyData", "getWorkflowData", "getDashboardData", "getAppMenuData", "getFormData", "getBannerData", "getUsersData"]
 
-  // const gifUri = Image.resolveAssetSource(
-  //   require("../../../assets/gif/SplashMotherWood.png")
-  // ).uri;
+  const gifUri = Image.resolveAssetSource(
+    require("../../../assets/gif/Splash-myronew.gif")
+  ).uri;
   // generating functions and constants for API use cases---------------------
   const [
     getAppTheme,
@@ -340,7 +340,7 @@ const Splash = ({ navigation }) => {
           };
           getPolicies(params);
         };
-        console.log("policy async", await apiCachingLogic("getPolicyData"))
+        console.log("policy async", JSON.stringify(await apiCachingLogic("getPolicyData")))
         if ((await apiCachingLogic("getPolicyData")) != null) {
           
           getPolicyDataCachedDispatch(
@@ -479,7 +479,10 @@ const Splash = ({ navigation }) => {
       const allApisComplete = areAllApisComplete(apiCallStatus, allApiArray);
   
       if (allApisComplete) {
+        setTimeout(() => {
         navigation.reset({ index: 0, routes: [{ name: "Dashboard" }] });
+          
+        }, 1000);
       } else {
         fallbackTimer = setTimeout(() => {
           const missingApis = allApiArray.filter(api => !apiCallStatus?.includes(api));
@@ -505,7 +508,7 @@ const Splash = ({ navigation }) => {
   
   useEffect(() => {
     if (getTermsData) {
-      // console.log("getTermsData", getTermsData.body.data?.[0]?.files[0]);
+      console.log("getTermsDatajasbdkjajsbjkdbjasbbdjkbjbjk", getTermsData.body.data?.[0]?.files[0]);
       storeData("getTermsData", getTermsData);
       getTermsDataCachedDispatch(dispatch, getTermsData);
     } else if (getTermsError) {
@@ -570,7 +573,7 @@ const Splash = ({ navigation }) => {
   // getting policy data and saving it in redux store
   useEffect(() => {
     if (getPolicyData) {
-      console.log("getPolicyData hello",getPolicyData)
+      console.log("getPolicyData hello",JSON.stringify(getPolicyData))
       getPolicyDataCachedDispatch(dispatch, getPolicyData);
       storeData("getPolicyData", getPolicyData);
     } else if (getPolicyError) {
@@ -781,6 +784,7 @@ const Splash = ({ navigation }) => {
 
   useEffect(() => {
     if (getUsersData) {
+      console.log("getUsersData", getUsersData)
       getUsersDataCachedDispatch(dispatch, getUsersData);
       storeData("getUsersData", getUsersData);
     } else if (getUsersError) {
@@ -856,15 +860,8 @@ const Splash = ({ navigation }) => {
   };
 
   return (
-    <ImageBackground style={{flex:1,}} source={require('../../../assets/images/SplashMotherWood.png')}>
-      {/* <FastImage
-        style={{ width: "100%", height: "100%", alignSelf: "center" }}
-        source={{
-          uri: gifUri, // Update the path to your GIF
-          priority: FastImage.priority.normal,
-        }}
-        resizeMode={FastImage.resizeMode.cover}
-      /> */}
+    <ImageBackground style={{flex:1,}} source={require('../../../assets/images/SplashMotherWood.jpg')}>
+      
       {console.log("isSlow", isConnected.isInternetReachable)}
       {!connected && (
         <InternetModal visible={!connected} comp={NoInternetComp} />

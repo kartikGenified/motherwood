@@ -184,19 +184,7 @@ const DreamCard = () => {
                   resizeMode={FastImage.resizeMode.contain}
                 />
               )}
-              {deleteDreamGiftData && deleteDreamGiftData.status == 200 && (
-                <Text
-                  style={{
-                    color: ternaryThemeColor,
-                    fontSize: 16,
-                    fontWeight: "500",
-                    textAlign: "center",
-                    marginTop: 30,
-                  }}
-                >
-                  Dream gift Deleted Successfully!!
-                </Text>
-              )}
+              
               {deleteDreamGiftIsError && (
                 <Text
                   style={{

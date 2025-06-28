@@ -8,10 +8,13 @@ import {
   Text,
 } from "react-native";
 import Pdf from "react-native-pdf";
+import TopHeader from "../../components/topBar/TopHeader";
+import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 
 const PdfComponent = ({ route, navigation }) => {
   const pdf = route?.params?.pdf;
   const pdfLink = pdf == null ? "" : pdf;
+  const title = route.params.title
   const source =
     pdf == null ? { uri: "", cache: true } : { uri: pdfLink, cache: true };
 
@@ -31,6 +34,7 @@ const PdfComponent = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
+      <TopHeader title={title} />
       {pdf != undefined && pdf != null && (
         <Pdf
           trustAllCerts={false}
@@ -69,6 +73,7 @@ const PdfComponent = ({ route, navigation }) => {
           style={styles.pdf}
         />
       )}
+      <SocialBottomBar></SocialBottomBar>
     </View>
   );
 };
@@ -78,12 +83,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    marginTop: 25,
   },
   pdf: {
-    flex: 1,
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    height: Dimensions.get("window").height-150,
   },
 });
 

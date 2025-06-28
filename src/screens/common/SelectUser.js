@@ -73,7 +73,7 @@ const SelectUser = ({ navigation,route }) => {
   );
   console.log("registration required", registrationRequired);
   const gifUri = Image.resolveAssetSource(
-    require("../../../assets/gif/Splash-myro.gif")
+    require("../../../assets/gif/Splash-myronew.gif")
   ).uri;
   const width = Dimensions.get("window").width;
 
@@ -268,7 +268,7 @@ const SelectUser = ({ navigation,route }) => {
                       manualApproval={manualApproval}
                       registrationRequired={registrationRequired}
                       key={index}
-                      mobile={route.params.mobile}
+                      mobile={route?.params?.mobile}
                       color={ternaryThemeColor}
                       image={item.user_type_logo}
                       content={item.user_type}

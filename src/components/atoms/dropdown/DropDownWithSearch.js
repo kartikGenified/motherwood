@@ -15,10 +15,27 @@ import { useSelector } from "react-redux";
 
 const DropDownWithSearch = (props) => {
   const [showList, setShowList] = useState(false);
+  const [filteredData, setFilteredData] = useState(props.data);
   const { t } = useTranslation();
   const data = props.data;
   const placeholder = props.placeholder;
   const value = props.value;
+
+
+  useEffect(() => {
+    setFilteredData(props.data);
+  }, [props.data]);
+
+  const handleSearch = (text) => {
+    if (text) {
+      const results = props.data.filter((item) =>
+        item.name.toLowerCase().includes(text.toLowerCase())
+      );
+      setFilteredData(results);
+    } else {
+      setFilteredData(props.data);
+    }
+  };
 
   // Find the label to display from value (for array of objects)
   let displayLabel = placeholder;
@@ -41,10 +58,10 @@ const DropDownWithSearch = (props) => {
   const handleOpenList = () => {
     setShowList(!showList);
   };
-  const handleSearch = (s)=>{
-    console.log("searching", s)
-    props.handleSearchData(s)
-  }
+  // const handleSearch = (s)=>{
+  //   console.log("searching", s)
+  //   props.handleSearchData(s)
+  // }
   const SelectableDropDownComponent = (props) => {
     const title = props.title;
     const item = props.item
@@ -125,7 +142,7 @@ const DropDownWithSearch = (props) => {
       </TouchableOpacity>
 
       {showList && (
-        <ScrollView style={{ width: "100%", height: 200 }}>
+        <ScrollView nestedScrollEnabled={true} style={{ width: "100%", height: 200 }}>
           <View
             style={{
               alignItems: "center",
@@ -150,16 +167,14 @@ const DropDownWithSearch = (props) => {
               placeholder="Search"
             ></TextInput>}
           
-            {data &&
-              data.map((item, index) => {
-                return (
-                  <SelectableDropDownComponent
-                    key={index}
-                    title={item?.name ? item?.name : item}
-                    item = {item}
-                  ></SelectableDropDownComponent>
-                );
-              })}
+          {filteredData &&
+  filteredData.map((item, index) => (
+    <SelectableDropDownComponent
+      key={index}
+      title={item?.name ? item?.name : item}
+      item={item}
+    />
+  ))}
           </View>
         </ScrollView>
       )}

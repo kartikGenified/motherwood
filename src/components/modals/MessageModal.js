@@ -33,7 +33,9 @@ const MessageModal = (props) => {
     props.modalClose()
     if(navigateTo)
    {
+    setTimeout(() => {
     Platform.OS=='android' ? navigation.replace(navigateTo,params) : navigation.navigate(navigateTo,params)
+    }, 1000);
 
    }
   }

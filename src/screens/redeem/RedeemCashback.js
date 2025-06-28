@@ -595,25 +595,7 @@ const [checkBeforeRedeem, {
               top: 4,
             }}></PoppinsTextMedium>
         </View>
-        {/* <View
-          style={{
-            width: '90%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom:20,
-            marginTop:4
-          }}>
-          <PoppinsTextMedium
-            content={`* ${t("Minimum cash redemption value is")} ${maxCashConverted}. `}
-            style={{
-              color: 'black',
-              fontWeight: '600',
-              marginBottom: 20,
-              position: 'absolute',
-              left: 0,
-              top: 2,
-            }}></PoppinsTextMedium>
-        </View> */}
+       
       </View> 
 
       :
@@ -699,7 +681,7 @@ const [checkBeforeRedeem, {
     </View>
       
       }
-      {getWalletBalanceData?.body?.cashback_balance && cashConversion!="" && cashConversion && <View style={{alignItems:"center", justifyContent:"center", width:"100%",marginTop:20,marginBottom:20}}>
+      {cashConversion!="" && cashConversion && <View style={{alignItems:"center", justifyContent:"center", width:"100%",marginTop:20,marginBottom:20}}>
       <TouchableOpacity
         onPress={() => {
           console.log('redeem'), redeemCashback();

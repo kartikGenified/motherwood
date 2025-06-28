@@ -23,7 +23,8 @@ const userData = useSelector((state) => state.appusersdata.userData);
 const membership = props?.memberShip?.toLowerCase()
 
 
-console.log("dashjgdhjgasjjcbjkasbcv gcahgvs",userData)
+
+console.log("dashjgdhjgasjjcbjkasbcv gcahgvs",userData,membership)
 useEffect(() => {
   if( (userData?.user_type)?.toLowerCase() == 'carpenter' ||  (userData?.user_type)?.toLowerCase() == 'contractor' ||  (userData?.user_type)?.toLowerCase() == 'oem' ||  (userData?.user_type)?.toLowerCase() == 'directoem')
  {
@@ -65,7 +66,7 @@ const fetchPoints = async () => {
           height:110, 
           width:'25%',
           borderRightWidth:0.4,
-          borderRightColor:'red',
+          borderRightColor:membership == 'silver' ? "#C0C0C0" : membership == 'gold' ? 'gold' : membership == 'platinum' ? '#a0a09e' : 'red',
           padding:4
         }}
       >
@@ -103,7 +104,7 @@ const fetchPoints = async () => {
           justifyContent: "space-between",
           flexDirection: "row",
           borderBottomWidth: 0.5,
-          borderBottomColor: "red",
+          borderBottomColor: membership == 'silver' ? "#C0C0C0" : membership == 'gold' ? 'gold' : membership == 'platinum' ? '#a0a09e' : 'red',
           alignItems:'flex-start'
         }}
       >
@@ -140,8 +141,8 @@ const fetchPoints = async () => {
 
         <View>
           <Image
-            style={{ height: 40, width: 100, marginTop: 10, marginRight: 10,resizeMode:'contain',top:20 }}
-            source={require("../../../assets/images/motherwood_white_logo.png")}
+            style={{ height: 50, width: 100, marginTop: 10, marginRight: 10,resizeMode:'cover',top:18 }}
+            source={require("../../../assets/images/Motherwood-Logo-dark.png")}
           ></Image>
           <TouchableOpacity
             onPress={()=>{

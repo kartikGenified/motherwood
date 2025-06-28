@@ -59,7 +59,7 @@ const PlatinumModal = ({ isVisible, onClose, getActiveMembershipData }) => {
             style={{
               width: "100%",
               alignItems: "center",
-              justifyContent:'space-between',
+              justifyContent: "space-between",
               flexDirection: "row",
             }}
           >
@@ -76,80 +76,156 @@ const PlatinumModal = ({ isVisible, onClose, getActiveMembershipData }) => {
               <Icon name="close" size={30} color={ternaryThemeColor} />
             </TouchableOpacity>
           </View>
-          <View style={{flexDirection:'row', alignItems:'center' ,justifyContent:'center',marginTop:10,width:'100%'}}>
-            <View style={{alignItems:'flex-start', justifyContent:'center',backgroundColor:ternaryThemeColor,padding:10,margin:1,width:'32%',height:40}}>
-            <PoppinsTextMedium
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: 10,
+              width: "100%",
+            }}
+          >
+            <View
               style={{
-                color: "white",
-                fontSize: 14,
-                fontWeight: "600",
+                alignItems: "flex-start",
+                justifyContent: "center",
+                backgroundColor: ternaryThemeColor,
+                padding: 10,
+                margin: 1,
+                width: "32%",
+                height: 40,
               }}
-              content="Club"
-            ></PoppinsTextMedium>
+            >
+              <PoppinsTextMedium
+                style={{
+                  color: "white",
+                  fontSize: 14,
+                  fontWeight: "600",
+                }}
+                content="Club"
+              ></PoppinsTextMedium>
             </View>
-            <View style={{alignItems:'center', justifyContent:'center',backgroundColor:ternaryThemeColor,padding:10,margin:1,width:'32%',height:40}}>
-            <PoppinsTextMedium
+            <View
               style={{
-                color: "white",
-                fontSize: 14,
-                fontWeight: "600",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: ternaryThemeColor,
+                padding: 10,
+                margin: 1,
+                width: "32%",
+                height: 40,
               }}
-              content="Milestone"
-            ></PoppinsTextMedium>
+            >
+              <PoppinsTextMedium
+                style={{
+                  color: "white",
+                  fontSize: 14,
+                  fontWeight: "600",
+                }}
+                content="Milestone"
+              ></PoppinsTextMedium>
             </View>
-            <View style={{alignItems:'center', justifyContent:'center',backgroundColor:ternaryThemeColor,padding:2,margin:1,width:'32%',height:40}}>
-            <PoppinsTextMedium
+            <View
               style={{
-                color: "white",
-                fontSize: 14,
-                fontWeight: "600",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: ternaryThemeColor,
+                padding: 2,
+                margin: 1,
+                width: "32%",
+                height: 40,
               }}
-              content="Bonus Points"
-            ></PoppinsTextMedium>
+            >
+              <PoppinsTextMedium
+                style={{
+                  color: "white",
+                  fontSize: 14,
+                  fontWeight: "600",
+                }}
+                content="Bonus Points"
+              ></PoppinsTextMedium>
             </View>
           </View>
-          {getActiveMembershipData && getActiveMembershipData?.body.map((item,index)=>{
-            return(
-<View key={index} style={{flexDirection:'row', alignItems:'center' ,justifyContent:'space-between',marginTop:20, width:'100%',borderBottomWidth:1,borderColor:'#DDDDDD'}}>
-            <View style={{alignItems:'center', justifyContent:'center',backgroundColor:"white",padding:10,margin:1,width:'31%'}}>
-            <PoppinsTextMedium
-              style={{
-                position:'absolute',
-                color: "black",
-                fontSize: 14,
-                fontWeight: "600",
-                left:10
-                
-              }}
-              content={item?.tier?.name}
-            ></PoppinsTextMedium>
-            </View>
-            <View style={{alignItems:'center', justifyContent:'center',backgroundColor:"white",padding:10,margin:1,width:'31%'}}>
-            <PoppinsTextMedium
-              style={{
-                position:'absolute',
-                color: "black",
-                fontSize: 14,
-                fontWeight: "600",
-              }}
-              content={item?.range_start}
-            ></PoppinsTextMedium>
-            </View>
-            <View style={{alignItems:'center', justifyContent:'center',backgroundColor:"white",padding:10,margin:1,width:'31%'}}>
-            <PoppinsTextMedium
-              style={{
-                position:'absolute',
-                color: "black",
-                fontSize: 14,
-                fontWeight: "600",
-              }}
-              content={item.per_month}
-            ></PoppinsTextMedium>
-            </View>
-          </View>
-            )
-          })}
-          
+          {getActiveMembershipData &&
+            getActiveMembershipData?.body.map((item, index) => {
+              return (
+                <View
+                  key={index}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginTop: 20,
+                    width: "100%",
+                    borderBottomWidth: 1,
+                    borderColor: "#DDDDDD",
+                  }}
+                >
+                  <View
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "white",
+                      padding: 10,
+                      margin: 1,
+                      width: "31%",
+                    }}
+                  >
+                    <PoppinsTextMedium
+                      style={{
+                        position: "absolute",
+                        color: "black",
+                        fontSize: 14,
+                        fontWeight: "600",
+                        left: 10,
+                      }}
+                      content={item?.tier?.name}
+                    ></PoppinsTextMedium>
+                  </View>
+                  <View
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "white",
+                      padding: 10,
+                      margin: 1,
+                      width: "31%",
+                    }}
+                  >
+                    <PoppinsTextMedium
+                      style={{
+                        position: "absolute",
+                        color: "black",
+                        fontSize: 14,
+                        fontWeight: "600",
+                      }}
+                      content={item?.range_start}
+                    ></PoppinsTextMedium>
+                  </View>
+                  <View
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "white",
+                      padding: 10,
+                      margin: 1,
+                      width: "31%",
+                    }}
+                  >
+                    <PoppinsTextMedium
+                      style={{
+                        position: "absolute",
+                        color: "black",
+                        fontSize: 14,
+                        fontWeight: "600",
+                      }}
+                      content={item.per_month}
+                    ></PoppinsTextMedium>
+                  </View>
+                </View>
+              );
+            })}
+
           {/* <View style={styles.modalTop}>
                         <LinearGradient colors={["#6b0ce4", "#9B56FE"]} style={{ height: '100%', width: '100%', borderTopRightRadius: 40, borderTopLeftRadius: 40 }}>
                             <View style={{ alignItems: 'center', marginTop: 30 }}>

@@ -357,8 +357,8 @@ const Passbook = ({ navigation }) => {
           style={{
             flexDirection: "column",
             borderWidth: 2,
-            width: 70,
-            height: 70,
+            width: 50,
+            height: 50,
             borderColor: ternaryThemeColor,
             padding: 6,
             marginTop: 15,
@@ -375,7 +375,7 @@ const Passbook = ({ navigation }) => {
             }}
           >
             <Image
-              style={{ height: 40, width: 40, resizeMode: "contain" }}
+              style={{ height: 30, width: 30, resizeMode: "contain" }}
               source={image}
             ></Image>
           </View>
@@ -518,39 +518,27 @@ const Passbook = ({ navigation }) => {
 
               <View
                 style={{
-                  flexDirection: "row",
                   position: "absolute",
-                  right: 20,
-                  width: "20%",
+                  right: 10,
+                  width: "10%",
                 }}
               >
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={{
                     backgroundColor: listView ? ternaryThemeColor : "white",
-                    marginRight: 10,
+                    marginRight: 0,
                     paddingHorizontal: 7,
                     paddingVertical: 4,
                   }}
-                  onPress={() => {
-                    setListView(true);
-                  }}
+                  
                 >
                   <Image
                     style={{ height: 15, width: 15, resizeMode: "contain" }}
                     source={require("../../../assets/images/listwhite.png")}
                   ></Image>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
-                <TouchableOpacity
-                  onPress={() => {
-                    setListView(!listView);
-                  }}
-                >
-                  <Image
-                    style={{ height: 20, width: 20, resizeMode: "contain" }}
-                    source={require("../../../assets/images/grid.png")}
-                  ></Image>
-                </TouchableOpacity>
+                
               </View>
             </View>
 
@@ -745,7 +733,7 @@ const Passbook = ({ navigation }) => {
               </View>
             </View>
 
-            <View
+            {/* <View
               style={{
                 flexDirection: "row",
                 width: "100%",
@@ -757,7 +745,7 @@ const Passbook = ({ navigation }) => {
             >
               {
                 <GridVIew
-                  title={t("Received Points Summary")}
+                  title={t("Points History")}
                   discription=" list of points redeemed by you"
                   image={require("../../../assets/images/coinStack.png")}
                 ></GridVIew>
@@ -779,40 +767,14 @@ const Passbook = ({ navigation }) => {
                   image={require("../../../assets/images/rp.png")}
                 ></GridVIew>
               }
-              {/* ozone change */}
-
-              {/* {userData.user_type !== "dealer" && <GridVIew title={t("scanned history")} discription="" image={require('../../../assets/images/scannedHistory.png')}></GridVIew>} */}
-              {
+                  {
                 <GridVIew
                   title={t("redeemed history")}
                   discription=" list of products redeemed by you"
                   image={require("../../../assets/images/redeemed_icon.png")}
                 ></GridVIew>
               }
-              {/* <GridVIew title={t("cashback history")} discription=" list of cashback redeemed by you" image={require('../../../assets/images/cashbackBlack.png')}></GridVIew> */}
-              {/* {
-                                couponOptionEnabled &&
-                                <GridVIew title={t("Coupon History")} discription=" list of coupons redeemed by you" image={require('../../../assets/images/scannedHistory.png')}></GridVIew>
-                            } */}
-              {/* {
-                warrantyOptionEnabled &&  */}
-              {/* <GridVIew title={t("warranty history")} discription=" list of warranty redeemed by you" image={require('../../../assets/images/warranty_icon.png')}></GridVIew> */}
-              {/* } */}
-
-              {/* {
-                                cashbackOptionEnabled &&
-                                <GridVIew title={t("cashback history")} discription=" list of cashback redeemed by you" image={require('../../../assets/images/scannedHistory.png')}></GridVIew>
-
-                            } */}
-              {/* {
-                                // couponOptionEnabled &&
-                                <GridVIew title={t("Coupon History")} discription=" list of coupons redeemed by you" image={require('../../../assets/images/scannedHistory.png')}></GridVIew>
-                            } */}
-              {/* {
-                                wheelOptionEnabled &&
-                                <GridVIew title="Wheel History" discription=" list of wheel spinned by you" image={require('../../../assets/images/scannedHistory.png')}></GridVIew>
-
-                            } */}
+            
               {(userData?.user_type).toLowerCase() == "distributor" &&
                 pointSharing && (
                   <GridVIew
@@ -821,8 +783,7 @@ const Passbook = ({ navigation }) => {
                     image={require("../../../assets/images/shared_point.png")}
                   ></GridVIew>
                 )}
-              {/* <GridVIew title={t("Previous Transaction History")} discription=" list of previous transaction done by you" image={require('../../../assets/images/coinStack.png')}></GridVIew> */}
-            </View>
+            </View> */}
           </View>
         )}
 

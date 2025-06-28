@@ -50,14 +50,15 @@ const FeedbackSelection = ({navigation}) => {
     }
 
     return (
-        <View>
+        <View style={{height:'100%',flex:1}}>
             <TopHeader title={"Feedback/Ratings"}></TopHeader>
             <View style={{alignItems:'center', justifyContent:'center',marginTop:40}}>
             <Selector image={require('../../../assets/images/feedbackApp.png')} navigate="Feedback" title="Feedback For App"/>
             <Selector image={require('../../../assets/images/feedbackProducts.png')} navigate="FeedbackProducts" title="Feedback For Product"/>
-            <SocialBottomBar backgroundColor={"white"} />
 
             </View>
+            <SocialBottomBar />
+
         </View>
     );
 }

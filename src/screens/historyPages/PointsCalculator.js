@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  ScrollView,
 } from "react-native";
 import TopHeader from "../../components/topBar/TopHeader";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
@@ -18,15 +19,20 @@ import {
   useGetProductCategoryListQuery,
   useGetProductsByCategoryMutation,
 } from "../../apiServices/product/getProducts";
+import Down from 'react-native-vector-icons/Entypo'
 import * as Keychain from "react-native-keychain";
 import { useSelector } from "react-redux";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import { Social } from "react-native-share";
 
 const PointsCalculator = () => {
   const [token, setToken] = useState();
   const [data, setData] = useState();
+  const [employeeList, setEmployeeList] = useState();
   const [fullThicknessOptions, setFullThicknessOptions] = useState([[]]);
   const [thicknessOptions, setThicknessOptions] = useState([[]]);
+  const [showList, setShowList] = useState(false)
+  const [selectedUser, setSelectedUser] = useState("SELECT USER")
   const [productRows, setProductRows] = useState([
     { category: null, thickness: null, qty: 1, points: 0 },
   ]);
@@ -34,7 +40,8 @@ const PointsCalculator = () => {
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   )
-    
+  const users = useSelector((state)=>state.appusers.value)
+  const userList = users.filter((item,index)=>{return (item).toLowerCase()!=(userData.user_type).toLowerCase()})
 
   const secondaryThemeColor = useSelector(
     (state) => state.apptheme.secondaryThemeColor
@@ -65,6 +72,7 @@ const PointsCalculator = () => {
 
   useEffect(() => {
     if (productCategoryData) {
+      console.log("productCategoryData",productCategoryData)
       const formattedData = productCategoryData.body?.map((item) => ({
         name: item.name,
         id: item.id,
@@ -77,8 +85,11 @@ const PointsCalculator = () => {
   }, [productCategoryData, productCategoryError]);
 
   useEffect(() => {
+
     if (productsByCategoryData && typeof productsByCategoryData.body?.data === 'object') {
-      const newOptions = productsByCategoryData.body.data.map((item) => ({
+      console.log("productsByCategoryData",JSON.stringify(productsByCategoryData))
+
+      const newOptions = productsByCategoryData?.body?.data.map((item) => ({
         ...item,
         name: item.classification,
         pName: item.name,
@@ -150,6 +161,11 @@ const PointsCalculator = () => {
     }
   };
 
+  const handleUserDropDown=(data)=>{
+    setSelectedUser(data)
+
+  }
+
   const handleThicknessChange = (rowIndex, selectedThickness) => {
     console.log("selectedThickness", selectedThickness);
     const updatedRows = [...productRows];
@@ -162,24 +178,55 @@ const PointsCalculator = () => {
       ) || selectedThickness;
     }
     updatedRows[rowIndex].thickness = thicknessObj;
-    if (thicknessObj) {
-      const userType = userData?.user_type;
-      let points = 0;
-      if (userType === "retailer") {
-        points = thicknessObj.retailer_points;
-      } else if (userType === "distributor") {
-        points = thicknessObj.distributor_points;
-      } else if (userType === "oem") {
-        points = thicknessObj.oem_points;
-      } else if (userType === "contractor") {
-        points = thicknessObj.contractor_points;
+    if((userData.user_type).toLowerCase() == "sales") 
+    {
+      if(selectedUser!="SELECT USER")
+      {
+        if (thicknessObj) {
+          const userType = selectedUser.toLowerCase();
+          let points = 0;
+          if (userType === "retailer") {
+            points = thicknessObj.retailer_points;
+          } else if (userType === "distributor") {
+            points = thicknessObj.distributor_points;
+          } else if (userType === "oem") {
+            points = thicknessObj.oem_points;
+          } else if (userType === "contractor") {
+            points = thicknessObj.contractor_points;
+          }
+          updatedRows[rowIndex].points = points;
+        } else {
+          updatedRows[rowIndex].points = 0;
+        }
+        setProductRows(updatedRows);
+        console.log("djkdkdkd", productRows);
       }
-      updatedRows[rowIndex].points = points;
-    } else {
-      updatedRows[rowIndex].points = 0;
+      else{
+        alert("Kindly select the user first")
+      }
     }
-    setProductRows(updatedRows);
-    console.log("djkdkdkd", productRows);
+    else{
+      if (thicknessObj) {
+        const userType = userData?.user_type;
+        let points = 0;
+        if (userType === "retailer") {
+          points = thicknessObj.retailer_points;
+        } else if (userType === "distributor") {
+          points = thicknessObj.distributor_points;
+        } else if (userType === "oem") {
+          points = thicknessObj.oem_points;
+        } else if (userType === "contractor") {
+          points = thicknessObj.contractor_points;
+        }
+        updatedRows[rowIndex].points = points;
+      } else {
+        updatedRows[rowIndex].points = 0;
+      }
+      setProductRows(updatedRows);
+      console.log("djkdkdkd", productRows);
+    }
+    
+   
   };
 
   const deleteRow = (index) => {
@@ -240,6 +287,45 @@ const PointsCalculator = () => {
   return (
     <View style={styles.container}>
       <TopHeader title={"Point Calculator"} />
+      {(userData.user_type).toLowerCase() == "sales" &&  
+      <View style={{ width:'44%',position:'absolute',top:18,right:10, zIndex:1}}>
+       <TouchableOpacity onPress={()=>{
+        setShowList(!showList)
+       }} style={{height:40,width:"100%",alignItems:"center", justifyContent:'center',backgroundColor:"#DDDDDD",borderRadius:20,flexDirection:'row'}}>
+        <PoppinsTextMedium content={selectedUser} style={{color:'#717171',marginRight:20}}></PoppinsTextMedium>
+        <Down name="chevron-down" size={20} color="#717171"></Down>
+        
+       </TouchableOpacity>
+       {
+          showList && 
+          <View style={{alignItems:'center', justifyContent:'center',top:0, padding:10,borderRadius:10}}>
+            {
+              userList && 
+              userList.map((item,index)=>{
+                return(
+                  <TouchableOpacity onPress={()=>{
+                    handleUserDropDown(item)
+                    setShowList(!showList)
+
+                  }} style={{height:36,width:'100%',backgroundColor:'#DDDDDD',alignItems:'center', justifyContent:'center',borderBottomWidth:1,borderBlockColor:'white'}}>
+                    <PoppinsTextMedium content={item.toUpperCase()} style={{color:'#717171', fontSize:16,}}></PoppinsTextMedium>
+                  </TouchableOpacity>
+                )
+              })
+            }
+            <TouchableOpacity onPress={()=>{
+                    handleUserDropDown("all")
+                    setShowList(!showList)
+
+                  }} style={{height:30,width:'100%',backgroundColor:'#DDDDDD',alignItems:'center', justifyContent:'center',marginBottom:1}}>
+                    <PoppinsTextMedium content="All" style={{color:'#717171', fontSize:16,}}></PoppinsTextMedium>
+                  </TouchableOpacity>
+          </View>
+        }
+      </View>}
+      <ScrollView contentContainerStyle={{}} style={{minHeight:'70%'}}>
+
+     
       {productRows.map((row, index) => (
         <UiList
           key={index}
@@ -256,6 +342,7 @@ const PointsCalculator = () => {
           row={row}
         />
       ))}
+
       <TouchableOpacity
         style={{
           height: 40,
@@ -271,13 +358,15 @@ const PointsCalculator = () => {
       >
         <Text style={{ color: "white", fontSize: 18 }}>+ Add Product</Text>
       </TouchableOpacity>
+
+     
+
+      </ScrollView>
       <View
         style={{
           backgroundColor: ternaryThemeColor,
           width: "100%",
-          height: 60,
-          position: "absolute",
-          bottom: 60,
+          height: '10%',
           flexDirection: "row",
           justifyContent: "space-between",
         }}
@@ -303,7 +392,11 @@ const PointsCalculator = () => {
           <Text style={{ color: "white", fontSize: 16 }}>{totalPoints}</Text>
         </View>
       </View>
-      <SocialBottomBar />
+      <View style={{height:'10%'}}>
+      <SocialBottomBar></SocialBottomBar>
+
+      </View>
+
     </View>
   );
 };

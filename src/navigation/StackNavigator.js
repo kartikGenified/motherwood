@@ -114,6 +114,7 @@ import UserManagementDetails from "../screens/userManagement/UserManagementDetai
 import PointsDistribution from "../screens/pointsDistribution/PointsDistribution";
 import Training from "../screens/training/Training";
 import KycViewOtherUsers from "../screens/verification/KycViewOtherUsers";
+import SearchInfluencer from "../screens/searchInfluencer/SearchInfluencer";
 
 const Stack = createNativeStackNavigator();
 
@@ -567,6 +568,13 @@ const StackNavigator = () => {
           }}
           name="ProductCatalogue"
           component={ProductCatalogue}
+        ></Stack.Screen>
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="SearchInfluencer"
+          component={SearchInfluencer}
         ></Stack.Screen>
         <Stack.Screen
           options={{

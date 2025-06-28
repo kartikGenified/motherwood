@@ -5,6 +5,7 @@ import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTex
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import SocialBottomBar from '../../components/socialBar/SocialBottomBar';
 
 // create a component
 const FeedbackOptions = () => {
@@ -53,7 +54,7 @@ const FeedbackOptions = () => {
                         <PoppinsTextMedium style={{marginTop:10, fontWeight:'600', color:'black', fontSize:20}} content={"Feedback For Product"}></PoppinsTextMedium>
                     </TouchableOpacity>
         </View>
-
+                    <SocialBottomBar></SocialBottomBar>
         </View>
     );
 };

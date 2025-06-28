@@ -1170,7 +1170,7 @@ const BasicInfo = ({ navigation, route }) => {
         ></ErrorModal>
       )}
 
-      {success && (
+      {/* {success && (
         <SuccessConfettiModal
           modalClose={modalClose}
           title="Success"
@@ -1185,8 +1185,8 @@ const BasicInfo = ({ navigation, route }) => {
           }}
           navigation={navigation}
         ></SuccessConfettiModal>
-      )}
-      {/* {success && (
+      )} */}
+      {success && (
         <MessageModal
           modalClose={modalClose}
           title={modalTitle}
@@ -1200,7 +1200,7 @@ const BasicInfo = ({ navigation, route }) => {
             registrationRequired: registrationRequired,
           }}
         ></MessageModal>
-      )} */}
+      )}
 
       {otpModal && (
         <MessageModal

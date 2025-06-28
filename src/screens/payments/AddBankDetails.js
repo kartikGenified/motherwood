@@ -13,6 +13,7 @@ import MessageModal from '../../components/modals/MessageModal';
 import { useIsFocused } from '@react-navigation/native';
 import ErrorModal from '../../components/modals/ErrorModal';
 import { useTranslation } from 'react-i18next';
+import SocialBottomBar from '../../components/socialBar/SocialBottomBar';
 
 const AddBankDetails = ({navigation}) => {
     const [message, setMessage] = useState();
@@ -214,7 +215,7 @@ const AddBankDetails = ({navigation}) => {
                {!hideButton && <ShowLoadingButton handleData={submitData} title={t("Proceed")}></ShowLoadingButton>}
             </View>
             </ScrollView>
-            
+            <SocialBottomBar></SocialBottomBar>
         </View>
     );
 }

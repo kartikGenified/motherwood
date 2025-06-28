@@ -535,6 +535,8 @@ const FeedbackProducts = ({ navigation }) => {
           openModal={error}
         ></ErrorModal>
       )}
+
+      <SocialBottomBar showRelative={true}></SocialBottomBar>
     </View>
   );
 };

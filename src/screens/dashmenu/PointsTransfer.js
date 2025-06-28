@@ -153,7 +153,7 @@ const PointsTransfer = () => {
         ></PoppinsTextLeftMedium>
         <TextInput
           onChangeText={setMobile}
-          placeholder="+91-99999999999"
+          placeholder="9999999999"
           placeholderTextColor={"#808080"}
           maxLength={10}
           style={{

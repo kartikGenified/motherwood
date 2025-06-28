@@ -3,9 +3,11 @@ import { Link } from "@react-navigation/native";
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, Linking, KeyboardAvoidingView } from "react-native";
 import { useSelector } from "react-redux";
-
+import { useNavigation } from "@react-navigation/native";
+import { use } from "i18next";
 // create a component
 const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
+  const navigation = useNavigation()
       const socials = useSelector(
           state => state.apptheme.socials,
       );
@@ -26,9 +28,9 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
   return (
     <View
       style={{
-        
         width: "100%",
-        
+        position:showRelative ? "relative":"absolute",
+        bottom:0,
         height: 50,
         borderTopColor: "#B6202D",
         borderTopWidth: 1,
@@ -158,7 +160,7 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
       </TouchableOpacity>
       <TouchableOpacity
       onPress={()=>{
-        Linking.openURL(`mailto:${supportMail}`)
+        navigation.navigate("FAQ")
       }}
         style={{ flexDirection: "row", marginLeft: 10, marginTop: 5 }}
       >
@@ -171,14 +173,7 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
           source={require("../../../assets/images/help.png")}
         ></Image>
 
-        <View
-          style={{
-            borderRightWidth: 1,
-            borderRightColor: "#B9B9B9",
-            marginLeft: 10,
-            height: 20,
-          }}
-        ></View>
+       
       </TouchableOpacity>
     </View>
   );

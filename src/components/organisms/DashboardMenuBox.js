@@ -76,6 +76,9 @@ const DashboardMenuBox = (props) => {
     }else if (data.toLowerCase() === "points history") {
       navigation.navigate("PointHistory");
     }
+    else if (data.toLowerCase() === "search influencer") {
+      navigation.navigate("SearchInfluencer");
+    }
      else if (data.toLowerCase() === "media") {
       navigation.navigate("MediaGallery");
     } else if (
@@ -116,14 +119,18 @@ const DashboardMenuBox = (props) => {
     } else if (data.toLowerCase() === "points transfer") {
       navigation.navigate("PointsTransfer");
     }else if (data.toLowerCase() === "about motherwood") {
-      navigation.navigate("PdfComponent", { pdf: getAboutData })
+      navigation.navigate("PdfComponent", { pdf: getAboutData, title:"About Motherwood" })
     } 
     else if (data.toLowerCase() === "motherwood program name") {
-      navigation.navigate("PdfComponent", { pdf: getDetailsData })
+      navigation.navigate("PdfComponent", { pdf: getDetailsData,title:"Motherwood Program Name" })
 
     } 
     else if (data.toLowerCase() === "playzone") {
       navigation.navigate("CommingSoon");
+
+    } 
+    else if (data.toLowerCase() === "training") {
+      navigation.navigate("Training");
 
     } 
     // else if (data.toLowerCase() === "events") {

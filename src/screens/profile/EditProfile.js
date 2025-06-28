@@ -704,7 +704,23 @@ const EditProfile = ({ navigation, route }) => {
                         photo={require("../../../assets/images/eye.png")}
                       ></DisplayOnlyTextInput>
                     );
-                  } else if (item.name === "name") {
+                  }else if (item.name === "gstin") {
+                    return (
+                      <DisplayOnlyTextInput
+                        key={index}
+                        data={
+                          renderValues[index] === null ||
+                          renderValues[index] === undefined
+                            ? "No data available"
+                            : renderValues[index]
+                        }
+                        title={item.label == "Pan" ? t("Pan") : item.label}
+                        photo={require("../../../assets/images/eye.png")}
+                      ></DisplayOnlyTextInput>
+                    );
+                  }
+                  
+                  else if (item.name === "name") {
                     return (
                       <DisplayOnlyTextInput
                         key={index}

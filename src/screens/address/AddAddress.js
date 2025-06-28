@@ -227,7 +227,7 @@ const AddAddress = ({ navigation }) => {
         style={{
           height: "10%",
           width: "100%",
-          backgroundColor: ternaryThemeColor,
+          backgroundColor: "#FFF8E7",
           alignItems: "center",
           justifyContent: "flex-start",
           flexDirection: "row",
@@ -248,7 +248,7 @@ const AddAddress = ({ navigation }) => {
         </TouchableOpacity>
 
         <PoppinsTextMedium
-          style={{ fontSize: 20, color: "#ffffff", marginLeft: 10 }}
+          style={{ fontSize: 20, color: "black", marginLeft: 10 }}
           content={t("Add Address")}
         ></PoppinsTextMedium>
       </View>

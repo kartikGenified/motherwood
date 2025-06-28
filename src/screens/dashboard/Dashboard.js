@@ -82,6 +82,9 @@ import {
 } from "../../../redux/slices/appThemeSlice";
 import Info from "react-native-vector-icons/AntDesign";
 import DashboardSalesBox from "../../components/molecules/DashboardSalesBox";
+import { useFetchProfileMutation } from "../../apiServices/profile/profileApi";
+import moment from "moment";
+import BirthdayModal from "../../components/modals/BirthdayModal";
 
 const Dashboard = ({ navigation }) => {
   const [dashboardItems, setDashboardItems] = useState();
@@ -104,6 +107,7 @@ const Dashboard = ({ navigation }) => {
   const [isTertiary, setIsTertiary] = useState();
   const [walkThrough, setWalkThrough] = useState(false);
   const [isSales, setIsSales] = useState();
+  const [showBirthdayModal, setShowBirthdayModal] = useState(false)
   const stepId = useSelector((state) => state.walkThrough.stepId);
   const { date, time, month, year } = useCurrentDateTime();
 
@@ -178,6 +182,19 @@ const Dashboard = ({ navigation }) => {
   // console.log("user id is from dashboard", userId)
   //   console.log(focused)
   let startDate, endDate;
+
+
+  const [
+    fetchProfileFunc,
+    {
+      data: fetchProfileData,
+      error: fetchProfileError,
+      isLoading: fetchProfileIsLoading,
+      isError: fetchProfileIsError,
+    },
+  ] = useFetchProfileMutation();
+
+
   const [
     getActiveMembershipFunc,
     {
@@ -258,6 +275,43 @@ const Dashboard = ({ navigation }) => {
     userPointFunc(params);
     fetchUserPointsHistoryFunc(params);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const credentials = await Keychain.getGenericPassword();
+      if (credentials) {
+        console.log(
+          "Credentials successfully loaded for user " + credentials.username
+        );
+        const token = credentials.username;
+        fetchProfileFunc(token);
+
+      }
+    };
+    fetchData();
+  }, [focused]);
+
+  useEffect(()=>{
+    if(fetchProfileData)
+    {
+      console.log("fetchProfileData", fetchProfileData)
+      const currentDay = moment(new Date()).format('DD-MM')
+
+      if(fetchProfileData?.body?.dob!=null)
+      {
+        const birthDay = moment(fetchProfileData?.body?.dob).format('DD-MM')  
+        if(currentDay == birthDay)
+        {
+          setShowBirthdayModal(true)
+        }    
+      }
+
+    }
+    else if(fetchProfileError)
+    {
+      console.log("fetchProfileError",fetchProfileError)
+    }
+  },[fetchProfileData,fetchProfileError])
 
   useEffect(() => {
     // Determine if tooltip should be shown
@@ -577,9 +631,7 @@ const Dashboard = ({ navigation }) => {
     return (
       <View style={{ width: "100%" }}>
         <View style={{ width: "100%", alignItems: "center", marginTop: 20 }}>
-          <View>
-            {/* <Bell name="bell" size={18} style={{marginTop:5}} color={ternaryThemeColor}></Bell> */}
-          </View>
+          
           <PoppinsTextLeftMedium
             content={notifData?.title ? notifData?.title : ""}
             style={{
@@ -649,6 +701,7 @@ const Dashboard = ({ navigation }) => {
           openModal={error}
         ></ErrorModal>
       )}
+        <DrawerHeader></DrawerHeader>
 
       <ScrollView
         style={{
@@ -657,7 +710,6 @@ const Dashboard = ({ navigation }) => {
           height: "100%",
         }}
       >
-        <DrawerHeader></DrawerHeader>
 
         <View
           style={{
@@ -667,10 +719,11 @@ const Dashboard = ({ navigation }) => {
             height: "90%",
           }}
         >
-          <View style={{ height: 180, width: "100%", marginBottom: 20 }}>
+          <View style={{ width: "100%", marginBottom: 20 }}>
             {bannerArray && <Banner images={bannerArray}></Banner>}
 
-            {showCampaign && (
+          </View>
+          {showCampaign && !showBirthdayModal && (
               <CampaignVideoModal
                 dontShow={dontShow}
                 isVisible={CampainVideoVisible}
@@ -679,6 +732,14 @@ const Dashboard = ({ navigation }) => {
                 }}
               />
             )}
+            {
+              showBirthdayModal && <BirthdayModal
+              visible={showBirthdayModal}
+              onClose={() => {
+                setShowCampaign(false)
+                setShowBirthdayModal(false)}}
+            />
+            }
             <PlatinumModal
               isVisible={membershipModal}
               onClose={() => {
@@ -686,8 +747,6 @@ const Dashboard = ({ navigation }) => {
               }}
               getActiveMembershipData={getActiveMembershipData}
             />
-          </View>
-
           <View
             style={{
               width: "90%",
@@ -897,7 +956,7 @@ const Dashboard = ({ navigation }) => {
                 alignItems: "center",
                 justifyContent: "space-evenly",
                 bottom: 30,
-                paddingBottom: 40,
+                paddingBottom: 10,
                 marginTop: 10,
               }}
             >

@@ -247,13 +247,21 @@ const OtpLogin = ({ navigation, route }) => {
   };
 
   const handleNavigation=()=>{
-    if(name && nameData)
+    if(name && nameData && isChecked)
     {
       navigateToOtp(nameData, mobile);
     }
-    else{
-      
-      navigation.navigate("SelectUser",navigationParams)
+    else
+    {
+      if(mobile && mobile.length==10 && isChecked)
+      {
+        navigation.navigate("SelectUser",navigationParams)
+      }
+      else
+      {
+        setError(true)
+        setMessage("Kindly Enter Mobile Number and Check Terms and Condition Before Proceeding")
+      }
     }
   }
 
@@ -266,11 +274,11 @@ const OtpLogin = ({ navigation, route }) => {
   };
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={{height:'100%' }}
       behavior={Platform.OS === "ios" ? "padding" : "height"} // Or "position"
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -20}
     >
-    <View style={{ flex: 1 }}>
+    <View style={{}}>
     <ScrollView
           contentContainerStyle={{
             alignItems: "center",
@@ -297,7 +305,7 @@ const OtpLogin = ({ navigation, route }) => {
               resizeMode: "contain",
               
             }}
-            source={require("../../../assets/images/MotherWoodCircle.png")}
+            source={require("../../../assets/images/MotherWoodCircleSathi.png")}
           ></Image>
           </View>
         <View
@@ -435,8 +443,8 @@ const OtpLogin = ({ navigation, route }) => {
 
        
     </ScrollView>
-          <SocialBottomBar />
     </View>
+            <SocialBottomBar></SocialBottomBar>
     </KeyboardAvoidingView>
   );
 };

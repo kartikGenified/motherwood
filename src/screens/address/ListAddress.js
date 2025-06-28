@@ -20,6 +20,7 @@ import PoppinsTextLeftMedium from "../../components/electrons/customFonts/Poppin
 import { useIsFocused } from "@react-navigation/native";
 import { addAddress } from "../../../redux/slices/redemptionAddressSlice";
 import { useTranslation } from "react-i18next";
+import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 const ListAddress = ({ navigation, route }) => {
   const [selectedIndex, setSelectedIndex] = useState();
   const [selectedAddress, setSelectedAddress] = useState();
@@ -463,7 +464,8 @@ const ListAddress = ({ navigation, route }) => {
           justifyContent: "flex-start",
           flexDirection: "row",
           width: "100%",
-          marginTop: 10,
+          backgroundColor:'#FFF8E7',
+          marginTop: 0,
           height: "10%",
           marginLeft: 20,
         }}
@@ -495,7 +497,7 @@ const ListAddress = ({ navigation, route }) => {
       </View>
       <View
         style={{
-          height: "80%",
+          height: "70%",
           width: "100%",
           alignItems: "center",
           justifyContent: "flex-start",
@@ -588,13 +590,12 @@ const ListAddress = ({ navigation, route }) => {
         </View>
         }
 
-        {getAllAddressData?.body?.[0] &&
+        
           <TouchableOpacity onPress={()=>{
             navigation.navigate("AddAddress",{type:type});
           }} style={{marginTop:20, paddingHorizontal:40, backgroundColor:ternaryThemeColor, borderRadius:30,paddingVertical:10}}>
             <Text style={{color:'white', fontSize:18}}>Add New Address</Text>
           </TouchableOpacity>
-        }
         
         </ScrollView>
       </View>
@@ -634,15 +635,14 @@ const ListAddress = ({ navigation, route }) => {
             content={t("Submit")}
           ></PoppinsTextMedium>
         </TouchableOpacity>
-        {
+        {/* {
           (addressList && !addressList.length > 0) &&
           <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
-            position: "absolute",
-            right: 20,
+            
           }}
         >
           <PoppinsText
@@ -667,8 +667,11 @@ const ListAddress = ({ navigation, route }) => {
             <Plus name="pluscircle" size={30} color={"#D5B60B"}></Plus>
           </TouchableOpacity>
         </View>
-        }
+        } */}
      
+      </View>
+      <View style={{height:'10%',alignItems:'center',justifyContent:'center',width:'100%'}}>
+        <SocialBottomBar showRelative={true}></SocialBottomBar>
       </View>
     </View>
   );

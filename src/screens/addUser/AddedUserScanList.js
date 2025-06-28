@@ -44,7 +44,7 @@ const AddedUserScanList = ({ navigation,route }) => {
   const userData = useSelector((state) => state.appusersdata.userData);
   const userId = useSelector((state) => state.appusersdata.id);
   const routeData = route.params.data
-  console.log("user data is about to be printed", routeData.id)
+  console.log("user data is about to be printed", routeData)
   const [
     getPointSharingFunc,
     {

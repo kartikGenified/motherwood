@@ -445,21 +445,12 @@ const BankAccounts = ({ navigation, route }) => {
           height: '90%',
           marginTop: 30
         }}>
-          <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'center',backgroundColor:"black",borderRadius:8 }}>
-          <PoppinsText content={t("Add Account")} style={{ color: "#595959", fontSize: 16 }}></PoppinsText>
-          <TouchableOpacity onPress={() => { navigation.navigate('AddBankAccountAndUpi') }} style={{ backgroundColor: '#DDDDDD', height: 60, width: 60, borderRadius: 30, alignItems: "center", justifyContent: 'center', marginLeft: 10 }}>
-            <Plus name="pluscircle" size={50} color={"#595959"}></Plus>
-          </TouchableOpacity>
-        </View>
-        <PoppinsTextMedium
-          style={{
-            fontWeight: '800',
-            fontSize: 20,
-            color: 'black',
-            marginTop: 20,
-
-          }}
-          content={t("Preferred Method")}></PoppinsTextMedium>
+          <TouchableOpacity  onPress={() => { navigation.navigate('AddBankAccountAndUpi') }} style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'center',backgroundColor:ternaryThemeColor,borderRadius:8,padding:6,position:'absolute',left:10,top:10}}>
+          <Plus style={{marginRight:10}} name="pluscircle" size={20} color={"white"}></Plus>
+          
+          <PoppinsText content={t("Add Account")} style={{ color: "white", fontSize: 12 }}></PoppinsText>
+        </TouchableOpacity>
+        
         <ScrollView contentContainerStyle={{width: '100%',height:'80%'}} style={{ width: '100%',height:'70%' }}>
           <View style={{ alignItems: "center", justifyContent: "center" }}>
 

@@ -72,7 +72,8 @@ Keyboard.addListener('keyboardDidHide',()=>{
     }
 
     return (
-        <View style={{height:60,width:'90%',borderWidth:0.6,borderColor:'#DDDDDD',alignItems:"center",justifyContent:"center",backgroundColor:'white',margin:10}}>
+      <>
+      <View style={{height:60,width:'90%',borderWidth:0.6,borderColor:'#DDDDDD',alignItems:"center",justifyContent:"center",backgroundColor:'white',margin:10}}>
             <Modal
         animationType="slide"
         transparent={true}
@@ -94,10 +95,13 @@ Keyboard.addListener('keyboardDidHide',()=>{
           </View>
         </View>
       </Modal>
+      
             <View style={{alignItems:"center",justifyContent:'center',backgroundColor:'white',position:"absolute",top:-15,left:16}}>
                 <PoppinsTextMedium style={{color:"#919191",padding:4,fontSize:18}} content = {label}></PoppinsTextMedium>
             </View>
             <TextInput editable={!verifyGstData} maxLength={15} onSubmitEditing={(text)=>{handleInputEnd()}} onEndEditing={(text)=>{handleInputEnd()}} style={{height:50,width:'100%',alignItems:"center",justifyContent:"flex-start",fontWeight:'500',marginLeft:24,color:'black',fontSize:16}} placeholderTextColor="grey" onChangeText={(text)=>{handleInput(text)}} value={value} placeholder={required ? `${placeHolder} *`: `${placeHolder}`}></TextInput>
+            
+           
             {verifyGstIsLoading && <FastImage
           style={{ width: 30, height: 30, alignSelf: 'center',position:'absolute',right:10 }}
           source={{
@@ -106,7 +110,14 @@ Keyboard.addListener('keyboardDidHide',()=>{
           }}
           resizeMode={FastImage.resizeMode.contain}
         />}
+        
         </View>
+      {verifyGstError && 
+                <PoppinsTextMedium style={{color:"red",padding:4,fontSize:18,marginBottom:10}} content = {verifyGstError?.data?.message}></PoppinsTextMedium>
+
+            }
+      </>
+        
     );
 }
 

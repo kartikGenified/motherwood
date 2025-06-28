@@ -5,11 +5,13 @@ import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTex
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Down from 'react-native-vector-icons/Entypo'
+import * as Keychain from "react-native-keychain";
 import { useGetZoneWiseEmployeeUserMutation } from '../../apiServices/userMapping/userMappingApi';
 // create a component
 const PointsDistribution = ({navigation}) => {
   const [employeeList, setEmployeeList] = useState();
   const [searchText, setSearchText] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState();
   const [showList, setShowList] = useState(false)
   const [selectedUser, setSelectedUser] = useState("SELECT USER")
       const secondaryThemeColor = useSelector(
@@ -18,8 +20,9 @@ const PointsDistribution = ({navigation}) => {
       const users = useSelector((state)=>state.appusers.value)
       const userData = useSelector(state => state.appusersdata.userData)
       const userList = users.filter((item,index)=>{return (item).toLowerCase()!=(userData.user_type).toLowerCase()})
+      
       const {t} = useTranslation()
-
+        console.log("PointsDistributionuserList",userList)
       const [
         getZoneWiseEmployeeUser,
         { data: zoneWiseData, error: zoneWiseError, isLoading: zoneWiseLoading },
@@ -29,6 +32,25 @@ const PointsDistribution = ({navigation}) => {
       useEffect(() => {
         fetchZoneWiseData();
       }, []);
+
+      const handleUserDropDown=(data)=>{
+        if(data!="all")
+        {
+          const filteredData =  zoneWiseData?.body?.users.filter((item,index)=>{
+
+            return (item.user_type).toLowerCase() == data.toLowerCase()
+          })
+          setEmployeeList(filteredData)
+        }
+        else{
+          const approvedUsers = zoneWiseData?.body?.users.filter((item,index)=>{
+            return item?.extra_status?.approved 
+          })
+          setEmployeeList(approvedUsers)
+        }
+        
+
+      }
 
 
       const renderEmployeeItem = ({ item, index }) =>{ 
@@ -64,6 +86,7 @@ const PointsDistribution = ({navigation}) => {
           marginHorizontal: 5,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
+          width:'96%'
         }}
       >
         <View
@@ -84,14 +107,17 @@ const PointsDistribution = ({navigation}) => {
                   height: 30,
                   textAlign: "center",
                   borderRadius: 20,
-                  fontSize: 20,
+                  fontSize: 16,
                 }}
               >
                 {index + 1}
               </Text>
               <Text
-                style={{ color: "white", fontWeight: "600", marginLeft: 10 }}
-              >{`Customer ID - ${item?.id} `}</Text>
+                style={{ color: "white", fontWeight: "600", marginLeft: 10,
+                fontSize: 12,
+              
+              }}
+              >{`Channel Partner ID - ${item?.id} `}</Text>
             </View>
             <Text
               style={{
@@ -99,22 +125,22 @@ const PointsDistribution = ({navigation}) => {
                 textAlign: "center",
                 marginLeft: 40,
                 fontWeight: "600",
+                fontSize: 12,
               }}
-            >{`Name : ${item?.name}`}</Text>
+            >{`Channel Partner Name : ${item?.name}`}</Text>
           </View>
   
           <View style={{}}>
             <Text
               style={{
                 color: "#FBFB0B",
-                fontSize: 14,
+                fontSize: 12,
                 fontWeight: "600",
                 textAlign: "center",
               }}
             >
               {"User Type"}
             </Text>
-  
             <Text style={{ textAlign: "center", color: "#FBFB0B" }}>
               {item?.user_type}
             </Text>
@@ -145,7 +171,7 @@ const PointsDistribution = ({navigation}) => {
                   ></Image>
   
                   <Text
-                    style={{ color: "black", fontWeight: "600", fontSize: 17 }}
+                    style={{ color: "black", fontWeight: "600", fontSize: 14 }}
                   >
                     City :{item.city}{" "}
                   </Text>
@@ -162,24 +188,33 @@ const PointsDistribution = ({navigation}) => {
                   }}
                   source={require("../../../assets/images/mobileBlack.png")}
                 ></Image>
-                <Text style={{ color: "black", fontWeight: "600", fontSize: 17 }}>
+                <Text style={{ color: "black", fontWeight: "600", fontSize: 14 }}>
                   Mobile : {item.mobile}{" "}
                 </Text>
               </View>
             </View>
-            <View style={{ padding: 13, backgroundColor: statusBg }}>
-              <Text style={{ textAlign: "center", color: statusText }}>
+            {/* <View style={{ padding: 6, backgroundColor: statusBg }}>
+              <Text style={{ textAlign: "center", color: statusText,fontSize:13 }}>
                 Status
               </Text>
-              <Text style={{ textAlign: "center", color: statusText }}>
+              <Text style={{ textAlign: "center", color: statusText,fontSize:13 }}>
                 {statusLabel}
               </Text>
-            </View>
+            </View> */}
+            <TouchableOpacity onPress={()=>{
+              navigation.navigate("AddedUserScanList",{
+                data:item
+              })
+            }} style={{alignItems:"center", justifyContent:'center',padding:4,backgroundColor:'black',width:60,borderRadius:20,height:40}}>
+            <Text style={{ textAlign: "center", color: "white",fontSize:13 }}>
+                View
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
   
         {/* Button */}
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             backgroundColor: "black",
             height: 50,
@@ -198,7 +233,7 @@ const PointsDistribution = ({navigation}) => {
           <Text style={{ color: "white", fontWeight: "600", marginLeft: 10 }}>
             View Profile
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       )
    
@@ -214,13 +249,13 @@ const PointsDistribution = ({navigation}) => {
             "Approval Users": "APPROVED",
             "Reject Users": "REJECTED",
           };
-          const mappedStatus = statusMap[selectedStatus] || undefined;
+          const mappedStatus =  undefined;
     
           const params = {
             status: mappedStatus,
             userId: searchText,
-            dateFrom: dateFrom,
-            dateTo: dateTo,
+            dateFrom: undefined,
+            dateTo: undefined,
             token: token,
           };
     
@@ -234,9 +269,12 @@ const PointsDistribution = ({navigation}) => {
       useEffect(() => {
         if (zoneWiseData) {
           console.log("ZoneWiseEmployeeUser11:", zoneWiseData?.body?.users);
-          setEmployeeList(zoneWiseData?.body?.users);
+          const approvedUsers = zoneWiseData?.body?.users.filter((item,index)=>{
+            return item?.extra_status?.approved 
+          })
+          setEmployeeList(approvedUsers)
         }
-        if (zoneWiseError) {
+        else if (zoneWiseError) {
           console.log("ZoneWiseEmployeeUser error:", zoneWiseError);
         }
       }, [zoneWiseData, zoneWiseError]);
@@ -268,7 +306,7 @@ const PointsDistribution = ({navigation}) => {
             ></Image>
           </TouchableOpacity>
           <PoppinsTextMedium
-            content={t("User Management")}
+            content={t("Point Distribution")}
             style={{
               marginLeft: 10,
               fontSize: 18,
@@ -307,7 +345,7 @@ const PointsDistribution = ({navigation}) => {
           placeholder="Search"
         ></TextInput>
       </View>
-      <View style={{ width:'44%', height:'100%',position:'absolute',top:30,right:10 }}>
+      <View style={{ width:'44%', height:'100%',position:'absolute',top:30,right:10, zIndex:1}}>
        <TouchableOpacity onPress={()=>{
         setShowList(!showList)
        }} style={{height:40,width:"100%",alignItems:"center", justifyContent:'center',backgroundColor:"#DDDDDD",borderRadius:20,flexDirection:'row'}}>
@@ -323,8 +361,7 @@ const PointsDistribution = ({navigation}) => {
               userList.map((item,index)=>{
                 return(
                   <TouchableOpacity onPress={()=>{
-
-                    setSelectedUser(item)
+                    handleUserDropDown(item)
                     setShowList(!showList)
 
                   }} style={{height:30,width:'100%',backgroundColor:'#DDDDDD',alignItems:'center', justifyContent:'center',marginBottom:1}}>
@@ -333,6 +370,13 @@ const PointsDistribution = ({navigation}) => {
                 )
               })
             }
+            <TouchableOpacity onPress={()=>{
+                    handleUserDropDown("all")
+                    setShowList(!showList)
+
+                  }} style={{height:30,width:'100%',backgroundColor:'#DDDDDD',alignItems:'center', justifyContent:'center',marginBottom:1}}>
+                    <PoppinsTextMedium content="All" style={{color:'#717171', fontSize:16,}}></PoppinsTextMedium>
+                  </TouchableOpacity>
           </View>
         }
       </View>
@@ -340,6 +384,7 @@ const PointsDistribution = ({navigation}) => {
 
       <FlatList
         data={employeeList || []}
+        style={{width:'100%'}}
         keyExtractor={(item, index) => item?.id?.toString() || index.toString()}
         renderItem={renderEmployeeItem}
         ListEmptyComponent={
