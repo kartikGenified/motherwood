@@ -85,6 +85,9 @@ import DashboardSalesBox from "../../components/molecules/DashboardSalesBox";
 import { useFetchProfileMutation } from "../../apiServices/profile/profileApi";
 import moment from "moment";
 import BirthdayModal from "../../components/modals/BirthdayModal";
+import { setBirthdayModal } from "../../../redux/slices/birthdayModalSlice";
+import { useSelectedDreamGiftMutation } from "../../apiServices/dreamGift/DreamGiftApi";
+
 
 const Dashboard = ({ navigation }) => {
   const [dashboardItems, setDashboardItems] = useState();
@@ -99,6 +102,7 @@ const Dashboard = ({ navigation }) => {
   const [notifModal, setNotifModal] = useState(false);
   const [notifData, setNotifData] = useState(null);
   const [message, setMessage] = useState();
+  const [dreamGift,setDreamGift] = useState()
   const [success, setSuccess] = useState(false);
   const [hide, setHide] = useState(true);
   const [campaignData, setCaimpaignData] = useState(null);
@@ -166,8 +170,8 @@ const Dashboard = ({ navigation }) => {
   const bannerArray = useSelector((state) => state.dashboardData.banner);
   const locationSetup = useSelector((state) => state.appusers.locationSetup);
 
-  console.log("Dashboard data is", dashboardData, locationSetup);
-
+  // console.log("Dashboard data is", dashboardData, locationSetup);
+console.log("banner array",bannerArray)
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );
@@ -248,6 +252,16 @@ const Dashboard = ({ navigation }) => {
     },
   ] = useSalesPointsDashboardMutation();
 
+  const [
+    selectedDreamFunc,
+    {
+      data: selectedDreamData,
+      error: selectedDreamError,
+      isLoading: selectedDreamisLoading,
+      isError: selectedDreamIsError,
+    },
+  ] = useSelectedDreamGiftMutation();
+
 
   
   const [
@@ -261,6 +275,8 @@ const Dashboard = ({ navigation }) => {
   ] = useFetchUserPointsHistoryMutation();
 
   const id = useSelector((state) => state.appusersdata.id);
+  const birthdayModal = useSelector((state) => state.birthday.birthdayModal);
+
   const { t } = useTranslation();
 
   console.log("gvbjkbsdjkbvjksdhjgfgsahjgfjksa", isTertiary);
@@ -274,6 +290,8 @@ const Dashboard = ({ navigation }) => {
     };
     userPointFunc(params);
     fetchUserPointsHistoryFunc(params);
+    selectedDreamFunc(params)
+
   };
 
   useEffect(() => {
@@ -322,6 +340,17 @@ const Dashboard = ({ navigation }) => {
       setWalkThrough(false);
     }
   }, [stepId]);
+
+  useEffect(()=>{
+    if(selectedDreamData){
+      console.log("selectedDreamData", selectedDreamData?.body[0])
+      setDreamGift(selectedDreamData?.body?.[0]?.gift)
+   
+     
+    }else{
+      console.log("selectedDreamError", selectedDreamError)
+    }
+  },[selectedDreamData, selectedDreamError])
 
   useEffect(() => {
     if (locationSetup) {
@@ -702,27 +731,23 @@ const Dashboard = ({ navigation }) => {
         ></ErrorModal>
       )}
         <DrawerHeader></DrawerHeader>
-
+       
       <ScrollView
         style={{
           width: "100%",
-          marginBottom: platformMarginScroll,
-          height: "100%",
         }}
       >
-
+           <View style={{ width: "100%", marginBottom: 20 }}>
+            {bannerArray && <Banner images={bannerArray}></Banner>}
+          </View>
         <View
           style={{
             width: "100%",
             alignItems: "center",
             justifyContent: "center",
-            height: "90%",
           }}
         >
-          <View style={{ width: "100%", marginBottom: 20 }}>
-            {bannerArray && <Banner images={bannerArray}></Banner>}
-
-          </View>
+          
           {showCampaign && !showBirthdayModal && (
               <CampaignVideoModal
                 dontShow={dontShow}
@@ -733,11 +758,13 @@ const Dashboard = ({ navigation }) => {
               />
             )}
             {
-              showBirthdayModal && <BirthdayModal
+              showBirthdayModal && !birthdayModal && <BirthdayModal
               visible={showBirthdayModal}
               onClose={() => {
                 setShowCampaign(false)
-                setShowBirthdayModal(false)}}
+                setShowBirthdayModal(false)
+                dispatch(setBirthdayModal(true))
+              }}
             />
             }
             <PlatinumModal
@@ -755,7 +782,7 @@ const Dashboard = ({ navigation }) => {
               justifyContent: "space-between",
             }}
           >
-            {!isSales && (
+            {!isSales && dreamGift && (
               <View
                 style={{
                   flexDirection: "row",
@@ -955,9 +982,9 @@ const Dashboard = ({ navigation }) => {
                 backgroundColor: "white",
                 alignItems: "center",
                 justifyContent: "space-evenly",
-                bottom: 30,
                 paddingBottom: 10,
                 marginTop: 10,
+                marginBottom:50
               }}
             >
               <DashboardSupportBox

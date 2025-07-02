@@ -79,12 +79,12 @@ const RedeemedDetails = ({ navigation, route }) => {
   )
     ? useSelector((state) => state.apptheme.ternaryThemeColor)
     : "grey";
-  const productName = data.gift.gift[0].name;
+  const productName = data.name;
   const productImage = require("../../../assets/images/box.png");
   const walletPoints = data.points;
   const expectedDeliveryDate = "23 Sep 2023";
   const deliveryStatus = "Approved";
-  const image = data.gift.gift[0].images[0];
+  const image = data.images[0];
   const deliveryAddress =
     "69/5, Gali no -2 Sainik Enclave Sector 2, Mohan Garden,Uttam Nagar, New Delhi - 110059";
 

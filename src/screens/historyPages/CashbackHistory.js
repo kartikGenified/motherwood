@@ -180,6 +180,8 @@ const CashbackHistory = ({ navigation }) => {
         "fetchGiftsRedemptionsOfUserData",
         JSON.stringify(fetchGiftsRedemptionsOfUserData)
       );
+      console.log("fetchGiftsRedemptionsOfUserData asdgjhashgdhjgshga",fetchGiftsRedemptionsOfUserData?.body?.userPointsRedemptionList)
+
       fetchDates(fetchGiftsRedemptionsOfUserData.body.userPointsRedemptionList);
     } else if (fetchGiftsRedemptionsOfUserError) {
       console.log(
@@ -343,6 +345,13 @@ const CashbackHistory = ({ navigation }) => {
       console.log("cashPerPointData", cashPerPointData);
       navigation.navigate("RewardMenu");
     } else {
+
+      console.log(
+        "correct redemption date",
+        new Date().getTime(),
+        new Date(redemptionStartData).getTime(),
+        new Date(redemptionEndDate).getTime()
+      );
       setError(true);
       setMessage(
         "Redemption window starts from " +
@@ -389,39 +398,119 @@ const CashbackHistory = ({ navigation }) => {
   };
 
   const ListItem = (props) => {
-    const data = props.data
-    const description = data.gift.gift[0].name
-    const productCode = props.productCode
-    const time = props.time
-    const productStatus = props.productStatus
-    const amount = props.amount
-    const image = data.gift.gift[0].images[0]
-    console.log("data from listItem", data.gift.gift[0])
+    const {
+      data,            // This is now a single giftItem (not the whole redemption object)
+      productCode,
+      time,
+      productStatus,
+      amount,
+    } = props;
+  
+    const description = data?.name ?? "No Description";
+    const image = data?.images?.[0] ?? "";
+  
+    console.log("ListItem Gift Data:", data);
+  
     return (
-      <TouchableOpacity onPress={() => {
-        navigation.navigate('RedeemedDetails', { data: data })
-      }} style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", marginTop: 10, width: "100%", marginBottom: 10 }}>
-        <View style={{ height: 70, width: 70, alignItems: "center", justifyContent: "center", borderRadius: 10, borderWidth: 1, borderColor: '#DDDDDD', right: 10 }}>
-          <Image style={{ height: 50, width: 50, resizeMode: "contain" }} source={{ uri:image }}></Image>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('RedeemedDetails', { data });  // Only the gift item data
+        }}
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: 10,
+          width: "100%",
+          marginBottom: 10,
+        }}
+      >
+        <View
+          style={{
+            height: 70,
+            width: 70,
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 10,
+            borderWidth: 1,
+            borderColor: '#DDDDDD',
+            right: 10,
+          }}
+        >
+          <Image
+            style={{ height: 50, width: 50, resizeMode: "contain" }}
+            source={{ uri: image }}
+          />
         </View>
-        <View style={{ alignItems: "flex-start", justifyContent: "center", marginLeft: 0, width: 160 }}>
-          <PoppinsTextMedium style={{ fontWeight: '600', fontSize: 16, color: 'black', textAlign: 'auto' }} content={description}></PoppinsTextMedium>
-          <View style={{ backgroundColor: ternaryThemeColor, alignItems: 'center', justifyContent: "center", borderRadius: 4, padding: 3, paddingLeft: 5, paddingRight: 5 }}>
-            <PoppinsTextMedium style={{ fontWeight: '400', fontSize: 12, color: 'white' }} content={`${t("Product Status :")} ${productStatus}`}></PoppinsTextMedium>
+  
+        <View
+          style={{
+            alignItems: "flex-start",
+            justifyContent: "center",
+            marginLeft: 0,
+            width: 160,
+          }}
+        >
+          <PoppinsTextMedium
+            style={{ fontWeight: '600', fontSize: 16, color: 'black', textAlign: 'auto' }}
+            content={description}
+          />
+  
+          <View
+            style={{
+              backgroundColor: ternaryThemeColor,
+              alignItems: 'center',
+              justifyContent: "center",
+              borderRadius: 4,
+              padding: 3,
+              paddingLeft: 5,
+              paddingRight: 5,
+            }}
+          >
+            <PoppinsTextMedium
+              style={{ fontWeight: '400', fontSize: 12, color: 'white' }}
+              content={`${t("Product Status :")} ${productStatus}`}
+            />
           </View>
-          <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", marginTop: 4 }}>
-            <Image style={{ height: 14, width: 14, resizeMode: "contain" }} source={require('../../../assets/images/clock.png')}></Image>
-            <PoppinsTextMedium style={{ fontWeight: '200', fontSize: 12, color: 'grey', marginLeft: 4 }} content={time}></PoppinsTextMedium>
-
+  
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: 4,
+            }}
+          >
+            <Image
+              style={{ height: 14, width: 14, resizeMode: "contain" }}
+              source={require('../../../assets/images/clock.png')}
+            />
+            <PoppinsTextMedium
+              style={{ fontWeight: '200', fontSize: 12, color: 'grey', marginLeft: 4 }}
+              content={time}
+            />
           </View>
         </View>
-        <View style={{ alignItems: "center", justifyContent: "center", marginLeft: 40 }}>
-          <PoppinsTextMedium style={{ color: ternaryThemeColor, fontSize: 18, fontWeight: "700" }} content={` - ${amount}`}></PoppinsTextMedium>
-          <PoppinsTextMedium style={{ color: "grey", fontSize: 14 }} content="PTS"></PoppinsTextMedium>
+  
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            marginLeft: 40,
+          }}
+        >
+          <PoppinsTextMedium
+            style={{ color: ternaryThemeColor, fontSize: 18, fontWeight: "700" }}
+            content={` - ${amount}`}
+          />
+          <PoppinsTextMedium
+            style={{ color: "grey", fontSize: 14 }}
+            content="PTS"
+          />
         </View>
       </TouchableOpacity>
-    )
-  }
+    );
+  };
   const CashbackListItem = (props) => {
     const amount = props.items.cash;
     console.log("amount details", props);
@@ -738,7 +827,7 @@ const CashbackHistory = ({ navigation }) => {
               style={{
                 height: 36,
                 width: 100,
-                backgroundColor: "#B6202D",
+                backgroundColor: ternaryThemeColor,
                 alignItems: "center",
                 justifyContent: 'space-around',
                 borderRadius: 18,
@@ -807,7 +896,7 @@ const CashbackHistory = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       {fetchCashbackEnteriesData?.body?.count === 0 &&
-        getRedemptionListData?.body?.total === 0 && (
+        fetchGiftsRedemptionsOfUserData?.body?.total === 0 && (
           <View style={{ width: "100%", height: "80%" }}>
             <DataNotFound></DataNotFound>
           </View>
@@ -828,55 +917,57 @@ const CashbackHistory = ({ navigation }) => {
           keyExtractor={(item, index) => index}
         />
       )}
-      {!displayData && getRedemptionListData && (
-        <FlatList
-          data={redeemedListData}
-          maxToRenderPerBatch={10}
-          initialNumToRender={10}
-          renderItem={({ item, index }) => (
-            <View
-              key={index}
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                width: "100%",
-              }}
-            >
-              <View
-                style={{
-                  alignItems: "flex-start",
-                  justifyContent: "center",
-                  paddingBottom: 10,
-                  marginTop: 20,
-                  marginLeft: 20,
-                  width: "100%",
-                }}
-              >
-                <PoppinsTextMedium
-                  style={{ color: "black", fontSize: 16 }}
-                  content={item.date}
-                ></PoppinsTextMedium>
-              </View>
+      {!displayData && fetchGiftsRedemptionsOfUserData && (
+  <FlatList
+    data={fetchGiftsRedemptionsOfUserData?.body?.userPointsRedemptionList}
+    maxToRenderPerBatch={10}
+    initialNumToRender={10}
+    keyExtractor={(item, index) => index.toString()}
+    renderItem={({ item, index }) => {
+      const formattedDate = dayjs(item.created_at).format("DD MMM YYYY");
 
-              {item.data.map((item, index) => {
-                return (
-                  <View key={index}>
-                    <ListItem
-                      data={item}
-                      productStatus={item.gift_status}
-                      description={item.gift}
-                      productCode={item.product_code}
-                      amount={item.points}
-                      time={dayjs(item.created_at).format("HH:MM a")}
-                    />
-                  </View>
-                );
-              })}
+      return (
+        <View
+          key={index}
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
+          }}
+        >
+          <View
+            style={{
+              alignItems: "flex-start",
+              justifyContent: "center",
+              paddingBottom: 10,
+              marginTop: 20,
+              marginLeft: 20,
+              width: "100%",
+            }}
+          >
+            <PoppinsTextMedium
+              style={{ color: "black", fontSize: 16 }}
+              content={formattedDate}
+            />
+          </View>
+
+          {item.gift?.gift?.map((giftItem, idx) => (
+            <View key={idx}>
+              <ListItem
+                data={giftItem}
+                productStatus={item.gift_status}
+                description={giftItem.name}
+                productCode={item.product_code}
+                amount={giftItem.points}
+                time={dayjs(item.created_at).format("hh:mm A")}
+              />
             </View>
-          )}
-          keyExtractor={(item, index) => index}
-        />
-      )}
+          ))}
+        </View>
+      );
+    }}
+  />
+)}
 
       {error && navigateTo && (
         <ErrorModal

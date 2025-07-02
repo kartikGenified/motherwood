@@ -13,7 +13,10 @@ const BirthdayModal = ({ visible, onClose, userName }) => {
   }, [visible]);
 
   const userData = useSelector(state => state.appusersdata.userData)
-
+  const ternaryThemeColor = useSelector(
+    (state) => state.apptheme.ternaryThemeColor
+  )
+  
   return (
     <Modal visible={visible} transparent animationType="fade">
       <View style={styles.backdrop}>
@@ -31,10 +34,10 @@ const BirthdayModal = ({ visible, onClose, userName }) => {
             source={require('../../../assets/images/cake.jpeg')} // Use your own birthday image here
             style={styles.image}
           />
-          <Text style={styles.title}>🎉 Happy Birthday, {userData.name}! 🎉</Text>
+          <Text style={{...styles.title, color:ternaryThemeColor}}>🎉 Happy Birthday, {userData.name}! 🎉</Text>
           <Text style={styles.message}>Wishing you a day filled with love, joy, and confetti!</Text>
 
-          <Pressable onPress={onClose} style={styles.button}>
+          <Pressable onPress={onClose} style={{...styles.button,backgroundColor:ternaryThemeColor}}>
             <Text style={styles.buttonText}>Thank You!</Text>
           </Pressable>
         </View>

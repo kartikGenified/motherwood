@@ -9,7 +9,7 @@ import SocialBottomBar from '../../components/socialBar/SocialBottomBar';
 const RewardMenu = ({navigation}) => {
     return (
         <View style={styles.container}>
-            <TopHeader title={"Rewards"}></TopHeader>
+            <TopHeader title={"Redeem"}></TopHeader>
             <Image style={{marginTop:40, width:200,height:100 ,resizeMode:'contain',}} source={require("../../../assets/images/gift1.png")}></Image>
             <PoppinsTextMedium style={{width:300, marginTop:25, fontSize:18, color:'black', }} content={"Unlock the magic of your points and redeem them for exciting rewards!"}></PoppinsTextMedium>
 

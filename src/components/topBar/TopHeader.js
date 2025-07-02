@@ -32,7 +32,6 @@ const TopHeader = ({title}) => {
           alignItems: "center",
           justifyContent: "center",
           flexDirection: "row",
-          marginBottom:10
         }}
       >
         <TouchableOpacity

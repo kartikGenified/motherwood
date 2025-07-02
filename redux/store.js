@@ -30,6 +30,7 @@ import walkThroughSlice from './slices/walkThroughSlice';
 import errorMiddleware from './middleware/errorMiddleware';
 import errorSlice from './slices/errorSlice';
 import splashApiCallsSlice from './slices/splashApiCallsSlice';
+import birthdayModalSlice from './slices/birthdayModalSlice';
 
 export const store = configureStore({
   reducer: {
@@ -61,7 +62,8 @@ export const store = configureStore({
     drawerData: drawerDataSlice,
     cameraStatus:cameraStatusSlice,
     appLanguage:appLanguageSlice,
-    splashApi:splashApiCallsSlice
+    splashApi:splashApiCallsSlice,
+    birthday:birthdayModalSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(baseApi.middleware, supplyBeamApi.middleware, internetMiddleware), // Include networkMiddleware

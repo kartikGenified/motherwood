@@ -145,16 +145,12 @@ const EditProfile = ({ navigation, route }) => {
   useEffect(() => {
     const filteredFields = formFields.filter((item) => {
       const name = item.name?.trim()?.toLowerCase();
-      return selectedIndex === 0
-        ? !isLocationStageField(name)
-        : isLocationStageField(name);
+      return name
     });
   
     const filteredValues = filteredFields.map((filteredItem) => {
-      const originalIndex = formFields.findIndex(
-        (item) => item.name === filteredItem.name
-      );
-      return formValues[originalIndex];
+      
+        return filteredItem.name
     });
   
     // Update both renderData (filtered fields) and aligned values
@@ -659,7 +655,7 @@ const EditProfile = ({ navigation, route }) => {
       >
         {console.log("form value", formFields)}
         {/* data goes here */}
-        <TopBar options={options} />
+        {/* <TopBar options={options} /> */}
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{ width: "90%" }}

@@ -7,13 +7,12 @@ export const faqApi = baseApi.injectEndpoints({
         query: (params) => {
           return {
             method: "POST",
-            url: `/api/tenant/faqs`,
+            url: `/api/app/faqs`,
             headers: {
               "Content-Type": "application/json",
-              Authorization: "Bearer " + params.token,
               slug: slug,
             },
-            body: params.body,
+            
           };
         },
       }),

@@ -138,6 +138,7 @@ const PointsTransferNext = (params) => {
   }, [productsByCategoryData, productsByCategoryError]);
 
   const handleQtyChange = (rowIndex, qty) => {
+    console.log("ashjdghashdghsa", rowIndex, qty)
     const updatedRows = [...productRows];
     updatedRows[rowIndex].qty = qty;
     setProductRows(updatedRows);
@@ -302,8 +303,17 @@ const PointsTransferNext = (params) => {
     onThicknessChange,
     row,
   }) => {
+    const [localQty, setLocalQty] = useState(qty?.toString() || "");
+  
+    const handleQtyBlur = () => {
+      const parsedQty = parseInt(localQty, 10);
+      console.log("asdjhajshvhcashcvhash", parsedQty)
+      if (!isNaN(parsedQty)) {
 
-    console.log("thicknessOptions",thicknessOptions)
+        onQtyChange(index, parsedQty); // call parent only on valid number
+      }
+    };
+  
     return (
       <View
         style={{
@@ -313,6 +323,7 @@ const PointsTransferNext = (params) => {
           marginHorizontal: 10,
         }}
       >
+        {/* Product/Category Dropdown */}
         <View>
           <PoppinsTextLeftMedium
             style={{ color: "black", fontWeight: "bold" }}
@@ -320,17 +331,19 @@ const PointsTransferNext = (params) => {
           />
           <View style={{ width: 170, marginRight: 14 }}>
             <DropDownWithSearch
-              handleSearchData={(t) => handleSearch(t)}
-              handleData={(data) => onCategoryChange(data)}
+              handleSearchData={handleSearch}
+              handleData={onCategoryChange}
               placeholder={"Select Product"}
               data={data}
               value={row.category}
             />
           </View>
         </View>
+  
+        {/* Thickness Dropdown */}
         <View>
           <View
-                     style={{
+            style={{
               width: 80,
               alignItems: "center",
               justifyContent: "center",
@@ -343,8 +356,8 @@ const PointsTransferNext = (params) => {
             />
             <View style={{ width: 80 }}>
               <DropDownWithSearch
-                  handleSearchData={(t) => handleThicknessSearch(t)}
-                handleData={(data) => onThicknessChange(data)}
+                handleSearchData={handleThicknessSearch}
+                handleData={onThicknessChange}
                 placeholder={"select"}
                 data={thicknessOptions}
                 value={row.thickness}
@@ -352,13 +365,17 @@ const PointsTransferNext = (params) => {
             </View>
           </View>
         </View>
-        <View style={{marginLeft:4}}>
+  
+        {/* Quantity Input */}
+        <View style={{ marginLeft: 4 }}>
           <PoppinsTextMedium
             style={{ color: "black", fontWeight: "bold" }}
             content={"Qty"}
           />
           <TextInput
-            onChangeText={onQtyChange}
+            value={localQty}
+            onChangeText={(text) => setLocalQty(text.replace(/[^0-9]/g, ""))}
+            onBlur={handleQtyBlur}
             style={{
               backgroundColor: "#F1F1F1",
               marginTop: 10,
@@ -367,19 +384,16 @@ const PointsTransferNext = (params) => {
               borderRadius: 8,
               color: "black",
             }}
-            value={qty.toString()}
             keyboardType="numeric"
           />
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            onDeleteRow(index);
-          }}
-        >
+  
+        {/* Delete Button */}
+        <TouchableOpacity onPress={() => onDeleteRow(index)}>
           <Image
             style={{ height: 30, width: 30, marginTop: 37, marginLeft: 20 }}
             source={require("../../../assets/images/delete.png")}
-          ></Image>
+          />
         </TouchableOpacity>
       </View>
     );
@@ -416,7 +430,7 @@ const PointsTransferNext = (params) => {
           onProductChange={(selected) => handleProductChange(index, selected)}
           onCategoryChange={(selected) => handleCategoryChange(index, selected)}
           onThicknessChange={(selected) => handleThicknessChange(index, selected)}
-          onQtyChange={(qty) => handleQtyChange(index, qty)}
+          onQtyChange={(index, qty) => handleQtyChange(index, qty)}
           row={row}
         />
       ))}

@@ -445,11 +445,14 @@ const BankAccounts = ({ navigation, route }) => {
           height: '90%',
           marginTop: 30
         }}>
-          <TouchableOpacity  onPress={() => { navigation.navigate('AddBankAccountAndUpi') }} style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'center',backgroundColor:ternaryThemeColor,borderRadius:8,padding:6,position:'absolute',left:10,top:10}}>
+          <View style={{alignItems:'flex-start',justifyContent:'center',width:'100%'}}>
+          <TouchableOpacity  onPress={() => { navigation.navigate('AddBankAccountAndUpi') }} style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'center',backgroundColor:ternaryThemeColor,borderRadius:8,padding:6, marginLeft:20}}>
           <Plus style={{marginRight:10}} name="pluscircle" size={20} color={"white"}></Plus>
           
           <PoppinsText content={t("Add Account")} style={{ color: "white", fontSize: 12 }}></PoppinsText>
         </TouchableOpacity>
+          </View>
+          
         
         <ScrollView contentContainerStyle={{width: '100%',height:'80%'}} style={{ width: '100%',height:'70%' }}>
           <View style={{ alignItems: "center", justifyContent: "center" }}>

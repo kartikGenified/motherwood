@@ -71,12 +71,18 @@ const DreamCard = () => {
 
   useEffect(() => {
     if (deleteDreamGiftData) {
+      console.log("deleteDreamGiftData",deleteDreamGiftData)
       setModalVisible(false);
+    }
+    else if(deleteDreamGiftError)
+    {
+      console.log("deleteDreamGiftError", deleteDreamGiftError)
     }
   }, [deleteDreamGiftData, deleteDreamGiftError]);
 
   useEffect(() => {
     if (selectedDreamData) {
+      console.log("selectedDreamData",JSON.stringify(selectedDreamData))
       setDreamGift(selectedDreamData?.body?.[0]?.gift);
       setDreamGiftId(selectedDreamData?.body[0]?.id);
       setProfilePercentage(selectedDreamData?.body?.[0]?.perc);
@@ -94,6 +100,7 @@ const DreamCard = () => {
       cart: [dreamGift],
       schemeType: "",
       schemeID: "",
+      navigatingFrom:"dream"
     });
   };
 
@@ -113,7 +120,7 @@ const DreamCard = () => {
 
   return (
     dreamGift && (
-      <View style={styles.container}>
+      <View style={{width:'100%',alignItems:'center',justifyContent:'center'}}>
         <Modal
           animationType="slide"
           transparent={true}
@@ -211,6 +218,14 @@ const DreamCard = () => {
               marginBottom: 20,
             }}
           >
+            <View style={{width:'100%',alignItems:'flex-start', justifyContent:'center'}}>
+            <TouchableOpacity style={{marginLeft:10 }} onPress={() => {
+              setModalVisible(!modalVisible)
+            }}>
+              <Delete name="delete-circle" size={30} color={"#DDDDDD"} />
+            </TouchableOpacity>
+            </View>
+            
             <View style={{ borderRadius: 40, borderTopLeftRadius: 20 }}>
               <ImageBackground
                 style={{
@@ -289,7 +304,7 @@ const DreamCard = () => {
                 Every step brings you closer!
               </Text>
               {profilePercentage >= 0 && (
-                <View style={{ width: 280 }}>
+                <View style={{ width: '100%' }}>
                   <View
                     style={{
                       height: 20,
@@ -413,11 +428,7 @@ const DreamCard = () => {
                 </TouchableOpacity>
               </View>
             )}
-            <TouchableOpacity style={{ position: 'absolute', right: 10, bottom: 70 }} onPress={() => {
-              setModalVisible(!modalVisible)
-            }}>
-              <Delete name="delete-circle" size={30} color={"#DDDDDD"} />
-            </TouchableOpacity>
+            
           </View>
         )}
       </View>

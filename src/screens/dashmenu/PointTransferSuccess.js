@@ -488,7 +488,7 @@ const PointsTransferSuccess = (params) => {
                   }}
                 >
                   <Text style={{ color: "#000000", fontWeight: "600" }}>
-                    {item?.qty}
+                    {item?.classification}
                   </Text>
                 </View>
 

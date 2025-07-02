@@ -896,7 +896,6 @@ useEffect(()=>{
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height:'90%'
   },
   semicircle: {
     position: "absolute",

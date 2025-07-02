@@ -78,7 +78,7 @@ const DropDownWithSearch = (props) => {
         }}
       >
         <Text
-          style={{ color: "black", fontSize: 14, textTransform: "capitalize" }}
+          style={{ color: "black", fontSize: 14,}}
         >
           {t(title)}
         </Text>

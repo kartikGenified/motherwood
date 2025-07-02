@@ -1274,9 +1274,9 @@ const BasicInfo = ({ navigation, route }) => {
           ></PoppinsTextMedium>
         </View>
       </View>
-      <View style={{ marginTop: 0, width: "100%", marginBottom: 20 }}>
+      {/* <View style={{ marginTop: 0, width: "100%", marginBottom: 20 }}>
         <ProgressMeter currentStage={formStage - 1}></ProgressMeter>
-      </View>
+      </View> */}
       <ScrollView style={{ width: "100%" }}>
         <View
           style={{
@@ -1297,9 +1297,9 @@ const BasicInfo = ({ navigation, route }) => {
                 paddingHorizontal: 50,
               }}
               content={
-                formStage == 1
-                  ? t("Just few more things about you")
-                  : t("Where do you live/work?")
+                
+                   t("Just few more things about you")
+                  
               }
             ></PoppinsTextMedium>
           ) : (
@@ -1317,12 +1317,7 @@ const BasicInfo = ({ navigation, route }) => {
           {/* <RegistrationProgress data={["Basic Info","Business Info","Manage Address","Other Info"]}></RegistrationProgress> */}
           {registrationForm &&
             registrationForm
-              .filter((item) => {
-                const name = item.name?.trim()?.toLowerCase();
-                return formStage === 1
-                  ? !isLocationStageField(name)
-                  : isLocationStageField(name);
-              })
+             
               .map((item, index) => {
                 if (item.type === "text") {
                   console.log("the user name", userName);
@@ -1820,23 +1815,8 @@ const BasicInfo = ({ navigation, route }) => {
                 }
               })}
 
-          {formStage != 2 && formFound && !hideButton && (
-            <ButtonOval
-              handleOperation={() => {
-                setFormStage(2);
-              }}
-              backgroundColor="black"
-              content={t("Next")}
-              style={{
-                paddingLeft: 30,
-                paddingRight: 30,
-                padding: 10,
-                color: "white",
-                fontSize: 16,
-              }}
-            ></ButtonOval>
-          )}
-          {formStage == 2 && formFound && !hideButton && (
+          
+          
             <ButtonOval
               handleOperation={() => {
                 handleRegistrationFormSubmission();
@@ -1851,7 +1831,6 @@ const BasicInfo = ({ navigation, route }) => {
                 fontSize: 12,
               }}
             ></ButtonOval>
-          )}
         </View>
       </ScrollView>
     </View>

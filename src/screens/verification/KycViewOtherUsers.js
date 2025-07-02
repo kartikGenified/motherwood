@@ -42,6 +42,9 @@ const KycViewOtherUsers = ({ navigation, route}) => {
   const [modalContent, setModalContent] = useState();
   const [modal, setModal] = useState(false);
   const [kycArray, setKycArray] = useState([]);
+  const [error, setError] = useState(false)
+  const [message, setMessage] = useState("")
+  const [success, setSuccess] = useState(false)
   const [panVerified, setPanVerified] = useState(false);
   const [aadharVerified, setAadharVerified] = useState(false);
   const [gstinVerified, setGstinVerified] = useState(false);
@@ -1968,8 +1971,9 @@ const KycViewOtherUsers = ({ navigation, route}) => {
           For any issues with KYC approvals, please contact our help and support
           team at <Text style={{ color: "#B6202D" }}>+91-9258262524</Text>.
         </Text>
-        <SocialBottomBar showRelative={true}></SocialBottomBar>
       </ScrollView>
+      <SocialBottomBar showRelative={true}></SocialBottomBar>
+
     </View>
   );
 };

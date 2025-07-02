@@ -22,7 +22,7 @@ const TrackDeliveryModal = ({ isVisible, onClose, data, trackdata }) => {
 
         const modalClose =() =>{}
 
-    console.log("Data track", data.gift.gift[0].brand);
+    console.log("Data track", data);
 
 
     return (
@@ -47,20 +47,20 @@ const TrackDeliveryModal = ({ isVisible, onClose, data, trackdata }) => {
                     </View>
 
                     <View style={{ alignItems: 'center', marginTop: 10, marginBottom: 10 }}>
-                        <Image style={{ height: 70, width: 117, resizeMode: "contain", margin: 10, padding: 10, backgroundColor: 'white', }} source={{ uri:data?.gift?.gift[0]?.images[0] }}></Image>
-                        <PoppinsTextMedium style={{ fontSize: 16, fontWeight: '600', color: '#474747', width: '100%' }} content={data.gift.gift[0].name}></PoppinsTextMedium>
+                        <Image style={{ height: 70, width: 117, resizeMode: "contain", margin: 10, padding: 10, backgroundColor: 'white', }} source={{ uri:data?.images[0] }}></Image>
+                        <PoppinsTextMedium style={{ fontSize: 16, fontWeight: '600', color: '#474747', width: '100%' }} content={data.name}></PoppinsTextMedium>
                     </View>
 
                     <View style={{ width: '100%', flexDirection: 'row' }}>
                         <View style={{ width: '50%', backgroundColor: '#ECECEC', height: 53, alignItems: 'center' }}>
                             <PoppinsTextMedium style={{ fontSize: 15, fontWeight: '600', marginTop: 5,color:'black' }} content={t("Brand")}></PoppinsTextMedium>
-                            <PoppinsTextMedium style={{ fontSize: 15, fontWeight: '600', marginTop: 2,color:'black' }} content={data.gift.gift[0].brand}></PoppinsTextMedium>
+                            <PoppinsTextMedium style={{ fontSize: 15, fontWeight: '600', marginTop: 2,color:'black' }} content={data.brand}></PoppinsTextMedium>
 
                         </View>
 
                         <View style={{ width: '50%', backgroundColor: '#DDDDDD', height: 53 }}>
                             <PoppinsTextMedium style={{ fontSize: 15, fontWeight: '600', marginTop: 5 ,color:'black'}} content={t("Order Number")}></PoppinsTextMedium>
-                            <PoppinsTextMedium style={{ fontSize: 15, fontWeight: '600', marginTop: 2,color:'black' }} content={data.gift.gift[0].id}></PoppinsTextMedium>
+                            <PoppinsTextMedium style={{ fontSize: 15, fontWeight: '600', marginTop: 2,color:'black' }} content={data.id}></PoppinsTextMedium>
 
 
                         </View>

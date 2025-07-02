@@ -121,13 +121,15 @@ const AddedUserScanList = ({ navigation,route }) => {
     (async () => {
       const credentials = await Keychain.getGenericPassword();
       const token = credentials.username;
-      //   const startDate = dayjs(start).format(
-      //     "YYYY-MM-DD"
-      //   )
-      //   const endDate = dayjs(end).format("YYYY-MM-DD")
+        const startDate = dayjs(start).format(
+          "DD-MM-YYYY"
+        )
+        const endDate = dayjs(end).format("DD-MM-YYYY")
       const data = {
         token:token,
-        id:String(routeData?.id)
+        id:String(routeData?.id),
+        start_date:startDate,
+        end_date:endDate
       }
 
       getOrderDetailsByTypeFunc(data);
@@ -653,7 +655,7 @@ const AddedUserScanList = ({ navigation,route }) => {
               content={"Received Points"}
             ></PoppinsTextLeftMedium>
           </View>
-          {
+          {/* {
             (userData?.user_type)?.toLowerCase()!='carpenter' && (userData?.user_type)?.toLowerCase()!='contractor' && (userData?.user_type)?.toLowerCase()!='oem' && (userData?.user_type)?.toLowerCase()!='directoem' && 
             <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:140,marginLeft:20,flexDirection:'row'}} onPress={()=>{
               navigation.navigate('PointsTransfer')
@@ -662,7 +664,7 @@ const AddedUserScanList = ({ navigation,route }) => {
               <Image style={{height:20,width:20,resizeMode:'contain'}} source={require("../../../assets/images/gg.png")}></Image>
               <PoppinsTextMedium style={{color:'white', fontSize:12, fontWeight:'bold',marginLeft:8}} content={"Points Transfer"}></PoppinsTextMedium>
           </TouchableOpacity>
-          }
+          } */}
 
         
         </View>

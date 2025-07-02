@@ -17,9 +17,31 @@ const PointsDistribution = ({navigation}) => {
       const secondaryThemeColor = useSelector(
         (state) => state.apptheme.secondaryThemeColor
       );
+      const preferredOrder = [
+        "distributor",
+        "dealer",
+        "directoem",
+        "retailer",
+        "contractor",
+        "carpenter",
+        "oem"
+      ];
       const users = useSelector((state)=>state.appusers.value)
       const userData = useSelector(state => state.appusersdata.userData)
-      const userList = users.filter((item,index)=>{return (item).toLowerCase()!=(userData.user_type).toLowerCase()})
+
+      const filteredUsers = users.filter(
+    (item) => item.toLowerCase() !== userData.user_type.toLowerCase()
+  );
+  
+  // Step 2: Sort according to preferredOrder
+  const userList = filteredUsers.sort((a, b) => {
+    const indexA = preferredOrder.indexOf(a.toLowerCase().trim());
+    const indexB = preferredOrder.indexOf(b.toLowerCase().trim());
+  
+    // If not found in preferredOrder, put at end
+    return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+  });
+
       
       const {t} = useTranslation()
         console.log("PointsDistributionuserList",userList)

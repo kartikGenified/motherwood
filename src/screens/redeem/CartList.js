@@ -49,6 +49,8 @@ const CartList = ({ navigation, route }) => {
   const userData = useSelector(state => state.appusersdata.userData);
   const schemeType = route.params?.schemeType
   const schemeID = route.params?.schemeID
+
+  const navigatingFrom = route.params.navigatingFrom
   console.log('userdata', route.params.cart);
   const height = Dimensions.get('window').height
 
@@ -77,7 +79,8 @@ const CartList = ({ navigation, route }) => {
         navigation.replace("ListAddress", {
           schemeType:schemeType,
           cart: cart,
-          schemeID:schemeID
+          schemeID:schemeID,
+          type:navigatingFrom
         })
     }
        // const credentials = await Keychain.getGenericPassword();
@@ -476,17 +479,32 @@ const CartList = ({ navigation, route }) => {
               borderTopLeftRadius: 40,
             }}
             renderItem={({ item, index }) => {
-
-              return (
-                <RewardsBox
-
-                  data={item}
-                  key={index}
-                  product={item.name}
-                  category={item.catalogue_name}
-                  points={item.points}
-                  image={item.images[0]}></RewardsBox>
-              );
+              if(navigatingFrom == "dream")
+              {
+                return (
+                  <RewardsBox
+  
+                    data={item}
+                    key={index}
+                    product={item.gift_name}
+                    category={item.catalogue_name}
+                    points={item.points}
+                    image={item.images[0]}></RewardsBox>
+                )
+              }
+              else{
+                return (
+                  <RewardsBox
+  
+                    data={item}
+                    key={index}
+                    product={item.name}
+                    category={item.catalogue_name}
+                    points={item.points}
+                    image={item.images[0]}></RewardsBox>
+                )
+              }
+              
             }}
             keyExtractor={(item, index) => index}
           />

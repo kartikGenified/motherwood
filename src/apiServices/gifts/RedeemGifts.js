@@ -31,9 +31,26 @@ export const RedeemGiftsApi = baseApi.injectEndpoints({
               };
             },
           }),
+
+          redeemDreamGifts: builder.mutation({
+            query: (params) => {
+              console.log("params",params)
+              return {
+                method: "POST",
+                url: `/api/app/dreamGifts/redeem`,
+                headers: {
+                  "Content-Type": "application/json",
+                  slug: slug,
+                  "Authorization": `Bearer ${params.token}`,
+                },
+                body:params.data
+              };
+            },
+          }),
+
     })
 });
 
 
-export const {useRedeemGiftsMutation,useGetRedeemedGiftsStatusMutation} = RedeemGiftsApi
+export const {useRedeemGiftsMutation,useGetRedeemedGiftsStatusMutation, useRedeemDreamGiftsMutation} = RedeemGiftsApi
 

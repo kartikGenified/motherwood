@@ -18,7 +18,7 @@ import TextInputRectangularWithPlaceholder from "../../components/atoms/input/Te
 import OtpInput from "../../components/organisms/OtpInput";
 import { useVerifyOtpForNormalUseMutation } from "../../apiServices/otp/VerifyOtpForNormalUseApi";
 import * as Keychain from "react-native-keychain";
-import { useRedeemGiftsMutation } from "../../apiServices/gifts/RedeemGifts";
+import { useRedeemDreamGiftsMutation, useRedeemGiftsMutation } from "../../apiServices/gifts/RedeemGifts";
 import {
   useAddCashToBankWalletMutation,
   useGetWalletBalanceMutation,
@@ -37,6 +37,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useRedeemSchemeApiMutation } from "../../apiServices/scheme/RedeemSchemeApi";
 import { getCurrentLocation } from "../../utils/getCurrentLocation";
+import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 
 const OtpVerification = ({ navigation, route }) => {
   const [message, setMessage] = useState();
@@ -118,6 +119,16 @@ const OtpVerification = ({ navigation, route }) => {
     isLoading:addCashToBankWalletIsLoading,
     isError:addCashToBankWalletIsError
   }] = useAddCashToBankWalletMutation()
+
+  const [
+    redeemDreamGiftsFunc,
+    {
+      data: redeemDreamGiftsData,
+      error: redeemDreamGiftsError,
+      isLoading: redeemDreamGiftsIsLoading,
+      isError: redeemDreamGiftsIsError,
+    },
+  ] = useRedeemDreamGiftsMutation();
 
   const [
     addCashToBankFunc,
@@ -253,6 +264,20 @@ const OtpVerification = ({ navigation, route }) => {
     }
     // -----------------------------------------
   }, []);
+
+  useEffect(() => {
+    if (redeemDreamGiftsData) {
+      console.log("redeemDreamGiftsData", redeemDreamGiftsData);
+      setSuccess(true);
+      setMessage(redeemDreamGiftsData.message);
+      setShowRedeemButton(true);
+    } else if (redeemDreamGiftsError) {
+      console.log("redeemDreamGiftsError", redeemDreamGiftsError);
+      setMessage(redeemDreamGiftsError.data.message);
+      setError(true);
+      setShowRedeemButton(false);
+    }
+  }, [redeemDreamGiftsData, redeemDreamGiftsError]);
 
   useEffect(() => {
     if (redeemCashbackData) {
@@ -443,6 +468,19 @@ const OtpVerification = ({ navigation, route }) => {
         };
         createCouponRequestFunc(params);
         console.log("Coupon params", params);
+      }
+
+      else if (type == "dream"){
+        const params ={
+          token: token,
+          data : {
+            platform : Platform.OS,
+            platform_id: 1, 
+            address: address
+          }
+        }
+        console.log("dreamparams", params)
+        redeemDreamGiftsFunc(params)
       }
     }
   };
@@ -699,6 +737,7 @@ const OtpVerification = ({ navigation, route }) => {
         </View>
       )}
       </ScrollView>
+      <SocialBottomBar></SocialBottomBar>
     </View>
   );
 };

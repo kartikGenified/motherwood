@@ -126,7 +126,10 @@ const TransferredPointHistory = ({ navigation }) => {
       //   const endDate = dayjs(end).format("YYYY-MM-DD")
       const data = {
         token:token,
-        type:"transfer_point"
+        type:"transfer_point",
+        start_date:start,
+        end_date:end
+      
       }
 
       getOrderDetailsByTypeFunc(data);

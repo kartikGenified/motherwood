@@ -40,29 +40,19 @@ const FAQ = ({ navigation }) => {
     
     
     useEffect(()=>{
-        const getToken=async()=>{
-            const credentials = await Keychain.getGenericPassword();
-            if (credentials) {
-              console.log(
-                'Credentials successfully loaded for user ' + credentials.username
-              );
-              const token = credentials.username;
-              let parmas = {
-                token:token,
-              }
-                fetchFAQ(parmas)
-            }
-          }
-          getToken();
-        //   fetchFAQ();
+        
+                fetchFAQ()
+         
     },[])
 
     useEffect(()=>{
        if(fetchFAQData){
+        console.log("fetchFAQData",fetchFAQData)
         setFAQData(fetchFAQData.body.faqList)
         
        }
-       else{
+       else if(FAQError){
+        console.log("FAQError",FAQError)
         setError(true)
         setFAQData([]);
        }

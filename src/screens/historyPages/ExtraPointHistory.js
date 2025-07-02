@@ -27,6 +27,8 @@ import { useTranslation } from "react-i18next";
 import TopHeader from "../../components/topBar/TopHeader";
 import { useGetOrderDetailsByTypeMutation } from "../../apiServices/order/orderApi";
 import { useIsFocused } from "@react-navigation/native";
+import ErrorModal from "../../components/modals/ErrorModal";
+import MessageModal from "../../components/modals/MessageModal";
 
 
 const ExtraPointHistory = ({ navigation }) => {
@@ -35,6 +37,11 @@ const ExtraPointHistory = ({ navigation }) => {
   const [minRedemptionPoints, setMinRedemptionPoints] = useState();
   const [redemptionStartData, setRedemptionStartDate] = useState();
   const [redemptionEndDate, setRedemptionEndDate] = useState();
+  const [error, setError] = useState(false);
+  const [navigateTo, setNavigateTo] = useState()
+  const [message, setMessage] = useState('')
+  const [success, setSuccess] = useState(false);
+
   const points = 100;
   const focused = useIsFocused()
   const ternaryThemeColor = useSelector(
@@ -262,6 +269,12 @@ const ExtraPointHistory = ({ navigation }) => {
       cause: "exceptOrder",
     };
     getPointSharingFunc(params);
+  };
+
+  const modalClose = () => {
+    setError(false);
+    setMessage('')
+    setSuccess(false)
   };
 
   //Point category tab
@@ -595,7 +608,6 @@ const ExtraPointHistory = ({ navigation }) => {
           " and ends on " +
           dayjs(redemptionEndDate).format("DD-MMM-YYYY")
       );
-      setNavigateTo("CashbackHistory");
     }
   };
 
@@ -608,11 +620,11 @@ const ExtraPointHistory = ({ navigation }) => {
    const item = props.item
     return (
       <TouchableOpacity
-      onPress={()=>{
-        navigation.navigate("OrderDetails",{
-          item:item
-        })
-      }}
+      // onPress={()=>{
+      //   navigation.navigate("OrderDetails",{
+      //     item:item
+      //   })
+      // }}
       style={{
         alignItems: "flex-start",
         justifyContent: "flex-start",
@@ -626,7 +638,13 @@ const ExtraPointHistory = ({ navigation }) => {
       
      
         <View style={{width:'80%', alignItems:'flex-start' ,justifyContent:'flex-start'}}>
-        
+        <View style={{flexDirection :'row', marginTop:3}}>
+        <PoppinsTextMedium
+          style={{ fontWeight: "700", fontSize: 11, color: "black" }}
+          content={`${item.cause.type}`}
+        ></PoppinsTextMedium>
+          
+        </View>
         <View style={{flexDirection :'row', marginTop:3}}>
                  <PoppinsTextMedium
           style={{ fontWeight: "400", fontSize: 11, color: "black" }}
@@ -662,8 +680,22 @@ const ExtraPointHistory = ({ navigation }) => {
         height: "100%",
       }}
     >
-      <TopHeader title={"Wallet Summary"} />
-
+      <TopHeader title={"Bonus Point Summary"} />
+      {error && navigateTo && (
+        <ErrorModal
+          modalClose={modalClose}
+          message={message}
+          openModal={error}
+          navigateTo={navigateTo}
+        ></ErrorModal>
+      )}
+      {success && (
+        <MessageModal
+          modalClose={modalClose}
+          message={message}
+          openModal={success}
+        ></MessageModal>
+      )}
       <View
         style={{
           backgroundColor: secondaryThemeColor,

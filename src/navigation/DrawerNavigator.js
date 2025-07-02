@@ -559,8 +559,14 @@ const CustomDrawer = (props) => {
               else if (props.title.toLowerCase() === "gift catalogue") {
                 navigation.navigate("GiftCatalogue");
               }
+              else if (props.title.toLowerCase() === "motherwood playzone") {
+                navigation.navigate("CommingSoon");
+              }
               else if (props.title.toLowerCase() === "training") {
                 navigation.navigate("Training");
+              }
+              else if (props.title.toLowerCase() === "rating/feedback") {
+                navigation.navigate("FeedbackSelection");
               }
               else if (props.title.toLowerCase() === "search influencer") {
                 navigation.navigate("SearchInfluencer");
@@ -594,13 +600,19 @@ const CustomDrawer = (props) => {
                 navigation.navigate("HelpAndSupport");
               } else if (props.title.toLowerCase() === "product catalogue") {
                 navigation.navigate("ProductCatalogue");
-              } else if (
+              }else if (props.title.toLowerCase() === "points distribution") {
+                navigation.navigate("PointsDistribution");
+              }
+               else if (
                 props.title.toLowerCase() === "video" ||
                 props.title.toLowerCase() === "videos"
               ) {
                 navigation.navigate("VideoGallery");
               } else if (props.title.toLowerCase() === "update password") {
                 navigation.navigate("UpdatePassword");
+              }
+              else if (props.title.toLowerCase() === "user management") {
+                navigation.navigate("UserManagement");
               } else if (props.title.toLowerCase() === "gallery") {
                 navigation.navigate("ImageGallery");
               } else if (
@@ -834,6 +846,9 @@ const CustomDrawer = (props) => {
                 source={require("../../assets/images/blackBack.png")}
               ></Image>
             </TouchableOpacity>
+            {userData?.user_type != "sales" && <View style={{}}>
+
+            
         {profileImage ? (
           <View
             style={{
@@ -884,6 +899,7 @@ const CustomDrawer = (props) => {
             ></Image>
           </View>
         )}
+        </View>}
         <View>
           <View style={{ flexDirection: "row",alignItems:'center',justifyContent:'center'}}>
             <PoppinsTextMedium
@@ -896,7 +912,7 @@ const CustomDrawer = (props) => {
               content={userData?.name}
             ></PoppinsTextMedium>
             {/* <Image style={{height:25, width:25, marginTop:5, marginLeft:5}} source={require("../../assets/images/editWhite.png")}></Image> */}
-            <TouchableOpacity
+            {(userData.user_type).toLowerCase()!='sales' &&  <TouchableOpacity
               onPress={() => {
                 navigation.navigate("Profile");
               }}
@@ -912,7 +928,7 @@ const CustomDrawer = (props) => {
               }}
             >
               <Edit name="edit" size={8} color={"black"}></Edit>
-            </TouchableOpacity>
+            </TouchableOpacity>}
           </View>
           {userData.user_id && <PoppinsTextMedium
             style={{ color: "black" }}
@@ -983,7 +999,7 @@ const CustomDrawer = (props) => {
         style={{ width: "100%" }}
       >
 
-{profilePercentage && (
+{profilePercentage && (userData.user_type).toLowerCase()!='sales' && (
   <View style={{width:'100%',alignItems:'center',justifyContent:'center'}}>
           <View
             style={{

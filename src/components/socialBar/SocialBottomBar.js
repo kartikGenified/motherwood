@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { use } from "i18next";
 // create a component
-const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
+const SocialBottomBar = ({ showRelative ,backgroundColor }) => {
   const navigation = useNavigation()
       const socials = useSelector(
           state => state.apptheme.socials,
@@ -114,7 +114,8 @@ const SocialBottomBar = ({ showRelative ,backgroundColor}) => {
       </TouchableOpacity>
       <TouchableOpacity
       onPress={()=>{
-        socials?.linkedin
+        Linking.openURL(socials?.linkedin)
+       
       }}
         style={{ flexDirection: "row", marginLeft: 10, marginTop: 5 }}
       >

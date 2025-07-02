@@ -24,6 +24,8 @@ import * as Keychain from "react-native-keychain";
 import { useSelector } from "react-redux";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import { Social } from "react-native-share";
+import usePrevious from "../../hooks/usePrevious";
+
 
 const PointsCalculator = () => {
   const [token, setToken] = useState();
@@ -33,6 +35,7 @@ const PointsCalculator = () => {
   const [thicknessOptions, setThicknessOptions] = useState([[]]);
   const [showList, setShowList] = useState(false)
   const [selectedUser, setSelectedUser] = useState("SELECT USER")
+  const [hasResetOnce, setHasResetOnce] = useState(false);
   const [productRows, setProductRows] = useState([
     { category: null, thickness: null, qty: 1, points: 0 },
   ]);
@@ -41,8 +44,32 @@ const PointsCalculator = () => {
     (state) => state.apptheme.ternaryThemeColor
   )
   const users = useSelector((state)=>state.appusers.value)
-  const userList = users.filter((item,index)=>{return (item).toLowerCase()!=(userData.user_type).toLowerCase()})
+  const preferredOrder = [
+    "distributor",
+    "dealer",
+    "directoem",
+    "retailer",
+    "contractor",
+    "carpenter",
+    "oem"
+  ];
+  
+  // Step 1: Filter out current user
+  const filteredUsers = users.filter(
+    (item) => item.toLowerCase() !== userData.user_type.toLowerCase()
+  );
+  
+  // Step 2: Sort according to preferredOrder
+  const userList = filteredUsers.sort((a, b) => {
+    const indexA = preferredOrder.indexOf(a.toLowerCase().trim());
+    const indexB = preferredOrder.indexOf(b.toLowerCase().trim());
+  
+    // If not found in preferredOrder, put at end
+    return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+  });
 
+  console.log("asuyqtyweuydfqwfcqw", users, userList)
+  const prevSelectedUser = usePrevious(selectedUser);
   const secondaryThemeColor = useSelector(
     (state) => state.apptheme.secondaryThemeColor
   );
@@ -114,6 +141,53 @@ const PointsCalculator = () => {
     }
   }, [productsByCategoryData, productsByCategoryError, productRows]);
 
+  useEffect(() => {
+    if (selectedUser && selectedUser !== prevSelectedUser) {
+      if (!hasResetOnce) {
+        // First time user selection → reset
+        setProductRows([{ category: null, thickness: null, qty: 1, points: 0 }]);
+        setHasResetOnce(true);
+      } else {
+
+        console.log("changin the usertype", selectedUser, productRows)
+        // After first time → update points for all rows
+        const updatedRows = productRows.map((row, index) => {
+          const thickness = row.thickness;
+  
+          let points = 0;
+  
+          if (thickness && typeof thickness === 'object') {
+            const userType = selectedUser.toLowerCase();
+            console.log("asgdhjfgashgdhjg seletecedsahjdhjsagdghjsa",userType)
+            if (userType === "retailer") {
+              points = thickness.retailer_points || 0;
+            } else if (userType === "carpenter") {
+              points = thickness.carpenter_points || 0;
+            }
+            else if (userType === "directoem") {
+              points = thickness.directoem_points || 0;
+            }
+            else if (userType === "distributor") {
+              points = thickness.distributor_points || 0;
+            }
+            else if (userType === "dealer") {
+              points = thickness.dealer_points || 0;
+            }
+             else if (userType === "oem") {
+              points = thickness.oem_points || 0;
+            } else if (userType === "contractor") {
+              points = thickness.contractor_points || 0;
+            }
+          }
+  
+          return { ...row, points };
+        });
+  
+        setProductRows(updatedRows);
+      }
+    }
+  }, [selectedUser]);
+
   const handleQtyChange = (rowIndex, qty) => {
     const updatedRows = [...productRows];
     updatedRows[rowIndex].qty = qty;
@@ -163,7 +237,6 @@ const PointsCalculator = () => {
 
   const handleUserDropDown=(data)=>{
     setSelectedUser(data)
-
   }
 
   const handleThicknessChange = (rowIndex, selectedThickness) => {
@@ -186,13 +259,23 @@ const PointsCalculator = () => {
           const userType = selectedUser.toLowerCase();
           let points = 0;
           if (userType === "retailer") {
-            points = thicknessObj.retailer_points;
-          } else if (userType === "distributor") {
-            points = thicknessObj.distributor_points;
-          } else if (userType === "oem") {
-            points = thicknessObj.oem_points;
+            points = thicknessObj.retailer_points || 0;
+          } else if (userType === "carpenter") {
+            points = thicknessObj.carpenter_points || 0;
+          }
+          else if (userType === "directoem") {
+            points = thicknessObj.directoem_points || 0;
+          }
+          else if (userType === "distributor") {
+            points = thicknessObj.distributor_points || 0;
+          }
+          else if (userType === "dealer") {
+            points = thicknessObj.dealer_points || 0;
+          }
+           else if (userType === "oem") {
+            points = thicknessObj.oem_points || 0;
           } else if (userType === "contractor") {
-            points = thicknessObj.contractor_points;
+            points = thicknessObj.contractor_points || 0;
           }
           updatedRows[rowIndex].points = points;
         } else {
@@ -210,13 +293,23 @@ const PointsCalculator = () => {
         const userType = userData?.user_type;
         let points = 0;
         if (userType === "retailer") {
-          points = thicknessObj.retailer_points;
-        } else if (userType === "distributor") {
-          points = thicknessObj.distributor_points;
-        } else if (userType === "oem") {
-          points = thicknessObj.oem_points;
+          points = thicknessObj.retailer_points || 0;
+        } else if (userType === "carpenter") {
+          points = thicknessObj.carpenter_points || 0;
+        }
+        else if (userType === "directoem") {
+          points = thicknessObj.directoem_points || 0;
+        }
+        else if (userType === "distributor") {
+          points = thicknessObj.distributor_points || 0;
+        }
+        else if (userType === "dealer") {
+          points = thicknessObj.dealer_points || 0;
+        }
+         else if (userType === "oem") {
+          points = thicknessObj.oem_points || 0;
         } else if (userType === "contractor") {
-          points = thicknessObj.contractor_points;
+          points = thicknessObj.contractor_points || 0;
         }
         updatedRows[rowIndex].points = points;
       } else {
@@ -313,13 +406,7 @@ const PointsCalculator = () => {
                 )
               })
             }
-            <TouchableOpacity onPress={()=>{
-                    handleUserDropDown("all")
-                    setShowList(!showList)
-
-                  }} style={{height:30,width:'100%',backgroundColor:'#DDDDDD',alignItems:'center', justifyContent:'center',marginBottom:1}}>
-                    <PoppinsTextMedium content="All" style={{color:'#717171', fontSize:16,}}></PoppinsTextMedium>
-                  </TouchableOpacity>
+            
           </View>
         }
       </View>}

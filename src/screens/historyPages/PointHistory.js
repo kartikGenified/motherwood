@@ -120,13 +120,15 @@ const PointHistory = ({ navigation }) => {
     (async () => {
       const credentials = await Keychain.getGenericPassword();
       const token = credentials.username;
-      //   const startDate = dayjs(start).format(
-      //     "YYYY-MM-DD"
-      //   )
-      //   const endDate = dayjs(end).format("YYYY-MM-DD")
+        const startDate = dayjs(start).format(
+          "DD-MM-YYYY"
+        )
+        const endDate = dayjs(end).format("DD-MM-YYYY")
       const data = {
         token:token,
-        type:"received_point"
+        type:"received_point",
+        start_date : startDate,
+        end_date : endDate
       }
 
       getOrderDetailsByTypeFunc(data);
@@ -640,7 +642,7 @@ const PointHistory = ({ navigation }) => {
           justifyContent: "space-between",
         }}
       >
-        {getOrderDetailsByTypeData &&<View style={{ margin: 10, flexDirection: "row" }}>
+        {getOrderDetailsByTypeData && getOrderDetailsByTypeError?.data?.body!=null &&<View style={{ margin: 10, flexDirection: "row" }}>
           <Image source={require("../../../assets/images/coin.png")}></Image>
            <View style={{ marginLeft: 10 }}>
             <PoppinsTextLeftMedium
@@ -662,8 +664,40 @@ const PointHistory = ({ navigation }) => {
               <PoppinsTextMedium style={{color:'white', fontSize:12, fontWeight:'bold',marginLeft:8}} content={"Points Transfer"}></PoppinsTextMedium>
           </TouchableOpacity>
           }
+        </View>
+}
+{getOrderDetailsByTypeError?.data?.body==null &&<View style={{ margin: 10, flexDirection: "row" }}>
+          <Image source={require("../../../assets/images/coin.png")}></Image>
+           <View style={{ marginLeft: 10 }}>
+            <PoppinsTextLeftMedium
+              style={{ fontSize: 18, color: "black", fontWeight: "800" }}
+              content={"0"}
+            ></PoppinsTextLeftMedium>
+            <PoppinsTextLeftMedium
+              style={{ color: "black", fontWeight: "700", fontSize: 16 }}
+              content={"Received Points"}
+            ></PoppinsTextLeftMedium>
+          </View>
+          {
+            ((userData?.user_type)?.toLowerCase()!='carpenter' && (userData?.user_type)?.toLowerCase()!='contractor' && (userData?.user_type)?.toLowerCase()!='oem' && (userData?.user_type)?.toLowerCase()!='directoem') ?
+            <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:140,marginLeft:20,flexDirection:'row'}} onPress={()=>{
+              navigation.navigate('PointsTransfer')
+  
+          }}>
+              <Image style={{height:20,width:20,resizeMode:'contain'}} source={require("../../../assets/images/gg.png")}></Image>
+              <PoppinsTextMedium style={{color:'white', fontSize:12, fontWeight:'bold',marginLeft:8}} content={"Points Transfer"}></PoppinsTextMedium>
+          </TouchableOpacity>
+          :
+          <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:140,marginLeft:20,flexDirection:'row'}} onPress={()=>{
+            navigation.navigate('RewardMenu')
 
-        
+        }}>
+            <Image style={{height:20,width:20,resizeMode:'contain'}} source={require("../../../assets/images/gg.png")}></Image>
+            <PoppinsTextMedium style={{color:'white', fontSize:12, fontWeight:'bold',marginLeft:8}} content={"Points Transfer"}></PoppinsTextMedium>
+        </TouchableOpacity>
+          }
+
+
         </View>
 }
       </View>

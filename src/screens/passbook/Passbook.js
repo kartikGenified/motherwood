@@ -33,6 +33,8 @@ const Passbook = ({ navigation }) => {
   const [pointsOptionEnabled, setPointsOptionEnabled] = useState(false);
   const [PlatinumModalOpen, setPlatinumModal] = useState(false);
   const [listView, setListView] = useState(true);
+  const [isTertiary, setIsTertiary] = useState()
+
   const [membershipModal, setMemberShipModal] = useState(false);
 
   const shouldSharePoints = useSelector(
@@ -117,6 +119,15 @@ const Passbook = ({ navigation }) => {
   useEffect(() => {
     getOptionsAccordingToWorkflow();
     getMembership();
+  }, []);
+  useEffect(() => {
+    if( (userData?.user_type)?.toLowerCase() != 'carpenter' ||  (userData?.user_type)?.toLowerCase() != 'contractor' ||  (userData?.user_type)?.toLowerCase() != 'oem' ||  (userData?.user_type)?.toLowerCase() != 'directoem')
+   {
+    setIsTertiary(false)
+   }
+   else{
+    setIsTertiary(true)
+   }
   }, []);
 
   useEffect(() => {
@@ -446,14 +457,14 @@ const Passbook = ({ navigation }) => {
               }}
             ></PoppinsTextMedium>
           </View>
-          <View style={{ width: "100%", marginTop: 20 }}>
+         {isTertiary!=undefined &&  <View style={{ width: "100%", marginTop: 20 }}>
             <PointsCard
               memberShip={getActiveMembershipData?.body?.tier?.name}
               setModalVisible={() => {
                 setMemberShipModal(true);
               }}
             />
-          </View>
+          </View>}
         </View>
 
         {listView && (
@@ -568,14 +579,14 @@ const Passbook = ({ navigation }) => {
                 ></NavigateTO>
               )}
 
-            {
+            
               <NavigateTO
                 visibleTitle={t("Bonus Points Summary")}
                 title={"Points History Extra"}
                 // discription={t("list of points redeemed by you")}
                 image={require("../../../assets/images/rp.png")}
               ></NavigateTO>
-            }
+            
 
             {/* ozone change */}
             {/* {userData.user_type !== "dealer" && neededHistory.includes("scanned") &&  <NavigateTO visibleTitle={t("scanned history")} title={"Scanned History"} discription={t('list of products scanned by you')} image={require('../../../assets/images/scannedHistory.png')}></NavigateTO>} */}

@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 
 
 const PointsCard = (props) => {
-const [isTertiary, setIsTertiary] = useState(false)
+const [isTertiary, setIsTertiary] = useState()
   const [userPointFunc, {
     data: userPointData,
     error: userPointError,
@@ -18,17 +18,22 @@ const [isTertiary, setIsTertiary] = useState(false)
     isError: userPointIsError
 }] = useFetchUserPointsMutation();
 
+const ternaryThemeColor = useSelector(
+  (state) => state.apptheme.ternaryThemeColor
+)
 const id = useSelector(state => state.appusersdata.id);
 const userData = useSelector((state) => state.appusersdata.userData);
 const membership = props?.memberShip?.toLowerCase()
 
-
-
 console.log("dashjgdhjgasjjcbjkasbcv gcahgvs",userData,membership)
+
 useEffect(() => {
   if( (userData?.user_type)?.toLowerCase() == 'carpenter' ||  (userData?.user_type)?.toLowerCase() == 'contractor' ||  (userData?.user_type)?.toLowerCase() == 'oem' ||  (userData?.user_type)?.toLowerCase() == 'directoem')
  {
   setIsTertiary(true)
+ }
+ else{
+  setIsTertiary(false)
  }
   fetchPoints()
 }, []);
@@ -40,9 +45,6 @@ useEffect(() => {
   else if (userPointError) {
       console.log("userPointError", userPointError)
   }
-
-
-
 }, [userPointData, userPointError])
 
 const fetchPoints = async () => {
@@ -58,15 +60,26 @@ const fetchPoints = async () => {
 
   const IconBox = ({ image, title, points }) => {
     console.log("pointsIconBox",points)
+    let width;
+    if(userData?.user_type?.toLowerCase() != "carpenter" &&
+    userData?.user_type?.toLowerCase() != "contractor" &&
+    userData?.user_type?.toLowerCase() != "oem" &&
+    userData?.user_type?.toLowerCase() != "directoem")
+    {
+      width = '25%'
+    }
+    else{
+      width = '33%'
+    }
     return (
       <View
         style={{
           alignItems: "center",
           marginTop:20,
           height:110, 
-          width:'25%',
+          width:width,
           borderRightWidth:0.4,
-          borderRightColor:membership == 'silver' ? "#C0C0C0" : membership == 'gold' ? 'gold' : membership == 'platinum' ? '#a0a09e' : 'red',
+          borderRightColor:membership == 'silver' ? "#C0C0C0" : membership == 'gold' ? 'gold' : membership == 'platinum' ? '#a0a09e' : ternaryThemeColor,
           padding:4
         }}
       >
@@ -104,7 +117,7 @@ const fetchPoints = async () => {
           justifyContent: "space-between",
           flexDirection: "row",
           borderBottomWidth: 0.5,
-          borderBottomColor: membership == 'silver' ? "#C0C0C0" : membership == 'gold' ? 'gold' : membership == 'platinum' ? '#a0a09e' : 'red',
+          borderBottomColor: membership == 'silver' ? "#C0C0C0" : membership == 'gold' ? 'gold' : membership == 'platinum' ? '#a0a09e' :  ternaryThemeColor,
           alignItems:'flex-start'
         }}
       >
@@ -168,11 +181,15 @@ const fetchPoints = async () => {
             points={isNaN(Math.floor(userPointData?.body.point_earned)) ? '0' : Math.floor(userPointData?.body.point_earned)}
             title={"Received Points"}
           ></IconBox>
-          <IconBox
+          {userData?.user_type?.toLowerCase() != "carpenter" &&
+              userData?.user_type?.toLowerCase() != "contractor" &&
+              userData?.user_type?.toLowerCase() != "oem" &&
+              userData?.user_type?.toLowerCase() != "directoem" &&
+              <IconBox
             image={require("../../../assets/images/loop_star.png")}
             points={isNaN(Math.floor(userPointData?.body?.transfer_points)) ? '0' : Math.floor(userPointData?.body?.transfer_points)}
             title={"Transferred Points"}
-          ></IconBox>
+          ></IconBox>}
           <IconBox
             image={require("../../../assets/images/white_coin.png")}
             points={isNaN(Math.floor(userPointData?.body?.point_balance)) ? '0' : Math.floor(userPointData?.body?.point_balance)}
