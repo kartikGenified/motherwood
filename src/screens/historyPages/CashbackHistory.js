@@ -399,6 +399,7 @@ const CashbackHistory = ({ navigation }) => {
 
   const ListItem = (props) => {
     const {
+      dataValue,
       data,            // This is now a single giftItem (not the whole redemption object)
       productCode,
       time,
@@ -409,12 +410,12 @@ const CashbackHistory = ({ navigation }) => {
     const description = data?.name ?? "No Description";
     const image = data?.images?.[0] ?? "";
   
-    console.log("ListItem Gift Data:", data);
+    console.log("ListItem Gift Data:", dataValue);
   
     return (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('RedeemedDetails', { data });  // Only the gift item data
+          navigation.navigate('RedeemedDetails', { data:data, dataValue:dataValue });  // Only the gift item data
         }}
         style={{
           flexDirection: "row",
@@ -954,12 +955,13 @@ const CashbackHistory = ({ navigation }) => {
           {item.gift?.gift?.map((giftItem, idx) => (
             <View key={idx}>
               <ListItem
+                dataValue = {item}
                 data={giftItem}
-                productStatus={item.gift_status}
-                description={giftItem.name}
-                productCode={item.product_code}
-                amount={giftItem.points}
-                time={dayjs(item.created_at).format("hh:mm A")}
+                productStatus={item?.gift_status}
+                description={giftItem?.name}
+                productCode={item?.product_code}
+                amount={giftItem?.points}
+                time={dayjs(item?.created_at).format("hh:mm A")}
               />
             </View>
           ))}

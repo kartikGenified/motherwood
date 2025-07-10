@@ -2,9 +2,9 @@
 
 //clint ID's
 export const clientName = "sudama";
-export const clientID = 41;
+export const clientID = 38;
 export const clientOfficialName = "MotherWood"
-export const baseUrl =  "http://saas-api-dev.genefied.in/"
+export const baseUrl =  "https://saas.genefied.in/"
 // "https://saas.genefied.in/" production
 // "http://saas-api-dev.genefied.in/" staging
 //icons and images

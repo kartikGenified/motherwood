@@ -31,7 +31,7 @@ const ListAddress = ({ navigation, route }) => {
   const schemeType = route.params?.schemeType;
   const schemeID = route.params?.schemeID;
   const type = route?.params?.type
-  const navigatingFrom = route.params.navigatingFrom
+  const navigatingFrom = route?.params?.navigatingFrom
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );

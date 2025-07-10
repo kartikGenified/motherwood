@@ -117,7 +117,7 @@ const ReferAndEarn = ({ navigation }) => {
         <View style={{ width: '90%', backgroundColor: '#DDDDDD', flexDirection: 'row', marginTop: 20, padding: 20, borderRadius: 4, alignItems: 'center', justifyContent: 'space-evenly' }}>
           <TouchableOpacity onPress={async () => {
 
-            Linking.openURL(`https://wa.me/?text=Please Use this Code To refer : ${referalCode}}`).then((res) => console.log(res)).catch((e) => { console.log(e) });
+            Linking.openURL(`https://wa.me/?text=${referalCode} Please Use this Code To refer : ${referalCode}}`).then((res) => console.log(res)).catch((e) => { console.log(e) });
 
           }} style={{ height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center' }}>
             <Whatsapp name="whatsapp" size={30} color="green"></Whatsapp>
@@ -237,7 +237,7 @@ const ReferAndEarn = ({ navigation }) => {
             fontWeight: '700',
             color: 'white',
           }}></PoppinsTextMedium>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             navigation.navigate("MyBonus")
           }}
@@ -263,7 +263,7 @@ const ReferAndEarn = ({ navigation }) => {
               marginLeft: 10,
             }}
             source={require('../../../assets/images/whiteArrowRight.png')}></Image>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <ScrollView style={{ width: '100%' }}>
 
@@ -308,7 +308,7 @@ const ReferAndEarn = ({ navigation }) => {
           </View>
           <PoppinsTextMedium
             style={{ color: '#525252', fontSize: 15, width: '80%', marginTop: 20 }}
-            content="Share this link with your friend and after they install, both of you will get 50 points rewards."></PoppinsTextMedium>
+            content={`Share this link with your friend and after they install, you will get ${rewardAmount} points rewards.`}></PoppinsTextMedium>
           <TouchableOpacity
             style={{
               padding: 10,
@@ -338,7 +338,7 @@ const ReferAndEarn = ({ navigation }) => {
               borderTopWidth: 1,
               marginTop: 20,
             }}>
-            <PoppinsTextMedium
+            {/* <PoppinsTextMedium
               style={{
                 color: '#525252',
                 fontSize: 14,
@@ -355,20 +355,20 @@ const ReferAndEarn = ({ navigation }) => {
 
                 }}
                 content="View Invitation Rules"></PoppinsTextMedium>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <View style={{ height: 100, borderRadius: 10, width: '100%', alignItems: "center", justifyContent: "center", flexDirection: "row", backgroundColor: "#F2F3F5", marginTop: 20 }}>
-              <View style={{ alignItems: "center", justifyContent: "center", position: "absolute", left: 20 }}>
+              <View style={{ alignItems: "center", justifyContent: "center",width:'33%' }}>
                 <Icon name="copy-sharp" size={20} color="#7C7979"></Icon>
                 <PoppinsTextMedium style={{ color: "#7C7979", marginTop: 6, fontSize: 12 }} content="Copy Link"></PoppinsTextMedium>
               </View>
-              <View style={{ alignItems: "center", justifyContent: "center", position: "absolute", left: 110 }}>
+              <View style={{ alignItems: "center", justifyContent: "center",width:'33%' }}>
                 <Image style={{ height: 20, width: 20, resizeMode: 'contain' }} source={require('../../../assets/images/circularTickGrey.png')}></Image>
                 <PoppinsTextMedium style={{ color: "#7C7979", marginTop: 6, width: 100, fontSize: 12 }} content="Friend Registered Successfully"></PoppinsTextMedium>
               </View>
-              <View style={{ alignItems: "center", justifyContent: "center", position: "absolute", left: 230 }}>
+              <View style={{ alignItems: "center", justifyContent: "center",width:'33%'}}>
                 <Image style={{ height: 20, width: 20, resizeMode: 'contain' }} source={require('../../../assets/images/coinStack.png')}></Image>
-                <PoppinsTextMedium style={{ color: "#7C7979", marginTop: 6, width: 100, fontSize: 12 }} content="Earn Points Rewards"></PoppinsTextMedium>
+                <PoppinsTextMedium style={{ color: "#7C7979", marginTop: 6, fontSize: 12 }} content="Earn Points Rewards"></PoppinsTextMedium>
               </View>
             </View>
           </View>

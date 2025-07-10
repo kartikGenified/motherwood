@@ -178,8 +178,8 @@ const fetchPoints = async () => {
         
           <IconBox
             image={require("../../../assets/images/hand_coin_white.png")}
-            points={isNaN(Math.floor(userPointData?.body.point_earned)) ? '0' : Math.floor(userPointData?.body.point_earned)}
-            title={"Received Points"}
+            points={isNaN(Math.floor( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed))) ? '0' : Math.floor(Math.floor( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed)))}
+            title={"Earned Points"}
           ></IconBox>
           {userData?.user_type?.toLowerCase() != "carpenter" &&
               userData?.user_type?.toLowerCase() != "contractor" &&

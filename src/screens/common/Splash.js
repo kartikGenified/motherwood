@@ -317,6 +317,21 @@ const Splash = ({ navigation }) => {
 
         getMinVersionSupportFunc(String(currentAppVersion));
 
+        const getUser = async () => {
+          console.log("await apiCachingLogic", await apiCachingLogic("getUsersData"))
+          if ((await apiCachingLogic("getUsersData")) != null) {
+            getUsersDataCachedDispatch(
+              dispatch,
+              await apiCachingLogic("getUsersData")
+            );
+            storeData("getUsersData",await apiCachingLogic("getUsersData"))
+  
+          } else {
+            getUsers();
+          }
+        };
+        getUser();
+
         const fetchTerms = async () => {
           const params = {
             type: "term-and-condition",
@@ -423,20 +438,7 @@ const Splash = ({ navigation }) => {
       };
       getBanner();
 
-      const getUser = async () => {
-        console.log("await apiCachingLogic", await apiCachingLogic("getUsersData"))
-        if ((await apiCachingLogic("getUsersData")) != null) {
-          getUsersDataCachedDispatch(
-            dispatch,
-            await apiCachingLogic("getUsersData")
-          );
-          storeData("getUsersData",await apiCachingLogic("getUsersData"))
-
-        } else {
-          getUsers();
-        }
-      };
-      getUser();
+      
 
       const getMenu = async () => {
         if ((await apiCachingLogic("getAppMenuData")) != null) {
@@ -482,7 +484,7 @@ const Splash = ({ navigation }) => {
         setTimeout(() => {
         navigation.reset({ index: 0, routes: [{ name: "Dashboard" }] });
           
-        }, 1000);
+        }, 2000);
       } else {
         fallbackTimer = setTimeout(() => {
           const missingApis = allApiArray.filter(api => !apiCallStatus?.includes(api));

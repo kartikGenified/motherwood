@@ -22,7 +22,8 @@ const RedeemedDetails = ({ navigation, route }) => {
   const [status, setStatus] = useState("")
   const height = Dimensions.get("window").height;
   const data = route.params.data;
-
+  const dataValue = route.params.dataValue
+  console.log("redeemed details", data,dataValue)
   const { t } = useTranslation();
 
   const[trackModal, setTrackModal] = useState(false);
@@ -65,8 +66,8 @@ const RedeemedDetails = ({ navigation, route }) => {
   },[])
 
   const redeemedDate = dayjs(data.created_at).format("DD MMM YYYY");
-  const redeemedId = data.ref_no;
-  const redemptionMode = data.redemption_type === "1" ? "Points" : "N/A";
+  const redeemedId = dataValue.ref_no;
+  const redemptionMode = dataValue.redemption_type === "1" ? "Points" : "N/A";
 
   console.log("Data RedeemedDetails", data);
   const secondaryThemeColor = useSelector(
@@ -323,7 +324,7 @@ const RedeemedDetails = ({ navigation, route }) => {
                   color: "#171717",
                   marginLeft: 10,
                 }}
-                content={`${t("Delivery Status")} : ${status}`}
+                content={`${t("Delivery Status")} : ${dataValue?.gift_status}`}
               ></PoppinsTextMedium>
             </View>
           </View>
@@ -336,6 +337,7 @@ const RedeemedDetails = ({ navigation, route }) => {
               justifyContent: "center",
               width: "100%",
               marginTop: 40,
+              marginBottom:10
             }}
           >
             <TouchableOpacity
@@ -351,9 +353,9 @@ const RedeemedDetails = ({ navigation, route }) => {
               }}
               onPress={()=>setTrackModal(true)}
             >
-              <Location name="location" size={30} color="white" />
+              <Location name="location" size={20} color="white" />
               <PoppinsTextMedium
-                style={{ color: "white", fontSize: 14, marginLeft: 4, fontWeight:'bold' }}
+                style={{ color: "white", fontSize: 10, marginLeft: 4, fontWeight:'bold' }}
                 content={t("Track Delivery Status")}
               ></PoppinsTextMedium>
               
@@ -374,9 +376,9 @@ const RedeemedDetails = ({ navigation, route }) => {
                 marginLeft: 14,
               }}
             >
-              <Message name="message-square" size={24} color="white" />
+              <Message name="message-square" size={18} color="white" />
               <PoppinsTextMedium
-                style={{ color: "white", fontSize: 14, marginLeft: 10 }}
+                style={{ color: "white", fontSize: 10, marginLeft: 10 }}
                 content={t("Share Feedback")}
               ></PoppinsTextMedium>
             </TouchableOpacity>

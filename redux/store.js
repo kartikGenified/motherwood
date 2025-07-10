@@ -31,6 +31,7 @@ import errorMiddleware from './middleware/errorMiddleware';
 import errorSlice from './slices/errorSlice';
 import splashApiCallsSlice from './slices/splashApiCallsSlice';
 import birthdayModalSlice from './slices/birthdayModalSlice';
+import tapGameSlice from './slices/tapGameSlice';
 
 export const store = configureStore({
   reducer: {
@@ -61,6 +62,7 @@ export const store = configureStore({
     termsPolicy:termsPolicySlice,
     drawerData: drawerDataSlice,
     cameraStatus:cameraStatusSlice,
+    tapGame: tapGameSlice,
     appLanguage:appLanguageSlice,
     splashApi:splashApiCallsSlice,
     birthday:birthdayModalSlice

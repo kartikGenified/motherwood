@@ -6,6 +6,7 @@ import {
   Dimensions,
   Platform,
   Linking,
+  TouchableOpacity,
 } from "react-native";
 import MenuItems from "../atoms/MenuItems";
 import { BaseUrl } from "../../utils/BaseUrl";
@@ -111,7 +112,7 @@ const DashboardMenuBox = (props) => {
     } else if (data.toLowerCase() === "report an issue") {
       navigation.navigate("QueryList");
     } else if (data.toLowerCase() === "refer & earn") {
-      navigation.navigate("CommingSoon");
+      navigation.navigate("ReferAndEarn");
     } else if (data.toLowerCase() === "points calculator") {
       navigation.navigate("PointsCalculator");
     } else if (data.toLowerCase() === "about") {
@@ -126,7 +127,7 @@ const DashboardMenuBox = (props) => {
 
     } 
     else if (data.toLowerCase() === "playzone") {
-      navigation.navigate("CommingSoon");
+      navigation.navigate("TapTheDot");
 
     } 
     else if (data.toLowerCase() === "training") {
@@ -195,6 +196,10 @@ const DashboardMenuBox = (props) => {
         {/* <MenuItems handlePress={handleMenuItemPress} index ={data.length+1} key={data.length+1} image={"https://picsum.photos/200/300"} content={"Return Goods"}></MenuItems>
                     <MenuItems handlePress={handleMenuItemPress} index ={data.length+2} key={data.length+2} image={"https://picsum.photos/300/300"} content={"Return List"}></MenuItems> */}
         {/* <MenuItems handlePress={handleMenuItemPress} key={data.length+3} image={`https://picsum.photos/200/200`} content={"Assign"}></MenuItems> */}
+
+        {/* <TouchableOpacity onPress={()=>{
+          navigation.navigate("TapTheDot")
+        }} style={{height:30,width:30,backgroundColor:'red'}}></TouchableOpacity> */}
       </View>
     </View>
   );

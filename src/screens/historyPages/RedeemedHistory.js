@@ -487,7 +487,7 @@ const RedeemedHistory = ({ navigation }) => {
     const productStatus = props.productStatus
     const amount = props.amount
     const image = data.gift.gift[0].images[0]
-    console.log("data from listItem", data.gift.gift[0])
+    console.log("data from listItem", data)
     return (
       <TouchableOpacity onPress={() => {
         navigation.navigate('RedeemedDetails', { data: data })
@@ -549,7 +549,7 @@ const RedeemedHistory = ({ navigation }) => {
           data={redeemedListData}
           maxToRenderPerBatch={10}
           initialNumToRender={10}
-          renderItem={({ item,index }) => (
+          renderItem={({ items,index }) => (
             
               <View key={index} style={{ alignItems: "center", justifyContent: "center", width: '100%' }} >
 

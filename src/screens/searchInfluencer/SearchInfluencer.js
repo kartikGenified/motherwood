@@ -314,7 +314,7 @@ const SearchInfluencer = () => {
           onChangeText={(text) => {
             handleSearchByMobile(text)
           }}
-          placeholderTextColor={"#717171"}
+          placeholderTextColor={"black"}
           placeholder={"Mobile No"}
           maxLength={10}
           style={{ height: "100%", width: "80%" }}
@@ -358,7 +358,7 @@ const SearchInfluencer = () => {
           onChangeText={(text) => {
             handleSearchByID(text);
           }}
-          placeholderTextColor={"#717171"}
+          placeholderTextColor={"black"}
           placeholder={"Search by User ID"}
           style={{ height: "100%", width: "80%" }}
         ></TextInput>

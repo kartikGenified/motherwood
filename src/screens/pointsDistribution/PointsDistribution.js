@@ -28,7 +28,7 @@ const PointsDistribution = ({navigation}) => {
       ];
       const users = useSelector((state)=>state.appusers.value)
       const userData = useSelector(state => state.appusersdata.userData)
-
+      console.log("users",users)
       const filteredUsers = users.filter(
     (item) => item.toLowerCase() !== userData.user_type.toLowerCase()
   );
@@ -54,6 +54,9 @@ const PointsDistribution = ({navigation}) => {
       useEffect(() => {
         fetchZoneWiseData();
       }, []);
+      useEffect(() => {
+        fetchZoneWiseData();
+      }, [searchText]);
 
       const handleUserDropDown=(data)=>{
         if(data!="all")
@@ -117,23 +120,27 @@ const PointsDistribution = ({navigation}) => {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            height: 60,
+            height: 75,
           }}
         >
-          <View>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ }}>
+            <View style={{ flexDirection: "row" }}>
+            <View style={{width: 30,
+                  height: 30,
+                  backgroundColor:'white',
+                  borderRadius: 20,
+                  alignItems:'center',
+                  justifyContent:'center'
+                  }}>
               <Text
                 style={{
-                  backgroundColor: "white",
-                  width: 30,
-                  height: 30,
-                  textAlign: "center",
-                  borderRadius: 20,
+                  
                   fontSize: 16,
                 }}
               >
                 {index + 1}
               </Text>
+              </View>
               <Text
                 style={{ color: "white", fontWeight: "600", marginLeft: 10,
                 fontSize: 12,
@@ -145,9 +152,10 @@ const PointsDistribution = ({navigation}) => {
               style={{
                 color: "white",
                 textAlign: "center",
-                marginLeft: 40,
+                marginLeft: 14,
                 fontWeight: "600",
                 fontSize: 12,
+                width:180
               }}
             >{`Channel Partner Name : ${item?.name}`}</Text>
           </View>
@@ -364,6 +372,7 @@ const PointsDistribution = ({navigation}) => {
             setSearchText(text);
           }}
           value={searchText}
+          placeholderTextColor="black"
           placeholder="Search"
         ></TextInput>
       </View>

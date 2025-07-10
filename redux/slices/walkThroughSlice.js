@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  stepId:0,
+  stepId:1,
   isAlreadyWalkedThrough:false,
+  walkThroughCompleted:false
 }
 
 export const walkThroughSlice = createSlice({
@@ -16,11 +17,15 @@ export const walkThroughSlice = createSlice({
     setAlreadyWalkedThrough: (state, action) => {
         console.log("isAlreadyWalkedThrough",action.payload)
         state.isAlreadyWalkedThrough = action.payload
-      }
+      },
+      setWalkThroughCompleted: (state, action) => {
+        console.log("setWalkThroughCompleted",action.payload)
+        state.walkThroughCompleted = action.payload
+      },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const {setStepId,setAlreadyWalkedThrough} = walkThroughSlice.actions
+export const {setStepId,setAlreadyWalkedThrough,setWalkThroughCompleted} = walkThroughSlice.actions
 
 export default walkThroughSlice.reducer

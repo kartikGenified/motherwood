@@ -560,7 +560,7 @@ const CustomDrawer = (props) => {
                 navigation.navigate("GiftCatalogue");
               }
               else if (props.title.toLowerCase() === "motherwood playzone") {
-                navigation.navigate("CommingSoon");
+                navigation.navigate("TapTheDot");
               }
               else if (props.title.toLowerCase() === "training") {
                 navigation.navigate("Training");
@@ -579,7 +579,10 @@ const CustomDrawer = (props) => {
                 props.title.toLowerCase() === "bank account"
               ) {
                 navigation.navigate("BankAccounts");
-              } else if (props.title.toLowerCase() === "profile") {
+              } else if (props.title.toLowerCase() === "playzone") {
+                navigation.navigate("TapTheDot");
+              } 
+              else if (props.title.toLowerCase() === "profile") {
                 navigation.navigate("Profile");
               } 
                else if (props.title.toLowerCase() === "feedback") {
@@ -591,7 +594,7 @@ const CustomDrawer = (props) => {
               else if (props.title.toLowerCase() === "feedback selection") {
                 navigation.navigate("FeedbackSelection");
               } else if (props.title.toLowerCase() === "refer and earn") {
-                navigation.navigate("CommingSoon");
+                navigation.navigate("ReferAndEarn");
               } else if (props.title.toLowerCase() === "warranty list") {
                 navigation.navigate("WarrantyHistory");
               } else if (props.title.toLowerCase() === "complaint list") {

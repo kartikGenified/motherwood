@@ -187,7 +187,7 @@ const AddBankDetails = ({navigation}) => {
               modalClose={modalClose}
               message={message}
               openModal={error}></ErrorModal>
-          )}
+            )}
            {success && (
             <MessageModal
               modalClose={modalClose}
@@ -195,7 +195,7 @@ const AddBankDetails = ({navigation}) => {
               message={message}
               navigateTo="BankAccounts"
               openModal={success}></MessageModal>
-          )}
+            )}
             <ScrollView style={{width:'100%',height:'100%'}}>
             <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:20,height:30}}>
                 <TouchableOpacity onPress={()=>{

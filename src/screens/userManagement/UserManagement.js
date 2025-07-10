@@ -21,7 +21,7 @@ import { useGetZoneWiseEmployeeUserMutation } from "../../apiServices/userMappin
 import * as Keychain from "react-native-keychain";
 import moment from "moment";
 import { useSalesPointsDashboardMutation } from "../../apiServices/workflow/rewards/GetPointsApi";
-
+import { useIsFocused } from "@react-navigation/native";
 // create a component
 const UserManagement = () => {
   const secondaryThemeColor = useSelector(
@@ -46,7 +46,7 @@ const UserManagement = () => {
   ];
 
   const { t } = useTranslation();
-
+  const focused = useIsFocused()
   const navigation = useNavigation();
 
 
@@ -62,6 +62,9 @@ const UserManagement = () => {
   useEffect(() => {
     fetchZoneWiseData();
   }, []);
+  useEffect(() => {
+    fetchZoneWiseData();
+  }, [focused]);
 
   useEffect(() => {
     const getToken = async () => {

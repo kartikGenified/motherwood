@@ -37,7 +37,7 @@ const SocialBottomBar = ({ showRelative ,backgroundColor }) => {
         backgroundColor:backgroundColor ? backgroundColor : "",
         alignItems: "center",
         justifyContent: "center",
-        flexDirection: "row",
+        flexDirection: "row", 
         marginTop: 10,
       }}
     >

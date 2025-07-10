@@ -38,6 +38,10 @@ Keyboard.addListener('keyboardDidHide',()=>{
         verifyGstFunc(data)
           console.log(data)
         }
+        else{
+        props.gstinVerified(false)
+
+        }
       },[value])
       
       useEffect(()=>{handleInputEnd()},[keyboardShow])
@@ -48,7 +52,7 @@ Keyboard.addListener('keyboardDidHide',()=>{
         console.log("verifyGstData",verifyGstData)
         if(verifyGstData.success)
         {
-          
+        props.gstinVerified(true)
         setModalVisible(true)
         }
         
@@ -56,6 +60,8 @@ Keyboard.addListener('keyboardDidHide',()=>{
         else if(verifyGstError)
         {
         console.log("verifyGstError",verifyGstError)
+        props.gstinVerified(false)
+
         }
         },[verifyGstData,verifyGstError])
         

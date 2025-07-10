@@ -10,6 +10,7 @@ import {
   Dimensions,
   Text,
   TouchableWithoutFeedback,
+  Alert,
 } from "react-native";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import { useSelector, useDispatch } from "react-redux";
@@ -67,11 +68,13 @@ import {
 } from "../../../redux/slices/appThemeSlice";
 import Check from "react-native-vector-icons/Entypo";
 import SuccessConfettiModal from "../../components/modals/SuccessConfettiModal";
+import { useValidateRefferalApiMutation } from "../../apiServices/refferal/refferalApi";
 
 const BasicInfo = ({ navigation, route }) => {
   const [userName, setUserName] = useState();
   const [userMobile, setUserMobile] = useState();
   const [message, setMessage] = useState();
+  const [refferalCode, setRefferalCode] = useState();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [registrationForm, setRegistrationForm] = useState([]);
@@ -83,10 +86,12 @@ const BasicInfo = ({ navigation, route }) => {
   const [formFound, setFormFound] = useState(true);
   const [isCorrectPincode, setIsCorrectPincode] = useState(true);
   const [otp, setOtp] = useState("");
+  const [refferalValidated, setRefferalValidated] = useState(false)
+  const [showRefferal, setShowRefferal] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [otpModal, setOtpModal] = useState(false);
-  const [otpVisible, setOtpVisible] = useState(true);
+  const [otpVisible, setOtpVisible] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const [hideButton, setHideButton] = useState(false);
   const [timer, setTimer] = useState(0);
@@ -104,6 +109,7 @@ const BasicInfo = ({ navigation, route }) => {
   const [distributorName, setDistributorName] = useState("");
   const [distributorMobile, setDistributorMobile] = useState("");
   const [distributorId, setDistributorId] = useState("");
+  const [refferalRequired, setRefferalRequired] = useState()
   const [mappedUserData, setMappedUserData] = useState();
   const [showDistributorInput, setShowDistributorInput] = useState(false);
   const [mobileVerified, setMobileVerified] = useState();
@@ -297,6 +303,16 @@ const BasicInfo = ({ navigation, route }) => {
     },
   ] = useGetFormMutation();
 
+  const [
+    validateRefferalFunc,
+    {
+      data: validateRefferalData,
+      error: validateRefferalError,
+      isLoading: validateRefferalIsLoading,
+      isError: validateRefferalIsError,
+    },
+  ] = useValidateRefferalApiMutation();
+
   useEffect(() => {
     if (timer > 0) {
       timeoutId = setTimeout(timeOutCallback, 1000);
@@ -318,6 +334,27 @@ const BasicInfo = ({ navigation, route }) => {
       console.log("getUsersError", getUsersError);
     }
   }, [getUsersData, getUsersError]);
+
+  useEffect(() => {
+    if (validateRefferalData) {
+      console.log("validateRefferalData", validateRefferalData);
+      setRefferalValidated(true)
+      Alert.alert(
+        "Referral Code Validated",
+        `Referral code "${refferalCode}" has been successfully validated!`,
+        [
+          { text: "OK", onPress: () => {
+            console.log("alert closed")
+          } }
+        ],
+        { cancelable: false }
+      );
+    } else if (validateRefferalError) {
+      console.log("validateRefferalError", validateRefferalError);
+      setError(true)
+      setMessage(validateRefferalError?.data?.message)
+    }
+  }, [validateRefferalData, validateRefferalError]);
 
   useEffect(() => {
     if (getFormProtData) {
@@ -597,6 +634,13 @@ const BasicInfo = ({ navigation, route }) => {
             if (values[i].label == "Gstin" && values[i].required) {
               setGstinRequired(true);
             }
+            if (values[i].name == "refferal") {
+              if(values[i].name == "refferal" && values[i].required)
+              {
+                setRefferalRequired(true)
+              }
+              setShowRefferal(true);
+            }
           }
       } else {
         setError(true);
@@ -652,8 +696,7 @@ const BasicInfo = ({ navigation, route }) => {
   }, [sendOtpData, sendOtpError]);
 
   const handleTimer = () => {
-    if(userName)
-    {
+    if (userName) {
       if (userName.length != 0) {
         if (userMobile) {
           if (userMobile.length == 10) {
@@ -674,11 +717,8 @@ const BasicInfo = ({ navigation, route }) => {
           setError(true);
           setMessage(t("Kindly enter mobile number"));
         }
-      } 
-    }
-    
-    
-    else {
+      }
+    } else {
       alert("Name could not be empty");
     }
   };
@@ -726,13 +766,15 @@ const BasicInfo = ({ navigation, route }) => {
     if ((data?.name).toLowerCase() === "name") {
       setUserName(data?.value);
     }
-    // console.log("isValidEmail", isValidEmail(data.value))
+    if ((data?.name).toLowerCase() === "refferal") {
+      setRefferalCode(data?.value);
+    }
 
     if ((data?.name).toLowerCase() === "email") {
       console.log("from text input", data?.name);
-
       console.log("isValidEmail", isValidEmail(data?.value), isValid);
     }
+
     if ((data?.name).toLowerCase() === "aadhar") {
       console.log(
         "aadhar input returned",
@@ -746,6 +788,7 @@ const BasicInfo = ({ navigation, route }) => {
         setAadhaarEntered(false);
       }
     }
+
     if ((data?.name).toLowerCase() === "pan") {
       if (data?.value?.length > 0) {
         setPanEntered(true);
@@ -886,6 +929,9 @@ const BasicInfo = ({ navigation, route }) => {
   const panVerified = (bool) => {
     setPansVerified(bool);
   };
+  const gstinVerified=(bool) =>{
+    setGstVerified(bool)
+  }
 
   console.log("panVerifiedhideButton", hideButton);
 
@@ -893,6 +939,24 @@ const BasicInfo = ({ navigation, route }) => {
     console.log("aadhar text input status", bool);
 
     setAadhaarVerified(bool);
+  };
+
+  const handleRefferalValidation = async() => {
+    
+        const params ={
+          data:{
+            user_type_id:userTypeId,
+            code: refferalCode
+          }
+        }
+        if(refferalCode)
+        {
+          validateRefferalFunc(params)
+        }
+        else{
+          setError(true)
+          setMessage("Kindly enter the refferal code")
+        }
   };
 
   const handleRegistrationFormSubmission = () => {
@@ -1005,8 +1069,31 @@ const BasicInfo = ({ navigation, route }) => {
                         gstinRequired,
                         gstVerified
                       );
+                      if (otpVerified) {
+                        if(refferalRequired)
+                        {
+                          if(refferalValidated)
+                          {
+                            const params = {...body, refferal:refferalCode}
+                            registerUserFunc(params);
+                            console.log("refferal code applied", params)
+                          }
+                          else{
+                          setError(true);
+                          setMessage("Refferal is not validated yet");
+                          }
+                        }
+                        else
+                        {
+                          registerUserFunc(body);
+                          console.log("refferal code not required", body)
 
-                      registerUserFunc(body);
+                        }
+                        
+                      } else {
+                        setError(true);
+                        setMessage("OTP is not verified yet");
+                      }
                     }
                   }
                 }
@@ -1296,11 +1383,7 @@ const BasicInfo = ({ navigation, route }) => {
                 marginBottom: 40,
                 paddingHorizontal: 50,
               }}
-              content={
-                
-                   t("Just few more things about you")
-                  
-              }
+              content={t("Just few more things about you")}
             ></PoppinsTextMedium>
           ) : (
             <PoppinsTextMedium
@@ -1316,30 +1399,28 @@ const BasicInfo = ({ navigation, route }) => {
 
           {/* <RegistrationProgress data={["Basic Info","Business Info","Manage Address","Other Info"]}></RegistrationProgress> */}
           {registrationForm &&
-            registrationForm
-             
-              .map((item, index) => {
-                if (item.type === "text") {
-                  console.log("the user name", userName);
-                  if (item.name === "phone" || item.name === "mobile") {
-                    return (
-                      <>
-                        <View style={{ flexDirection: "row", flex: 1 }}>
-                          <View style={{ flex: 0.8 }}>
-                            <TextInputNumericRectangle
-                              jsonData={item}
-                              key={index}
-                              maxLength={10}
-                              handleData={handleChildComponentData}
-                              placeHolder={item.name}
-                              value={userMobile}
-                              displayText={item.name}
-                              label={item.label}
-                              isEditable={otpVisible ? false : true}
-                            >
-                              {" "}
-                            </TextInputNumericRectangle>
-                            {/* {navigatingFrom === "PasswordLogin" && <TextInputNumericRectangle
+            registrationForm.map((item, index) => {
+              if (item.type === "text") {
+                console.log("the user name", userName);
+                if (item.name === "phone" || item.name === "mobile") {
+                  return (
+                    <>
+                      <View style={{ flexDirection: "row", flex: 1 }}>
+                        <View style={{ flex: 0.8 }}>
+                          <TextInputNumericRectangle
+                            jsonData={item}
+                            key={index}
+                            maxLength={10}
+                            handleData={handleChildComponentData}
+                            placeHolder={item.name}
+                            value={userMobile}
+                            displayText={item.name}
+                            label={item.label}
+                            isEditable={otpVisible ? false : true}
+                          >
+                            {" "}
+                          </TextInputNumericRectangle>
+                          {/* {navigatingFrom === "PasswordLogin" && <TextInputNumericRectangle
                             jsonData={item}
                             key={index}
                             maxLength={10}
@@ -1350,146 +1431,152 @@ const BasicInfo = ({ navigation, route }) => {
                           >
                             {' '}
                           </TextInputNumericRectangle>} */}
-                          </View>
+                        </View>
 
-                          {otpVerified ? (
+                        {otpVerified ? (
+                          <View
+                            style={{
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Image
+                              style={{
+                                height: 30,
+                                width: 30,
+                                resizeMode: "contain",
+                              }}
+                              source={require("../../../assets/images/greenTick.png")}
+                            ></Image>
+                          </View>
+                        ) : (
+                          <TouchableOpacity
+                            style={{
+                              flex: 0.15,
+                              marginTop: 6,
+                              backgroundColor: ternaryThemeColor,
+                              alignItems: "center",
+                              justifyContent: "center",
+                              height: 50,
+                              borderRadius: 5,
+                            }}
+                            onPress={() => {
+                              handleTimer();
+                            }}
+                          >
+                            <PoppinsTextLeftMedium
+                              style={{
+                                color: "white",
+                                fontWeight: "800",
+                                padding: 5,
+                              }}
+                              content={t("get otp")}
+                            ></PoppinsTextLeftMedium>
+                          </TouchableOpacity>
+                        )}
+                        {sendOtpIsLoading && (
+                          <FastImage
+                            style={{
+                              width: 40,
+                              height: 40,
+                              alignSelf: "center",
+                            }}
+                            source={{
+                              uri: gifUri, // Update the path to your GIF
+                              priority: FastImage.priority.normal,
+                            }}
+                            resizeMode={FastImage.resizeMode.contain}
+                          />
+                        )}
+                      </View>
+
+                      {console.log("conditions", otpVerified, otpVisible)}
+                      {!otpVerified && otpVisible && (
+                        <>
+                          <PoppinsTextLeftMedium
+                            style={{ marginRight: "70%" }}
+                            content="OTP"
+                          ></PoppinsTextLeftMedium>
+
+                          <OtpInput
+                            getOtpFromComponent={getOtpFromComponent}
+                            color={"white"}
+                          ></OtpInput>
+
+                          <View
+                            style={{
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
                             <View
                               style={{
-                                alignItems: "center",
+                                flexDirection: "row",
                                 justifyContent: "center",
+                                alignItems: "center",
+                                marginTop: 4,
                               }}
                             >
                               <Image
                                 style={{
-                                  height: 30,
-                                  width: 30,
+                                  height: 20,
+                                  width: 20,
                                   resizeMode: "contain",
                                 }}
-                                source={require("../../../assets/images/greenTick.png")}
+                                source={require("../../../assets/images/clock.png")}
                               ></Image>
-                            </View>
-                          ) : (
-                            <TouchableOpacity
-                              style={{
-                                flex: 0.15,
-                                marginTop: 6,
-                                backgroundColor: ternaryThemeColor,
-                                alignItems: "center",
-                                justifyContent: "center",
-                                height: 50,
-                                borderRadius: 5,
-                              }}
-                              onPress={() => {
-                                handleTimer();
-                              }}
-                            >
-                              <PoppinsTextLeftMedium
+                              <Text
                                 style={{
-                                  color: "white",
-                                  fontWeight: "800",
-                                  padding: 5,
+                                  color: ternaryThemeColor,
+                                  marginLeft: 4,
                                 }}
-                                content={t("get otp")}
-                              ></PoppinsTextLeftMedium>
-                            </TouchableOpacity>
-                          )}
-                          {sendOtpIsLoading && (
-                            <FastImage
-                              style={{
-                                width: 40,
-                                height: 40,
-                                alignSelf: "center",
-                              }}
-                              source={{
-                                uri: gifUri, // Update the path to your GIF
-                                priority: FastImage.priority.normal,
-                              }}
-                              resizeMode={FastImage.resizeMode.contain}
-                            />
-                          )}
-                        </View>
-
-                        {console.log("conditions", otpVerified, otpVisible)}
-                        {!otpVerified && otpVisible && (
-                          <>
-                            <PoppinsTextLeftMedium
-                              style={{ marginRight: "70%" }}
-                              content="OTP"
-                            ></PoppinsTextLeftMedium>
-
-                            <OtpInput
-                              getOtpFromComponent={getOtpFromComponent}
-                              color={"white"}
-                            ></OtpInput>
-
+                              >
+                                {timer}
+                              </Text>
+                            </View>
                             <View
                               style={{
                                 alignItems: "center",
                                 justifyContent: "center",
                               }}
                             >
-                              <View
+                              <Text
                                 style={{
-                                  flexDirection: "row",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  marginTop: 4,
+                                  color: ternaryThemeColor,
+                                  marginTop: 10,
                                 }}
                               >
-                                <Image
-                                  style={{
-                                    height: 20,
-                                    width: 20,
-                                    resizeMode: "contain",
-                                  }}
-                                  source={require("../../../assets/images/clock.png")}
-                                ></Image>
-                                <Text
-                                  style={{
-                                    color: ternaryThemeColor,
-                                    marginLeft: 4,
-                                  }}
-                                >
-                                  {timer}
-                                </Text>
-                              </View>
-                              <View
-                                style={{
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <Text
-                                  style={{
-                                    color: ternaryThemeColor,
-                                    marginTop: 10,
-                                  }}
-                                >
-                                  {t("Didn't recieve any Code?")}
-                                </Text>
+                                {t("Didn't recieve any Code?")}
+                              </Text>
 
-                                <Text
-                                  onPress={() => {
-                                    handleTimer();
-                                  }}
-                                  style={{
-                                    color: ternaryThemeColor,
-                                    marginTop: 6,
-                                    fontWeight: "600",
-                                    fontSize: 16,
-                                  }}
-                                >
-                                  {t("Resend Code")}
-                                </Text>
-                              </View>
+                              <Text
+                                onPress={() => {
+                                  handleTimer();
+                                }}
+                                style={{
+                                  color: ternaryThemeColor,
+                                  marginTop: 6,
+                                  fontWeight: "600",
+                                  fontSize: 16,
+                                }}
+                              >
+                                {t("Resend Code")}
+                              </Text>
                             </View>
-                          </>
-                        )}
-                      </>
-                    );
-                  } else if (item.name.trim().toLowerCase() === "name") {
-                    return (
-                      <View style={{width:'90%',alignItems:'center',justifyContent:'center'}}>
+                          </View>
+                        </>
+                      )}
+                    </>
+                  );
+                } else if (item.name.trim().toLowerCase() === "name") {
+                  return (
+                    <View
+                      style={{
+                        width: "90%",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
                       <PrefilledTextInput
                         jsonData={item}
                         key={index}
@@ -1500,72 +1587,121 @@ const BasicInfo = ({ navigation, route }) => {
                         label={item.label}
                         isEditable={true}
                       ></PrefilledTextInput>
+                    </View>
+                  );
+                } else if (item.name.trim().toLowerCase() === "refferal") {
+                  return (
+                    <View style={{ flexDirection: "row", flex: 1 }}>
+                      <View style={{ flex: 0.8 }}>
+                      <TextInputRectangle
+                          jsonData={item}
+                          key={index}
+                          handleData={handleChildComponentData}
+                          placeHolder={item.name}
+                          label={item.label}
+                          required={item.required}
+                        >
+                          {" "}
+                        </TextInputRectangle>
+                        
                       </View>
-                    );
-                  } else if (item.name.trim().toLowerCase() === "email") {
-                    return (
-                      <EmailTextInput
-                        jsonData={item}
-                        key={index}
-                        handleData={handleChildComponentData}
-                        placeHolder={item.name}
-                        displayText={t(item.name.trim())}
-                        label={item.label}
-                        // isValidEmail = {isValidEmail}
-                      ></EmailTextInput>
-                    );
-                  }
+                      <TouchableOpacity
+                        style={{
+                          flex: 0.15,
+                          marginTop: 6,
+                          backgroundColor: ternaryThemeColor,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          height: 50,
+                          borderRadius: 5,
+                        }}
+                        onPress={() => {
+                          handleRefferalValidation();
+                        }}
+                      >
+                        <PoppinsTextLeftMedium
+                          style={{
+                            color: "white",
+                            fontWeight: "800",
+                            padding: 5,
+                            fontSize:10
+                          }}
+                          content={t("Validate")}
+                        ></PoppinsTextLeftMedium>
+                      </TouchableOpacity>
+                    </View>
+                  );
+                } else if (item.name.trim().toLowerCase() === "email") {
+                  return (
+                    <EmailTextInput
+                      jsonData={item}
+                      key={index}
+                      handleData={handleChildComponentData}
+                      placeHolder={item.name}
+                      displayText={t(item.name.trim())}
+                      label={item.label}
+                      // isValidEmail = {isValidEmail}
+                    ></EmailTextInput>
+                  );
+                }
 
-                  // }
-                  else if (item.name === "aadhaar" || item.name === "aadhar") {
-                    console.log("aadhar");
-                    return (
-                      <TextInputAadhar
-                        required={item.required}
-                        jsonData={item}
-                        key={index}
-                        verified={addharVerified}
-                        handleData={handleChildComponentData}
-                        placeHolder={item.name}
-                        displayText={t(item.name.toLowerCase().trim())}
-                        label={item.label}
-                      >
-                        {" "}
-                      </TextInputAadhar>
-                    );
-                  } else if (item.name === "pan") {
-                    console.log("pan");
-                    return (
-                      <TextInputPan
-                        required={item.required}
-                        jsonData={item}
-                        key={index}
-                        handleData={handleChildComponentData}
-                        placeHolder={item.name}
-                        label={item.label}
-                        displayText={item.name}
-                        panVerified={panVerified}
-                      >
-                        {" "}
-                      </TextInputPan>
-                    );
-                  } else if (item.name === "gstin") {
-                    console.log("gstin");
-                    return (
-                      <TextInputGST
-                        required={item.required}
-                        jsonData={item}
-                        key={index}
-                        handleData={handleChildComponentData}
-                        placeHolder={item.name}
-                        label={item.label}
-                      >
-                        {" "}
-                      </TextInputGST>
-                    );
-                  } else if (item.name.trim().toLowerCase() === "city") {
-                    return (
-                      <View style={{width:'90%',alignItems:'center',justifyContent:'center'}}>
+                // }
+                else if (item.name === "aadhaar" || item.name === "aadhar") {
+                  console.log("aadhar");
+                  return (
+                    <TextInputAadhar
+                      required={item.required}
+                      jsonData={item}
+                      key={index}
+                      verified={addharVerified}
+                      handleData={handleChildComponentData}
+                      placeHolder={item.name}
+                      displayText={t(item.name.toLowerCase().trim())}
+                      label={item.label}
+                    >
+                      {" "}
+                    </TextInputAadhar>
+                  );
+                } else if (item.name === "pan") {
+                  console.log("pan");
+                  return (
+                    <TextInputPan
+                      required={item.required}
+                      jsonData={item}
+                      key={index}
+                      handleData={handleChildComponentData}
+                      placeHolder={item.name}
+                      label={item.label}
+                      displayText={item.name}
+                      panVerified={panVerified}
+                    >
+                      {" "}
+                    </TextInputPan>
+                  );
+                } else if (item.name === "gstin") {
+                  console.log("gstin");
+                  return (
+                    <TextInputGST
+                      required={item.required}
+                      jsonData={item}
+                      key={index}
+                      handleData={handleChildComponentData}
+                      placeHolder={item.name}
+                      label={item.label}
+                      gstinVerified ={gstinVerified}
+                    >
+                      {" "}
+                    </TextInputGST>
+                  );
+                } else if (item.name.trim().toLowerCase() === "city") {
+                  return (
+                    <View
+                      style={{
+                        width: "90%",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
                       <PrefilledTextInput
                         jsonData={item}
                         key={index}
@@ -1576,11 +1712,17 @@ const BasicInfo = ({ navigation, route }) => {
                         label={item.label}
                         isEditable={true}
                       ></PrefilledTextInput>
-                      </View>
-                    );
-                  } else if (item.name.trim().toLowerCase() === "pincode") {
-                    return (
-                      <View style={{width:'90%',alignItems:'center',justifyContent:'center'}}>
+                    </View>
+                  );
+                } else if (item.name.trim().toLowerCase() === "pincode") {
+                  return (
+                    <View
+                      style={{
+                        width: "90%",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
                       <PincodeTextInput
                         jsonData={item}
                         key={index}
@@ -1592,28 +1734,34 @@ const BasicInfo = ({ navigation, route }) => {
                         displayText={item.name}
                         maxLength={6}
                       ></PincodeTextInput>
-                      </View>
-                    );
-                  }
+                    </View>
+                  );
+                }
 
-                  // else if ((item.name).trim().toLowerCase() === "pincode" ) {
+                // else if ((item.name).trim().toLowerCase() === "pincode" ) {
 
-                  //   return (
-                  //     <PincodeTextInput
-                  //       jsonData={item}
-                  //       key={index}
-                  //       handleData={handleChildComponentData}
-                  //       handleFetchPincode={handleFetchPincode}
-                  //       placeHolder={item.name}
+                //   return (
+                //     <PincodeTextInput
+                //       jsonData={item}
+                //       key={index}
+                //       handleData={handleChildComponentData}
+                //       handleFetchPincode={handleFetchPincode}
+                //       placeHolder={item.name}
 
-                  //       label={item.label}
-                  //       maxLength={6}
-                  //     ></PincodeTextInput>
-                  //   )
-                  // }
-                  else if (item.name.trim().toLowerCase() === "state") {
-                    return (
-                      <View style={{width:'90%',alignItems:'center',justifyContent:'center'}}>
+                //       label={item.label}
+                //       maxLength={6}
+                //     ></PincodeTextInput>
+                //   )
+                // }
+                else if (item.name.trim().toLowerCase() === "state") {
+                  return (
+                    <View
+                      style={{
+                        width: "90%",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
                       <PrefilledTextInput
                         jsonData={item}
                         key={index}
@@ -1624,213 +1772,211 @@ const BasicInfo = ({ navigation, route }) => {
                         displayText={item.name}
                         isEditable={false}
                       ></PrefilledTextInput>
-                      </View>
-                    );
-                  } else if (item.name.trim().toLowerCase() === "district") {
+                    </View>
+                  );
+                } else if (item.name.trim().toLowerCase() === "district") {
+                  return (
+                    <PrefilledTextInput
+                      jsonData={item}
+                      key={index}
+                      handleData={handleChildComponentData}
+                      placeHolder={item.name}
+                      value={location?.district}
+                      label={item.label}
+                      displayText={item.name}
+                      isEditable={false}
+                    ></PrefilledTextInput>
+                  );
+                } else if (item.name.trim().toLowerCase() === "dealer_name") {
+                  return (
+                    <View style={{ width: "90%" }}>
+                      {mappedUserType && (
+                        <DropDownForDistributor
+                          state={location?.state}
+                          title={`Select ${mappedUserType}`}
+                          header={`Select ${mappedUserType}`}
+                          jsonData={{ label: item.name, name: item.name }}
+                          searchEnable={true}
+                          data={[]}
+                          type={mappedUserType}
+                          handleData={handleChildComponentData}
+                        ></DropDownForDistributor>
+                      )}
+                    </View>
+                  );
+                } else {
+                  if (item.name == "firm_name") {
                     return (
-                      <PrefilledTextInput
-                        jsonData={item}
-                        key={index}
-                        handleData={handleChildComponentData}
-                        placeHolder={item.name}
-                        value={location?.district}
-                        label={item.label}
-                        displayText={item.name}
-                        isEditable={false}
-                      ></PrefilledTextInput>
-                    );
-                  } else if (item.name.trim().toLowerCase() === "dealer_name") {
-                    return (
-                      <View style={{ width: "90%" }}>
-                        {mappedUserType && (
-                          <DropDownForDistributor
-                            state={location?.state}
-                            title={`Select ${mappedUserType}`}
-                            header={`Select ${mappedUserType}`}
-                            jsonData={{ label: item.name, name: item.name }}
-                            searchEnable={true}
-                            data={[]}
-                            type={mappedUserType}
-                            handleData={handleChildComponentData}
-                          ></DropDownForDistributor>
-                        )}
-                      </View>
+                      <>
+                        <TextInputRectangle
+                          jsonData={item}
+                          key={index}
+                          handleData={handleChildComponentData}
+                          placeHolder={item.name}
+                          label={item.label}
+                        >
+                          {" "}
+                        </TextInputRectangle>
+                        <PoppinsTextMedium
+                          content={t(
+                            "Please enter your firm name as per the bank account"
+                          )}
+                          style={{
+                            marginBottom: 10,
+                            fontSize: 12,
+                            fontWeight: "600",
+                            color: "red",
+                          }}
+                        ></PoppinsTextMedium>
+                      </>
                     );
                   } else {
-                    if (item.name == "firm_name") {
+                    if (item?.name == "whatsapp_number") {
                       return (
-                        <>
-                          <TextInputRectangle
-                            jsonData={item}
-                            key={index}
-                            handleData={handleChildComponentData}
-                            placeHolder={item.name}
-                            label={item.label}
-                          >
-                            {" "}
-                          </TextInputRectangle>
-                          <PoppinsTextMedium
-                            content={t(
-                              "Please enter your firm name as per the bank account"
-                            )}
-                            style={{
-                              marginBottom: 10,
-                              fontSize: 12,
-                              fontWeight: "600",
-                              color: "red",
-                            }}
-                          ></PoppinsTextMedium>
-                        </>
-                      );
-                    } else {
-                      if (item?.name == "whatsapp_number") {
-                        return (
+                        <View
+                          style={{
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "100%",
+                          }}
+                        >
                           <View
                             style={{
+                              width: "80%",
                               alignItems: "center",
                               justifyContent: "center",
-                              width: "100%",
+                              marginBottom: 14,
                             }}
                           >
                             <View
                               style={{
-                                width: "80%",
+                                width: "100%",
                                 alignItems: "center",
-                                justifyContent: "center",
-                                marginBottom: 14,
+                                justifyContent: "flex-start",
+                                flexDirection: "row",
                               }}
                             >
-                              <View
+                              <TouchableOpacity
                                 style={{
-                                  width: "100%",
+                                  width: 20,
+                                  height: 20,
+                                  borderRadius: 2,
+                                  borderWidth: 1,
+                                  borderColor: "black",
                                   alignItems: "center",
-                                  justifyContent: "flex-start",
-                                  flexDirection: "row",
+                                  justifyContent: "center",
+                                  backgroundColor: isChecked
+                                    ? "black"
+                                    : "white",
+                                }}
+                                onPress={() => {
+                                  setIsChecked(!isChecked);
                                 }}
                               >
-                                <TouchableOpacity
-                                  style={{
-                                    width: 20,
-                                    height: 20,
-                                    borderRadius: 2,
-                                    borderWidth: 1,
-                                    borderColor: "black",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    backgroundColor: isChecked
-                                      ? "black"
-                                      : "white",
-                                  }}
-                                  onPress={() => {
-                                    setIsChecked(!isChecked);
-                                  }}
-                                >
-                                  {isChecked && (
-                                    <Check
-                                      name="check"
-                                      size={14}
-                                      color={"white"}
-                                    ></Check>
-                                  )}
-                                </TouchableOpacity>
-                                <PoppinsTextMedium
-                                  content="Same Number on Whatsapp"
-                                  style={{ color: "black", marginLeft: 10 }}
-                                ></PoppinsTextMedium>
-                              </View>
+                                {isChecked && (
+                                  <Check
+                                    name="check"
+                                    size={14}
+                                    color={"white"}
+                                  ></Check>
+                                )}
+                              </TouchableOpacity>
+                              <PoppinsTextMedium
+                                content="Same Number on Whatsapp"
+                                style={{ color: "black", marginLeft: 10 }}
+                              ></PoppinsTextMedium>
                             </View>
-
-                            <TextInputRectangle
-                              editable={!isChecked}
-                              jsonData={item}
-                              key={index}
-                              handleData={handleChildComponentData}
-                              placeHolder={item.name}
-                              label={item.label}
-                              value={userMobile}
-                              maxLength={10}
-                            >
-                              {" "}
-                            </TextInputRectangle>
                           </View>
-                        );
-                      } else {
-                        return (
+
                           <TextInputRectangle
+                            editable={!isChecked}
                             jsonData={item}
                             key={index}
                             handleData={handleChildComponentData}
                             placeHolder={item.name}
                             label={item.label}
+                            value={userMobile}
+                            maxLength={10}
                           >
                             {" "}
                           </TextInputRectangle>
-                        );
-                      }
+                        </View>
+                      );
+                    } else {
+                      return (
+                        <TextInputRectangle
+                          jsonData={item}
+                          key={index}
+                          handleData={handleChildComponentData}
+                          placeHolder={item.name}
+                          label={item.label}
+                        >
+                          {" "}
+                        </TextInputRectangle>
+                      );
                     }
                   }
-                } else if (item.type === "file") {
+                }
+              } else if (item.type === "file") {
+                return (
+                  <ImageInput
+                    jsonData={item}
+                    handleData={handleChildComponentData}
+                    key={index}
+                    data={item.name}
+                    label={item.label}
+                    action="Select File"
+                  ></ImageInput>
+                );
+              } else if (item.type === "select") {
+                if ((item?.name).toLowerCase() == "gender") {
                   return (
-                    <ImageInput
+                    <SelectFromRadio
                       jsonData={item}
-                      handleData={handleChildComponentData}
-                      key={index}
-                      data={item.name}
-                      label={item.label}
-                      action="Select File"
-                    ></ImageInput>
+                      name={item?.name}
+                      options={item?.options}
+                      onSelect={handleChildComponentData}
+                    />
                   );
-                } else if (item.type === "select") {
-                  if ((item?.name).toLowerCase() == "gender") {
-                    return (
-                      <SelectFromRadio
-                        jsonData={item}
-                        name={item?.name}
-                        options={item?.options}
-                        onSelect={handleChildComponentData}
-                      />
-                    );
-                  } else {
-                    return (
-                      <DropDownRegistration
-                        required={item.required}
-                        title={item.name}
-                        header={item.name}
-                        jsonData={item}
-                        data={item.options}
-                        handleData={handleChildComponentData}
-                      ></DropDownRegistration>
-                    );
-                  }
-                } else if (item.type === "date") {
+                } else {
                   return (
-                    <InputDate
+                    <DropDownRegistration
                       required={item.required}
+                      title={item.name}
+                      header={item.name}
                       jsonData={item}
+                      data={item.options}
                       handleData={handleChildComponentData}
-                      data={item.label}
-                      key={index}
-                    ></InputDate>
+                    ></DropDownRegistration>
                   );
                 }
-              })}
+              } else if (item.type === "date") {
+                return (
+                  <InputDate
+                    required={item.required}
+                    jsonData={item}
+                    handleData={handleChildComponentData}
+                    data={item.label}
+                    key={index}
+                  ></InputDate>
+                );
+              }
+            })}
 
-          
-          
-            <ButtonOval
-              handleOperation={() => {
-                handleRegistrationFormSubmission();
-              }}
-              backgroundColor="black"
-              content={t("Great! It's the final Step")}
-              style={{
-                paddingLeft: 30,
-                paddingRight: 30,
-                padding: 10,
-                color: "white",
-                fontSize: 12,
-              }}
-            ></ButtonOval>
+          <ButtonOval
+            handleOperation={() => {
+              handleRegistrationFormSubmission();
+            }}
+            backgroundColor="black"
+            content={t("Great! It's the final Step")}
+            style={{
+              paddingLeft: 30,
+              paddingRight: 30,
+              padding: 10,
+              color: "white",
+              fontSize: 12,
+            }}
+          ></ButtonOval>
         </View>
       </ScrollView>
     </View>

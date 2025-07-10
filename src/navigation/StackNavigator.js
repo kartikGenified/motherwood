@@ -115,6 +115,7 @@ import PointsDistribution from "../screens/pointsDistribution/PointsDistribution
 import Training from "../screens/training/Training";
 import KycViewOtherUsers from "../screens/verification/KycViewOtherUsers";
 import SearchInfluencer from "../screens/searchInfluencer/SearchInfluencer";
+import TapTheDot from "../screens/games/TapTheDot";
 
 const Stack = createNativeStackNavigator();
 
@@ -575,6 +576,13 @@ const StackNavigator = () => {
           }}
           name="SearchInfluencer"
           component={SearchInfluencer}
+        ></Stack.Screen>
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="TapTheDot"
+          component={TapTheDot}
         ></Stack.Screen>
         <Stack.Screen
           options={{

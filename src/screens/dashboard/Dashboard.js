@@ -197,6 +197,7 @@ console.log("banner array",bannerArray)
       isError: fetchProfileIsError,
     },
   ] = useFetchProfileMutation();
+  
 
 
   const [
@@ -748,7 +749,7 @@ console.log("banner array",bannerArray)
           }}
         >
           
-          {showCampaign && !showBirthdayModal && (
+          {!hide && showCampaign && !showBirthdayModal && (
               <CampaignVideoModal
                 dontShow={dontShow}
                 isVisible={CampainVideoVisible}
@@ -760,11 +761,13 @@ console.log("banner array",bannerArray)
             {
               showBirthdayModal && !birthdayModal && <BirthdayModal
               visible={showBirthdayModal}
-              onClose={() => {
+              onClose={
+                () => {
                 setShowCampaign(false)
                 setShowBirthdayModal(false)
                 dispatch(setBirthdayModal(true))
-              }}
+              }
+            }
             />
             }
             <PlatinumModal

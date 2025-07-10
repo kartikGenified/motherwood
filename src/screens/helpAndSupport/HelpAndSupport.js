@@ -37,7 +37,9 @@ const HelpAndSupport = ({ navigation }) => {
     (state) => state.apptheme.customerSupportMail
   );
   console.log(supportMail, supportMobile);
-
+  const socials = useSelector(
+    state => state.apptheme.socials,
+);
   return (
     <ScrollView
       contentContainerStyle={{
@@ -212,19 +214,19 @@ const HelpAndSupport = ({ navigation }) => {
         <PoppinsTextMedium style={{ color: "black", fontSize: 14, fontWeight: '600', marginHorizontal: 20, marginTop: 10 }} content={"For more updates, please follow us on"}></PoppinsTextMedium>
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
 
-          <TouchableOpacity style={{ marginRight: 20, }} onPress={() => { }}>
+          <TouchableOpacity style={{ marginRight: 20, }} onPress={() => {Linking.openURL(socials?.facebook) }}>
             <Image style={{ height: 30, width: 30, resizeMode: 'cover' }} source={require("../../../assets/images/fbCircle.png")}></Image>
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ marginRight: 30, }} onPress={() => { }}>
+          <TouchableOpacity style={{ marginRight: 30, }} onPress={() => { Linking.openURL(socials.instagram)}}>
             <Image style={{ height: 30, width: 30, resizeMode: 'cover' }} source={require("../../../assets/images/instaCircle.png")}></Image>
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ marginRight: 25, }} onPress={() => { }}>
+          <TouchableOpacity style={{ marginRight: 25, }} onPress={() => { Linking.openURL(socials.youtube)}}>
             <Image style={{ height: 30, width: 30, resizeMode: 'cover', marginTop: 5 }} source={require("../../../assets/images/ytCircle.png")}></Image>
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ marginRight: 20, }} onPress={() => { }}>
+          <TouchableOpacity style={{ marginRight: 20, }} onPress={() => {Linking.openURL(socials.linkedin) }}>
             <Image style={{ height: 30, width: 30, resizeMode: 'cover' }} source={require("../../../assets/images/linkedinCircle.png")}></Image>
           </TouchableOpacity>
         </View>
