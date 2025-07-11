@@ -69,6 +69,8 @@ import {
 import Check from "react-native-vector-icons/Entypo";
 import SuccessConfettiModal from "../../components/modals/SuccessConfettiModal";
 import { useValidateRefferalApiMutation } from "../../apiServices/refferal/refferalApi";
+import { useGetCityApiMutation } from "../../apiServices/location/getCity";
+import DropDownWithSearchForms from "../../components/atoms/dropdown/DropDownWithSearchForms";
 
 const BasicInfo = ({ navigation, route }) => {
   const [userName, setUserName] = useState();
@@ -86,7 +88,7 @@ const BasicInfo = ({ navigation, route }) => {
   const [formFound, setFormFound] = useState(true);
   const [isCorrectPincode, setIsCorrectPincode] = useState(true);
   const [otp, setOtp] = useState("");
-  const [refferalValidated, setRefferalValidated] = useState(false)
+  const [refferalValidated, setRefferalValidated] = useState(false);
   const [showRefferal, setShowRefferal] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
@@ -109,7 +111,8 @@ const BasicInfo = ({ navigation, route }) => {
   const [distributorName, setDistributorName] = useState("");
   const [distributorMobile, setDistributorMobile] = useState("");
   const [distributorId, setDistributorId] = useState("");
-  const [refferalRequired, setRefferalRequired] = useState()
+  const [refferalRequired, setRefferalRequired] = useState();
+  const [cityData, setCityData] = useState();
   const [mappedUserData, setMappedUserData] = useState();
   const [showDistributorInput, setShowDistributorInput] = useState(false);
   const [mobileVerified, setMobileVerified] = useState();
@@ -220,6 +223,16 @@ const BasicInfo = ({ navigation, route }) => {
   ] = useRegisterUserByBodyMutation();
 
   const [
+    getCityFunc,
+    {
+      data: getCityData,
+      error: getCityError,
+      isError: getCityIsError,
+      isLoading: getCityIsLoading,
+    },
+  ] = useGetCityApiMutation();
+
+  const [
     getFormFunc,
     {
       data: getFormData,
@@ -325,6 +338,22 @@ const BasicInfo = ({ navigation, route }) => {
   }, [timer, timeOutCallback, otpVerified]);
 
   useEffect(() => {
+    if (getCityData) {
+      console.log("getCityData", getCityData);
+      if (getCityData.success) {
+        let data = []
+        for(let i=0;i<getCityData?.body.length;i++)
+        {
+          data.push({city : getCityData?.body[i].city, id :getCityData?.body[i].id})
+        }
+        setCityData(data);
+      }
+    } else if (getCityError) {
+      console.log("getCityError", getCityError);
+    }
+  }, [getCityData, getCityError]);
+
+  useEffect(() => {
     if (getUsersData) {
       console.log("getUsersData", getUsersData);
 
@@ -338,21 +367,24 @@ const BasicInfo = ({ navigation, route }) => {
   useEffect(() => {
     if (validateRefferalData) {
       console.log("validateRefferalData", validateRefferalData);
-      setRefferalValidated(true)
+      setRefferalValidated(true);
       Alert.alert(
         "Referral Code Validated",
         `Referral code "${refferalCode}" has been successfully validated!`,
         [
-          { text: "OK", onPress: () => {
-            console.log("alert closed")
-          } }
+          {
+            text: "OK",
+            onPress: () => {
+              console.log("alert closed");
+            },
+          },
         ],
         { cancelable: false }
       );
     } else if (validateRefferalError) {
       console.log("validateRefferalError", validateRefferalError);
-      setError(true)
-      setMessage(validateRefferalError?.data?.message)
+      setError(true);
+      setMessage(validateRefferalError?.data?.message);
     }
   }, [validateRefferalData, validateRefferalError]);
 
@@ -422,6 +454,14 @@ const BasicInfo = ({ navigation, route }) => {
       getPolicies(params);
     };
     fetchPolicies();
+
+    const fetchCities = async () => {
+      // const credentials = await Keychain.getGenericPassword();
+      // const token = credentials.username;
+
+      getCityFunc();
+    };
+    fetchCities();
 
     getUsers();
   }, []);
@@ -635,9 +675,8 @@ const BasicInfo = ({ navigation, route }) => {
               setGstinRequired(true);
             }
             if (values[i].name == "refferal") {
-              if(values[i].name == "refferal" && values[i].required)
-              {
-                setRefferalRequired(true)
+              if (values[i].name == "refferal" && values[i].required) {
+                setRefferalRequired(true);
               }
               setShowRefferal(true);
             }
@@ -929,9 +968,9 @@ const BasicInfo = ({ navigation, route }) => {
   const panVerified = (bool) => {
     setPansVerified(bool);
   };
-  const gstinVerified=(bool) =>{
-    setGstVerified(bool)
-  }
+  const gstinVerified = (bool) => {
+    setGstVerified(bool);
+  };
 
   console.log("panVerifiedhideButton", hideButton);
 
@@ -941,22 +980,19 @@ const BasicInfo = ({ navigation, route }) => {
     setAadhaarVerified(bool);
   };
 
-  const handleRefferalValidation = async() => {
-    
-        const params ={
-          data:{
-            user_type_id:userTypeId,
-            code: refferalCode
-          }
-        }
-        if(refferalCode)
-        {
-          validateRefferalFunc(params)
-        }
-        else{
-          setError(true)
-          setMessage("Kindly enter the refferal code")
-        }
+  const handleRefferalValidation = async () => {
+    const params = {
+      data: {
+        user_type_id: userTypeId,
+        code: refferalCode,
+      },
+    };
+    if (refferalCode) {
+      validateRefferalFunc(params);
+    } else {
+      setError(true);
+      setMessage("Kindly enter the refferal code");
+    }
   };
 
   const handleRegistrationFormSubmission = () => {
@@ -1070,26 +1106,19 @@ const BasicInfo = ({ navigation, route }) => {
                         gstVerified
                       );
                       if (otpVerified) {
-                        if(refferalRequired)
-                        {
-                          if(refferalValidated)
-                          {
-                            const params = {...body, refferal:refferalCode}
+                        if (refferalRequired) {
+                          if (refferalValidated) {
+                            const params = { ...body, refferal: refferalCode };
                             registerUserFunc(params);
-                            console.log("refferal code applied", params)
+                            console.log("refferal code applied", params);
+                          } else {
+                            setError(true);
+                            setMessage("Refferal is not validated yet");
                           }
-                          else{
-                          setError(true);
-                          setMessage("Refferal is not validated yet");
-                          }
-                        }
-                        else
-                        {
+                        } else {
                           registerUserFunc(body);
-                          console.log("refferal code not required", body)
-
+                          console.log("refferal code not required", body);
                         }
-                        
                       } else {
                         setError(true);
                         setMessage("OTP is not verified yet");
@@ -1593,7 +1622,7 @@ const BasicInfo = ({ navigation, route }) => {
                   return (
                     <View style={{ flexDirection: "row", flex: 1 }}>
                       <View style={{ flex: 0.8 }}>
-                      <TextInputRectangle
+                        <TextInputRectangle
                           jsonData={item}
                           key={index}
                           handleData={handleChildComponentData}
@@ -1603,7 +1632,6 @@ const BasicInfo = ({ navigation, route }) => {
                         >
                           {" "}
                         </TextInputRectangle>
-                        
                       </View>
                       <TouchableOpacity
                         style={{
@@ -1624,7 +1652,7 @@ const BasicInfo = ({ navigation, route }) => {
                             color: "white",
                             fontWeight: "800",
                             padding: 5,
-                            fontSize:10
+                            fontSize: 10,
                           }}
                           content={t("Validate")}
                         ></PoppinsTextLeftMedium>
@@ -1688,7 +1716,7 @@ const BasicInfo = ({ navigation, route }) => {
                       handleData={handleChildComponentData}
                       placeHolder={item.name}
                       label={item.label}
-                      gstinVerified ={gstinVerified}
+                      gstinVerified={gstinVerified}
                     >
                       {" "}
                     </TextInputGST>
@@ -1702,16 +1730,16 @@ const BasicInfo = ({ navigation, route }) => {
                         justifyContent: "center",
                       }}
                     >
-                      <PrefilledTextInput
-                        jsonData={item}
-                        key={index}
-                        handleData={handleChildComponentData}
-                        placeHolder={item.name}
-                        value={location?.city}
-                        displayText={item.name}
-                        label={item.label}
-                        isEditable={true}
-                      ></PrefilledTextInput>
+                      {cityData && (
+                        <DropDownWithSearchForms
+                          required={item.required}
+                          title={item.name}
+                          header={item.name}
+                          jsonData={item}
+                          data={cityData}
+                          handleData={handleChildComponentData}
+                        ></DropDownWithSearchForms>
+                      )}
                     </View>
                   );
                 } else if (item.name.trim().toLowerCase() === "pincode") {

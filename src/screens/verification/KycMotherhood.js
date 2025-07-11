@@ -41,6 +41,8 @@ const KycMotherhood = ({ navigation }) => {
   const [modalContent, setModalContent] = useState();
   const [modal, setModal] = useState(false);
   const [kycArray, setKycArray] = useState([]);
+  const [error, setError] = useState(false)
+  const [message, setMessage] = useState('')
   const [panVerified, setPanVerified] = useState(false);
   const [aadharVerified, setAadharVerified] = useState(false);
   const [gstinVerified, setGstinVerified] = useState(false);
@@ -157,7 +159,25 @@ const KycMotherhood = ({ navigation }) => {
     };
     refetchData();
   }, []);
+  useEffect(() => {
+    const refetchData = async () => {
+      const credentials = await Keychain.getGenericPassword();
+      if (credentials) {
+        console.log(
+          "Credentials successfully loaded for user " + credentials.username
+        );
+        const token = credentials.username;
+        const userId = userData.id;
 
+        const params = {
+          token: token,
+          userId: userId,
+        };
+        listAccountFunc(params);
+      }
+    };
+    refetchData();
+  }, [focused,modal]);
   useEffect(() => {
     console.log("firstlistAccountData", JSON.stringify(listAccountData));
 
@@ -1436,7 +1456,6 @@ const KycMotherhood = ({ navigation }) => {
       return (
         <View
           style={{
-            minHeight: 180,
             width: "90%",
             backgroundColor: "white",
             borderRadius: 20,
@@ -1515,8 +1534,20 @@ const KycMotherhood = ({ navigation }) => {
           alignItems: "center",
           justifyContent: "center",
           width: "100%",
+          flex:1,
         }}
+
       >
+            <ScrollView
+  contentContainerStyle={{
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingBottom: 40,
+  }}
+  style={{ width: "100%" }}
+  keyboardShouldPersistTaps="handled"
+>
+
         <BankDetails></BankDetails>
         <AccountDetails></AccountDetails>
         {addBankDetailsError && (
@@ -1548,6 +1579,8 @@ const KycMotherhood = ({ navigation }) => {
             {" "}
           </PoppinsTextMedium>
         </TouchableOpacity>
+        </ScrollView>
+
       </View>
     );
   };

@@ -114,7 +114,7 @@ const SocialBottomBar = ({ showRelative ,backgroundColor }) => {
       </TouchableOpacity>
       <TouchableOpacity
       onPress={()=>{
-        Linking.openURL(socials?.linkedin)
+        Linking.openURL(socials?.linkedIn)
        
       }}
         style={{ flexDirection: "row", marginLeft: 10, marginTop: 5 }}

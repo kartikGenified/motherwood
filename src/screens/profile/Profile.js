@@ -553,7 +553,7 @@ const Profile = ({ navigation }) => {
                 navigation.navigate("EditProfile", {
                   formFields: formFields,
                   formValues: formValues,
-                  savedImage: fetchProfileData.body?.profile_pic,
+                  savedImage: fetchProfileData?.body?.profile_pic,
                 });
               }}
               style={{

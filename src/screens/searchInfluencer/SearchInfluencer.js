@@ -317,7 +317,7 @@ const SearchInfluencer = () => {
           placeholderTextColor={"black"}
           placeholder={"Mobile No"}
           maxLength={10}
-          style={{ height: "100%", width: "80%" }}
+          style={{ height: "100%", width: "80%",color:'black' }}
         ></TextInput>
       </View>
               
@@ -360,7 +360,7 @@ const SearchInfluencer = () => {
           }}
           placeholderTextColor={"black"}
           placeholder={"Search by User ID"}
-          style={{ height: "100%", width: "80%" }}
+          style={{ height: "100%", width: "80%",color:'black' }}
         ></TextInput>
       </View>
               

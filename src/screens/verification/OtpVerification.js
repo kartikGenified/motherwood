@@ -38,6 +38,7 @@ import { useDispatch } from "react-redux";
 import { useRedeemSchemeApiMutation } from "../../apiServices/scheme/RedeemSchemeApi";
 import { getCurrentLocation } from "../../utils/getCurrentLocation";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import { useGetUserStatusApiMutation } from "../../apiServices/userStatus/getUserStatus";
 
 const OtpVerification = ({ navigation, route }) => {
   const [message, setMessage] = useState();
@@ -84,6 +85,8 @@ const OtpVerification = ({ navigation, route }) => {
       isError: verifyOtpForNormalUseIsError,
     },
   ] = useVerifyOtpForNormalUseMutation();
+
+  
 
   const [
     redeemSchemeApiFunc,
@@ -224,6 +227,10 @@ const OtpVerification = ({ navigation, route }) => {
       
     }
   };
+
+  
+
+  
 
   useEffect(()=>{
     if(addCashToBankWalletData)

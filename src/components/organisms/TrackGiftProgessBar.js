@@ -23,7 +23,7 @@ const TrackGiftProgessBar = (props) => {
       )
         ? useSelector(state => state.apptheme.ternaryThemeColor)
         : 'grey';
-
+        console.log("data.status", data, status)
     const Circle = (props) => {
         const [index, setIndex] = useState(props.index)
         const completed = props.completed

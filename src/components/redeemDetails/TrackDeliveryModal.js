@@ -11,18 +11,29 @@ import { useTranslation } from 'react-i18next';
 
 
 // create a component
-const TrackDeliveryModal = ({ isVisible, onClose, data, trackdata }) => {
+const TrackDeliveryModal = ({ isVisible, onClose,status, data, trackdata }) => {
+    const [delStatus, setDelStatus] = useState()
     const {t} = useTranslation()
     const ternaryThemeColor = useSelector(
         state => state.apptheme.ternaryThemeColor,
     )
-        ? useSelector(state => state.apptheme.ternaryThemeColor)
-        : 'grey';
 
 
-        const modalClose =() =>{}
+    console.log("Data track", data,trackdata,status);
 
-    console.log("Data track", data);
+    
+    useEffect(()=>{
+        for(let i=0;i<trackdata?.body.length;i++)
+        {
+            console.log("sadbasvhdhgasghg",status,trackdata?.body[i])
+            if(status == trackdata?.body[i])
+            {
+                setDelStatus(i);
+            }
+        }
+
+    },[trackdata])
+
 
 
     return (
@@ -67,7 +78,7 @@ const TrackDeliveryModal = ({ isVisible, onClose, data, trackdata }) => {
                     </View>
 
                     <ScrollView style={{ marginTop: 20 }}>
-                        <TrackGiftProgessBar height={500} data={trackdata?.body} status={data.status} />
+                        {delStatus && <TrackGiftProgessBar height={500} data={trackdata?.body} status={delStatus} />}
                     </ScrollView>
 
                     <TouchableOpacity style={[{

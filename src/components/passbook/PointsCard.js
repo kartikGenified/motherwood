@@ -141,7 +141,7 @@ const fetchPoints = async () => {
           </View>
           <View style={{ justifyContent: "center" }}>
             <PoppinsTextLeftMedium
-              style={{ color: "white", fontSize: 18, fontWeight: "800" }}
+              style={{ color: "white", fontSize: 18, fontWeight: "800",width:160 }}
               content={userData?.name}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium

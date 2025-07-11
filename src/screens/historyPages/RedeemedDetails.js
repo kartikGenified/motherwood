@@ -398,7 +398,9 @@ const RedeemedDetails = ({ navigation, route }) => {
 
           {/* click to report ------------------------------------------------------- */}
           {/* <ClickToReport></ClickToReport> */}
-          <TrackDeliveryModal isVisible={trackModal}  onClose={hideSuccessModal} trackdata={redeemedGiftStatusData} data={data} />
+          <TrackDeliveryModal isVisible={trackModal}  onClose={hideSuccessModal} status={dataValue?.gift_status} trackdata={redeemedGiftStatusData} data={data} />
+          {/* <TrackDeliveryModal isVisible={trackModal}  onClose={hideSuccessModal} trackdata={redeemedGiftStatusData} data={data} /> */}
+
         </View>
       </ScrollView>
     </View>

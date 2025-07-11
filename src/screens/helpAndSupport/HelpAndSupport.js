@@ -226,7 +226,7 @@ const HelpAndSupport = ({ navigation }) => {
             <Image style={{ height: 30, width: 30, resizeMode: 'cover', marginTop: 5 }} source={require("../../../assets/images/ytCircle.png")}></Image>
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ marginRight: 20, }} onPress={() => {Linking.openURL(socials.linkedin) }}>
+          <TouchableOpacity style={{ marginRight: 20, }} onPress={() => {Linking.openURL(socials.linkedIn) }}>
             <Image style={{ height: 30, width: 30, resizeMode: 'cover' }} source={require("../../../assets/images/linkedinCircle.png")}></Image>
           </TouchableOpacity>
         </View>

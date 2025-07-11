@@ -147,7 +147,7 @@ const EditProfile = ({ navigation, route }) => {
       const name = item.name?.trim()?.toLowerCase();
       return name
     });
-  
+    
     const filteredValues = filteredFields.map((filteredItem) => {
       
         return filteredItem.name
@@ -155,7 +155,7 @@ const EditProfile = ({ navigation, route }) => {
   
     // Update both renderData (filtered fields) and aligned values
     setRenderData(filteredFields);
-    setRenderValues(filteredValues); // <- Create a new state for this
+    setRenderValues(formValues); // <- Create a new state for this
 
     console.log("bhassad mach gai idhar", filteredFields, filteredValues)
   }, [selectedIndex, formFields, formValues]);

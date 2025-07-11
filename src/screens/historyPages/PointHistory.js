@@ -642,7 +642,7 @@ const PointHistory = ({ navigation }) => {
           justifyContent: "space-between",
         }}
       >
-        {getOrderDetailsByTypeData && getOrderDetailsByTypeError?.data?.body!=null &&<View style={{ margin: 10, flexDirection: "row" }}>
+        {getOrderDetailsByTypeData  &&<View style={{ margin: 10, flexDirection: "row" }}>
           <Image source={require("../../../assets/images/coin.png")}></Image>
            <View style={{ marginLeft: 10 }}>
             <PoppinsTextLeftMedium
@@ -674,7 +674,7 @@ const PointHistory = ({ navigation }) => {
           }
         </View>
 }
-{getOrderDetailsByTypeError?.data?.body==null &&<View style={{ margin: 10, flexDirection: "row" }}>
+{getOrderDetailsByTypeError && getOrderDetailsByTypeError?.data?.body==null &&<View style={{ margin: 10, flexDirection: "row" }}>
           <Image source={require("../../../assets/images/coin.png")}></Image>
            <View style={{ marginLeft: 10 }}>
             <PoppinsTextLeftMedium
@@ -701,7 +701,7 @@ const PointHistory = ({ navigation }) => {
 
         }}>
             <Image style={{height:20,width:20,resizeMode:'contain'}} source={require("../../../assets/images/gg.png")}></Image>
-            <PoppinsTextMedium style={{color:'white', fontSize:12, fontWeight:'bold',marginLeft:8}} content={"Points Transfer"}></PoppinsTextMedium>
+            <PoppinsTextMedium style={{color:'white', fontSize:12, fontWeight:'bold',marginLeft:8}} content={"Redeem"}></PoppinsTextMedium>
         </TouchableOpacity>
           }
 

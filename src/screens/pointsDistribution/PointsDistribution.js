@@ -73,6 +73,7 @@ const PointsDistribution = ({navigation}) => {
           })
           setEmployeeList(approvedUsers)
         }
+        setSelectedUser(data)
         
 
       }
@@ -394,6 +395,7 @@ const PointsDistribution = ({navigation}) => {
                   <TouchableOpacity onPress={()=>{
                     handleUserDropDown(item)
                     setShowList(!showList)
+
 
                   }} style={{height:30,width:'100%',backgroundColor:'#DDDDDD',alignItems:'center', justifyContent:'center',marginBottom:1}}>
                     <PoppinsTextMedium content={item.toUpperCase()} style={{color:'#717171', fontSize:16,}}></PoppinsTextMedium>

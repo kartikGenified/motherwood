@@ -57,7 +57,6 @@ const BottomModal = (props) => {
   };
 
   return (
-    <View style={styles.centeredView}>
       <Modal
         animationType="slide"
         transparent={true}
@@ -72,20 +71,23 @@ const BottomModal = (props) => {
         }}
       >
         <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <ScrollView style={{width:'100%'}} contentContainerStyle={{alignItems:'center',justifyContent:'center'}}>
-            {Comp && <Comp handleCompResp={handleCompResp} handleFilter={handleFilter}></Comp>}
-            </ScrollView>
-          </View>
+        <View style={styles.modalView}>
+  <ScrollView
+  style={{width:'100%', paddingTop:20}}
+    contentContainerStyle={{ flexGrow: 1}}
+    keyboardShouldPersistTaps="handled"
+  >
+    {Comp && <Comp handleCompResp={handleCompResp} handleFilter={handleFilter} />}
+  </ScrollView>
+</View>
         </View>
       </Modal>
-    </View>
   );
 };
 
 const styles = StyleSheet.create({
   centeredView: {
-    flex: 1,
+    flex:1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(52, 52, 52, 0.8)",
@@ -95,6 +97,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     width: "100%",
+    maxHeight: "70%", // ✅ LIMIT height so ScrollView inside can scroll
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -106,7 +109,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     position: "absolute",
     bottom: 0,
-    paddingBottom:40
+    paddingBottom: 40,
   },
   button: {
     borderRadius: 10,
