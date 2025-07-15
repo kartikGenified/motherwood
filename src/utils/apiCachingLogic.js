@@ -12,6 +12,17 @@ export const storeData = async (key, value) => {
   }
 };
 
+export const removeValue = async (key) => {
+  try {
+    await AsyncStorage.removeItem(key)
+  } catch(e) {
+    // remove error
+    console.log(`Error in removing the key ${key} from async storage`)
+  }
+
+  console.log('Done.')
+}
+
 export const getData = async (key) => {
   try {
     const jsonValue = await AsyncStorage.getItem(key);

@@ -23,6 +23,7 @@ import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import DeleteModal from "../../components/modals/DeleteModal";
 import Delete from "react-native-vector-icons/AntDesign";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { removeCachingLogic } from "../../utils/removeCachingLogic";
 
 const Setting = ({navigation}) => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -157,7 +158,7 @@ const Setting = ({navigation}) => {
                 await AsyncStorage.removeItem("loginData");
                 await AsyncStorage.removeItem("storedBanner");
                 await AsyncStorage.removeItem("userMpin");
-          
+                
                 navigation.reset({ index: "0", routes: [{ name: "OtpLogin" }] });
               } catch (e) {
                 console.log("error deleting loginData", e);
@@ -166,6 +167,7 @@ const Setting = ({navigation}) => {
               console.log("Done.");
             };
             handleLogout()
+            removeCachingLogic()
           }} style={{height:40,width:100,backgroundColor:"#B6202D",borderRadius:30,alignItems:"center", justifyContent:'center'}}>
           <PoppinsTextMedium
           content="Log Out"

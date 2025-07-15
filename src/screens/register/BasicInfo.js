@@ -674,8 +674,8 @@ const BasicInfo = ({ navigation, route }) => {
             if (values[i].label == "Gstin" && values[i].required) {
               setGstinRequired(true);
             }
-            if (values[i].name == "refferal") {
-              if (values[i].name == "refferal" && values[i].required) {
+            if (values[i].name == "referral") {
+              if (values[i].name == "referral" && values[i].required) {
                 setRefferalRequired(true);
               }
               setShowRefferal(true);
@@ -805,7 +805,7 @@ const BasicInfo = ({ navigation, route }) => {
     if ((data?.name).toLowerCase() === "name") {
       setUserName(data?.value);
     }
-    if ((data?.name).toLowerCase() === "refferal") {
+    if ((data?.name).toLowerCase() === "referral") {
       setRefferalCode(data?.value);
     }
 
@@ -991,7 +991,7 @@ const BasicInfo = ({ navigation, route }) => {
       validateRefferalFunc(params);
     } else {
       setError(true);
-      setMessage("Kindly enter the refferal code");
+      setMessage("Kindly enter the referral code");
     }
   };
 
@@ -1108,16 +1108,16 @@ const BasicInfo = ({ navigation, route }) => {
                       if (otpVerified) {
                         if (refferalRequired) {
                           if (refferalValidated) {
-                            const params = { ...body, refferal: refferalCode };
+                            const params = { ...body, referral: refferalCode };
                             registerUserFunc(params);
-                            console.log("refferal code applied", params);
+                            console.log("referral code applied", params);
                           } else {
                             setError(true);
-                            setMessage("Refferal is not validated yet");
+                            setMessage("referral is not validated yet");
                           }
                         } else {
                           registerUserFunc(body);
-                          console.log("refferal code not required", body);
+                          console.log("referral code not required", body);
                         }
                       } else {
                         setError(true);
@@ -1618,7 +1618,7 @@ const BasicInfo = ({ navigation, route }) => {
                       ></PrefilledTextInput>
                     </View>
                   );
-                } else if (item.name.trim().toLowerCase() === "refferal") {
+                } else if (item.name.trim().toLowerCase() === "referral") {
                   return (
                     <View style={{ flexDirection: "row", flex: 1 }}>
                       <View style={{ flex: 0.8 }}>
