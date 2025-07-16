@@ -228,7 +228,7 @@ const UserManagement = () => {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          height: 60,
+          height: 80,
         }}
       >
         <View>
@@ -253,10 +253,19 @@ const UserManagement = () => {
             style={{
               color: "white",
               textAlign: "center",
-              marginLeft: 40,
+              marginLeft: 38,
               fontWeight: "600",
             }}
           >{`Name : ${item?.name}`}</Text>
+          <Text
+            style={{
+              color: "white",
+              textAlign: "center",
+              marginLeft: 14,
+              fontWeight: "600",
+              marginTop:4
+            }}
+          >{`Branch : ${item?.branch_name}`}</Text>
         </View>
 
         <View style={{}}>

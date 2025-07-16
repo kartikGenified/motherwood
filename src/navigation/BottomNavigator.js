@@ -53,9 +53,9 @@ function BottomNavigator({ navigation }) {
    useEffect(() => {
     const getData = async () => {
       isAlreadyWalkedThrough = await AsyncStorage.getItem("isAlreadyWalkedThrough");
-      console.log("isAlreadyWalkedThrough",isAlreadyWalkedThrough)
+      // console.log("isAlreadyWalkedThrough",isAlreadyWalkedThrough)
       if( workflow.includes("Points On Product")){
-        console.log("isAlreadyWalkThrough", isAlreadyWalkedThrough, stepId);
+        // console.log("isAlreadyWalkThrough", isAlreadyWalkedThrough, stepId);
         if ( !(isAlreadyWalkedThrough =="true") && stepId === 0 && needWalkedThrough) {
           setWalkThrough(false);
         } else if (stepId == 2) {

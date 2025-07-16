@@ -311,7 +311,7 @@ const OrderDetails = (params) => {
                 fontWeight: "600",
               }}
             >
-              Order No :
+              Reference Number :
             </Text>
             <Text
               style={{

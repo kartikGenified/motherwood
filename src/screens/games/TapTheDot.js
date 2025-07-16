@@ -253,9 +253,41 @@ const TapTheDot = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      
-      <View style={{alignItems:"center",justifyContent:'center',width:'100%',flexDirection:'row',marginBottom:20}}>
-      <Image style={{height:60,width:60,resizeMode:"contain",marginRight:10}} source={require('../../../assets/images/saathi.png')}></Image>
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "flex-start",
+          flexDirection: "row",
+          width: "100%",
+          height: 30,
+          marginLeft: 20,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Image
+            style={{
+              height: 24,
+              width: 24,
+              resizeMode: "contain",
+              marginLeft: 10,
+            }}
+            source={require("../../../assets/images/blackBack.png")}
+          ></Image>
+        </TouchableOpacity>
+        
+        {/* <TouchableOpacity style={{ marginLeft: 160 }}>
+          <Image
+            style={{ height: 30, width: 30, resizeMode: "contain" }}
+            source={require("../../../assets/images/notificationOn.png")}
+          ></Image>
+        </TouchableOpacity> */}
+      </View>
+      <View style={{alignItems:"center",justifyContent:'center',width:'100%',flexDirection:'row',marginBottom:10}}>
+      <Image style={{height:80,width:80,resizeMode:"contain",marginRight:10}} source={require('../../../assets/images/saathi.png')}></Image>
       <Text style={styles.title}>Tap the Dot</Text>
       </View>
       
@@ -318,12 +350,15 @@ const TapTheDot = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#edf2fb',
-      alignItems: 'center',
-      paddingTop: 50,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#edf2fb',
+    alignItems: 'center',
+    paddingTop: 20,
+    justifyContent:'flex-start',
+    height:'100%'
+    
+  },
     title: {
       fontSize: 30,
       fontWeight: '800',

@@ -9,14 +9,14 @@ import RotateViewAnimation from '../animations/RotateViewAnimation';
 import FadeInOutAnimations from '../animations/FadeInOutAnimations';
 import Tooltip from "react-native-walkthrough-tooltip";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setStepId } from '../../../redux/slices/walkThroughSlice';
-
+import { setAlreadyWalkedThrough, setStepId } from '../../../redux/slices/walkThroughSlice';
+import { useIsFocused } from '@react-navigation/native';
 
 const DrawerHeader = () => {
     const navigation = useNavigation()
-    const[walkThrough, setWalkThrough] = useState(false)
+    const[walkThrough, setWalkThrough] = useState(true)
     const dispatch = useDispatch();
-    
+    const focused = useIsFocused()
     const ternaryThemeColor = useSelector(
         state => state.apptheme.ternaryThemeColor,
       )
@@ -25,13 +25,14 @@ const DrawerHeader = () => {
     const stepId = useSelector((state) => state.walkThrough.stepId);
     const walkThroughCompleted = useSelector((state) => state.walkThrough.walkThroughCompleted);
     const isAlreadyWalkedThrough = useSelector((state) => state.walkThrough.isAlreadyWalkedThrough);
-
+    
+      console.log("isAlreadyWalkedThroughasdjkasjdhj",isAlreadyWalkedThrough, walkThrough, stepId)
         //asynch storage data saving
         const storeData = async () => {
             try {
               await AsyncStorage.setItem('isAlreadyWalkedThrough', "true" );
               const value = await AsyncStorage.getItem("isAlreadyIntroduced");
-            console.log("isAlreadyWalkedThrough",value)
+            // console.log("isAlreadyWalkedThrough",value)
             } catch (e) {
               // saving error
               console.log("error",e)
@@ -42,9 +43,15 @@ const DrawerHeader = () => {
     useEffect(()=>{
       if(isAlreadyWalkedThrough)
       {
-        setWalkThrough(true)
+        setWalkThrough(false)
+        
       }
-    },[isAlreadyWalkedThrough])
+      else{
+        setWalkThrough(true)
+        setStepId(1)
+
+      }
+    },[isAlreadyWalkedThrough, focused])
 
       const handleNextStep = () => {
         storeData()
@@ -54,7 +61,7 @@ const DrawerHeader = () => {
     
       const handleSkip = () => {
         // dispatch(setStepId(0)); // Reset or handle skip logic
-        // dispatch(setAlreadyWalkedThrough(true)); // Mark walkthrough as completed
+        dispatch(setAlreadyWalkedThrough(true)); // Mark walkthrough as completed
         setWalkThrough(false);
       };
 

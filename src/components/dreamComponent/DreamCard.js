@@ -216,6 +216,7 @@ const DreamCard = () => {
               backgroundColor: (userData?.user_type.toLowerCase() == "carpenter" || userData?.user_type.toLowerCase() == "oem" || userData?.user_type.toLowerCase() == "directoem" || userData?.user_type.toLowerCase() == "carpenter") ? '#00A79D' : ternaryThemeColor,
               borderRadius: 10,
               marginBottom: 20,
+              marginTop:16,
             }}
           >
             <View style={{width:'100%',alignItems:'flex-start', justifyContent:'center'}}>

@@ -7,6 +7,7 @@ import PoppinsTextMedium from "../electrons/customFonts/PoppinsTextMedium";
 import { useFetchUserPointsMutation } from "../../apiServices/workflow/rewards/GetPointsApi";
 import * as Keychain from 'react-native-keychain';
 import { useSelector } from "react-redux";
+import capitalizeFirstChar from "../../utils/capitalizeFirstChar";
 
 
 const PointsCard = (props) => {
@@ -58,6 +59,8 @@ const fetchPoints = async () => {
 }
 
 
+
+console.log("cpasdjashjbchasbjhbas",capitalizeFirstChar(membership))
   const IconBox = ({ image, title, points }) => {
     console.log("pointsIconBox",points)
     let width;
@@ -154,33 +157,49 @@ const fetchPoints = async () => {
 
         <View>
           <Image
-            style={{ height: 50, width: 100, marginTop: 10, marginRight: 10,resizeMode:'cover',top:18 }}
-            source={require("../../../assets/images/Motherwood-Logo-dark.png")}
+            style={{ height: 50, width: 100, marginTop: 10, marginRight: 10,resizeMode:'contain',top:18 }}
+            source={require("../../../assets/images/motherwood_white_logo.png")}
           ></Image>
           <TouchableOpacity
             onPress={()=>{
               props.setModalVisible(true)
             }}
-            style={{ flexDirection: "row", marginTop: 20, marginRight: 20,top:30 }}
+            style={{ flexDirection: "row", marginTop: 20,top:30, right:30 }}
           >
             <Image
               style={{ height: 16, width: 16, marginRight: 5, marginTop: 3 }}
               source={require("../../../assets/images/info_white.png")}
             ></Image>
-            <PoppinsTextLeftMedium
-              style={{ color: "white", fontSize: 16 }}
-              content={"Earn Badge"}
-            ></PoppinsTextLeftMedium>
+            {membership ? <PoppinsTextMedium
+            style={{ color: "white",fontSize:14 }}
+            content={`${capitalizeFirstChar(membership)} Member`}
+          ></PoppinsTextMedium>
+          :
+          <PoppinsTextMedium
+            style={{ color: "white",fontSize:16 }}
+            content={"Earn Badges"}
+          ></PoppinsTextMedium>
+          }
           </TouchableOpacity>
         </View>
       </View>
       <View style={{width:'100%',flexDirection:'row'}}>
-        
+      {userData?.user_type?.toLowerCase() != "carpenter" &&
+              userData?.user_type?.toLowerCase() != "contractor" &&
+              userData?.user_type?.toLowerCase() != "oem" &&
+              userData?.user_type?.toLowerCase() != "directoem" ?
           <IconBox
             image={require("../../../assets/images/hand_coin_white.png")}
             points={isNaN(Math.floor( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed))) ? '0' : Math.floor(Math.floor( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed)))}
-            title={"Earned Points"}
+            title={"Recieved Points"}
           ></IconBox>
+          :
+          <IconBox
+          image={require("../../../assets/images/hand_coin_white.png")}
+          points={isNaN(Math.floor( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed))) ? '0' : Math.floor(Math.floor( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed)))}
+          title={"Earned Points"}
+        ></IconBox>
+}
           {userData?.user_type?.toLowerCase() != "carpenter" &&
               userData?.user_type?.toLowerCase() != "contractor" &&
               userData?.user_type?.toLowerCase() != "oem" &&

@@ -196,7 +196,7 @@ const AddBankDetails = ({navigation}) => {
               navigateTo="BankAccounts"
               openModal={success}></MessageModal>
             )}
-            <ScrollView style={{width:'100%',height:'100%'}}>
+            <ScrollView style={{width:'100%',minHeight:'90%'}}>
             <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:20,height:30}}>
                 <TouchableOpacity onPress={()=>{
                     navigation.goBack()
@@ -215,7 +215,7 @@ const AddBankDetails = ({navigation}) => {
                {!hideButton && <ShowLoadingButton handleData={submitData} title={t("Proceed")}></ShowLoadingButton>}
             </View>
             </ScrollView>
-            <SocialBottomBar></SocialBottomBar>
+            <SocialBottomBar showRelative={true}></SocialBottomBar>
         </View>
     );
 }

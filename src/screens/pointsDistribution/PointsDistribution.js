@@ -19,7 +19,7 @@ const PointsDistribution = ({navigation}) => {
       );
       const preferredOrder = [
         "distributor",
-        "dealer",
+        "directdealer",
         "directoem",
         "retailer",
         "contractor",

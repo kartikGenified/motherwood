@@ -46,7 +46,7 @@ const PointsCalculator = () => {
   const users = useSelector((state)=>state.appusers.value)
   const preferredOrder = [
     "distributor",
-    "dealer",
+    "directdealer",
     "directoem",
     "retailer",
     "contractor",

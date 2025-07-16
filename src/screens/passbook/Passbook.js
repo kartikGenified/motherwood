@@ -418,6 +418,7 @@ const Passbook = ({ navigation }) => {
         }}
       >
         <PlatinumModal
+          memberShip={getActiveMembershipData?.body?.tier?.name}
           isVisible={membershipModal}
           onClose={() => {
             setMemberShipModal(false);
@@ -460,6 +461,7 @@ const Passbook = ({ navigation }) => {
          {isTertiary!=undefined &&  <View style={{ width: "100%", marginTop: 20 }}>
             <PointsCard
               memberShip={getActiveMembershipData?.body?.tier?.name}
+
               setModalVisible={() => {
                 setMemberShipModal(true);
               }}

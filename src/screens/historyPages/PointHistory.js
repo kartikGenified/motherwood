@@ -479,7 +479,7 @@ const PointHistory = ({ navigation }) => {
             left: 10,
             color: "black",
           }}
-          content="Orders Overview"
+          content="Points Overview"
         ></PoppinsTextMedium>
 
         <TouchableOpacity
@@ -591,7 +591,7 @@ const PointHistory = ({ navigation }) => {
         <View style={{width:'80%', alignItems:'flex-start' ,justifyContent:'flex-start'}}>
         <PoppinsTextLeftMedium
           style={{ fontWeight: "800", fontSize: 13, color: "black" }}
-          content={`${t("Order No")} : ${orderNumber}`}
+          content={`${t("Reference Number")} : ${orderNumber}`}
         ></PoppinsTextLeftMedium>
         <View style={{flexDirection :'row', marginTop:3}}>
                  <PoppinsTextMedium

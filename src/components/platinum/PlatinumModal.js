@@ -14,9 +14,10 @@ import LinearGradient from "react-native-linear-gradient";
 import PoppinsText from "../electrons/customFonts/PoppinsText";
 import { ScrollView } from "react-native";
 import { useSelector } from "react-redux";
+import capitalizeFirstChar from "../../utils/capitalizeFirstChar";
 
 // create a component
-const PlatinumModal = ({ isVisible, onClose, getActiveMembershipData }) => {
+const PlatinumModal = ({memberShip, isVisible, onClose, getActiveMembershipData }) => {
   console.log("PlatinumModal", JSON.stringify(getActiveMembershipData));
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
@@ -63,7 +64,7 @@ const PlatinumModal = ({ isVisible, onClose, getActiveMembershipData }) => {
               flexDirection: "row",
             }}
           >
-            <PoppinsTextMedium
+           <PoppinsTextMedium
               style={{
                 color: ternaryThemeColor,
                 fontSize: 24,

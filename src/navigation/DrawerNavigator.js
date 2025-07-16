@@ -39,6 +39,8 @@ import VersionCheck from "react-native-version-check";
 import { useTranslation } from "react-i18next";
 import Edit from "react-native-vector-icons/Entypo";
 import { useGetFormMutation } from "../apiServices/workflow/GetForms";
+import { useDispatch } from "react-redux";
+import { setAlreadyWalkedThrough } from "../../redux/slices/walkThroughSlice";
 const Drawer = createDrawerNavigator();
 const CustomDrawer = (props) => {
   const [profileImage, setProfileImage] = useState();
@@ -54,7 +56,7 @@ const CustomDrawer = (props) => {
   const [requiresLocation, setRequiresLocation] = useState(false);
 
   const { t } = useTranslation();
-
+  const dispatch = useDispatch()
   const locationSetup = useSelector((state) => state.appusers.locationSetup);
 
   const currentVersion = VersionCheck.getCurrentVersion();
@@ -384,7 +386,15 @@ const CustomDrawer = (props) => {
           navigation.navigate("GiftCatalogue");
         }
         else if (props.title.toLowerCase() === "app tutorial") {
-          navigation.navigate("CommingSoon");
+          console.log("hasbdhjghjasjcbabsvcjhhasvjhvjh")
+          // navigation.navigate("CommingSoon");
+          navigation.dispatch(DrawerActions.closeDrawer());
+          setTimeout(() => {
+          dispatch(setAlreadyWalkedThrough(false))
+          dispatch(setStepId(1))
+
+            
+          }, 1000);
         }
         else if (
           props.title.toLowerCase() === "bank details" ||
@@ -403,7 +413,7 @@ const CustomDrawer = (props) => {
         else if (props.title.toLowerCase() === "feedback selection") {
           navigation.navigate("FeedbackSelection");
         } else if (props.title.toLowerCase() === "refer and earn") {
-          navigation.navigate("CommingSoon");
+          navigation.navigate("ReferAndEarn");
         } else if (props.title.toLowerCase() === "warranty list") {
           navigation.navigate("WarrantyHistory");
         } else if (props.title.toLowerCase() === "complaint list") {
@@ -547,7 +557,17 @@ const CustomDrawer = (props) => {
                 navigation.navigate("MediaGallery");
               }else if (props.title.toLowerCase() === "media gallery") {
                 navigation.navigate("MediaGallery");
-              }else if (props.title.toLowerCase() === "terms and conditions") {
+              }
+              else if (props.title.toLowerCase() === "app tutorial") {
+                console.log("hasbdhjghjasjcbabsvcjhhasvjhvjh")
+                // navigation.navigate("CommingSoon");
+                navigation.dispatch(DrawerActions.closeDrawer());
+                setTimeout(() => {
+                dispatch(setAlreadyWalkedThrough(false))
+                  
+                }, 1000);
+              }
+              else if (props.title.toLowerCase() === "terms and conditions") {
                 navigation.navigate("PdfComponent", { pdf: getTermsData, title:"Terms and Condition" })
               }else if (props.title.toLowerCase() === "privacy policy") {
                 navigation.navigate("PdfComponent", { pdf: getPolicyData, title:"Privacy Policy" })
@@ -571,9 +591,7 @@ const CustomDrawer = (props) => {
               else if (props.title.toLowerCase() === "search influencer") {
                 navigation.navigate("SearchInfluencer");
               }
-              else if (props.title.toLowerCase() === "app tutorial") {
-                navigation.navigate("CommingSoon");
-              }
+             
               else if (
                 props.title.toLowerCase() === "bank details" ||
                 props.title.toLowerCase() === "bank account"

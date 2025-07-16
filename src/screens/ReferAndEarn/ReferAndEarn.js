@@ -80,7 +80,7 @@ const ReferAndEarn = ({ navigation }) => {
 
   }, []);
   const height = Dimensions.get('window').height;
-  const rewardAmount = 50;
+  const rewardAmount = 15;
   const referalCode = fetchProfileData ? fetchProfileData.body.referral_code : "N/A";
   const modalInvitationClose = () => {
     setOpenBottomInvitationModal(false);
@@ -93,7 +93,7 @@ const ReferAndEarn = ({ navigation }) => {
     // setOpenBottomReferModal(true)
     const options = {
       title: "Refer And Earn",
-      url: `Please use this code for reference : ${referalCode}`
+      url: `Hi! I'm using the MotherWood SAATHI Reward Program and loving it. Use my referral code ${referalCode} to sign up and win exciting rewards! Download now: MotherWood SAATHI Reward Program App from Google Play Store or Apple App Store.`
     }
     Share.open(options)
       .then((res) => {
@@ -117,7 +117,7 @@ const ReferAndEarn = ({ navigation }) => {
         <View style={{ width: '90%', backgroundColor: '#DDDDDD', flexDirection: 'row', marginTop: 20, padding: 20, borderRadius: 4, alignItems: 'center', justifyContent: 'space-evenly' }}>
           <TouchableOpacity onPress={async () => {
 
-            Linking.openURL(`https://wa.me/?text=${referalCode} Please Use this Code To refer : ${referalCode}}`).then((res) => console.log(res)).catch((e) => { console.log(e) });
+            Linking.openURL(`https://wa.me/?text=${referalCode} Hi! I'm using the MotherWood SAATHI Reward Program and loving it. Use my referral code ${referalCode} to sign up and win exciting rewards! Download now: MotherWood SAATHI Reward Program App from Google Play Store or Apple App Store.`).then((res) => console.log(res)).catch((e) => { console.log(e) });
 
           }} style={{ height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center' }}>
             <Whatsapp name="whatsapp" size={30} color="green"></Whatsapp>
@@ -125,7 +125,7 @@ const ReferAndEarn = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity onPress={async () => {
 
-            Linking.openURL(`sms:`).then((res) => console.log(res)).catch((e) => { console.log(e) });
+            Linking.openURL(`sms:Hi! I'm using the MotherWood SAATHI Reward Program and loving it. Use my referral code ${referalCode} to sign up and win exciting rewards! Download now: MotherWood SAATHI Reward Program App from Google Play Store or Apple App Store.`).then((res) => console.log(res)).catch((e) => { console.log(e) });
 
           }} style={{ height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center' }}>
             <Error name="message-square" size={30} color="#FF9100"></Error>
@@ -133,7 +133,7 @@ const ReferAndEarn = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity onPress={async () => {
 
-            Linking.openURL('fb://page/').then((res) => console.log(res)).catch((e) => { console.log(e) });
+            Linking.openURL('fb://page/Hi! I am using the MotherWood SAATHI Reward Program and loving it. Use my referral code ${referalCode} to sign up and win exciting rewards! Download now: MotherWood SAATHI Reward Program App from Google Play Store or Apple App Store.').then((res) => console.log(res)).catch((e) => { console.log(e) });
 
           }} style={{ height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center' }}>
             <Facebook name="facebook" size={30} color="blue"></Facebook>

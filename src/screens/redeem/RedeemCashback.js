@@ -162,61 +162,69 @@ const [checkBeforeRedeem, {
   // };
   const redeemCashback = async () => {
     if (redemptionFrom != "Wallet") {
-      if (Number(minPointsRedeemed) <= (pointsConversion)) {
-        console.log("shjadjhashgdhjgasjgd", pointsConversion, points)
-        
-        if (Number(pointsConversion) >= Number(points)) {
-          setError(true)
-          setMessage("You only have " + points + " points")
-        }
-
-        if(Number(cashConversion)> Number(isReedemable)){
-          setError(true)
-          // setMessage("Maximum Amount Trasaction Per Day Is : " + isReedemable)
-          setMessage(t("Maximum Amount Per Trasaction  : ") + isReedemable)
-
-          return
-        }
-
-        if(Number(minAmountRedeem) >Number(cashConversion)){
-          console.log("Checks", minAmountRedeem,cashConversion,Number(minAmountRedeem) ==Number(cashConversion))
-          setError(true)
-          setMessage(t("Minimum Amount per transaction : ") + minAmountRedeem)
-          return
-        }
-      
-        else if(Number(cashConversion) >= Number(maxAmountPerDay)){
-          setError(true)
-          setMessage(t("Maximum Amount Per Day : ") + maxAmountPerDay)
-          return
-        }
-        else if(!checkBeforeRedeemData.body.data){
-          setError(true)
-          setMessage(checkBeforeRedeemData.message)
-          return
-        }
-     
-        else if(Number(cashConversion)> Number(maxAmountPerDay)){
-          setError(true)
-          setMessage(t("Maximum Amount Per transaction is: ") + isReedemable)
-          return
-        }
-
-        else {
-          if (Number(cashConversion) >= Number(maxCashConverted)) {
-            navigation.replace('BankAccounts', { type: "Cashback" })
-            setCashConversion()
-          }
-          else {
+      if(Number(pointsConversion)>=Number(points))
+      {
+        if (Number(minPointsRedeemed) <= (pointsConversion)) {
+          console.log("shjadjhashgdhjgasjgd", pointsConversion, points)
+          
+          if (Number(pointsConversion) >= Number(points)) {
             setError(true)
-            setMessage(`${t("Minimum cash redemption value is")} ${maxCashConverted}`)
+            setMessage("You only have " + points + " points")
+          }
+  
+          if(Number(cashConversion)> Number(isReedemable)){
+            setError(true)
+            // setMessage("Maximum Amount Trasaction Per Day Is : " + isReedemable)
+            setMessage(t("Maximum Amount Per Trasaction  : ") + isReedemable)
+  
+            return
+          }
+  
+          if(Number(minAmountRedeem) >Number(cashConversion)){
+            console.log("Checks", minAmountRedeem,cashConversion,Number(minAmountRedeem) ==Number(cashConversion))
+            setError(true)
+            setMessage(t("Minimum Amount per transaction : ") + minAmountRedeem)
+            return
+          }
+        
+          else if(Number(cashConversion) >= Number(maxAmountPerDay)){
+            setError(true)
+            setMessage(t("Maximum Amount Per Day : ") + maxAmountPerDay)
+            return
+          }
+          else if(!checkBeforeRedeemData.body.data){
+            setError(true)
+            setMessage(checkBeforeRedeemData.message)
+            return
+          }
+       
+          else if(Number(cashConversion)> Number(maxAmountPerDay)){
+            setError(true)
+            setMessage(t("Maximum Amount Per transaction is: ") + isReedemable)
+            return
+          }
+  
+          else {
+            if (Number(cashConversion) >= Number(maxCashConverted)) {
+              navigation.replace('BankAccounts', { type: "Cashback" })
+              setCashConversion()
+            }
+            else {
+              setError(true)
+              setMessage(`${t("Minimum cash redemption value is")} ${maxCashConverted}`)
+            }
           }
         }
+        else {
+          setError(true)
+          setMessage(t("Min Points required to redeem : ") + minPointsRedeemed)
+        }
       }
-      else {
+      else{
         setError(true)
-        setMessage(t("Min Points required to redeem : ") + minPointsRedeemed)
+          setMessage(t("You dont have enough wallet points to redeem"))
       }
+      
     }
     else {
       console.log("cashConversion===>",cashConversion,getWalletBalanceData?.body?.cashback_balance, cashConversion <= getWalletBalanceData?.body?.cashback_balance)
