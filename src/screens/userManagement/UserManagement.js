@@ -228,7 +228,7 @@ const UserManagement = () => {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          height: 80,
+          height: 100,
         }}
       >
         <View>
@@ -266,6 +266,15 @@ const UserManagement = () => {
               marginTop:4
             }}
           >{`Branch : ${item?.branch_name}`}</Text>
+          {item?.updated_by_name != null && <Text
+            style={{
+              color: "white",
+              textAlign: "center",
+              marginLeft: 14,
+              fontWeight: "600",
+              marginTop:4
+            }}
+          >{`Updated By Name  : ${item?.updated_by_name}`}</Text>}
         </View>
 
         <View style={{}}>

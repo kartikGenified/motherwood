@@ -142,7 +142,7 @@ const PointsTransferSuccess = (params) => {
                   fontSize: 20,
                 }}
               >
-                {Math.trunc(data?.orderDetail?.points)}
+                {(data?.orderDetail?.points)}
               </Text>
             )}
           </View>

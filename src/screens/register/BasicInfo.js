@@ -960,7 +960,7 @@ const BasicInfo = ({ navigation, route }) => {
       name: userName,
       user_type_id: userTypeId,
       user_type: userType,
-      type: "registration",
+      type: "register",
     };
     sendOtpFunc(params);
   };

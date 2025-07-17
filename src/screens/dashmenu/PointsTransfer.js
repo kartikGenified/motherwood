@@ -135,7 +135,7 @@ const PointsTransfer = () => {
             source={require("../../../assets/images/coin.png")}
           />
           <Text style={{ color: "white", fontSize: 22 }}>
-            {Math.trunc(userPointData?.body?.transfer_points)}
+            {(userPointData?.body?.transfer_points)}
           </Text>
         </View>
       </View> */}

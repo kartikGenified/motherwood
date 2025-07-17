@@ -43,6 +43,9 @@ const KycMotherhood = ({ navigation }) => {
   const [kycArray, setKycArray] = useState([]);
   const [error, setError] = useState(false)
   const [message, setMessage] = useState('')
+  const [showPan, setShowPan] = useState(false);
+  const [showGst, setShowGst] = useState(false);
+  const [showAadhar, setShowAadhar] = useState(false);
   const [panVerified, setPanVerified] = useState(false);
   const [aadharVerified, setAadharVerified] = useState(false);
   const [gstinVerified, setGstinVerified] = useState(false);
@@ -52,6 +55,8 @@ const KycMotherhood = ({ navigation }) => {
   const inpref = useRef(null);
   const focused = useIsFocused();
   const kycData = useSelector((state) => state.kycDataSlice.kycData);
+  const kycOptions = useSelector((state) => state.apptheme.kycOptions);
+  // const userData = useSelector(state=>)
   console.log("kycData data final", kycData);
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -111,6 +116,9 @@ const KycMotherhood = ({ navigation }) => {
     fetchOnPageActive();
     console.log("uyghjcghjasvhjfbjkhgqwgfjgcqwjkbjkckj");
   }, [focused, modal, panVerified, aadharVerified, gstinVerified]);
+  useEffect(()=>{
+    getVerificationForUser()
+  },[])
 
   useEffect(() => {
     if (getKycStatusData) {
@@ -203,6 +211,43 @@ const KycMotherhood = ({ navigation }) => {
 
   const modalClose = () => {
     setModal(false);
+  };
+
+  const getVerificationForUser = () => {
+    const userType = userData.user_type;
+    const keys = Object.keys(kycOptions);
+    const values = Object.values(kycOptions);
+    let tempArr = [];
+    console.log("kyc option keys and values", keys, values);
+    for (var i = 0; i < values.length; i++) {
+      if (values[i].taken)
+        if (values[i].users.includes(userType)) {
+          tempArr.push(keys[i]);
+        }
+    }
+    setKycArray(tempArr);
+    console.log("tempArr", tempArr, kycData);
+    if (tempArr.includes("PAN")) {
+      if (!kycData.pan) {
+        setShowPan(true);
+      } else {
+        setPanVerified(true);
+      }
+    }
+    if (tempArr.includes("Aadhar")) {
+      if (!kycData.aadhar) {
+        setShowAadhar(true);
+      } else {
+        setAadharVerified(true);
+      }
+    }
+    if (tempArr.includes("GSTIN")) {
+      if (!kycData.gstin) {
+        setShowGst(true);
+      } else {
+        setGstinVerified(true);
+      }
+    }
   };
 
   const AadhaarComp = () => {
@@ -808,7 +853,7 @@ const KycMotherhood = ({ navigation }) => {
           width: "100%",
           alignItems: "center",
           justifyContent: "center",
-          marginTop: 20,
+          marginTop: 10,
         }}
       >
         <View
@@ -1962,24 +2007,24 @@ const KycMotherhood = ({ navigation }) => {
           paddingBottom: 20,
         }}
       >
-        <KycComp
+        {showAadhar && <KycComp
           handlePress={handleAadhaarCompPress}
           image={require("../../../assets/images/aadhaarkyc.png")}
           title="Aadhaar"
           verified={kycData?.aadhar}
-        ></KycComp>
-        <KycComp
+        ></KycComp>}
+       {showPan && <KycComp
           handlePress={handlePanCompPress}
           image={require("../../../assets/images/pankyc.png")}
           title="PAN Card"
           verified={kycData?.pan}
-        ></KycComp>
-        <KycComp
+        ></KycComp>}
+        {showGst && <KycComp
           handlePress={handleGstinCompPress}
           image={require("../../../assets/images/gstinkyc.png")}
           title="GSTIN"
           verified={kycData?.gstin}
-        ></KycComp>
+        ></KycComp>}
         <KycComp
           handlePress={handleBankAccountCompPress}
           image={require("../../../assets/images/bankaccount.png")}

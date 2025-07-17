@@ -292,20 +292,19 @@ const OtpLogin = ({ navigation, route }) => {
         style={{
           width: "100%",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "flex-start",
         }}
       >
         
          
-        <View style={{alignItems:'',width:'100%'}}>
+        <View style={{alignItems:'center',width:'100%',justifyContent:'flex-start',height:240,}}>
           <Image
             style={{
               height:200,
-              width:200,
-              resizeMode: "contain",
-              
+              width:'100%',
+              resizeMode: "cover",
             }}
-            source={require("../../../assets/images/MotherWoodCircleSathi.png")}
+            source={require("../../../assets/images/sathiLogoWithCircle.png")}
           ></Image>
           </View>
         <View

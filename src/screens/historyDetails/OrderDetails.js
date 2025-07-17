@@ -158,7 +158,7 @@ const OrderDetails = (params) => {
                   borderRadius: 20,
                   alignItems: "center",
                   justifyContent: "center",
-                  minWidth:60,
+                  minWidth:70,
                   paddingLeft:4,
                   paddingRight:4
 
@@ -171,7 +171,7 @@ const OrderDetails = (params) => {
                     fontSize: 20,
                   }}
                 >
-                  {Math.trunc(params?.route?.params?.item?.points)}
+                  {(params?.route?.params?.item?.points)}
                 </Text>
               </View>
             )}
@@ -513,7 +513,7 @@ const OrderDetails = (params) => {
                       marginLeft: 20,
                     }}
                   >
-                    {Math.trunc(item.points)}
+                    {(item.points)}
                   </Text>
                 </View>
               </View>

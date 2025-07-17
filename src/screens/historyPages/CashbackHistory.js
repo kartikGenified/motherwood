@@ -800,7 +800,7 @@ const CashbackHistory = ({ navigation }) => {
                 fontWeight: "600",
                 color: "#373737",
               }}
-              content={Math.trunc(pointBalance)}
+              content={pointBalance}
             ></PoppinsText>
           )}
           <PoppinsTextMedium

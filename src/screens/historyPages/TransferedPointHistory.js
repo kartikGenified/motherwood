@@ -613,7 +613,7 @@ const TransferredPointHistory = ({ navigation }) => {
         <Image style={{height:25,width:25,resizeMode:'contain'}} source={require('../../../assets/images/coin.png')}></Image>
       <PoppinsTextMedium
         style={{ fontWeight: "700", fontSize: 15, color: "#91B406" , marginLeft:6}}
-        content={`${Math.trunc(points)}`}
+        content={`${(points)}`}
       ></PoppinsTextMedium>
       </View>
       
@@ -646,7 +646,7 @@ const TransferredPointHistory = ({ navigation }) => {
            <View style={{ marginLeft: 10 }}>
             <PoppinsTextLeftMedium
               style={{ fontSize: 18, color: "black", fontWeight: "800" }}
-              content={getOrderDetailsByTypeData?.body?.totalPoints}
+              content={userPointData?.body?.transfer_points}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontWeight: "700", fontSize: 14 }}

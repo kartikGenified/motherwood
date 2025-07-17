@@ -8,11 +8,11 @@ import FastImage from 'react-native-fast-image';
 import { useTranslation } from 'react-i18next';
 import RewardRectangular from '../atoms/RewardRectangular';
 import Tooltip from 'react-native-walkthrough-tooltip';
-import { setStepId } from '../../../redux/slices/walkThroughSlice';
-
+import { setAlreadyWalkedThrough, setStepId } from '../../../redux/slices/walkThroughSlice';
+import { useIsFocused } from '@react-navigation/native';
 const RewardBoxDashboard = () => {
     const [walkThrough, setWalkThrough] = useState(true);
-
+    const focused = useIsFocused()
     const workflow = useSelector(state => state.appWorkflow.program)
     const ternaryThemeColor = useSelector(
         (state) => state.apptheme.ternaryThemeColor
@@ -22,6 +22,8 @@ const RewardBoxDashboard = () => {
     const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loaderNew.gif')).uri;
     const {t} = useTranslation();
     const secondaryThemeColor = useSelector(state=>state.apptheme.secondaryThemeColor)
+  const isAlreadyWalkedThrough = useSelector((state) => state.walkThrough.isAlreadyWalkedThrough);
+
     const dispatch = useDispatch();
 
   const stepId = useSelector((state) => state.walkThrough.stepId);
@@ -59,6 +61,19 @@ const RewardBoxDashboard = () => {
 
     }, [userPointData, userPointError])
 
+    useEffect(()=>{
+      if(isAlreadyWalkedThrough)
+      {
+        setWalkThrough(false)
+        
+      }
+      else{
+        setWalkThrough(true)
+        setStepId(1)
+  
+      }
+    },[isAlreadyWalkedThrough, focused])
+
     const storeData = async () => {
         try {
           await AsyncStorage.setItem('isAlreadyWalkedThrough', "true");
@@ -73,6 +88,7 @@ const RewardBoxDashboard = () => {
       };
     
       const handleSkip = () => {
+        dispatch(setAlreadyWalkedThrough(true)); 
         setWalkThrough(false);
       };
     
@@ -146,19 +162,19 @@ const RewardBoxDashboard = () => {
                     // userData && (userData?.user_type)?.toLowerCase() == 'distributor' && userPointData  && <RewardRectangular amount={userPointData.body.point_earned} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("earned points")}></RewardRectangular>
                 }
                 {
-                  userPointData && <RewardRectangular amount={isNaN(Math.floor( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed))) ? "0": Math.floor( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed))} color="#F0FCE7" image={require('../../../assets/images/current_point.png')} title={t("Earned Points")}></RewardRectangular>
+                  userPointData && <RewardRectangular amount={userPointData?.body?.point_earned} color="#F0FCE7" image={require('../../../assets/images/current_point.png')} title={t("Earned Points")}></RewardRectangular>
                 }
                 
                 {
                     // workflow?.includes("Points On Product") && userPointData && <RewardRectangular amount={userPointData.body.point_redeemed} color="#DCFCE7" image={require('../../../assets/images/reward.png')} title={t("redeemed points")}></RewardRectangular>
                 }
                     {
-                  <RewardRectangular amount={Math.floor(Number(userPointData?.body.point_balance) ? Number(userPointData?.body.point_balance) : 0)} color="#FFFCCF" image={require('../../../assets/images/rp.png')} title={t("Wallet Points")}></RewardRectangular>
+                  <RewardRectangular amount={userPointData?.body?.point_balance} color="#FFFCCF" image={require('../../../assets/images/rp.png')} title={t("Wallet Points")}></RewardRectangular>
                 }
              
 
                      {
-                  <RewardRectangular amount={Math.floor(Number(userPointData?.body.point_redeemed) ? Number(userPointData?.body.point_redeemed) : 0)} color="#E4FFFB" image={require('../../../assets/images/rc.png')} title={t("Redeemed Points")}></RewardRectangular>
+                  <RewardRectangular amount={userPointData?.body?.point_redeemed} color="#E4FFFB" image={require('../../../assets/images/rc.png')} title={t("Redeemed Points")}></RewardRectangular>
                 }
             
                 {

@@ -536,7 +536,7 @@ const OtpVerification = ({ navigation, route }) => {
         backgroundColor: "white",
       }}
     >
-      <ScrollView style={{width:'100%'}} contentContainerStyle={{alignItems: "center",
+      <ScrollView style={{width:'100%',minHeight:'90%'}} contentContainerStyle={{alignItems: "center",
         justifyContent: "flex-start",}}>
       <View
         style={{
@@ -744,7 +744,7 @@ const OtpVerification = ({ navigation, route }) => {
         </View>
       )}
       </ScrollView>
-      <SocialBottomBar></SocialBottomBar>
+      <SocialBottomBar showRelative={true}></SocialBottomBar>
     </View>
   );
 };

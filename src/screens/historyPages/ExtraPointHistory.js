@@ -710,7 +710,7 @@ const ExtraPointHistory = ({ navigation }) => {
           <View style={{ marginLeft: 10 }}>
             <PoppinsTextLeftMedium
               style={{ fontSize: 18, color: "black", fontWeight: "800" }}
-              content={Math.trunc(userPointData?.body?.point_balance)}
+              content={(userPointData?.body?.point_balance)}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontWeight: "700", fontSize: 16 }}

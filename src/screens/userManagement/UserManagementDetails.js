@@ -65,8 +65,24 @@ const UserManagementDetails = (params) => {
       setMessage(approveUserForSalesError?.data?.message)
     }
   }, [approveUserForSalesData, approveUserForSalesError]);
-
-
+  let statusLabel;
+  if (route?.status == "2") {
+    // Rejected
+    statusLabel = "Rejected";
+    statusBg = "#FFDDE0";
+    statusText = "#B6202D";
+  } else if (route?.status == "1") {
+    // Check extra_status.approved
+    if (route?.extra_status?.approved) {
+      statusLabel = "Approved";
+      statusBg = "#E9FFD5";
+      statusText = "#5BB70B";
+    } else {
+      statusLabel = "Pending";
+      statusBg = "#FFFCCF";
+      statusText = "#B79A0B";
+    }
+  }
   const handleChildComponentData = (data) => {
     console.log("reason", data);
     setReason(data);
@@ -301,23 +317,23 @@ const UserManagementDetails = (params) => {
         <SingleComponent title={"Mobile No"} value={route?.mobile} />
         <SingleComponent
           title={"Branch"}
-          value={route?.city ? route?.city : "N/A"}
+          value={route?.branch_name ? route?.branch_name : "N/A"}
         />
         <SingleComponent
           title={"Location"}
           value={route?.city ? route?.city : "N/A"}
         />
         <SingleComponent
-          title={"Geo Location"}
-          value={route?.city ? route?.city : "N/A"}
+          title={"Pincode"}
+          value={route?.pincode ? route?.pincode : "N/A"}
         />
         <SingleComponent
           title={"Aproval Status"}
-          value={route?.city ? route?.city : "N/A"}
+          value={statusLabel ? statusLabel : "N/A"}
         />
         <SingleComponent
           title={"Aproval By"}
-          value={route?.city ? route?.city : "N/A"}
+          value={route?.updated_by_name ? route?.updated_by_name : "N/A"}
         />
 
         <View

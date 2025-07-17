@@ -726,7 +726,7 @@ const AddedUserScanList = ({ navigation,route }) => {
               orderNumber={item.order_no}
               sku = {item.total_sku}
               quantity = {item.qty}
-              points={Math.trunc(item.points)}
+              points={(item.points)}
                 date={dayjs(item.created_at).format("DD-MMM-YYYY")}
                 time={dayjs(item.created_at).format("HH:mm a")}
               />

@@ -96,8 +96,8 @@ const [checkBeforeRedeem, {
   
 
   const points =userPointData?.body?.point_balance;
-  const minPointsRedeemed = Math.trunc(cashPerPointData?.body?.min_point_redeem)
-  const maxCashConverted = Math.trunc(cashPerPointData?.body?.min_cash_redeem)
+  const minPointsRedeemed = (cashPerPointData?.body?.min_point_redeem)
+  const maxCashConverted = (cashPerPointData?.body?.min_cash_redeem)
   const height = Dimensions.get('window').height
 
 
@@ -162,7 +162,7 @@ const [checkBeforeRedeem, {
   // };
   const redeemCashback = async () => {
     if (redemptionFrom != "Wallet") {
-      if(Number(pointsConversion)>=Number(points))
+      if(Number(pointsConversion)<=Number(points))
       {
         if (Number(minPointsRedeemed) <= (pointsConversion)) {
           console.log("shjadjhashgdhjgasjgd", pointsConversion, points)
@@ -221,6 +221,7 @@ const [checkBeforeRedeem, {
         }
       }
       else{
+        console.log("dashdhjgashgdhjghjasgdftdftyqwuuydiuqwu",Number(pointsConversion),Number(points))
         setError(true)
           setMessage(t("You dont have enough wallet points to redeem"))
       }

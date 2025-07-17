@@ -17,7 +17,7 @@ const [timer, setTimer] = useState(3)
     const min = 0;
     const max = val;
     const intervalID = setInterval(() => {
-       const tempRandom =   Math.trunc(Math.random()* (max-min)+min)
+       const tempRandom =   (Math.random()* (max-min)+min)
        const tempRandomLen = String(tempRandom).length
        if(tempRandom<Number(val) && size == tempRandomLen)
        {
@@ -59,7 +59,7 @@ const [timer, setTimer] = useState(3)
                 let dig = val%10;
                 temp.push(String(dig))
                 val = val/10;
-                val = Math.trunc(val)
+                val = (val)
                 console.log("useeffect", dig,val)
             }
             console.log("value converted to array:", temp)

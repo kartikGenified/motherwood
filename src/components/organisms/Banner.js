@@ -4,17 +4,18 @@ import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import DotHorizontalList from '../molecules/DotHorizontalList';
 import { useSelector, useDispatch } from 'react-redux';
 import Tooltip from 'react-native-walkthrough-tooltip';
-import { setStepId } from '../../../redux/slices/walkThroughSlice';
+import { setAlreadyWalkedThrough, setStepId } from '../../../redux/slices/walkThroughSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useIsFocused } from '@react-navigation/native';
 const Banner = (props) => {
   const [showImage, setShowImage] = useState(props?.images[0]);
   const [index, setIndex] = useState(0);
   const [walkThrough, setWalkThrough] = useState(true);
   const dispatch = useDispatch();
-
+  const focused = useIsFocused();
   const stepId = useSelector((state) => state.walkThrough.stepId);
   const ternaryThemeColor = useSelector((state) => state.apptheme.ternaryThemeColor);
+  const isAlreadyWalkedThrough = useSelector((state) => state.walkThrough.isAlreadyWalkedThrough);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -33,12 +34,27 @@ const Banner = (props) => {
     }
   };
 
+  useEffect(()=>{
+    if(isAlreadyWalkedThrough)
+    {
+      setWalkThrough(false)
+      
+    }
+    else{
+      setWalkThrough(true)
+      setStepId(1)
+
+    }
+  },[isAlreadyWalkedThrough, focused])
+
   const handleNextStep = () => {
     storeData();
     dispatch(setStepId(stepId + 1));
+    console.log("step ashjgfjsahjgcjasjhjckas", )
   };
 
   const handleSkip = () => {
+    dispatch(setAlreadyWalkedThrough(true)); 
     setWalkThrough(false);
   };
 

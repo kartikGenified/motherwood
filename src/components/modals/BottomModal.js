@@ -73,7 +73,7 @@ const BottomModal = (props) => {
         <View style={styles.centeredView}>
         <View style={styles.modalView}>
   <ScrollView
-  style={{width:'100%', paddingTop:20}}
+  style={{width:'100%', paddingTop:0,paddingBottom:160}}
     contentContainerStyle={{ flexGrow: 1}}
     keyboardShouldPersistTaps="handled"
   >
@@ -110,6 +110,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     paddingBottom: 40,
+    minHeight:400,
+    padding:20
   },
   button: {
     borderRadius: 10,
