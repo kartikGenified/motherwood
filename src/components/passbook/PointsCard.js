@@ -190,13 +190,13 @@ console.log("cpasdjashjbchasbjhbas",capitalizeFirstChar(membership))
               userData?.user_type?.toLowerCase() != "directoem" ?
           <IconBox
             image={require("../../../assets/images/hand_coin_white.png")}
-            points={isNaN(Math.floor( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed))) ? '0' : Math.floor(Math.floor( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed)))}
+            points={isNaN(( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed))) ? '0' :( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed)).toFixed(2)}
             title={"Recieved Points"}
           ></IconBox>
           :
           <IconBox
           image={require("../../../assets/images/hand_coin_white.png")}
-          points={isNaN(Math.floor( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed))) ? '0' : Math.floor(Math.floor( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed)))}
+          points={isNaN(Math.floor( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed))) ? '0' : ( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed)).toFixed(2)}
           title={"Earned Points"}
         ></IconBox>
 }
@@ -206,17 +206,17 @@ console.log("cpasdjashjbchasbjhbas",capitalizeFirstChar(membership))
               userData?.user_type?.toLowerCase() != "directoem" &&
               <IconBox
             image={require("../../../assets/images/loop_star.png")}
-            points={isNaN(Math.floor(userPointData?.body?.transfer_points)) ? '0' : Math.floor(userPointData?.body?.transfer_points)}
+            points={isNaN(Math.floor(userPointData?.body?.transfer_points)) ? '0' : (userPointData?.body?.transfer_points).toFixed(2)}
             title={"Transferred Points"}
           ></IconBox>}
           <IconBox
             image={require("../../../assets/images/white_coin.png")}
-            points={isNaN(Math.floor(userPointData?.body?.point_balance)) ? '0' : Math.floor(userPointData?.body?.point_balance)}
+            points={isNaN(Math.floor(userPointData?.body?.point_balance)) ? '0' : (userPointData?.body?.point_balance).toFixed(2)}
             title={"Wallet Points"}
           ></IconBox>
           <IconBox
             image={require("../../../assets/images/white_gift.png")}
-            points={isNaN(Math.floor(userPointData?.body?.point_redeemed)) ? '0' : Math.floor(userPointData?.body?.point_redeemed)}
+            points={isNaN(Math.floor(userPointData?.body?.point_redeemed)) ? '0' : (userPointData?.body?.point_redeemed).toFixed(2)}
             title={"Redeemed Points"}
           ></IconBox>
       </View>
