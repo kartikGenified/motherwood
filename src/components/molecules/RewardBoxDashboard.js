@@ -83,11 +83,11 @@ const RewardBoxDashboard = () => {
       };
     
       const handleNextStep = () => {
-        storeData();
         dispatch(setStepId(stepId + 1));
       };
     
       const handleSkip = () => {
+        storeData();
         dispatch(setAlreadyWalkedThrough(true)); 
         setWalkThrough(false);
       };

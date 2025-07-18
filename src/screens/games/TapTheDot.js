@@ -8,6 +8,7 @@ import {
   Animated,
   Easing,
   Image,
+  TouchableOpacity
 } from 'react-native';
 import Sound from 'react-native-sound';
 import { useDispatch, useSelector } from 'react-redux';
@@ -259,7 +260,7 @@ const TapTheDot = ({navigation}) => {
           justifyContent: "flex-start",
           flexDirection: "row",
           width: "100%",
-          height: 30,
+          height: 20,
           marginLeft: 20,
         }}
       >
@@ -354,7 +355,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#edf2fb',
     alignItems: 'center',
-    paddingTop: 20,
+    paddingTop: 10,
     justifyContent:'flex-start',
     height:'100%'
     

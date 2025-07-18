@@ -31,14 +31,44 @@ const DrawerHeader = () => {
         const storeData = async () => {
             try {
               await AsyncStorage.setItem('isAlreadyWalkedThrough', "true" );
-              const value = await AsyncStorage.getItem("isAlreadyIntroduced");
-            // console.log("isAlreadyWalkedThrough",value)
+              const value = await AsyncStorage.getItem("isAlreadyWalkedThrough");
+            console.log("isAlreadyWalkedThrough",value)
+            if(value)
+            {
+              setWalkThrough(false)
+            }
+            else{
+              setWalkThrough(true)
+            }
             } catch (e) {
               // saving error
               console.log("error",e)
     
             }
           };
+
+
+          useEffect(()=>{
+            const storeData = async () => {
+              try {
+                
+                const value = await AsyncStorage.getItem("isAlreadyWalkedThrough");
+              console.log("isAlreadyWalkedThrough",value)
+              if(value)
+              {
+                setWalkThrough(false)
+              }
+              else{
+                setWalkThrough(true)
+              }
+              } catch (e) {
+                // saving error
+                console.log("error",e)
+      
+              }
+            };
+            storeData()
+          },[])
 
     useEffect(()=>{
       if(isAlreadyWalkedThrough)
@@ -54,7 +84,6 @@ const DrawerHeader = () => {
     },[isAlreadyWalkedThrough, focused])
 
       const handleNextStep = () => {
-        storeData()
         dispatch(setStepId(stepId+1))
         
       };
@@ -63,6 +92,8 @@ const DrawerHeader = () => {
         // dispatch(setStepId(0)); // Reset or handle skip logic
         dispatch(setAlreadyWalkedThrough(true)); // Mark walkthrough as completed
         setWalkThrough(false);
+        storeData()
+
       };
 
       console.log("step ID changes", stepId)

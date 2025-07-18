@@ -40,7 +40,7 @@ import { useTranslation } from "react-i18next";
 import Edit from "react-native-vector-icons/Entypo";
 import { useGetFormMutation } from "../apiServices/workflow/GetForms";
 import { useDispatch } from "react-redux";
-import { setAlreadyWalkedThrough } from "../../redux/slices/walkThroughSlice";
+import { setAlreadyWalkedThrough, setStepId } from "../../redux/slices/walkThroughSlice";
 const Drawer = createDrawerNavigator();
 const CustomDrawer = (props) => {
   const [profileImage, setProfileImage] = useState();
@@ -65,6 +65,7 @@ const CustomDrawer = (props) => {
   const getTermsData = useSelector((state) => state.termsPolicy.terms);
   const getAboutData = useSelector((state) => state.termsPolicy.about);
   const getDetailsData = useSelector((state) => state.termsPolicy.details);
+  const stepId = useSelector((state) => state.walkThrough.stepId);
 
   console.log("getAboutDatagetDetailsData",getAboutData,getDetailsData,getTermsData)
 
@@ -562,7 +563,15 @@ const CustomDrawer = (props) => {
                 console.log("hasbdhjghjasjcbabsvcjhhasvjhvjh")
                 // navigation.navigate("CommingSoon");
                 navigation.dispatch(DrawerActions.closeDrawer());
+                const storeData = async () => {
+                  
+                    await AsyncStorage.setItem('isAlreadyWalkedThrough', "false" );
+                   const value = await AsyncStorage.getItem('isAlreadyWalkedThrough');
+                   console.log("drawernavigator kitne bada", value, stepId )
+                };
+                storeData()
                 setTimeout(() => {
+          dispatch(setStepId(1))
                 dispatch(setAlreadyWalkedThrough(false))
                   
                 }, 1000);
