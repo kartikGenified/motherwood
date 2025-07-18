@@ -8,11 +8,15 @@ import {
   Animated,
   Easing,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  ImageBackground,
+  Platform
 } from 'react-native';
 import Sound from 'react-native-sound';
 import { useDispatch, useSelector } from 'react-redux';
 import { incrementScore, resetScore } from '../../../redux/slices/tapGameSlice';
+import { useShowPointsApiMutation } from '../../apiServices/games/tapTheDotApi';
+import * as Keychain from 'react-native-keychain';
 
 const DOT_SIZE = 60;
 const GAME_DURATION = 30;
@@ -34,6 +38,31 @@ const TapTheDot = ({navigation}) => {
   const scoreRef = useRef(score);
   const animatedScale = useRef(new Animated.Value(1)).current;
   const soundRef = useRef(null);
+
+  const [showPointsFunc,{
+    data:showPointsData,
+    error:showPointsError,
+    isLoading:showPointsIsLoading,
+    isError:showPointsIsError
+  }] = useShowPointsApiMutation()
+
+  useEffect(()=>{
+
+  },[])
+
+
+  useEffect(()=>{
+    if(showPointsData)
+    {
+      console.log("showPointsData", showPointsData)
+      // Alert.alert('Game Over', `Your Score: ${scoreRef.current}`); 
+
+    }
+    else if(showPointsError)
+    {
+      console.log("showPointsError",showPointsError)
+    }
+  },[showPointsData,showPointsError])
 
   useEffect(() => {
     Sound.setCategory('Playback');
@@ -226,7 +255,29 @@ const TapTheDot = ({navigation}) => {
         if (prev <= 1) {
           clearInterval(timerRef.current);
           setGameRunning(false);
-          Alert.alert('Game Over', `Your Score: ${scoreRef.current}`); // safe to read score
+          // const callApi=async()=>{
+          //   const credentials = await Keychain.getGenericPassword();
+          //   if (credentials) {
+          //     console.log(
+          //       'Credentials successfully loaded for user ' + credentials.username
+          //     );
+          //     const token = credentials.username
+          //     const params = {
+          //       token :token, 
+          //       data :{
+          //         score:scoreRef.current,
+          //         platform:Platform.OS,
+          //         lat:1,
+          //         log:2
+          //     }
+          //     }
+          //           showPointsFunc(params)
+          //     }
+          // }
+          // callApi()
+          
+      Alert.alert('Game Over', `Your Score: ${scoreRef.current}`); 
+
           return 0;
         }
         return prev - 1;
@@ -253,6 +304,12 @@ const TapTheDot = ({navigation}) => {
   }, [gameRunning, gameAreaSize]);
 
   return (
+    <ImageBackground
+    source={require('../../../assets/images/34804_Four_Season.jpg')} 
+    style={styles.background}
+    imageStyle={{ borderRadius: 16 }}
+    resizeMode="cover"
+  >
     <View style={styles.container}>
       <View
         style={{
@@ -288,7 +345,7 @@ const TapTheDot = ({navigation}) => {
         </TouchableOpacity> */}
       </View>
       <View style={{alignItems:"center",justifyContent:'center',width:'100%',flexDirection:'row',marginBottom:10}}>
-      <Image style={{height:80,width:80,resizeMode:"contain",marginRight:10}} source={require('../../../assets/images/saathi.png')}></Image>
+      <Image style={{height:100,width:100,resizeMode:"contain",marginRight:10}} source={require('../../../assets/images/saathi.png')}></Image>
       <Text style={styles.title}>Tap the Dot</Text>
       </View>
       
@@ -325,6 +382,12 @@ const TapTheDot = ({navigation}) => {
       )}
 
       <View style={styles.gameArea} onLayout={onGameAreaLayout}>
+      <ImageBackground
+    // source={require('../../../assets/images/34801_Four_Season.jpg')}
+    style={styles.imageBackground}
+    imageStyle={{ borderRadius: 16 }}
+    resizeMode="cover"
+  >
         {gameRunning && (
           <Animated.View
   style={[
@@ -345,15 +408,23 @@ const TapTheDot = ({navigation}) => {
             />
           </Animated.View>
         )}
+        
+    </ImageBackground>
       </View>
+
     </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
   container: {
     flex: 1,
-    backgroundColor: '#edf2fb',
     alignItems: 'center',
     paddingTop: 10,
     justifyContent:'flex-start',
@@ -363,7 +434,8 @@ const styles = StyleSheet.create({
     title: {
       fontSize: 30,
       fontWeight: '800',
-      color: '#2c3e50',
+      // color: '#2c3e50',
+      color:'#FFFFF0'
     },
     infoRow: {
       flexDirection: 'row',
@@ -374,9 +446,9 @@ const styles = StyleSheet.create({
     infoText: {
       fontSize: 18,
       fontWeight: '600',
-      backgroundColor: '#fff',
+      backgroundColor: '#FFFFF0',
       paddingHorizontal: 16,
-      paddingVertical: 8,
+      paddingVertical: 4,
       borderRadius: 12,
       elevation: 2,
       color: '#2d3436',
@@ -386,11 +458,11 @@ const styles = StyleSheet.create({
       shadowRadius: 6,
     },
     startButton: {
-      paddingVertical: 14,
+      paddingVertical: 10,
       paddingHorizontal: 30,
       backgroundColor: '#6c5ce7',
       borderRadius: 50,
-      marginBottom: 20,
+      marginBottom: 10,
       elevation: 3,
       shadowColor: '#6c5ce7',
       shadowOpacity: 0.5,
@@ -402,6 +474,14 @@ const styles = StyleSheet.create({
       fontSize: 18,
       letterSpacing: 1,
     },
+    imageBackground: {
+      flex: 1,
+      width: '100%',
+      height: '100%',
+      borderRadius: 16,
+      overflow: 'hidden',
+      backgroundColor:'#FFFFF0'
+    },
     gameArea: {
       width: '95%',
       height: '65%',
@@ -410,7 +490,6 @@ const styles = StyleSheet.create({
       borderWidth: 4,
       borderColor: '#0984e3',
       borderRadius: 16,
-      backgroundColor: '#dfe6e9',
       position: 'relative',
       overflow: 'hidden',
       elevation: 5,
