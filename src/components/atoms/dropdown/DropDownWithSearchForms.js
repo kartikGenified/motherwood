@@ -17,71 +17,108 @@ const DropDownWithSearchForms = (props) => {
   const [showList, setShowList] = useState(false);
   const [topMargin, setTopMargin] = useState(0);
   const [showOther, setShowOther] = useState(false);
-const [listData, setListData] = useState(props.data)
+  const [listData, setListData] = useState(props.data);
   const { t } = useTranslation();
   const data = props.data;
+  const type = props.type;
   const required = props.required;
-  console.log("datahgdfgasvdhasdasfasdasgsaa", props.jsonData);
+  console.log("datahgdfgasvdhasdasfasdasgsaa", props.data);
   const name = props.title;
   console.log("Options", data);
   const handleSelect = (data) => {
-    // console.log(data)
-    if(data.city.toLowerCase()!='other')
-    {
+    console.log("datasadasda",data, type)
+    if (type === "city") {
+      if (data?.city?.toLowerCase() != "other") {
         setSelected(data.city);
         setShowList(false);
         let tempJsonData = { ...props.jsonData, value: data.city };
         console.log(tempJsonData);
         props.handleData(tempJsonData);
-        let cityDataID = {"label": "CityID", "maxLength": "100", "name": "cityId", "options": ["Male", "Female"], "required": true, "type": "text", "value":data.id}
+        let cityDataID = {
+          label: "CityID",
+          maxLength: "100",
+          name: "cityId",
+          options: ["Male", "Female"],
+          required: true,
+          type: "text",
+          value: data.id,
+        };
         props.handleData(cityDataID);
-
-    }
-    else{
+      } else {
         setSelected(data);
+      }
+    } else if (type === "state") {
+      if (data?.state?.toLowerCase() != "other") {
+        setSelected(data.state);
+        setShowList(false);
+        let tempJsonData = { ...props.jsonData, value: data?.state };
+        console.log(tempJsonData);
+        props.handleData(tempJsonData);
+        let cityDataID = {
+          label: "StateID",
+          maxLength: "100",
+          name: "stateId",
+          options: ["Male", "Female"],
+          required: true,
+          type: "text",
+          value: data.id,
+        };
+        
+        props.handleData(cityDataID);
+      } else {
+        setSelected(data);
+      }
     }
-    
   };
 
   useEffect(() => {
-    if (selected.toLowerCase() == "other") {
+    if (selected?.toLowerCase() == "other") {
       setShowOther(true);
     }
   }, [selected]);
 
-  useEffect(()=>{
-    setListData(props.data)
-  },[props.data])
+  useEffect(() => {
+    setListData(props.data);
+  }, [props.data]);
 
   const handleOpenList = () => {
-    console.log("handling handleOpenList")
+    console.log("handling handleOpenList");
     setShowList(!showList);
-    setShowOther(false)
-    setSelected(props.header)
+    setShowOther(false);
+    setSelected(props.header);
   };
 
-  const handleSubmit=(data)=>{
+  const handleSubmit = (data) => {
     setSelected(data);
-        setShowList(false);
-        let tempJsonData = { ...props.jsonData, value: data };
-        console.log(tempJsonData);
-        props.handleData(tempJsonData);
-  }
+    setShowList(false);
+    let tempJsonData = { ...props.jsonData, value: data };
+    console.log(tempJsonData);
+    props.handleData(tempJsonData);
+  };
 
   const handleSearch = (text) => {
     if (!text) return []; // return empty if no search text
-    
-    const filteredCities = data.filter(city =>
+    let filteredCities;
+    if(type == "city")
+    {
+      filteredCities = data.filter((city) =>
       city?.city.toLowerCase().includes(text.toLowerCase())
     );
-  
-    setListData(filteredCities)
+    }
+    else if(type == "state")
+    {
+      filteredCities = data.filter((city) =>
+      city?.state.toLowerCase().includes(text.toLowerCase())
+    );
+    }
     
+
+    setListData(filteredCities);
   };
 
   const SelectableDropDownComponent = (props) => {
     const title = props.title;
-    const data = props.data
+    const data = props.data;
     return (
       <TouchableOpacity
         onPress={() => {
@@ -169,40 +206,90 @@ const [listData, setListData] = useState(props.data)
               width: "100%",
             }}
           >
-            <TextInput onChangeText={(text)=>{
-                handleSearch(text)
-            }} style={{width:'92%',borderWidth:1, height:40,fontSize:14,marginTop:10,borderColor:'#DDDDDD',color:'black'}} placeholderTextColor="black" placeholder="Search City"></TextInput>
+            <TextInput
+              onChangeText={(text) => {
+                handleSearch(text);
+              }}
+              style={{
+                width: "92%",
+                borderWidth: 1,
+                height: 40,
+                fontSize: 14,
+                marginTop: 10,
+                borderColor: "#DDDDDD",
+                color: "black",
+              }}
+              placeholderTextColor="black"
+              placeholder="Search City"
+            ></TextInput>
             {listData &&
               listData.map((item, index) => {
                 // console.log(item)
                 return (
                   <SelectableDropDownComponent
                     key={index}
-                    data ={item}
-                    title={item?.city}
+                    data={item}
+                    title={type == "city" ? item?.city : item?.state}
                   ></SelectableDropDownComponent>
                 );
               })}
             {showOther && (
-                <View style={{ width:'100%',justifyContent:'center',marginTop:10,alignItems:'center'}}>
-                <View style={{width:'90%',alignItems:'flex-start',justifyContent:'center'}}>
-                <PoppinsTextMedium style={{color:"black"}} content={`Enter ${name}`}></PoppinsTextMedium>
-              <TextInput
-                style={{borderWidth:1,width:'90%',borderColor:'#DDDDDD',marginTop:4,color:'black'}}
-                onChangeText={(text) => {
-                  setSelected(text);
+              <View
+                style={{
+                  width: "100%",
+                  justifyContent: "center",
+                  marginTop: 10,
+                  alignItems: "center",
                 }}
-              ></TextInput>
-              <TouchableOpacity style={{paddingLeft:8,paddingRight:8,padding:4,backgroundColor:"black",alignItems:'center', justifyContent:'center',marginLeft:30,marginTop:10,marginBottom:10,borderRadius:4,}} onPress={()=>{
-                handleSubmit(selected)
-              }}>
-                <PoppinsTextMedium style={{color:"white"}} content={`Submit`}></PoppinsTextMedium>
-
-              </TouchableOpacity>
-              </View>
+              >
+                <View
+                  style={{
+                    width: "90%",
+                    alignItems: "flex-start",
+                    justifyContent: "center",
+                  }}
+                >
+                  <PoppinsTextMedium
+                    style={{ color: "black" }}
+                    content={`Enter ${name}`}
+                  ></PoppinsTextMedium>
+                  <TextInput
+                    style={{
+                      borderWidth: 1,
+                      width: "90%",
+                      borderColor: "#DDDDDD",
+                      marginTop: 4,
+                      color: "black",
+                    }}
+                    onChangeText={(text) => {
+                      setSelected(text);
+                    }}
+                  ></TextInput>
+                  <TouchableOpacity
+                    style={{
+                      paddingLeft: 8,
+                      paddingRight: 8,
+                      padding: 4,
+                      backgroundColor: "black",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginLeft: 30,
+                      marginTop: 10,
+                      marginBottom: 10,
+                      borderRadius: 4,
+                    }}
+                    onPress={() => {
+                      handleSubmit(selected);
+                    }}
+                  >
+                    <PoppinsTextMedium
+                      style={{ color: "white" }}
+                      content={`Submit`}
+                    ></PoppinsTextMedium>
+                  </TouchableOpacity>
+                </View>
               </View>
             )}
-            
           </View>
         </ScrollView>
       )}

@@ -116,6 +116,7 @@ import Training from "../screens/training/Training";
 import KycViewOtherUsers from "../screens/verification/KycViewOtherUsers";
 import SearchInfluencer from "../screens/searchInfluencer/SearchInfluencer";
 import TapTheDot from "../screens/games/TapTheDot";
+import BirthdayScreen from "../screens/birthday/BirthdayScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -237,6 +238,13 @@ const StackNavigator = () => {
           }}
           name="RedeemCoupons"
           component={RedeemCoupons}
+        ></Stack.Screen>
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="BirthdayScreen"
+          component={BirthdayScreen}
         ></Stack.Screen>
         <Stack.Screen
           options={{

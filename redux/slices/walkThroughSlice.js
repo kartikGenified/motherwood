@@ -15,7 +15,7 @@ export const walkThroughSlice = createSlice({
         state.stepId = action.payload
       },
       setAlreadyWalkedThrough: (state, action) => {
-          // console.log("isAlreadyWalkedThrough",action.payload)
+          console.log("isAlreadyWalkedThroughredux",action.payload)
           state.isAlreadyWalkedThrough = action.payload
         },
       setWalkThroughCompleted: (state, action) => {

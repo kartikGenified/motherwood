@@ -87,6 +87,7 @@ import moment from "moment";
 import BirthdayModal from "../../components/modals/BirthdayModal";
 import { setBirthdayModal } from "../../../redux/slices/birthdayModalSlice";
 import { useSelectedDreamGiftMutation } from "../../apiServices/dreamGift/DreamGiftApi";
+import { useGetNotificationCountApiMutation } from "../../apiServices/notifications/getNotificationCount";
 
 
 const Dashboard = ({ navigation }) => {
@@ -254,6 +255,16 @@ console.log("banner array",bannerArray)
   ] = useSalesPointsDashboardMutation();
 
   const [
+    getNotificationCountFunc,
+    {
+      data: getNotificationCountData,
+      error: getNotificationCountError,
+      isLoading: getNotificationCountIsLoading,
+      isError: getNotificationCountIsError,
+    },
+  ] = useGetNotificationCountApiMutation();
+
+  const [
     selectedDreamFunc,
     {
       data: selectedDreamData,
@@ -294,6 +305,33 @@ console.log("banner array",bannerArray)
     selectedDreamFunc(params)
 
   };
+
+
+  useEffect(()=>{
+    const getToken=async()=>{
+      const credentials = await Keychain.getGenericPassword();
+  if (credentials) {
+    console.log(
+      'Credentials successfully loaded for user ' + credentials.username
+    );
+    const token = credentials.username
+    const params = {
+      token:token
+    }
+    getNotificationCountFunc(params)
+  }
+    }
+    getToken()
+  },[focused])
+
+
+  useEffect(() => {
+    if (getNotificationCountData) {
+      console.log("getNotificationCountData",getNotificationCountData)
+    } else if (getNotificationCountError) {
+      console.log("getNotificationCountError",getNotificationCountError)
+    }
+  }, [getNotificationCountData,getNotificationCountError]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -713,16 +751,7 @@ console.log("banner array",bannerArray)
         height: "100%",
       }}
     >
-      {notifModal && (
-        <ModalWithBorder
-          modalClose={() => {
-            setNotifModal(false);
-          }}
-          message={"message"}
-          openModal={notifModal}
-          comp={notifModalFunc}
-        ></ModalWithBorder>
-      )}
+      
 
       {error && (
         <ErrorModal

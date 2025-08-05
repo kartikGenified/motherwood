@@ -35,6 +35,6 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
       }
       
     });
-    Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.allowFontScaling = false;
 AppRegistry.registerComponent(appName, () => App);

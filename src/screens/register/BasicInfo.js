@@ -71,6 +71,7 @@ import SuccessConfettiModal from "../../components/modals/SuccessConfettiModal";
 import { useValidateRefferalApiMutation } from "../../apiServices/refferal/refferalApi";
 import { useGetCityApiMutation } from "../../apiServices/location/getCity";
 import DropDownWithSearchForms from "../../components/atoms/dropdown/DropDownWithSearchForms";
+import { useGetCityFromStateApiMutation, useGetStateApiMutation } from "../../apiServices/location/getState";
 
 const BasicInfo = ({ navigation, route }) => {
   const [userName, setUserName] = useState();
@@ -113,6 +114,7 @@ const BasicInfo = ({ navigation, route }) => {
   const [distributorId, setDistributorId] = useState("");
   const [refferalRequired, setRefferalRequired] = useState();
   const [cityData, setCityData] = useState();
+  const [stateData, setStateData] = useState()
   const [mappedUserData, setMappedUserData] = useState();
   const [showDistributorInput, setShowDistributorInput] = useState(false);
   const [mobileVerified, setMobileVerified] = useState();
@@ -230,7 +232,17 @@ const BasicInfo = ({ navigation, route }) => {
       isError: getCityIsError,
       isLoading: getCityIsLoading,
     },
-  ] = useGetCityApiMutation();
+  ] = useGetCityFromStateApiMutation();
+
+  const [
+    getStateFunc,
+    {
+      data: getStateData,
+      error: getStateError,
+      isError: getStateIsError,
+      isLoading: getStateIsLoading,
+    },
+  ] = useGetStateApiMutation();
 
   const [
     getFormFunc,
@@ -364,6 +376,15 @@ const BasicInfo = ({ navigation, route }) => {
     }
   }, [getUsersData, getUsersError]);
 
+  useEffect(()=>{
+    if (getStateData) {
+      console.log("getStateData", getStateData);
+      setStateData(getStateData?.body)
+    } else if (getStateError) {
+      console.log("getStateError", getStateError);
+    }
+  },[getStateData,getStateError])
+
   useEffect(() => {
     if (validateRefferalData) {
       console.log("validateRefferalData", validateRefferalData);
@@ -455,13 +476,13 @@ const BasicInfo = ({ navigation, route }) => {
     };
     fetchPolicies();
 
-    const fetchCities = async () => {
+    const fetchStates = async () => {
       // const credentials = await Keychain.getGenericPassword();
       // const token = credentials.username;
 
-      getCityFunc();
+      getStateFunc();
     };
-    fetchCities();
+    fetchStates();
 
     getUsers();
   }, []);
@@ -808,7 +829,14 @@ const BasicInfo = ({ navigation, route }) => {
     if ((data?.name).toLowerCase() === "referral") {
       setRefferalCode(data?.value);
     }
-
+    if((data?.name).toLowerCase() === "stateid")
+    {
+      console.log("state id found ", data)
+      const params = {
+        stateId:data?.value
+      }
+      getCityFunc(params)
+    }
     if ((data?.name).toLowerCase() === "email") {
       console.log("from text input", data?.name);
       console.log("isValidEmail", isValidEmail(data?.value), isValid);
@@ -1721,7 +1749,31 @@ const BasicInfo = ({ navigation, route }) => {
                       {" "}
                     </TextInputGST>
                   );
-                } else if (item.name.trim().toLowerCase() === "city") {
+                } else if (item.name.trim().toLowerCase() === "state") {
+                  return (
+                    <View
+                      style={{
+                        width: "90%",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {stateData && (
+                        <DropDownWithSearchForms
+                          type = "state"
+                          required={item.required}
+                          title={item.name}
+                          header={item.name}
+                          jsonData={item}
+                          data={stateData}
+                          handleData={handleChildComponentData}
+                        ></DropDownWithSearchForms>
+                      )}
+                    </View>
+                  );
+                }
+                
+                else if (item.name.trim().toLowerCase() === "city") {
                   return (
                     <View
                       style={{
@@ -1732,6 +1784,7 @@ const BasicInfo = ({ navigation, route }) => {
                     >
                       {cityData && (
                         <DropDownWithSearchForms
+                          type = "city"
                           required={item.required}
                           title={item.name}
                           header={item.name}
@@ -1742,7 +1795,9 @@ const BasicInfo = ({ navigation, route }) => {
                       )}
                     </View>
                   );
-                } else if (item.name.trim().toLowerCase() === "pincode") {
+                }
+
+                else if (item.name.trim().toLowerCase() === "pincode") {
                   return (
                     <View
                       style={{
@@ -1981,6 +2036,7 @@ const BasicInfo = ({ navigation, route }) => {
               } else if (item.type === "date") {
                 return (
                   <InputDate
+                    preventEighteen = {true}
                     required={item.required}
                     jsonData={item}
                     handleData={handleChildComponentData}

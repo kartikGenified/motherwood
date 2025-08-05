@@ -387,15 +387,13 @@ const CustomDrawer = (props) => {
           navigation.navigate("GiftCatalogue");
         }
         else if (props.title.toLowerCase() === "app tutorial") {
-          console.log("hasbdhjghjasjcbabsvcjhhasvjhvjh")
-          // navigation.navigate("CommingSoon");
-          navigation.dispatch(DrawerActions.closeDrawer());
-          setTimeout(() => {
-          dispatch(setAlreadyWalkedThrough(false))
-          dispatch(setStepId(1))
-
-            
-          }, 1000);
+          const storeData = async () => {
+            await AsyncStorage.setItem('isAlreadyWalkedThrough', "false");
+            dispatch(setStepId(1));
+            dispatch(setAlreadyWalkedThrough(false));
+            navigation.dispatch(DrawerActions.closeDrawer());
+          };
+          storeData();
         }
         else if (
           props.title.toLowerCase() === "bank details" ||
@@ -562,19 +560,20 @@ const CustomDrawer = (props) => {
               else if (props.title.toLowerCase() === "app tutorial") {
                 console.log("hasbdhjghjasjcbabsvcjhhasvjhvjh")
                 // navigation.navigate("CommingSoon");
-                navigation.dispatch(DrawerActions.closeDrawer());
                 const storeData = async () => {
                   
                     await AsyncStorage.setItem('isAlreadyWalkedThrough', "false" );
                    const value = await AsyncStorage.getItem('isAlreadyWalkedThrough');
                    console.log("drawernavigator kitne bada", value, stepId )
+                  navigation.dispatch(DrawerActions.closeDrawer());
+
+                   setTimeout(() => {
+                    dispatch(setStepId(1))
+                    dispatch(setAlreadyWalkedThrough(false))
+                    }, 1000);
                 };
                 storeData()
-                setTimeout(() => {
-          dispatch(setStepId(1))
-                dispatch(setAlreadyWalkedThrough(false))
-                  
-                }, 1000);
+                
               }
               else if (props.title.toLowerCase() === "terms and conditions") {
                 navigation.navigate("PdfComponent", { pdf: getTermsData, title:"Terms and Condition" })

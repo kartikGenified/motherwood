@@ -22,7 +22,6 @@ const RewardBoxDashboard = () => {
     const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loaderNew.gif')).uri;
     const {t} = useTranslation();
     const secondaryThemeColor = useSelector(state=>state.apptheme.secondaryThemeColor)
-  const isAlreadyWalkedThrough = useSelector((state) => state.walkThrough.isAlreadyWalkedThrough);
 
     const dispatch = useDispatch();
 
@@ -38,6 +37,25 @@ const RewardBoxDashboard = () => {
 
     useEffect(() => {
         fetchPoints()
+    }, []);
+
+    useEffect(() => {
+      const getData = async () => {
+        try {
+          const value = await AsyncStorage.getItem("isAlreadyWalkedThrough");
+          console.log("isAlreadyWalkedThrough", value);
+          if (value) {
+            setWalkThrough(false);
+          } else {
+            setWalkThrough(true);
+            setStepId(4)
+          }
+        } catch (e) {
+          // saving error
+          console.log("error", e);
+        }
+      };
+      getData();
     }, []);
 
     const fetchPoints = async () => {
@@ -61,18 +79,7 @@ const RewardBoxDashboard = () => {
 
     }, [userPointData, userPointError])
 
-    useEffect(()=>{
-      if(isAlreadyWalkedThrough)
-      {
-        setWalkThrough(false)
-        
-      }
-      else{
-        setWalkThrough(true)
-        setStepId(1)
-  
-      }
-    },[isAlreadyWalkedThrough, focused])
+    
 
     const storeData = async () => {
         try {
@@ -116,13 +123,13 @@ const RewardBoxDashboard = () => {
             <Text style={{ color: "black", textAlign: "center", marginBottom: 10, fontWeight: "bold" }}>
             Check your all points
             </Text>
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity
+            <View style={{ flexDirection: "row",alignItems:'center', justifyContent:'center' }}>
+              {/* <TouchableOpacity
                 style={styles.skipButton(ternaryThemeColor)}
                 onPress={handleSkip}
               >
                 <Text style={{ color: "white" }}>Skip</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
 
               <TouchableOpacity
                 style={styles.nextButton(ternaryThemeColor)}

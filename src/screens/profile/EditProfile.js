@@ -117,9 +117,9 @@ const EditProfile = ({ navigation, route }) => {
       console.log("updateProfileData", updateProfileData);
       setMessage(t("Profile Updated Successfully"));
       setSuccess(true);
-      setTimeout(() => {
-        navigation.navigate("Dashboard");
-      }, 2000);
+      // setTimeout(() => {
+      //   navigation.navigate("Dashboard");
+      // }, 2000);
       setIsClicked(false);
     } else if (updateProfileError) {
       console.log("updateProfileError", updateProfileError);
@@ -746,22 +746,37 @@ const EditProfile = ({ navigation, route }) => {
                         photo={require("../../../assets/images/eye.png")}
                       ></DisplayOnlyTextInput>
                     );
-                  } else if (item.name.trim().toLowerCase() === "pincode") {
+                  } 
+                  else if (item.name.trim().toLowerCase() === "pincode") {
                     return (
-                      <PincodeTextInput
-                        jsonData={item}
+                      <DisplayOnlyTextInput
                         key={index}
-                        handleData={handleData}
-                        handleFetchPincode={handleFetchPincode}
-                        placeHolder={item.name}
-                        value={location?.postcode}
-                        label={item.label}
-                        displayText={item.name}
-                        maxLength={6}
-                        shouldReturnValue={true}
-                      ></PincodeTextInput>
+                        data={
+                          renderValues[index] === null ||
+                          renderValues[index] === undefined
+                            ? "No data available"
+                            : renderValues[index]
+                        }
+                        title={
+                          item.label == "Mobile" ? t("mobile") : item.label
+                        }
+                        photo={require("../../../assets/images/eye.png")}
+                      ></DisplayOnlyTextInput>
+                      // <PincodeTextInput
+                      //   jsonData={item}
+                      //   key={index}
+                      //   handleData={handleData}
+                      //   handleFetchPincode={handleFetchPincode}
+                      //   placeHolder={item.name}
+                      //   value={location?.postcode}
+                      //   label={item.label}
+                      //   displayText={item.name}
+                      //   maxLength={6}
+                      //   shouldReturnValue={true}
+                      // ></PincodeTextInput>
                     );
-                  } else if (item.name.trim().toLowerCase() === "city") {
+                  }
+                   else if (item.name.trim().toLowerCase() === "city") {
                     return (
                       <PrefilledTextInput
                         jsonData={item}
@@ -803,7 +818,38 @@ const EditProfile = ({ navigation, route }) => {
                         shouldReturnValue={true}
                       ></PrefilledTextInput>
                     );
-                  } else if (item.name === "enrollment_date") {
+                  }
+                  else if (item.name.trim().toLowerCase() === "dob") {
+                    return (
+                      <PrefilledTextInput
+                        jsonData={item}
+                        key={index}
+                        handleData={handleData}
+                        placeHolder={item.name}
+                        label={item.label}
+                        displayText={item.name}
+                        isEditable={false}
+                        shouldReturnValue={true}
+                      ></PrefilledTextInput>
+                    );
+                  }
+                  
+                  else if (item.name.trim().toLowerCase() === "district") {
+                    return (
+                      <PrefilledTextInput
+                        jsonData={item}
+                        key={index}
+                        handleData={handleData}
+                        placeHolder={item.name}
+                        value={location?.district}
+                        label={item.label}
+                        displayText={item.name}
+                        isEditable={false}
+                        shouldReturnValue={true}
+                      ></PrefilledTextInput>
+                    );
+                  }
+                  else if (item.name === "enrollment_date") {
                     return (
                       <DisplayOnlyTextInput
                         key={index}
@@ -927,17 +973,41 @@ const EditProfile = ({ navigation, route }) => {
                       ></TextInputRectangularWithPlaceholder>
                     );
                   }
-                } else if (item.type === "date") {
-                  return (
-                    <InputDateProfile
-                      label={item?.label}
+                
+                }
+                else if (item.type === "date") {
+                   if (item.name.trim().toLowerCase() === "dob") {
+                    console.log("displaying dob",renderValues[index])
+                    return (
+                      <DisplayOnlyTextInput
                       key={index}
-                      data={dayjs(renderValues[index]).format("DD-MMM-YYYY")}
-                      title={item?.name}
-                      handleData={handleData}
-                    ></InputDateProfile>
-                  );
-                } else if (item.type === "select") {
+                      data={
+                        renderValues[index] === null ||
+                        renderValues[index] === undefined
+                          ? "No data available"
+                          : dayjs(renderValues[index]).format('DD-MM-YYYY')
+                      }
+                      
+                      title={item.label == "dob" ? t("dob") : item.label}
+                      photo={require("../../../assets/images/eye.png")}
+                    ></DisplayOnlyTextInput>
+                    );
+                  }
+                  else{
+                    return (
+                      <InputDate
+                    preventEighteen = {true}
+                    required={item.required}
+                    jsonData={item}
+                    handleData={handleData}
+                    data={item.label}
+                    key={index}
+                  ></InputDate>
+                    );
+                  }
+                  
+                }
+                  else if (item.type === "select") {
                   return (
                     <ProfileDropDown
                       key={index}

@@ -122,6 +122,9 @@ const DashboardMenuBox = (props) => {
     }else if (data.toLowerCase() === "about motherwood") {
       navigation.navigate("PdfComponent", { pdf: getAboutData, title:"About Motherwood" })
     } 
+    else if (data.toLowerCase() === "birthday screen") {
+      navigation.navigate("BirthdayScreen");
+    }
     else if (data.toLowerCase() === "motherwood program name") {
       navigation.navigate("PdfComponent", { pdf: getDetailsData,title:"Motherwood Program Name" })
 
@@ -195,7 +198,7 @@ const DashboardMenuBox = (props) => {
         })}
         {/* <MenuItems handlePress={handleMenuItemPress} index ={data.length+1} key={data.length+1} image={"https://picsum.photos/200/300"} content={"Return Goods"}></MenuItems>
                     <MenuItems handlePress={handleMenuItemPress} index ={data.length+2} key={data.length+2} image={"https://picsum.photos/300/300"} content={"Return List"}></MenuItems> */}
-        {/* <MenuItems handlePress={handleMenuItemPress} key={data.length+3} image={`https://picsum.photos/200/200`} content={"Assign"}></MenuItems> */}
+        {/* <MenuItems handlePress={handleMenuItemPress} key={data.length+3} image={`https://picsum.photos/200/200`} content={"Birthday Screen"}></MenuItems> */}
 
         {/* <TouchableOpacity onPress={()=>{
           navigation.navigate("TapTheDot")

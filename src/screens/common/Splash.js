@@ -104,6 +104,8 @@ import { getAppmenuCachedDispatch } from "../../../redux/dispatches/getAppmenuCa
 import { getDashboardCachedDispatch } from "../../../redux/dispatches/getDashboardCachedDispatch";
 import { getTermsDataCachedDispatch } from "../../../redux/dispatches/getTermsDataCachedDispatch";
 import { getUsersDataCachedDispatch } from "../../../redux/dispatches/getUsersDataCachedDispatch";
+import { checkNotificationPermission, requestUserPermission } from "../../utils/notifications/notificationPermissionUtil";
+
 import store from "../../../redux/store";
 
 const Splash = ({ navigation }) => {
@@ -281,6 +283,8 @@ const Splash = ({ navigation }) => {
     setCurrentAppVersion(currentVersion);
     console.log("current version check", currentVersion);
     dispatch(setAppVersion(currentVersion));
+    checkNotificationPermission()
+    requestUserPermission()
   }, []);
   //-------------------------------
 

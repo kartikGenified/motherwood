@@ -12,22 +12,47 @@ import { PaperProvider } from 'react-native-paper';
 import { InternetSpeedProvider } from './src/Contexts/useInternetSpeedContext';
 import GlobalErrorHandler from './src/utils/GlobalErrorHandler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import NotificationModal from './src/components/modals/NotificationModal';
 const App = () => {
   const [notifModal, setNotifModal] = useState(false)
   const [notifData, setNotifData] = useState(null)
+  const [notificationBody, setNotificationBody] = useState()
 
 
   console.log("Version check",JSON.stringify(VersionCheck.getPlayStoreUrl({ packageName: 'com.genefied.motherwood' })))
-    useEffect(() => {
-        const unsubscribe = messaging().onMessage(async remoteMessage => {
-         setNotifModal(true)
-      setNotifData(remoteMessage?.notification)
-      console.log("remote message",remoteMessage)
+  useEffect(() => {
+    console.log("inside onmessage use effect")
+      const unsubscribe = messaging().onMessage(async remoteMessage => {
+       setNotifModal(true)
+        setNotifData(remoteMessage?.notification)
+        setNotificationBody(remoteMessage)
+        await notifee.displayNotification({
+          title: remoteMessage.data?.title ?? 'No title',
+          body: remoteMessage.data?.body ?? 'No body',
+          ios: { sound: 'default' },
         });
-        
-        return unsubscribe;
-      }, []);
-
+    console.log("remote message",remoteMessage)
+      });
+      
+      return unsubscribe;
+    }, []);
+    useEffect(() => {
+      const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
+        console.log('Notification caused app to open from background state:', remoteMessage);
+        navigate('Notification')
+      });
+    
+      messaging()
+        .getInitialNotification()
+        .then(remoteMessage => {
+          if (remoteMessage) {
+            console.log('Notification caused app to open from quit state:', remoteMessage);
+            navigate('Notification')
+          }
+        });
+    
+      return unsubscribe;
+    }, []);
      
     
 
@@ -56,7 +81,7 @@ const App = () => {
                     onPress: () => {
                       Linking.openURL(
                         Platform.OS === 'ios'
-                          ? 'https://apps.apple.com/in/app/calcuttaKnitWear-%E0%A4%8F%E0%A4%95-%E0%A4%AA%E0%A4%B9%E0%A4%B2-%E0%A4%85%E0%A4%AA%E0%A4%A8-%E0%A4%95-%E0%A4%B8-%E0%A4%A5/id1554075490'
+                          ? 'https://apps.apple.com/in/app/com.genefied.motherwood'
                           : "https://play.google.com/store/apps/details?id=com.genefied.motherwood"
                       );
                     },
@@ -110,16 +135,18 @@ const App = () => {
             <InternetSpeedProvider>
              
         <SafeAreaView style={{flex:1}}>
-          
+        <NotificationModal
+  visible={notifModal}
+  onClose={() => setNotifModal(false)}
+  title={notifData?.title}
+  message={notifData?.body}
+  notificationBody = {notificationBody}
+  imageUrl={Platform.OS=='android'? notifData?.android?.imageUrl : notifData?.ios?.imageUrl} 
+  type="info"
+/>
             <StackNavigator>
             <GlobalErrorHandler>
-            {notifModal &&  <ModalWithBorder
-            modalClose={() => {
-              setNotifModal(false)
-            }}
-            message={"message"}
-            openModal={notifModal}
-            comp={notifModalFunc}></ModalWithBorder>}
+            
            </GlobalErrorHandler>
             </StackNavigator>
         </SafeAreaView>

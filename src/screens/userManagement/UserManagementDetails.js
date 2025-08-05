@@ -324,6 +324,10 @@ const UserManagementDetails = (params) => {
           value={route?.city ? route?.city : "N/A"}
         />
         <SingleComponent
+          title={"D.O.B"}
+          value={route?.dob ? route?.dob : "N/A"}
+        />
+        <SingleComponent
           title={"Pincode"}
           value={route?.pincode ? route?.pincode : "N/A"}
         />

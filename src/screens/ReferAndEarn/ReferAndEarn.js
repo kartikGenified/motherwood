@@ -26,22 +26,21 @@ import Facebook from 'react-native-vector-icons/Entypo'
 import Share from 'react-native-share';
 import { useFetchProfileMutation } from '../../apiServices/profile/profileApi';
 import { useIsFocused } from '@react-navigation/native';
+import { useGetUserStatusApiMutation } from '../../apiServices/userStatus/getUserStatus';
 
 const ReferAndEarn = ({ navigation }) => {
   const [openBottomInvitationModal, setOpenBottomInvitationModal] = useState(false)
   const [openBottomReferModal, setOpenBottomReferModal] = useState(false)
+  const [enableRedemption, setEnableRedemption] = useState(false)
 
-
+  const userData = useSelector(state => state.appusersdata.userData)
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
   )
-    ? useSelector(state => state.apptheme.ternaryThemeColor)
-    : 'grey';
+    
   const primaryThemeColor = useSelector(
     state => state.apptheme.primaryThemeColor,
   )
-    ? useSelector(state => state.apptheme.primaryThemeColor)
-    : '#FF9B00';
 
   const focused = useIsFocused()
 
@@ -53,6 +52,25 @@ const ReferAndEarn = ({ navigation }) => {
     }
   }, [fetchProfileData, fetchProfileError]);
 
+  const [getUserStatusFunc,{
+    data:getUserStatusData,
+    error:getUserStatusError,
+    isError:getUserStatusIsError,
+    isLoading:getUserStatusIsLoading
+  }] = useGetUserStatusApiMutation()
+
+  useEffect(() => {
+    if (getUserStatusData) {
+      console.log("getUserStatusData", getUserStatusData);
+      if(getUserStatusData?.body.status == "Approved")
+      {
+        setEnableRedemption(true)
+      }
+    } else if (getUserStatusError) {
+      console.log("getUserStatusError", getUserStatusError);
+    }
+  }, [getUserStatusData, getUserStatusError]);
+
   const [
     fetchProfileFunc,
     {
@@ -62,6 +80,27 @@ const ReferAndEarn = ({ navigation }) => {
       isError: fetchProfileIsError,
     },
   ] = useFetchProfileMutation();
+
+  useEffect(()=>{
+    const getStatus=async()=>{
+      const credentials = await Keychain.getGenericPassword();
+      if (credentials) {
+        console.log(
+          'Credentials successfully loaded for user ' + credentials.username
+        );
+        const token = credentials.username
+        const params = {
+          token:token
+        }
+        getUserStatusFunc(params)
+    
+      }
+    }
+    getStatus()
+    
+  },[userData])
+
+
   useEffect(() => {
     const fetchData = async () => {
       const credentials = await Keychain.getGenericPassword();
@@ -95,13 +134,34 @@ const ReferAndEarn = ({ navigation }) => {
       title: "Refer And Earn",
       url: `Hi! I'm using the MotherWood SAATHI Reward Program and loving it. Use my referral code ${referalCode} to sign up and win exciting rewards! Download now: MotherWood SAATHI Reward Program App from Google Play Store or Apple App Store.`
     }
-    Share.open(options)
+    if(enableRedemption)
+    {
+      Share.open(options)
       .then((res) => {
         console.log(res);
       })
       .catch((err) => {
         err && console.log(err);
       });
+    }
+    else{
+      showAlert()
+      const showAlert = () => {
+        Alert.alert(
+          'Unable to refer',
+          'Your approval from sales end is pending',
+          [
+            
+            {
+              text: 'OK',
+              onPress: () => console.log('OK Pressed'),
+            },
+          ],
+          { cancelable: false }
+        );
+      };
+    }
+    
   }
 
   const ReferModalContent = () => {
