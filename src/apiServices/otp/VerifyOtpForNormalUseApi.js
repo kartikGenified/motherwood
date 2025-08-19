@@ -4,7 +4,7 @@ import { slug } from "../../utils/Slug";
 export const VerifyOtpForNormalUseApi = baseApi.injectEndpoints({
     endpoints:(builder) =>({
         VerifyOtpForNormalUse : builder.mutation({
-            query({mobile,name,user_type_id,user_type,otp,is_approved_needed,type}){
+            query({mobile,name,user_type_id,user_type,otp,is_approved_needed,type,fcm_token}){
                 return {
                     url:`/api/app/userOtp/otp`,
                     method:'post',
@@ -19,7 +19,8 @@ export const VerifyOtpForNormalUseApi = baseApi.injectEndpoints({
                         "user_type_id" : user_type_id,
                         "user_type" : user_type,
                         "is_approved_needed" : is_approved_needed,
-                        "type":type
+                        "type":type,
+                        "fcm_token":fcm_token
                     }
                     
                    

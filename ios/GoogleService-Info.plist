@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDLh6EPdQOBFOH3APL3cyOgsw6bLrtQLWc</string>
+	<string>AIzaSyCtnOiay3D6T2wytCq4gGuGoK1qW0m82ZQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>887043420639</string>
+	<string>528606509019</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.genefied.motherwood.myro</string>
+	<string>com.genefied.motherwood</string>
 	<key>PROJECT_ID</key>
-	<string>calcutta-knitwear</string>
+	<string>motherwood-1885e</string>
 	<key>STORAGE_BUCKET</key>
-	<string>calcutta-knitwear.firebasestorage.app</string>
+	<string>motherwood-1885e.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:887043420639:ios:5e7addcb4561b15113d46a</string>
+	<string>1:528606509019:ios:4f49af9808bf9e6caa19fe</string>
 </dict>
 </plist>

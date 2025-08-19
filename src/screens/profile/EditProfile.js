@@ -976,24 +976,24 @@ const EditProfile = ({ navigation, route }) => {
                 
                 }
                 else if (item.type === "date") {
-                   if (item.name.trim().toLowerCase() === "dob") {
-                    console.log("displaying dob",renderValues[index])
-                    return (
-                      <DisplayOnlyTextInput
-                      key={index}
-                      data={
-                        renderValues[index] === null ||
-                        renderValues[index] === undefined
-                          ? "No data available"
-                          : dayjs(renderValues[index]).format('DD-MM-YYYY')
-                      }
+                  //  if (item.name.trim().toLowerCase() === "dob") {
+                  //   console.log("displaying dob",renderValues[index])
+                  //   return (
+                  //     <DisplayOnlyTextInput
+                  //     key={index}
+                  //     data={
+                  //       renderValues[index] === null ||
+                  //       renderValues[index] === undefined
+                  //         ? "No data available"
+                  //         : dayjs(renderValues[index]).format('DD-MM-YYYY')
+                  //     }
                       
-                      title={item.label == "dob" ? t("dob") : item.label}
-                      photo={require("../../../assets/images/eye.png")}
-                    ></DisplayOnlyTextInput>
-                    );
-                  }
-                  else{
+                  //     title={item.label == "dob" ? t("dob") : item.label}
+                  //     photo={require("../../../assets/images/eye.png")}
+                  //   ></DisplayOnlyTextInput>
+                  //   );
+                  // }
+                  // else{
                     return (
                       <InputDate
                     preventEighteen = {true}
@@ -1002,9 +1002,15 @@ const EditProfile = ({ navigation, route }) => {
                     handleData={handleData}
                     data={item.label}
                     key={index}
+                    value = {
+                      renderValues[index] === null ||
+                        renderValues[index] === undefined
+                          ? "No data available"
+                          :renderValues[index]
+                    }
                   ></InputDate>
                     );
-                  }
+                  // }
                   
                 }
                   else if (item.type === "select") {

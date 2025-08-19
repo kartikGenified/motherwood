@@ -22,6 +22,7 @@ import * as Keychain from "react-native-keychain";
 import ErrorModal from "../../components/modals/ErrorModal";
 import MessageModal from "../../components/modals/MessageModal";
 import Close from "react-native-vector-icons/Ionicons";
+import dayjs from "dayjs";
 
 // create a component
 const UserManagementDetails = (params) => {
@@ -325,7 +326,7 @@ const UserManagementDetails = (params) => {
         />
         <SingleComponent
           title={"D.O.B"}
-          value={route?.dob ? route?.dob : "N/A"}
+          value={route?.dob ? dayjs(route?.dob).format("DD-MM-YYYY") : "N/A"}
         />
         <SingleComponent
           title={"Pincode"}

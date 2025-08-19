@@ -131,14 +131,13 @@ const BasicInfo = ({ navigation, route }) => {
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   )
-    ? useSelector((state) => state.apptheme.ternaryThemeColor)
-    : "grey";
+  
+  const fcmToken = useSelector((state) => state.fcmToken.fcmToken);
 
   const secondaryThemeColor = useSelector(
     (state) => state.apptheme.secondaryThemeColor
   )
-    ? useSelector((state) => state.apptheme.secondaryThemeColor)
-    : "#FFB533";
+   
   const isOnlineVerification = useSelector(
     (state) => state.apptheme.isOnlineVerification
   );
@@ -356,7 +355,7 @@ const BasicInfo = ({ navigation, route }) => {
         let data = []
         for(let i=0;i<getCityData?.body.length;i++)
         {
-          data.push({city : getCityData?.body[i].city, id :getCityData?.body[i].id})
+          data.push({city : getCityData?.body[i]?.city, id :getCityData?.body[i]?.id})
         }
         setCityData(data);
       }
@@ -833,7 +832,7 @@ const BasicInfo = ({ navigation, route }) => {
     {
       console.log("state id found ", data)
       const params = {
-        stateId:data?.value
+        stateId:String(data?.value)
       }
       getCityFunc(params)
     }
@@ -1077,7 +1076,8 @@ const BasicInfo = ({ navigation, route }) => {
     inputFormData["language"] = preferedLanguage;
     inputFormData["app_version"] = appVersion;
     inputFormData["mobile"] = navigationParams?.mobile;
-
+    inputFormData["mobile"] = navigationParams?.mobile;
+    inputFormData["fcm_token"] = fcmToken;
     inputFormData["distributor_name"] = String(distributorName);
     inputFormData["distributor_mobile"] =
       distributorMobile != undefined ? String(distributorMobile) : null;

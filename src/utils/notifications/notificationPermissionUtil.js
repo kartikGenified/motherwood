@@ -8,15 +8,20 @@ export  async function checkNotificationPermission() {
       console.log('Notification permissions has been authorized');
     } else if (settings.authorizationStatus == AuthorizationStatus.DENIED) {
       console.log('Notification permissions has been denied');
+      requestUserPermission()
     }
   }
 
-  export  async function requestUserPermission() {
-    const settings = await notifee.requestPermission();
-  
-    if (settings.authorizationStatus >= AuthorizationStatus.AUTHORIZED) {
-      console.log('Permission granted ✅');
-    } else {
-      console.log('Permission denied ❌');
+  export async function requestUserPermission() {
+    try {
+      const settings = await notifee.requestPermission();
+      console.log("notifee permison request result", settings)
+      if (settings.authorizationStatus >= AuthorizationStatus.AUTHORIZED) {
+        console.log('Permission granted ✅');
+      } else {
+        console.log('Permission denied ❌');
+      }
+    } catch (error) {
+      console.error('Permission request error: ', error);
     }
   }

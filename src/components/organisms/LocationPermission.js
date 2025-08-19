@@ -14,8 +14,8 @@ const LocationPermission = ({ onSuccess, onReject }) => {
             const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
                 {
-                    title: 'calcuttaKnitWear App Location Permission',
-                    message: 'calcuttaKnitWear App needs access to your Location ',
+                    title: 'motherwood App Location Permission',
+                    message: 'motherwood App needs access to your Location ',
                     buttonNeutral: 'Ask Me Later',
                     buttonNegative: 'Cancel',
                     buttonPositive: 'OK',

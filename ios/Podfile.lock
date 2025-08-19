@@ -650,6 +650,11 @@ PODS:
     - React-Core
   - RNKeychain (8.2.0):
     - React-Core
+  - RNNotifee (9.1.8):
+    - React-Core
+    - RNNotifee/NotifeeCore (= 9.1.8)
+  - RNNotifee/NotifeeCore (9.1.8):
+    - React-Core
   - RNPermissions (3.10.1):
     - React-Core
   - RNQrGenerator (1.4.3):
@@ -688,6 +693,11 @@ PODS:
     - React-Core
     - React-RCTImage
   - RNShare (9.4.1):
+    - React-Core
+  - RNSound (0.11.2):
+    - React-Core
+    - RNSound/Core (= 0.11.2)
+  - RNSound/Core (0.11.2):
     - React-Core
   - RNSVG (13.14.1):
     - React-Core
@@ -773,11 +783,13 @@ DEPENDENCIES:
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
+  - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNQrGenerator (from `../node_modules/rn-qr-generator`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNShare (from `../node_modules/react-native-share`)
+  - RNSound (from `../node_modules/react-native-sound`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -931,6 +943,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNKeychain:
     :path: "../node_modules/react-native-keychain"
+  RNNotifee:
+    :path: "../node_modules/@notifee/react-native"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
   RNQrGenerator:
@@ -941,6 +955,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNShare:
     :path: "../node_modules/react-native-share"
+  RNSound:
+    :path: "../node_modules/react-native-sound"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   VisionCamera:
@@ -983,7 +999,7 @@ SPEC CHECKSUMS:
   React-Core: aaacca67f9ca54f142827e67f44bfbd815875eb6
   React-CoreModules: 32fab1d62416849a3b6dac6feff9d54e5ddc2d1e
   React-cxxreact: 37765b4975541105b2a3322a4b473417c158c869
-  React-debug: ee3ab831a4f22a32f99f90a4e679ca7206db10a7
+  React-debug: b37e0e5d5a44c0dddcbe522dd9103c3b159d3912
   React-hermes: 935ae71fb3d7654e947beba8498835cd5e479707
   React-jsi: ec628dc7a15ffea969f237b0ea6d2fde212b19dd
   React-jsiexecutor: 59d1eb03af7d30b7d66589c410f13151271e8006
@@ -1001,7 +1017,7 @@ SPEC CHECKSUMS:
   react-native-version-check: 6cd36aad4e30b8e3216747e3b4ddeb09e0647af8
   react-native-webview: e6e4703f5ebb6da097e1778bfa4470b9d64eb53a
   react-native-worklets-core: f51430dd07bf5343d4918d28a4bb00fe8f98b982
-  React-NativeModulesApple: f4f1eb63ce4abb4bf6237388ed29001c88ba1d80
+  React-NativeModulesApple: 5023110dcf65cc91d3ec4c3d6eaf8c60214d1742
   React-perflogger: 6bd153e776e6beed54c56b0847e1220a3ff92ba5
   React-RCTActionSheet: c0b62af44e610e69d9a2049a682f5dba4e9dff17
   React-RCTAnimation: fe7005136b58f58871cab2f70732343b6e330d30
@@ -1015,9 +1031,9 @@ SPEC CHECKSUMS:
   React-RCTVibration: ea3a68a49873a54ced927c90923fc6932baf344a
   React-rncore: 9672a017af4a7da7495d911f0b690cbcae9dd18d
   React-runtimeexecutor: 369ae9bb3f83b65201c0c8f7d50b72280b5a1dbc
-  React-runtimescheduler: cf0257860741d7ad903d2dfca158b6d132d1a84f
-  React-utils: da2e60679f4480f62225a338131fb8c4a8826305
-  ReactCommon: 4ca239cecb16303061f7d24b82d656c506250080
+  React-runtimescheduler: 4f31ee969f7a150d8683699ac2c168cd87ce1f68
+  React-utils: 02c058d3cb6f7974560705a05c4a6a19fe3325aa
+  ReactCommon: 1a5f98084454d5773749ffdea231b4761561688a
   RNCAsyncStorage: ec53e44dc3e75b44aa2a9f37618a49c3bc080a7a
   RNCClipboard: d7a8903d32692b0a1e71738c3825465a9acae10e
   RNDeviceInfo: b899ce37a403a4dea52b7cb85e16e49c04a5b88e
@@ -1028,11 +1044,13 @@ SPEC CHECKSUMS:
   RNFBMessaging: 99621af036e0aa85506390f77d79c9e6353aacca
   RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
   RNKeychain: bfe3d12bf4620fe488771c414530bf16e88f3678
+  RNNotifee: 4a6ee5c7deaf00e005050052d73ee6315dff7ec9
   RNPermissions: 7e6b2dd65e393807326937a5b0dfb612268d0ca3
   RNQrGenerator: ac6a6c766e80dd3625038929ed2b13e2f3edcafb
   RNReanimated: 726395a2fa2f04cea340274ba57a4e659bc0d9c1
   RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
   RNShare: 32e97adc8d8c97d4a26bcdd3c45516882184f8b6
+  RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNSVG: af3907ac5d4fa26a862b75a16d8f15bc74f2ceda
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
@@ -1041,6 +1059,6 @@ SPEC CHECKSUMS:
   Yoga: 8796b55dba14d7004f980b54bcc9833ee45b28ce
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: e39101bad3d25eaac9099bffc8e1d2767cf0c8b4
+PODFILE CHECKSUM: ea7e63d20c0bdc4c0b6e63c3f13ed2ca04796725
 
 COCOAPODS: 1.16.2

@@ -13,6 +13,7 @@ const InputDate = (props) => {
   const preventEighteen = props.preventEighteen;
   const { data, title, minDate } = props;
   const required = props.required;
+  console.log("date in edit profile", props.value);
   useEffect(() => {
     // Format the current date and send it to the parent component
     const formattedDate = dayjs(date).format("YYYY/MM/DD");
@@ -20,6 +21,11 @@ const InputDate = (props) => {
     setDate(new Date());
     handleInputEnd(new Date(), title);
   }, []);
+
+  const isValidDate = (dateString) => {
+    const d = new Date(dateString);
+    return d instanceof Date && !isNaN(d);
+  };
   const today = new Date();
   const eighteenYearsAgo = new Date(
     today.getFullYear() - 18,
@@ -45,6 +51,15 @@ const InputDate = (props) => {
           style={styles.text}
           content={dayjs(date).format("YYYY/MM/DD")}
         />
+      ) : props.value ? (
+        <PoppinsTextMedium
+          style={styles.text}
+          content={
+            data === null
+              ? "Please select date"
+              : dayjs(props.value).format("YYYY/MM/DD")
+          }
+        />
       ) : (
         <PoppinsTextMedium
           style={styles.text}
@@ -65,10 +80,20 @@ const InputDate = (props) => {
       <DatePicker
         modal
         open={open}
-        date={preventEighteen ? eighteenYearsAgo : date}
+        date={
+          isValidDate(props.value)
+            ? new Date(props.value)
+            : preventEighteen
+            ? eighteenYearsAgo
+            : date
+        }
         mode="date"
-        maximumDate={preventEighteen ? eighteenYearsAgo:new Date()}
-        minimumDate={minDate ? minDate : null}
+        maximumDate={preventEighteen ? eighteenYearsAgo : new Date()}
+        minimumDate={
+          minDate && isValidDate(minDate)
+            ? new Date(minDate)
+            : new Date(1900, 0, 1) // a safe very early date
+        }
         onConfirm={(date) => {
           setSelected(true);
           setOpen(false);

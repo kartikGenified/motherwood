@@ -37,7 +37,7 @@ const RewardBoxDashboard = () => {
 
     useEffect(() => {
         fetchPoints()
-    }, []);
+    }, [focused]);
 
     useEffect(() => {
       const getData = async () => {
@@ -70,7 +70,7 @@ const RewardBoxDashboard = () => {
 
     useEffect(() => {
         if (userPointData) {
-            console.log("userPointData", userPointData)
+            console.log("userPointData hello java", userPointData)
             console.log("ek plate nan " ,Math.floor( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed)))
         }
         else if (userPointError) {

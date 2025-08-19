@@ -8,7 +8,7 @@ import { useFetchUserPointsMutation } from "../../apiServices/workflow/rewards/G
 import * as Keychain from 'react-native-keychain';
 import { useSelector } from "react-redux";
 import capitalizeFirstChar from "../../utils/capitalizeFirstChar";
-
+import { useIsFocused } from "@react-navigation/native";
 
 const PointsCard = (props) => {
 const [isTertiary, setIsTertiary] = useState()
@@ -18,7 +18,7 @@ const [isTertiary, setIsTertiary] = useState()
     isLoading: userPointIsLoading,
     isError: userPointIsError
 }] = useFetchUserPointsMutation();
-
+const focused = useIsFocused()
 const ternaryThemeColor = useSelector(
   (state) => state.apptheme.ternaryThemeColor
 )
@@ -38,6 +38,10 @@ useEffect(() => {
  }
   fetchPoints()
 }, []);
+useEffect(() => {
+  
+  fetchPoints()
+}, [focused, props]);
 
 useEffect(() => {
   if (userPointData) {

@@ -13,6 +13,8 @@ import { InternetSpeedProvider } from './src/Contexts/useInternetSpeedContext';
 import GlobalErrorHandler from './src/utils/GlobalErrorHandler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import NotificationModal from './src/components/modals/NotificationModal';
+import notifee from '@notifee/react-native';
+import { navigate } from './src/utils/notifications/navigationService';
 const App = () => {
   const [notifModal, setNotifModal] = useState(false)
   const [notifData, setNotifData] = useState(null)

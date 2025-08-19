@@ -419,7 +419,7 @@ console.log("banner array",bannerArray)
         BackHandler.addEventListener("hardwareBackPress", () => false);
       }
     };
-  }, [focused, dispatch]);
+  }, [focused, dispatch, navigation]);
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
@@ -760,7 +760,7 @@ console.log("banner array",bannerArray)
           openModal={error}
         ></ErrorModal>
       )}
-        <DrawerHeader></DrawerHeader>
+        <DrawerHeader count={getNotificationCountData?.body?.notification_count}></DrawerHeader>
        
       <ScrollView
         style={{

@@ -105,7 +105,7 @@ import { getDashboardCachedDispatch } from "../../../redux/dispatches/getDashboa
 import { getTermsDataCachedDispatch } from "../../../redux/dispatches/getTermsDataCachedDispatch";
 import { getUsersDataCachedDispatch } from "../../../redux/dispatches/getUsersDataCachedDispatch";
 import { checkNotificationPermission, requestUserPermission } from "../../utils/notifications/notificationPermissionUtil";
-
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import store from "../../../redux/store";
 
 const Splash = ({ navigation }) => {
@@ -254,6 +254,7 @@ const Splash = ({ navigation }) => {
     },
   ] = useFetchLegalsMutation();
 
+  
   // fetching session data if exists and dispatching it for further use
   useEffect(() => {
     const getSessionData = async () => {
@@ -283,8 +284,7 @@ const Splash = ({ navigation }) => {
     setCurrentAppVersion(currentVersion);
     console.log("current version check", currentVersion);
     dispatch(setAppVersion(currentVersion));
-    checkNotificationPermission()
-    requestUserPermission()
+    // checkNotificationPermission()
   }, []);
   //-------------------------------
 
@@ -296,6 +296,8 @@ const Splash = ({ navigation }) => {
       setMpinData(mPin);
     };
     getData();
+    requestPermission()
+
   }, []);
   //----------------------------------------------
 
@@ -681,7 +683,6 @@ const Splash = ({ navigation }) => {
         console.error("Error fetching location data:", error);
       }
     };
-
     fetchLocationData();
   }, []);
   //-------------------------------------------------------
@@ -826,6 +827,28 @@ const Splash = ({ navigation }) => {
   //---------------------------------------
   const areAllApisComplete = (apiCallStatus, allApiArray) => {
     return allApiArray.every(api => apiCallStatus?.includes(api));
+  };
+
+  const requestNotificationPermission = async () => {
+    const result = await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+    return result;
+  };
+  
+  const checkNotificationPermission = async () => {
+    const result = await check(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+    return result;
+  };
+
+  const requestPermission = async () => {
+    const checkPermission = await checkNotificationPermission();
+    console.log("notification npermisioon stattsu", checkPermission)
+    if (checkPermission !== RESULTS.GRANTED) {
+     const request = await requestNotificationPermission();
+       if(request !== RESULTS.GRANTED){
+        
+            // permission not granted
+        }
+    }
   };
 
   const modalClose = () => {

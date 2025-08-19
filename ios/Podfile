@@ -58,7 +58,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'calcuttaKnitWear' do
+target 'motherwood' do
   config = use_native_modules!
 
 
@@ -80,7 +80,7 @@ target 'calcuttaKnitWear' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'calcuttaKnitWearTests' do
+  target 'motherwoodTests' do
     inherit! :complete
     # Pods for testing
   end

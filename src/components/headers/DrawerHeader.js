@@ -40,9 +40,10 @@ const DrawerHeader = (props) => {
   
 
   console.log(
-    "isAlreadyWalkedThroughasdjkasjdhj",
+    "isAlreadyWalkedThroughasdjkasjdhj count ",
     walkThrough,
-    stepId
+    stepId, 
+    count
   );
   //asynch storage data saving
   const storeData = async () => {
@@ -239,16 +240,16 @@ const DrawerHeader = (props) => {
             borderColor: ternaryThemeColor,
           }}
         >
-          
-        </Tooltip>
-        <RotateViewAnimation outputRange={["0deg","30deg", "-30deg","0deg"]} inputRange={[0,1,2,3]} comp={BellComponent} style={{height:30,width:30,position:'absolute',right:10}}>
+           <RotateViewAnimation outputRange={["0deg","30deg", "-30deg","0deg"]} inputRange={[0,1,2,3]} comp={BellComponent} style={{height:30,width:30}}>
                     
-                </RotateViewAnimation>
-                {count!=0 && <View style={{backgroundColor:"orange",height:20,width:20,borderRadius:10,position:'absolute',right:10,top:-6}}>
-
-                <PoppinsTextMedium style={{color:'white',fontSize:14,fontWeight:'bold'}} content={count}></PoppinsTextMedium>
-
-                </View>}
+                    </RotateViewAnimation>
+                    {count!=0 && <View style={{backgroundColor:"orange",height:20,width:20,borderRadius:10,position:'absolute',right:0,top:-6}}>
+    
+                    <PoppinsTextMedium style={{color:'white',fontSize:14,fontWeight:'bold'}} content={count}></PoppinsTextMedium>
+    
+                    </View>}
+        </Tooltip>
+       
       </View>
       {/* <FadeInOutAnimations comp = {BellComponent}></FadeInOutAnimations> */}
       {/* <BellComponent></BellComponent> */}
