@@ -31,8 +31,6 @@
 		D6E44A13696D485083EFABC2 /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8DB51198E9EA4355BC888C2C /* Poppins-ExtraLight.ttf */; };
 		DA5D18081DF44D2E90FAD56A /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2DDCCDBC21DE445887EF6F40 /* Poppins-LightItalic.ttf */; };
 		E92EE8EA2B4156DE00162902 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E92EE8E92B4156DE00162902 /* Assets.xcassets */; };
-		E955C1BE2E5337E500ADF300 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = E955C1BC2E5337E400ADF300 /* assets */; };
-		E955C1BF2E5337E500ADF300 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = E955C1BD2E5337E500ADF300 /* main.jsbundle */; };
 		E989CCFA2D311F250005A53B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E989CCF92D311F250005A53B /* GoogleService-Info.plist */; };
 		E9B14AB22A8CDED1004DE909 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9B14A9F2A8CDED1004DE909 /* Fontisto.ttf */; };
 		E9B14AB32A8CDED1004DE909 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9B14AA02A8CDED1004DE909 /* Octicons.ttf */; };
@@ -54,6 +52,8 @@
 		E9B14AC32A8CDED1004DE909 /* FontAwesome6_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9B14AB02A8CDED1004DE909 /* FontAwesome6_Brands.ttf */; };
 		E9B14AC42A8CDED1004DE909 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9B14AB12A8CDED1004DE909 /* MaterialIcons.ttf */; };
 		E9B14AC72A8E3BD3004DE909 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B14AC62A8E3BD3004DE909 /* File.swift */; };
+		E9B16E8B2E6590C5001682A8 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = E9B16E892E6590C5001682A8 /* main.jsbundle */; };
+		E9B16E8C2E6590C5001682A8 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = E9B16E8A2E6590C5001682A8 /* assets */; };
 		F21D0A43777744B6B8C56F9B /* Poppins-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4ECDB724FABA4B5C8ABD00FD /* Poppins-ExtraLightItalic.ttf */; };
 /* End PBXBuildFile section */
 
@@ -104,8 +104,6 @@
 		E92D736B2B3B50B3009D7BC1 /* libReact-hermes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-hermes.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E92D736D2B3B549D009D7BC1 /* OpenSSL.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = OpenSSL.xcframework; path = "Pods/OpenSSL-Universal/Frameworks/OpenSSL.xcframework"; sourceTree = "<group>"; };
 		E92EE8E92B4156DE00162902 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		E955C1BC2E5337E400ADF300 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
-		E955C1BD2E5337E500ADF300 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		E97F37B52B3AE9B500D662DB /* motherwood.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = motherwood.entitlements; path = motherwood/motherwood.entitlements; sourceTree = "<group>"; };
 		E989CCF92D311F250005A53B /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E99B6EA22B3CA8A600D14E1F /* reacthermes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = reacthermes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,6 +128,8 @@
 		E9B14AB12A8CDED1004DE909 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		E9B14AC52A8E3BD2004DE909 /* motherwood-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "motherwood-Bridging-Header.h"; sourceTree = "<group>"; };
 		E9B14AC62A8E3BD3004DE909 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		E9B16E892E6590C5001682A8 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		E9B16E8A2E6590C5001682A8 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F97B41FC45544F1C852F0A14 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBold.ttf"; path = "../assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		FEAC1C540BDA408D917124E6 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
@@ -239,8 +239,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				E955C1BC2E5337E400ADF300 /* assets */,
-				E955C1BD2E5337E500ADF300 /* main.jsbundle */,
+				E9B16E8A2E6590C5001682A8 /* assets */,
+				E9B16E892E6590C5001682A8 /* main.jsbundle */,
 				E92EE8E92B4156DE00162902 /* Assets.xcassets */,
 				13B07FAE1A68108700A75B9A /* motherwood */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -402,8 +402,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E955C1BE2E5337E500ADF300 /* assets in Resources */,
-				E955C1BF2E5337E500ADF300 /* main.jsbundle in Resources */,
+				E9B16E8B2E6590C5001682A8 /* main.jsbundle in Resources */,
+				E9B16E8C2E6590C5001682A8 /* assets in Resources */,
 				E9B14AB32A8CDED1004DE909 /* Octicons.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				E9B14ABD2A8CDED1004DE909 /* FontAwesome5_Regular.ttf in Resources */,

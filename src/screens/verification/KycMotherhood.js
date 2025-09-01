@@ -43,9 +43,9 @@ const KycMotherhood = ({ navigation }) => {
   const [kycArray, setKycArray] = useState([]);
   const [error, setError] = useState(false)
   const [message, setMessage] = useState('')
-  const [showPan, setShowPan] = useState(false);
-  const [showGst, setShowGst] = useState(false);
-  const [showAadhar, setShowAadhar] = useState(false);
+  const [showPan, setShowPan] = useState(true);
+  const [showGst, setShowGst] = useState(true);
+  const [showAadhar, setShowAadhar] = useState(true);
   const [panVerified, setPanVerified] = useState(false);
   const [aadharVerified, setAadharVerified] = useState(false);
   const [gstinVerified, setGstinVerified] = useState(false);

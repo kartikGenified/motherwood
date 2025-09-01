@@ -9,7 +9,8 @@ import {
   ScrollView,
   Dimensions,
   Text,
-  Linking
+  Linking,
+  Alert
 } from 'react-native';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
@@ -27,6 +28,7 @@ import Share from 'react-native-share';
 import { useFetchProfileMutation } from '../../apiServices/profile/profileApi';
 import { useIsFocused } from '@react-navigation/native';
 import { useGetUserStatusApiMutation } from '../../apiServices/userStatus/getUserStatus';
+import { useTranslation } from 'react-i18next';
 
 const ReferAndEarn = ({ navigation }) => {
   const [openBottomInvitationModal, setOpenBottomInvitationModal] = useState(false)
@@ -41,6 +43,7 @@ const ReferAndEarn = ({ navigation }) => {
   const primaryThemeColor = useSelector(
     state => state.apptheme.primaryThemeColor,
   )
+  const {t} = useTranslation();
 
   const focused = useIsFocused()
 
@@ -120,7 +123,7 @@ const ReferAndEarn = ({ navigation }) => {
   }, []);
   const height = Dimensions.get('window').height;
   const rewardAmount = 15;
-  const referalCode = fetchProfileData ? fetchProfileData.body.referral_code : "N/A";
+  const referalCode = fetchProfileData ? fetchProfileData?.body?.referral_code : "N/A";
   const modalInvitationClose = () => {
     setOpenBottomInvitationModal(false);
   };
@@ -145,7 +148,6 @@ const ReferAndEarn = ({ navigation }) => {
       });
     }
     else{
-      showAlert()
       const showAlert = () => {
         Alert.alert(
           'Unable to refer',
@@ -160,6 +162,8 @@ const ReferAndEarn = ({ navigation }) => {
           { cancelable: false }
         );
       };
+      showAlert()
+
     }
     
   }

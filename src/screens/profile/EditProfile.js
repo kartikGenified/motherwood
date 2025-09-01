@@ -783,7 +783,7 @@ const EditProfile = ({ navigation, route }) => {
                         key={index}
                         handleData={handleData}
                         placeHolder={item.name}
-                        value={location?.city}
+                        value={renderValues[index] ? renderValues[index] : location?.city}
                         displayText={item.name}
                         label={item.label}
                         isEditable={true}
@@ -797,7 +797,7 @@ const EditProfile = ({ navigation, route }) => {
                         key={index}
                         handleData={handleData}
                         placeHolder={item.name}
-                        value={location?.state}
+                        value={renderValues[index] ? renderValues[index] : location?.state}
                         label={item.label}
                         displayText={item.name}
                         isEditable={false}
@@ -811,7 +811,7 @@ const EditProfile = ({ navigation, route }) => {
                         key={index}
                         handleData={handleData}
                         placeHolder={item.name}
-                        value={location?.district}
+                        value={renderValues[index] ? renderValues[index] : location?.district}
                         label={item.label}
                         displayText={item.name}
                         isEditable={false}

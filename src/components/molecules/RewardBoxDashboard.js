@@ -169,7 +169,7 @@ const RewardBoxDashboard = () => {
                     // userData && (userData?.user_type)?.toLowerCase() == 'distributor' && userPointData  && <RewardRectangular amount={userPointData.body.point_earned} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("earned points")}></RewardRectangular>
                 }
                 {
-                  userPointData && <RewardRectangular amount={userPointData?.body?.point_earned} color="#F0FCE7" image={require('../../../assets/images/current_point.png')} title={t("Earned Points")}></RewardRectangular>
+                  userPointData && <RewardRectangular amount={(Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_reserved)).toFixed(2)} color="#F0FCE7" image={require('../../../assets/images/current_point.png')} title={t("Earned Points")}></RewardRectangular>
                 }
                 
                 {

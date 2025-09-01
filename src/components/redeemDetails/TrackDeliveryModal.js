@@ -70,7 +70,7 @@ const TrackDeliveryModal = ({ isVisible, onClose,status, data, trackdata }) => {
                         </View>
 
                         <View style={{ width: '50%', backgroundColor: '#DDDDDD', height: 53 }}>
-                            <PoppinsTextMedium style={{ fontSize: 15, fontWeight: '600', marginTop: 5 ,color:'black'}} content={t("Order Number")}></PoppinsTextMedium>
+                            <PoppinsTextMedium style={{ fontSize: 15, fontWeight: '600', marginTop: 5 ,color:'black'}} content={t("Reference Number")}></PoppinsTextMedium>
                             <PoppinsTextMedium style={{ fontSize: 15, fontWeight: '600', marginTop: 2,color:'black' }} content={data.id}></PoppinsTextMedium>
 
 

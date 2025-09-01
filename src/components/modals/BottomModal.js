@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Alert, Modal, StyleSheet, Text, Pressable, View, ScrollView } from "react-native";
+import { Alert, Modal, StyleSheet, Text, Pressable, View, ScrollView, TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import Close from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
 const BottomModal = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -72,6 +73,12 @@ const BottomModal = (props) => {
       >
         <View style={styles.centeredView}>
         <View style={styles.modalView}>
+          <TouchableOpacity style={{position:'absolute', right:10,top:10}} onPress={()=>{
+            console.log("cross button pressed")
+          setModalVisible(false)
+        }}>
+        <Close  name="close" size={30} color="red" />
+        </TouchableOpacity>
   <ScrollView
   style={{width:'100%', paddingTop:0,paddingBottom:160}}
     contentContainerStyle={{ flexGrow: 1}}

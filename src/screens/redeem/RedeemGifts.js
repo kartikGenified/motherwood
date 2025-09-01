@@ -113,7 +113,7 @@ const RedeemGifts = ({ navigation, route }) => {
 
         fetchGiftCatalogue({
           token: token,
-          type: 2,
+          type: "2",
           limit: 1000,
           offset: 0,
         });
