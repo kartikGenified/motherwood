@@ -383,6 +383,8 @@ const PointsTransferNext = (params) => {
               paddingHorizontal: 10,
               borderRadius: 8,
               color: "black",
+            padding:Platform.OS=='ios' ? 14 : 0
+              
             }}
             keyboardType="numeric"
           />

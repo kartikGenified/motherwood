@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import Close from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
 const BottomModal = (props) => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(props.openModal);
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );
@@ -75,6 +75,7 @@ const BottomModal = (props) => {
         <View style={styles.modalView}>
           <TouchableOpacity style={{position:'absolute', right:10,top:10}} onPress={()=>{
             console.log("cross button pressed")
+            props.modalClose();
           setModalVisible(false)
         }}>
         <Close  name="close" size={30} color="red" />

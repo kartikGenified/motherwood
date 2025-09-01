@@ -52,8 +52,8 @@
 		E9B14AC32A8CDED1004DE909 /* FontAwesome6_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9B14AB02A8CDED1004DE909 /* FontAwesome6_Brands.ttf */; };
 		E9B14AC42A8CDED1004DE909 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9B14AB12A8CDED1004DE909 /* MaterialIcons.ttf */; };
 		E9B14AC72A8E3BD3004DE909 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B14AC62A8E3BD3004DE909 /* File.swift */; };
-		E9B16E8B2E6590C5001682A8 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = E9B16E892E6590C5001682A8 /* main.jsbundle */; };
-		E9B16E8C2E6590C5001682A8 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = E9B16E8A2E6590C5001682A8 /* assets */; };
+		E9B16E9F2E65C7D8001682A8 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = E9B16E9D2E65C7D8001682A8 /* main.jsbundle */; };
+		E9B16EA02E65C7D8001682A8 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = E9B16E9E2E65C7D8001682A8 /* assets */; };
 		F21D0A43777744B6B8C56F9B /* Poppins-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4ECDB724FABA4B5C8ABD00FD /* Poppins-ExtraLightItalic.ttf */; };
 /* End PBXBuildFile section */
 
@@ -128,8 +128,8 @@
 		E9B14AB12A8CDED1004DE909 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		E9B14AC52A8E3BD2004DE909 /* motherwood-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "motherwood-Bridging-Header.h"; sourceTree = "<group>"; };
 		E9B14AC62A8E3BD3004DE909 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
-		E9B16E892E6590C5001682A8 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		E9B16E8A2E6590C5001682A8 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
+		E9B16E9D2E65C7D8001682A8 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		E9B16E9E2E65C7D8001682A8 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F97B41FC45544F1C852F0A14 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBold.ttf"; path = "../assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		FEAC1C540BDA408D917124E6 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
@@ -239,8 +239,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				E9B16E8A2E6590C5001682A8 /* assets */,
-				E9B16E892E6590C5001682A8 /* main.jsbundle */,
+				E9B16E9E2E65C7D8001682A8 /* assets */,
+				E9B16E9D2E65C7D8001682A8 /* main.jsbundle */,
 				E92EE8E92B4156DE00162902 /* Assets.xcassets */,
 				13B07FAE1A68108700A75B9A /* motherwood */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -402,8 +402,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9B16E8B2E6590C5001682A8 /* main.jsbundle in Resources */,
-				E9B16E8C2E6590C5001682A8 /* assets in Resources */,
+				E9B16E9F2E65C7D8001682A8 /* main.jsbundle in Resources */,
+				E9B16EA02E65C7D8001682A8 /* assets in Resources */,
 				E9B14AB32A8CDED1004DE909 /* Octicons.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				E9B14ABD2A8CDED1004DE909 /* FontAwesome5_Regular.ttf in Resources */,

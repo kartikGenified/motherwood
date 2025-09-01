@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   ScrollView,
+  Platform,
 } from "react-native";
 import TopHeader from "../../components/topBar/TopHeader";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
@@ -563,6 +564,7 @@ const UiList = ({
             paddingHorizontal: 10,
             borderRadius: 8,
             color: "black",
+            padding:Platform.OS=='ios' ? 14 : 0
           }}
           value={qty.toString()}
           keyboardType="numeric"

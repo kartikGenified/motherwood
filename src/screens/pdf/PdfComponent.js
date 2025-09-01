@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import {
   StyleSheet,
-  Dimensions,
   View,
   BackHandler,
   ActivityIndicator,
@@ -14,14 +13,14 @@ import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 const PdfComponent = ({ route, navigation }) => {
   const pdf = route?.params?.pdf;
   const pdfLink = pdf == null ? "" : pdf;
-  const title = route.params.title
+  const title = route.params.title;
   const source =
     pdf == null ? { uri: "", cache: true } : { uri: pdfLink, cache: true };
 
   useEffect(() => {
     const handleBackPress = () => {
-      navigation.goBack(); // Navigate back when back button is pressed
-      return true; // Prevent default back press behavior
+      navigation.goBack();
+      return true;
     };
 
     const backHandler = BackHandler.addEventListener(
@@ -29,64 +28,62 @@ const PdfComponent = ({ route, navigation }) => {
       handleBackPress
     );
 
-    return () => backHandler.remove(); // Cleanup function to remove the event listener
-  }, [navigation]); // Include navigation in the dependency array
+    return () => backHandler.remove();
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
       <TopHeader title={title} />
-      {pdf != undefined && pdf != null && (
-        <Pdf
-          trustAllCerts={false}
-          source={pdf && source}
-          onLoadComplete={(numberOfPages, filePath) => {
-            console.log(`Number of pages: ${numberOfPages}`);
-          }}
-          onPageChanged={(page, numberOfPages) => {
-            console.log(`Current page: ${page}`);
-          }}
-          // progressContainerStyle={{ backgroundColor: 'rgba(0,0,0,0.5)' }} // Custom background
-          activityIndicatorProps={{ color: "blue" }} // Change spinner color
-          onError={(error) => {
-            console.log(error);
-          }}
-          renderActivityIndicator={(progress) => (
-            <View
-              style={{
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <ActivityIndicator size="large" color="red" />
-              {/* <Text style={{ color: "red" }}>
-                {Number(progress * 100).toString() + "" + "%"}
-              </Text> */}
-              <Text style={{ color: "red" }}>
-                {(progress * 100).toFixed(0)}%
-              </Text>
-            </View>
-          )}
-          onPressLink={(uri) => {
-            console.log(`Link pressed: ${uri}`);
-          }}
-          style={styles.pdf}
-        />
-      )}
-      <SocialBottomBar></SocialBottomBar>
+      
+      {/* Content area that grows and pushes footer down */}
+      <View style={styles.content}>
+        {pdf && (
+          <Pdf
+            trustAllCerts={false}
+            source={source}
+            onLoadComplete={(numberOfPages) => {
+              console.log(`Number of pages: ${numberOfPages}`);
+            }}
+            onPageChanged={(page, numberOfPages) => {
+              console.log(`Current page: ${page}`);
+            }}
+            activityIndicatorProps={{ color: "blue" }}
+            onError={(error) => {
+              console.log(error);
+            }}
+            renderActivityIndicator={(progress) => (
+              <View style={styles.loader}>
+                <ActivityIndicator size="large" color="red" />
+                <Text style={{ color: "red" }}>
+                  {(progress * 100).toFixed(0)}%
+                </Text>
+              </View>
+            )}
+            style={styles.pdf}
+          />
+        )}
+      </View>
+
+      {/* Bottom bar stays at bottom */}
+      <SocialBottomBar showRelative={true} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
+    flex: 1, // take full screen
+  },
+  content: {
+    flex: 1, // PDF takes all remaining space above footer
   },
   pdf: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height-150,
+    flex: 1, // PDF fills content space
+  },
+  loader: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
