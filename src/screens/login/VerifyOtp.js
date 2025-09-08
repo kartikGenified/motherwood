@@ -565,7 +565,7 @@ useEffect(()=>{
     setMessage("");
     console.log("firmodalWithBorderClosenavigationparams", navigationParams)
     
-      navigation.reset({ index: "0", routes: [{ name: "Dashboard" }] });
+      Platform.OS == 'android' ? navigation.reset({ index: "0", routes: [{ name: "Dashboard" }] }) : navigation.navigate("Dashboard")
     
   };
 

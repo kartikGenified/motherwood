@@ -564,7 +564,7 @@ const UiList = ({
             paddingHorizontal: 10,
             borderRadius: 8,
             color: "black",
-            padding:Platform.OS=='ios' ? 14 : 0
+            padding:Platform.OS=='ios' ? 14 : 6
           }}
           value={qty.toString()}
           keyboardType="numeric"

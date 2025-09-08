@@ -346,6 +346,7 @@ const RedeemedHistory = ({ navigation }) => {
           <PoppinsTextMedium style={{ color: "black", fontSize: 14, width:100 }} content={t("lifetime burns")}></PoppinsTextMedium>
         </View>
   } 
+  
         {userPointData && <TouchableOpacity onPress={() => {
           if (Number(userPointData.body.point_balance) <= 0 ) {
             setError(true)

@@ -58,12 +58,21 @@ const UserManagementDetails = (params) => {
   useEffect(() => {
     if (approveUserForSalesData) {
       console.log("approveUserForSalesData", approveUserForSalesData);
+      setModalVisible(false)
+      setTimeout(() => {
       setMessage(approveUserForSalesData.message)
       setSuccess(true)
+      }, 1000);
+      
     } else if (approveUserForSalesError) {
       console.log("approveUserForSalesError", approveUserForSalesError);
-      setError(true)
+      setModalVisible(false)
+
+      setTimeout(() => {
+        setError(true)
       setMessage(approveUserForSalesError?.data?.message)
+      }, 1000);
+      
     }
   }, [approveUserForSalesData, approveUserForSalesError]);
   let statusLabel;

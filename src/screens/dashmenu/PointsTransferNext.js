@@ -94,7 +94,10 @@ const PointsTransferNext = (params) => {
   useEffect(() => {
     if (getPointTransferData) {
       console.log("getPointTransferData", JSON.stringify(getPointTransferData));
-      navigation.replace("PointsTransferSuccess", { getPointTransferData });
+      setModalVisible(false);
+
+      Platform.OS == 'android' ? navigation.replace("PointsTransferSuccess", { getPointTransferData })
+       : navigation.navigate("PointsTransferSuccess", { getPointTransferData });
     } else  {
       if (getPointTransferError) {
         setModalVisible(false);
@@ -383,7 +386,7 @@ const PointsTransferNext = (params) => {
               paddingHorizontal: 10,
               borderRadius: 8,
               color: "black",
-            padding:Platform.OS=='ios' ? 14 : 0
+            padding:Platform.OS=='ios' ? 14 : 6
               
             }}
             keyboardType="numeric"

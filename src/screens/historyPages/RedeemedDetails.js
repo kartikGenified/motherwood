@@ -6,6 +6,7 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  Text
 } from "react-native";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import dayjs from 'dayjs'
