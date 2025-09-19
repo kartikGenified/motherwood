@@ -34,7 +34,9 @@ const CartList = ({ navigation, route }) => {
   const [success, setSuccess] = useState(false)
 
   const dispatch = useDispatch();
+  const { isValid, refresh } = useKycValidation();
 
+  const focused = useIsFocused() 
   const {t} =useTranslation();
 
   const ternaryThemeColor = useSelector(
@@ -55,6 +57,8 @@ const CartList = ({ navigation, route }) => {
   const height = Dimensions.get('window').height
 
   console.log("cart is",route.params.cart)
+
+  useEffect(()=>{refresh()},[focused])
 
   const modalClose = () => {
     setError(false);

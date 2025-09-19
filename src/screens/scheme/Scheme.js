@@ -17,6 +17,7 @@ import Logo from "react-native-vector-icons/AntDesign";
 import moment from "moment";
 import DatePicker from "react-native-date-picker";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
+import { useFetchUserPointsMutation } from "../../apiServices/workflow/rewards/GetPointsApi";
 export default function Scheme({ navigation }) {
   const [scheme, setScheme] = useState([]);
   const [getAllScheme, setGetAllScheme] = useState([])
@@ -35,6 +36,13 @@ export default function Scheme({ navigation }) {
   const location = useSelector((state) => state.userLocation.location);
     console.log("Location Data from redux state", location)
   const height = Dimensions.get("window").height;
+
+   const [userPointFunc, {
+          data: userPointData,
+          error: userPointError,
+          isLoading: userPointIsLoading,
+          isError: userPointIsError
+      }] = useFetchUserPointsMutation();
 
   const [checkAllSchemeFunc,{
     data:checkAllSchemeData,
@@ -388,7 +396,31 @@ export default function Scheme({ navigation }) {
       },
     ],
   };
+
+  useEffect(() => {
+          fetchPoints()
+      }, []);
   
+      const fetchPoints = async () => {
+          const credentials = await Keychain.getGenericPassword();
+          const token = credentials.username;
+          const params = {
+              userId: id,
+              token: token
+          }
+          userPointFunc(params)
+      }
+  
+
+  useEffect(() => {
+          if (userPointData) {
+              console.log("userPointData", userPointData)
+          }
+          else if (userPointError) {
+              console.log("userPointError", userPointError)
+          }
+  
+      }, [userPointData, userPointError])
 
   useEffect(()=>{
     if(checkActiveSchemeData)

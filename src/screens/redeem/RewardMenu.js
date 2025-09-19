@@ -13,6 +13,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import ErrorModal from '../../components/modals/ErrorModal';
 import MessageModal from '../../components/modals/MessageModal';
+import useKycValidation from '../../utils/checkKycStatus';
 
 // create a component
 const RewardMenu = ({navigation}) => {
@@ -27,7 +28,10 @@ const RewardMenu = ({navigation}) => {
   const [navigateTo, setNavigateTo] = useState()
   const [pointBalance, setPointBalance] = useState()
   const {t} = useTranslation();
+const { isValid, refresh } = useKycValidation();
+  console.log("kyc status is", isValid)
 
+  useEffect(()=>{refresh()},[focused])
   const [minRedemptionPoints, setMinRedemptionPoints] = useState()
     const userData = useSelector(state => state.appusersdata.userData)
     const appUserData = useSelector(state=>state.appusers.value)
@@ -210,9 +214,8 @@ const RewardMenu = ({navigation}) => {
           if((Number(new Date(redemptionStartData).getTime()) <= Number(new Date().getTime()) ) &&  ( Number(new Date().getTime()) <= Number(new Date(redemptionEndDate).getTime())) )
           {
             
-          if(!showKyc)
+          if(isValid)
           {
-  
             handleNavigation(params)
 
           }

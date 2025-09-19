@@ -18,6 +18,7 @@ import { useGetkycStatusMutation } from '../../apiServices/kyc/KycStatusApi';
 import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium';
 import InputDate from '../../components/atoms/input/InputDate';
 import { useTranslation } from 'react-i18next';
+import useKycValidation from '../../utils/checkKycStatus';
 
 const RedeemedHistory = ({ navigation }) => {
   const [message, setMessage] = useState();
@@ -88,7 +89,11 @@ const RedeemedHistory = ({ navigation }) => {
   }] = useCashPerPointMutation()
 
   const {t} = useTranslation();
+  
 
+  const { isValid, refresh } = useKycValidation();
+
+useEffect(()=>{refresh()},[focused])
   useEffect(() => {
     if (getKycStatusData) {
       console.log("getKycStatusData", getKycStatusData)
@@ -265,7 +270,7 @@ const RedeemedHistory = ({ navigation }) => {
         if((Number(new Date(redemptionStartData).getTime()) <= Number(new Date().getTime()) ) &&  ( Number(new Date().getTime()) <= Number(new Date(redemptionEndDate).getTime())) )
         {
           
-        if(!showKyc)
+        if(isValid)
         {
 
           setModalVisible(true)

@@ -73,7 +73,7 @@ const DashboardMenuBox = (props) => {
     } else if (data.toLowerCase() === "scheme") {
       navigation.navigate("EnableLocationScreen", { navigateTo: "Scheme" });
     } else if (data.toLowerCase() === "kyc") {
-      navigation.navigate("KycMotherhood");
+      navigation.navigate("KycVerificationDynamic");
     }else if (data.toLowerCase() === "points history") {
       navigation.navigate("PointHistory");
     }

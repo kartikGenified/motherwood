@@ -358,7 +358,7 @@ const CustomDrawer = (props) => {
           navigation.navigate("FAQ");
         } else if (props.title.toLowerCase() === "kyc") {
           // Drawer.navigate("Passbook")
-          navigation.navigate("KycMotherhood");
+          navigation.navigate("KycVerificationDynamic");
         }
         else if (props.title.toLowerCase() === "settings") {
           navigation.navigate("Setting");
@@ -540,7 +540,7 @@ const CustomDrawer = (props) => {
                 navigation.navigate("FAQ");
               } else if (props.title.toLowerCase() === "kyc") {
                 // Drawer.navigate("Passbook")
-                navigation.navigate("KycMotherhood");
+                navigation.navigate("KycVerificationDynamic");
               }
               else if (props.title.toLowerCase() === "settings") {
                 navigation.navigate("Setting");

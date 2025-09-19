@@ -103,7 +103,7 @@ const Dashboard = ({ navigation }) => {
   const [notifModal, setNotifModal] = useState(false);
   const [notifData, setNotifData] = useState(null);
   const [message, setMessage] = useState();
-  const [dreamGift,setDreamGift] = useState()
+  const [dreamGift, setDreamGift] = useState()
   const [success, setSuccess] = useState(false);
   const [hide, setHide] = useState(true);
   const [campaignData, setCaimpaignData] = useState(null);
@@ -141,6 +141,7 @@ const Dashboard = ({ navigation }) => {
   const userId = useSelector((state) => state.appusersdata.userId);
   const userData = useSelector((state) => state.appusersdata.userData);
 
+  
   useEffect(() => {
     if (
       userData?.user_type?.toLowerCase() == "contractor" ||
@@ -172,7 +173,7 @@ const Dashboard = ({ navigation }) => {
   const locationSetup = useSelector((state) => state.appusers.locationSetup);
 
   // console.log("Dashboard data is", dashboardData, locationSetup);
-console.log("banner array",bannerArray)
+  console.log("banner array", bannerArray)
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );
@@ -198,7 +199,7 @@ console.log("banner array",bannerArray)
       isError: fetchProfileIsError,
     },
   ] = useFetchProfileMutation();
-  
+
 
 
   const [
@@ -250,7 +251,7 @@ console.log("banner array",bannerArray)
     {
       data: salesPointData,
       error: salesPointError,
-  
+
     },
   ] = useSalesPointsDashboardMutation();
 
@@ -275,7 +276,7 @@ console.log("banner array",bannerArray)
   ] = useSelectedDreamGiftMutation();
 
 
-  
+
   const [
     fetchUserPointsHistoryFunc,
     {
@@ -307,31 +308,31 @@ console.log("banner array",bannerArray)
   };
 
 
-  useEffect(()=>{
-    const getToken=async()=>{
+  useEffect(() => {
+    const getToken = async () => {
       const credentials = await Keychain.getGenericPassword();
-  if (credentials) {
-    console.log(
-      'Credentials successfully loaded for user ' + credentials.username
-    );
-    const token = credentials.username
-    const params = {
-      token:token
-    }
-    getNotificationCountFunc(params)
-  }
+      if (credentials) {
+        console.log(
+          'Credentials successfully loaded for user ' + credentials.username
+        );
+        const token = credentials.username
+        const params = {
+          token: token
+        }
+        getNotificationCountFunc(params)
+      }
     }
     getToken()
-  },[focused])
+  }, [focused])
 
 
   useEffect(() => {
     if (getNotificationCountData) {
-      console.log("getNotificationCountData",getNotificationCountData)
+      console.log("getNotificationCountData", getNotificationCountData)
     } else if (getNotificationCountError) {
-      console.log("getNotificationCountError",getNotificationCountError)
+      console.log("getNotificationCountError", getNotificationCountError)
     }
-  }, [getNotificationCountData,getNotificationCountError]);
+  }, [getNotificationCountData, getNotificationCountError]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -348,27 +349,23 @@ console.log("banner array",bannerArray)
     fetchData();
   }, [focused]);
 
-  useEffect(()=>{
-    if(fetchProfileData)
-    {
+  useEffect(() => {
+    if (fetchProfileData) {
       console.log("fetchProfileData", fetchProfileData)
       const currentDay = moment(new Date()).format('DD-MM')
 
-      if(fetchProfileData?.body?.dob!=null)
-      {
-        const birthDay = moment(fetchProfileData?.body?.dob).format('DD-MM')  
-        if(currentDay == birthDay)
-        {
+      if (fetchProfileData?.body?.dob != null) {
+        const birthDay = moment(fetchProfileData?.body?.dob).format('DD-MM')
+        if (currentDay == birthDay) {
           setShowBirthdayModal(true)
-        }    
+        }
       }
 
     }
-    else if(fetchProfileError)
-    {
-      console.log("fetchProfileError",fetchProfileError)
+    else if (fetchProfileError) {
+      console.log("fetchProfileError", fetchProfileError)
     }
-  },[fetchProfileData,fetchProfileError])
+  }, [fetchProfileData, fetchProfileError])
 
   useEffect(() => {
     // Determine if tooltip should be shown
@@ -380,16 +377,16 @@ console.log("banner array",bannerArray)
     }
   }, [stepId]);
 
-  useEffect(()=>{
-    if(selectedDreamData){
+  useEffect(() => {
+    if (selectedDreamData) {
       console.log("selectedDreamData", selectedDreamData?.body[0])
       setDreamGift(selectedDreamData?.body?.[0]?.gift)
-   
-     
-    }else{
+
+
+    } else {
       console.log("selectedDreamError", selectedDreamError)
     }
-  },[selectedDreamData, selectedDreamError])
+  }, [selectedDreamData, selectedDreamError])
 
   useEffect(() => {
     if (locationSetup) {
@@ -437,7 +434,7 @@ console.log("banner array",bannerArray)
       const token = credentials.username;
 
       getAppCampaign(token);
-      salesPointFunc({token})
+      salesPointFunc({ token })
     };
     getToken();
   }, []);
@@ -453,13 +450,13 @@ console.log("banner array",bannerArray)
     return () => backHandler.remove(); // Cleanup on unmount
   }, []);
 
-  useEffect(()=>{
-    if(salesPointData){
-      console.log("salesPointData",salesPointData)
-    }else if(salesPointError){
+  useEffect(() => {
+    if (salesPointData) {
+      console.log("salesPointData", salesPointData)
+    } else if (salesPointError) {
       console.log("salesPointError")
     }
-  },[salesPointData,salesPointError])
+  }, [salesPointData, salesPointError])
 
   useEffect(() => {
     if (getAppCampaignData) {
@@ -699,7 +696,7 @@ console.log("banner array",bannerArray)
     return (
       <View style={{ width: "100%" }}>
         <View style={{ width: "100%", alignItems: "center", marginTop: 20 }}>
-          
+
           <PoppinsTextLeftMedium
             content={notifData?.title ? notifData?.title : ""}
             style={{
@@ -751,7 +748,7 @@ console.log("banner array",bannerArray)
         height: "100%",
       }}
     >
-      
+
 
       {error && (
         <ErrorModal
@@ -760,16 +757,16 @@ console.log("banner array",bannerArray)
           openModal={error}
         ></ErrorModal>
       )}
-        <DrawerHeader count={getNotificationCountData?.body?.notification_count}></DrawerHeader>
-       
+      <DrawerHeader count={getNotificationCountData?.body?.notification_count}></DrawerHeader>
+
       <ScrollView
         style={{
           width: "100%",
         }}
       >
-           <View style={{ width: "100%", marginBottom: 20 }}>
-            {bannerArray && <Banner images={bannerArray}></Banner>}
-          </View>
+        <View style={{ width: "100%", marginBottom: 20 }}>
+          {bannerArray && <Banner images={bannerArray}></Banner>}
+        </View>
         <View
           style={{
             width: "100%",
@@ -777,35 +774,35 @@ console.log("banner array",bannerArray)
             justifyContent: "center",
           }}
         >
-          
+
           {!hide && showCampaign && !showBirthdayModal && (
-              <CampaignVideoModal
-                dontShow={dontShow}
-                isVisible={CampainVideoVisible}
-                onClose={() => {
-                  setCmpainVideoVisible(false);
-                }}
-              />
-            )}
-            {
-              showBirthdayModal && !birthdayModal && <BirthdayModal
+            <CampaignVideoModal
+              dontShow={dontShow}
+              isVisible={CampainVideoVisible}
+              onClose={() => {
+                setCmpainVideoVisible(false);
+              }}
+            />
+          )}
+          {
+            showBirthdayModal && !birthdayModal && <BirthdayModal
               visible={showBirthdayModal}
               onClose={
                 () => {
-                setShowCampaign(false)
-                setShowBirthdayModal(false)
-                dispatch(setBirthdayModal(true))
+                  setShowCampaign(false)
+                  setShowBirthdayModal(false)
+                  dispatch(setBirthdayModal(true))
+                }
               }
-            }
             />
-            }
-            <PlatinumModal
-              isVisible={membershipModal}
-              onClose={() => {
-                setMemberShipModal(false);
-              }}
-              getActiveMembershipData={getActiveMembershipData}
-            />
+          }
+          <PlatinumModal
+            isVisible={membershipModal}
+            onClose={() => {
+              setMemberShipModal(false);
+            }}
+            getActiveMembershipData={getActiveMembershipData}
+          />
           <View
             style={{
               width: "90%",
@@ -1016,7 +1013,7 @@ console.log("banner array",bannerArray)
                 justifyContent: "space-evenly",
                 paddingBottom: 10,
                 marginTop: 10,
-                marginBottom:50
+                marginBottom: 50
               }}
             >
               <DashboardSupportBox
