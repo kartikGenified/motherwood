@@ -148,8 +148,8 @@ const KycVerificationDynamic = ({ navigation }) => {
             setBankVerified(hasBankAccount);
             setUpiVerified(hasUpiAccount);
  
-            console.log('Bank verified:', hasBankAccount);
-            console.log('UPI verified:', hasUpiAccount);
+            // console.log('Bank verified:', hasBankAccount);
+            // console.log('UPI verified:', hasUpiAccount);
         }
     }, [listAccountData]);
  
@@ -158,12 +158,12 @@ const KycVerificationDynamic = ({ navigation }) => {
     useEffect(() => {
         if (verifyDocKycData) {
             console.log('verifyDocKycFunc API response:');
-            console.log('Response data:', JSON.stringify(verifyDocKycData, null, 2));
+            // console.log('Response data:', JSON.stringify(verifyDocKycData, null, 2));
  
             if (verifyDocKycData.success) {
-                console.log('verifyDocKycFunc API call successful!');
+                // console.log('verifyDocKycFunc API call successful!');
             } else {
-                console.log('verifyDocKycFunc API returned unsuccessful:');
+                // console.log('verifyDocKycFunc API returned unsuccessful:');
             }
         }
     }, [verifyDocKycData]);
@@ -180,7 +180,7 @@ const KycVerificationDynamic = ({ navigation }) => {
     // Add useEffect to handle loading state
     useEffect(() => {
         if (verifyDocKycIsLoading) {
-            console.log('verifyDocKycFunc API call in progress...');
+            // console.log('verifyDocKycFunc API call in progress...');
         }
     }, [verifyDocKycIsLoading]);
  
@@ -209,7 +209,7 @@ const KycVerificationDynamic = ({ navigation }) => {
         if (focused) {
             fetchOnPageActive();
         }
-        console.log("hdhdhhdhdhhd");
+        // console.log("hdhdhhdhdhhd");
     }, [focused]);
  
     // KYC status fetch effect
@@ -219,7 +219,7 @@ const KycVerificationDynamic = ({ navigation }) => {
             if (getKycStatusData?.success) {
                 // Store the API response in Redux and local state
                 dispatch(setKycData(getKycStatusData?.body));
-                console.log('Starting:', getKycStatusData?.body);
+                // console.log('Starting:', getKycStatusData?.body);
                 // Set pre-verified status from API response
                 const userData = getKycStatusData?.body?.userData;
                 if (userData) {
@@ -1563,7 +1563,7 @@ const KycVerificationDynamic = ({ navigation }) => {
             }
  
             if (verifyGstError) {
-                console.log('GST verification failed:', JSON.stringify(verifyGstError, null, 2));
+                // console.log('GST verification failed:', JSON.stringify(verifyGstError, null, 2));
                 const errorMsg = verifyGstError.data?.message || verifyGstError.message || 'Failed to verify GSTIN';
                 setErrorMessage(errorMsg);
                 setIsVerified(false);
@@ -1605,7 +1605,7 @@ const KycVerificationDynamic = ({ navigation }) => {
                 verification_status: 'verified'
             };
  
-            console.log('Submitting to verifyDocKyc:', JSON.stringify(gstinVerificationData, null, 2));
+            // console.log('Submitting to verifyDocKyc:', JSON.stringify(gstinVerificationData, null, 2));
  
             // Mark as submitted
             // verificationCalledRef.current.gstin = true;
@@ -1642,14 +1642,14 @@ const KycVerificationDynamic = ({ navigation }) => {
                 setHasSubmitted(false);
  
                 if (upperText.length === 15) {
-                    console.log('GSTIN input reached 15 chars, verifying:', upperText);
+                    // console.log('GSTIN input reached 15 chars, verifying:', upperText);
                     verifyGstFunc({ gstin: upperText })
                         .unwrap()
                         .then(res => {
-                            console.log('GSTIN verify API success:', JSON.stringify(res));
+                            // console.log('GSTIN verify API success:', JSON.stringify(res));
                         })
                         .catch((error) => {
-                            console.log('GSTIN verify API error:', JSON.stringify(error));
+                            // console.log('GSTIN verify API error:', JSON.stringify(error));
                             setErrorMessage(error.data?.message || error.message || 'Failed to verify GSTIN');
                             setIsVerified(false);
                         });
@@ -2067,7 +2067,7 @@ const KycVerificationDynamic = ({ navigation }) => {
         // Debug logging
         useEffect(() => {
             if (existingBankDetails) {
-                console.log('Existing Bank Details:', JSON.stringify(existingBankDetails, null, 2));
+                // console.log('Existing Bank Details:', JSON.stringify(existingBankDetails, null, 2));
             }
         }, [existingBankDetails]);
  
@@ -2131,7 +2131,7 @@ const KycVerificationDynamic = ({ navigation }) => {
  
         useEffect(() => {
             if (addBankDetailsData) {
-                console.log("addBankDetailsData", addBankDetailsData);
+                // console.log("addBankDetailsData", addBankDetailsData);
                 if (addBankDetailsData.message === "Bank Account Created" || addBankDetailsData.success) {
                     onClose(true); // Close modal and indicate success
                 }
@@ -2140,7 +2140,7 @@ const KycVerificationDynamic = ({ navigation }) => {
  
         useEffect(() => {
             if (addBankDetailsError) {
-                console.log("Bank account error:", addBankDetailsError);
+                // console.log("Bank account error:", addBankDetailsError);
             }
         }, [addBankDetailsError]);
  
@@ -2187,7 +2187,7 @@ const KycVerificationDynamic = ({ navigation }) => {
                     }
  
                     const params = { token: token, data: data };
-                    console.log('Submitting bank data:', params);
+                    // console.log('Submitting bank data:', params);
                     await addBankDetailsFunc(params).unwrap();
                 }
             } catch (error) {

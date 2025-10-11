@@ -117,7 +117,7 @@ import KycViewOtherUsers from "../screens/verification/KycViewOtherUsers";
 import SearchInfluencer from "../screens/searchInfluencer/SearchInfluencer";
 import TapTheDot from "../screens/games/TapTheDot";
 import BirthdayScreen from "../screens/birthday/BirthdayScreen";
-
+import KycVerificationDynamic from "../screens/verification/KycVerificationDynamic";
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
@@ -138,6 +138,13 @@ const StackNavigator = () => {
           }}
           name="MediaGallery"
           component={MediaGallery}
+        ></Stack.Screen>
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="KycVerificationDynamic"
+          component={KycVerificationDynamic}
         ></Stack.Screen>
         <Stack.Screen
           options={{

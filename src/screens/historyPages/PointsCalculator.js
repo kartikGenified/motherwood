@@ -264,6 +264,12 @@ const PointsCalculator = () => {
           } else if (userType === "carpenter") {
             points = thicknessObj.carpenter_points || 0;
           }
+      else if (userType === "directdealer")
+        {
+        points = thicknessObj.directdealer_points || 0; 
+          
+        } 
+
           else if (userType === "directoem") {
             points = thicknessObj.directoem_points || 0;
           }
@@ -301,6 +307,11 @@ const PointsCalculator = () => {
         else if (userType === "directoem") {
           points = thicknessObj.directoem_points || 0;
         }
+         else if (userType === "directdealer")
+        {
+        points = thicknessObj.directdealer_points || 0; 
+          
+        } 
         else if (userType === "distributor") {
           points = thicknessObj.distributor_points || 0;
         }

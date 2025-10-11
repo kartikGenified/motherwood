@@ -67,7 +67,40 @@ const AddBankDetails = ({navigation}) => {
         }
     },[addBankDetailsData,addBankDetailsError])
 
-    const bankNames=["State Bank Of India","Punjab National Bank","IndusInd Bank","Canara Bank","Axis bank","HDFC Bank"]
+    const bankNames = [
+  "State Bank Of India",
+  "Punjab National Bank",
+  "IndusInd Bank",
+  "Canara Bank",
+  "Axis Bank",
+  "HDFC Bank",
+  "Bank of Baroda",
+  "Union Bank of India",
+  "Bank of India",
+  "Indian Bank",
+  "Central Bank of India",
+  "Indian Overseas Bank",
+  "UCO Bank",
+  "Bank of Maharashtra",
+  "IDBI Bank",
+  "ICICI Bank",
+  "Yes Bank",
+  "Kotak Mahindra Bank",
+  "Federal Bank",
+  "South Indian Bank",
+  "Karnataka Bank",
+  "RBL Bank",
+  "Dhanlaxmi Bank",
+  "Bandhan Bank",
+  "IDFC FIRST Bank",
+  "City Union Bank",
+  "Jammu and Kashmir Bank",
+  "Tamilnad Mercantile Bank",
+  "Nainital Bank",
+  "Karur Vysya Bank",
+  "others"
+];
+
     const accountType = [t("Current"),t("Savings")]
     const height = Dimensions.get('window').height
     var selectedBankName = ''

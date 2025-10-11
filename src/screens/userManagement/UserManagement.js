@@ -95,7 +95,7 @@ const UserManagement = () => {
 
       const params = {
         status: mappedStatus,
-        userId: searchText,
+        mobile: searchText,
         dateFrom: dateFrom,
         dateTo: dateTo,
         token: token,
@@ -417,7 +417,7 @@ const UserManagement = () => {
 
       <View style={{ margin: 20 }}>
         <Text style={{ fontWeight: "600", color: "black" }}>
-          Search by User ID{" "}
+          Search by Mobile{" "}
         </Text>
         <Image
           style={{
@@ -443,6 +443,7 @@ const UserManagement = () => {
           }}
           value={searchText}
           placeholder="Search"
+          placeholderTextColor={"black"}
         ></TextInput>
       </View>
 

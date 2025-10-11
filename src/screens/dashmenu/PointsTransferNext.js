@@ -248,10 +248,12 @@ const PointsTransferNext = (params) => {
     updatedRows[rowIndex].thickness = selectedThickness;
     if (selectedThickness) {
       const userType = userData?.user_type;
+      console.log(userType,selectedThickness, "usertypeee");
       let points = 0;
       if (userType === "retailer") points = selectedThickness.retailer_points;
       else if (userType === "distributor") points = selectedThickness.distributor_points;
       else if (userType === "oem") points = selectedThickness.oem_points;
+      else if (userType === "directdealer") points = selectedThickness.directdealer_points; 
       else if (userType === "contractor") points = selectedThickness.contractor_points;
       updatedRows[rowIndex].points = points;
     } else {
@@ -426,7 +428,7 @@ const PointsTransferNext = (params) => {
           data={data}
           thicknessOptions={(thicknessOptions?.sort())}
           handleSearch={handleSearch}
-           handleThicknessSearch={handleThicknessSearch}
+          handleThicknessSearch={handleThicknessSearch}
           selected={row.selected}
           qty={row.qty}
           onDeleteRow={(index) => {

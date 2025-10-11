@@ -23,6 +23,8 @@ import { useDispatch } from 'react-redux';
 import { additem } from '../../../redux/slices/rewardCartSlice';
 import { useTranslation } from 'react-i18next';
 import SocialBottomBar from '../../components/socialBar/SocialBottomBar';
+import useKycValidation from '../../utils/checkKycStatus';
+import { useIsFocused } from '@react-navigation/native';
 
 const CartList = ({ navigation, route }) => {
   const [cart, setCart] = useState(route.params.cart);
