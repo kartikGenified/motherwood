@@ -121,7 +121,6 @@ const PointsDistribution = ({navigation}) => {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            height: 75,
           }}
         >
           <View style={{ }}>
@@ -159,6 +158,16 @@ const PointsDistribution = ({navigation}) => {
                 width:180
               }}
             >{`Channel Partner Name : ${item?.name}`}</Text>
+             {item?.firm_name!=null &&<Text
+              style={{
+                color: "white",
+                textAlign: "center",
+                marginLeft: 14,
+                fontWeight: "600",
+                fontSize: 12,
+                width:180
+              }}
+            >{`Firm Name : ${item?.firm_name}`}</Text>}
           </View>
   
           <View style={{}}>

@@ -941,7 +941,7 @@ const CustomDrawer = (props) => {
               content={userData?.name}
             ></PoppinsTextMedium>
             {/* <Image style={{height:25, width:25, marginTop:5, marginLeft:5}} source={require("../../assets/images/editWhite.png")}></Image> */}
-            {(userData.user_type).toLowerCase()!='sales' &&  <TouchableOpacity
+            {/* {(userData.user_type).toLowerCase()!='sales' &&  <TouchableOpacity
               onPress={() => {
                 navigation.navigate("Profile");
               }}
@@ -957,7 +957,7 @@ const CustomDrawer = (props) => {
               }}
             >
               <Edit name="edit" size={8} color={"black"}></Edit>
-            </TouchableOpacity>}
+            </TouchableOpacity>} */}
           </View>
           {userData.user_id && <PoppinsTextMedium
             style={{ color: "black" }}

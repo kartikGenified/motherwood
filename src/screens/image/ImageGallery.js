@@ -83,7 +83,7 @@ const ImageGallery = ({navigation}) => {
     const date = props.date
     console.log(indexImage)
     return(
-      <TouchableOpacity onPress={()=>{setModalVisible(true)}} style={{height:200,width:'47%',borderRadius:10,backgroundColor:'white',elevation:10,margin:10,alignItems:'center',justifyContent:'flex-end',borderColor:"#DDDDDD",borderWidth:1}}>
+      <TouchableOpacity onPress={()=>{setModalVisible(true)}} style={{height:200,width:'40%',borderRadius:10,backgroundColor:'white',elevation:10,margin:10,alignItems:'center',justifyContent:'flex-end',borderColor:"#DDDDDD",borderWidth:1}}>
         <Modal
         animationType="slide"
         transparent={true}

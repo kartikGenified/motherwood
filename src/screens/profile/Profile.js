@@ -548,7 +548,7 @@ const Profile = ({ navigation }) => {
               marginLeft: 50,
             }}
           >
-            {(userData.user_type).toLowerCase()!='sales' &&<TouchableOpacity
+            {/* {(userData.user_type).toLowerCase()!='sales' &&<TouchableOpacity
               onPress={() => {
                 navigation.navigate("EditProfile", {
                   formFields: formFields,
@@ -568,7 +568,7 @@ const Profile = ({ navigation }) => {
               }}
             >
               <Edit name="edit" size={20} color={ternaryThemeColor}></Edit>
-            </TouchableOpacity>}
+            </TouchableOpacity>} */}
             {/* <TouchableOpacity
               onPress={() => {
                 deleteID();

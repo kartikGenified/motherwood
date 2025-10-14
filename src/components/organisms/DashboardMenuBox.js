@@ -80,6 +80,9 @@ const DashboardMenuBox = (props) => {
     else if (data.toLowerCase() === "search influencer") {
       navigation.navigate("SearchInfluencer");
     }
+    else if (data.toLowerCase() === "training library") {
+                navigation.navigate("Training");
+              }
      else if (data.toLowerCase() === "media") {
       navigation.navigate("MediaGallery");
     } else if (

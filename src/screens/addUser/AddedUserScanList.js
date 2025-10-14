@@ -568,11 +568,14 @@ const AddedUserScanList = ({ navigation,route }) => {
    const date = props.date
    const points = props.points
    const item = props.item
+   const invoiceDate = props.invoiceDate
+   console.log("item in order details", routeData)
     return (
       <TouchableOpacity
       onPress={()=>{
         navigation.navigate("OrderDetails",{
-          item:item
+          item:item,
+          routeData:routeData
         })
       }}
       style={{
@@ -605,9 +608,13 @@ const AddedUserScanList = ({ navigation,route }) => {
         ></PoppinsTextMedium>
 
         </View>
+         <PoppinsTextMedium
+          style={{ fontWeight: "400", fontSize: 12, color: "black" }}
+          content={`${t("Invoice Date")} : ${invoiceDate}`}
+        ></PoppinsTextMedium>
         <PoppinsTextMedium
           style={{ fontWeight: "400", fontSize: 12, color: "black" }}
-          content={`${t("Date")} : ${date}`}
+          content={`${t("Upload Date")} : ${date}`}
         ></PoppinsTextMedium>
         </View>
         
@@ -723,12 +730,13 @@ const AddedUserScanList = ({ navigation,route }) => {
             return (
               <ListItem
               item= {item}
-              orderNumber={item.order_no}
-              sku = {item.total_sku}
-              quantity = {item.qty}
-              points={(item.points)}
-                date={dayjs(item.created_at).format("DD-MMM-YYYY")}
-                time={dayjs(item.created_at).format("HH:mm a")}
+              orderNumber={item?.order_no}
+              sku = {item?.total_sku}
+              quantity = {item?.qty}
+              invoiceDate = {dayjs(item?.voucher_date).format("DD-MMM-YYYY")}
+              points={(item?.points)}
+                date={dayjs(item?.created_at).format("DD-MMM-YYYY")}
+                time={dayjs(item?.created_at).format("HH:mm a")}
               />
             );
           }}

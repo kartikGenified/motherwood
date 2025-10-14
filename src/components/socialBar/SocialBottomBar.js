@@ -112,7 +112,7 @@ const SocialBottomBar = ({ showRelative ,backgroundColor }) => {
           }}
         ></View>
       </TouchableOpacity>
-      <TouchableOpacity
+     {socials?.linkedIn && <TouchableOpacity
       onPress={()=>{
         Linking.openURL(socials?.linkedIn)
        
@@ -136,7 +136,7 @@ const SocialBottomBar = ({ showRelative ,backgroundColor }) => {
             height: 20,
           }}
         ></View>
-      </TouchableOpacity>
+      </TouchableOpacity>}
       <TouchableOpacity
       onPress={()=>{ Linking.openURL(`tel:${supportMobile}`)}}
         style={{ flexDirection: "row", marginLeft: 10, marginTop: 5 }}

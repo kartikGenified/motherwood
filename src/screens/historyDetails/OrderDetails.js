@@ -22,7 +22,8 @@ const OrderDetails = (params) => {
   console.log("praaaaa", params?.route?.params?.item?.id);
   const orderNo = params?.route?.params?.item?.id;
   const item = params?.route?.params?.item;
-  console.log("item params", item);
+  const routeData = params?.route?.params?.routeData;
+  console.log("item params and route data", item,routeData);
   const [
     fetchOrderDetails,
     {
@@ -324,6 +325,35 @@ const OrderDetails = (params) => {
               {item?.order_no}
             </Text>
           </View>
+           {routeData?.firm_name!=null &&<View
+            style={{
+              flexDirection: "row",
+              marginTop: 10,
+              width: "100%",
+              flexWrap: "wrap",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 13,
+                marginLeft: 10,
+                color: "black",
+                fontWeight: "600",
+              }}
+            >
+              Firm Name :
+            </Text>
+            <Text
+              style={{
+                fontSize: 13,
+                marginLeft: 7,
+                color: "black",
+                fontWeight: "600",
+              }}
+            >
+              {routeData?.firm_name}
+            </Text>
+          </View>}
           <View
             style={{
               alignItems: "center",

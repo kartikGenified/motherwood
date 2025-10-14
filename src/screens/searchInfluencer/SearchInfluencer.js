@@ -317,6 +317,7 @@ const SearchInfluencer = () => {
           placeholderTextColor={"black"}
           placeholder={"Mobile No"}
           maxLength={10}
+          keyboardType="numeric"
           style={{ height: "100%", width: "80%",color:'black' }}
         ></TextInput>
       </View>
