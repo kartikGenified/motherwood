@@ -141,6 +141,13 @@ const Dashboard = ({ navigation }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.appusersdata.userId);
   const userData = useSelector((state) => state.appusersdata.userData);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
 
   
   useEffect(() => {
@@ -739,13 +746,6 @@ const Dashboard = ({ navigation }) => {
     );
   };
 
-  const [refreshing, setRefreshing] = React.useState(false);
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1000);
-  }, []);
 
   return (
     <View

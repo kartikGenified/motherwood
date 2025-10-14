@@ -37,6 +37,13 @@ const Passbook = ({ navigation }) => {
   const [isTertiary, setIsTertiary] = useState()
 
   const [membershipModal, setMemberShipModal] = useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
 
   const shouldSharePoints = useSelector(
     (state) => state.pointSharing.shouldSharePoints
@@ -408,13 +415,6 @@ const Passbook = ({ navigation }) => {
     );
   };
 
-    const [refreshing, setRefreshing] = React.useState(false);
-    const onRefresh = React.useCallback(() => {
-      setRefreshing(true);
-      setTimeout(() => {
-        setRefreshing(false);
-      }, 1000);
-    }, []);
 
   return (
     <ScrollView contentContainerStyle={{flex:1}} style={{ width: "100%" }}
