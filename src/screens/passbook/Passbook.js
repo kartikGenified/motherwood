@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Text,
+  RefreshControl,
 } from "react-native";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import { useSelector } from "react-redux";
@@ -407,8 +408,18 @@ const Passbook = ({ navigation }) => {
     );
   };
 
+    const [refreshing, setRefreshing] = React.useState(false);
+    const onRefresh = React.useCallback(() => {
+      setRefreshing(true);
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 1000);
+    }, []);
+
   return (
-    <ScrollView contentContainerStyle={{flex:1}} style={{ width: "100%" }}>
+    <ScrollView contentContainerStyle={{flex:1}} style={{ width: "100%" }}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+    >
       <View
         style={{
           alignItems: "center",
@@ -461,7 +472,7 @@ const Passbook = ({ navigation }) => {
          {isTertiary!=undefined &&  <View style={{ width: "100%", marginTop: 20 }}>
             <PointsCard
               memberShip={getActiveMembershipData?.body?.tier?.name}
-
+              refreshing={refreshing}
               setModalVisible={() => {
                 setMemberShipModal(true);
               }}

@@ -38,6 +38,13 @@ useEffect(() => {
  }
   fetchPoints()
 }, []);
+
+useEffect(() => {
+  if(props.refreshing){
+    fetchPoints()
+  }
+},[props.refreshing])
+
 useEffect(() => {
   
   fetchPoints()

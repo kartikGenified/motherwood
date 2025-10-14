@@ -10,7 +10,7 @@ import RewardRectangular from '../atoms/RewardRectangular';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import { setAlreadyWalkedThrough, setStepId } from '../../../redux/slices/walkThroughSlice';
 import { useIsFocused } from '@react-navigation/native';
-const RewardBoxDashboard = () => {
+const RewardBoxDashboard = ({refreshing}) => {
     const [walkThrough, setWalkThrough] = useState(true);
     const focused = useIsFocused()
     const workflow = useSelector(state => state.appWorkflow.program)
@@ -38,6 +38,12 @@ const RewardBoxDashboard = () => {
     useEffect(() => {
         fetchPoints()
     }, [focused]);
+
+    useEffect(() => {
+        if(refreshing){
+            fetchPoints()
+        }
+    }, [refreshing]);
 
     useEffect(() => {
       const getData = async () => {
