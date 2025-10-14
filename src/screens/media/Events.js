@@ -20,11 +20,14 @@ import FastImage from "react-native-fast-image";
 import DataNotFound from "../data not found/DataNotFound";
 import { useTranslation } from "react-i18next";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import EventModal from "./EventModal";
 
 // create a component
 const Events = ({navigation}) => {
   const [selected, setSelected] = useState("current")
   const [data, setData] = useState()
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState()
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );
@@ -94,9 +97,12 @@ const fetchMediaData = async () => {
     const desc = props.data.description
     const title = props.data.title
 
-    console.log("event comp ", props.data, image)
     return (
-      <View
+      <TouchableOpacity
+        onPress={()=>{
+          setSelectedEvent(props.data)
+          setModalVisible(true)
+        }}
         style={{
           height: 160,
           alignItems: "center",
@@ -128,7 +134,7 @@ const fetchMediaData = async () => {
         <View style={{alignItems:'center', justifyContent:'center',backgroundColor:'white',height:30,width:90,borderBottomLeftRadius:30,borderBottomRightRadius:30,position:'absolute', top:0, left:18 }}>
         <PoppinsTextLeftMedium style={{ color: 'black', fontWeight: '700',fontSize:9 }} content={`${desc}`}></PoppinsTextLeftMedium>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -200,6 +206,7 @@ const fetchMediaData = async () => {
               />}
       </View>
       {data && <SocialBottomBar showRelative={true}></SocialBottomBar>}
+      <EventModal modalVisible={modalVisible} setModalVisible={setModalVisible} selectedEvent={selectedEvent} />
     </View>
   );
 };
