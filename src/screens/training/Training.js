@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Image, ScrollView, Dimensions, Linking, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, ScrollView, Dimensions, Linking, Text, LogBox } from 'react-native';
 import { useSelector } from 'react-redux';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import { useGetAppVideoMutation } from '../../apiServices/video/VideoApi';
@@ -34,27 +34,10 @@ const Training = ({ navigation }) => {
 }] = useGetAllMediaMutation()
 
 
-  useEffect(() => {
-    const getToken = async () => {
-      const credentials = await Keychain.getGenericPassword();
-      if (credentials) {
-        console.log(
-          'Credentials successfully loaded for user ' + credentials.username
-        );
-        const token = credentials.username
-        let parmas = {
-          token: token,
-        }
-        appVideoFunc(parmas)
-      }
-    }
-    getToken()
-
-
-  }, [])
+  
 
   useEffect(() => {
-    fetchCategoryMedia("training");
+    fetchCategoryMedia("training video");
 }, [])
 
   const fetchCategoryMedia = async (item) => {
@@ -71,6 +54,7 @@ const Training = ({ navigation }) => {
   useEffect(() => {
     if (getCatMediaData) {
         console.log("getCatMediaData", getCatMediaData);
+        alert(getCatMediaData)
         if(getCatMediaData.success && getCatMediaData.body.length!==0)
         {
             setVideoData(getCatMediaData.body)

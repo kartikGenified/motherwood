@@ -154,7 +154,7 @@ const Feedback = ({ navigation }) => {
         image:uploadedImage
       },
     };
-    if (feedback != "" && starCount != 0) {
+    if (feedback.trim() != "" && starCount != 0) {
       setFeedback("");
       addFeedbackFunc(obj);
     } else {

@@ -337,6 +337,11 @@ const UserManagementDetails = (params) => {
           title={"D.O.B"}
           value={route?.dob ? dayjs(route?.dob).format("DD-MM-YYYY") : "N/A"}
         />
+
+        <SingleComponent
+          title={"Firm Name"}
+          value={route?.firm_name ? route?.firm_name : "N/A"}
+        />
         <SingleComponent
           title={"Pincode"}
           value={route?.pincode ? route?.pincode : "N/A"}

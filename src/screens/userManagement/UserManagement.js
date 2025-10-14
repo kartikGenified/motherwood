@@ -78,9 +78,21 @@ const UserManagement = () => {
 
   useEffect(() => {
     if (searchText.length > 2 || searchText == "") {
+      if(searchText.length===10)
+      {
       fetchZoneWiseData();
+      }
+      else if(searchText.length>10){
+        alert("Please enter 10 digit mobile number")
+      }
     }
   }, [searchText, dateFrom, dateTo, selectedStatus]);
+
+  useEffect(() => {
+    
+      fetchZoneWiseData();
+    
+  }, [selectedStatus, dateFrom, dateTo]);
 
   const fetchZoneWiseData = async () => {
     try {
@@ -228,27 +240,29 @@ const UserManagement = () => {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          height: 100,
         }}
       >
         <View>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text
-              style={{
-                backgroundColor: "white",
-                width: 30,
-                height: 30,
-                textAlign: "center",
-                borderRadius: 20,
-                fontSize: 20,
-              }}
-            >
-              {index + 1}
-            </Text>
-            <Text
-              style={{ color: "white", fontWeight: "600", marginLeft: 10 }}
-            >{`Customer ID - ${item?.id} `}</Text>
-          </View>
+  <View
+    style={{
+      backgroundColor: "white",
+      minWidth: 30,
+      height: 30,
+      borderRadius: 15, // half of height to make it circular
+      justifyContent: "center",
+      alignItems: "center",
+      paddingHorizontal: 6, // adds space for larger numbers
+    }}
+  >
+    <Text style={{ fontSize: 16, textAlign: "center" }}>{index + 1}</Text>
+  </View>
+
+  <Text
+    style={{ color: "white", fontWeight: "600", marginLeft: 10 }}
+  >{`Customer ID - ${item?.id}`}</Text>
+</View>
+
           <Text
             style={{
               color: "white",
@@ -266,6 +280,15 @@ const UserManagement = () => {
               marginTop:4
             }}
           >{`Branch : ${item?.branch_name}`}</Text>
+          <Text
+            style={{
+              color: "white",
+              textAlign: "center",
+              marginLeft: 14,
+              fontWeight: "600",
+              marginTop:4
+            }}
+          >{`Firm name : ${item?.firm_name}`}</Text>
           {item?.updated_by_name != null && <Text
             style={{
               color: "white",
@@ -441,6 +464,7 @@ const UserManagement = () => {
           onChangeText={(text) => {
             setSearchText(text);
           }}
+          keyboardType="numeric"
           value={searchText}
           placeholder="Search"
           placeholderTextColor={"black"}

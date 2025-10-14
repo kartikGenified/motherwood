@@ -55,8 +55,7 @@ useEffect(() => {
 
       if (selected === "current") {
         // Only show if both dates exist and now is between them
-        return startDate !== null && endDate !== null &&
-               startDate <= now && endDate >= now;
+        return startDate !== null && endDate !== null && startDate <= now 
       } else {
         // Show if start_date is in future OR both dates are null/undefined
         return (startDate !== null && startDate > now) ||

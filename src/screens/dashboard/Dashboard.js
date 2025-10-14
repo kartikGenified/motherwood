@@ -331,7 +331,7 @@ const Dashboard = ({ navigation }) => {
       }
     }
     getToken()
-  }, [focused])
+  }, [focused,notifModal,messaging,notifData])
 
 
   useEffect(() => {
@@ -430,7 +430,6 @@ const Dashboard = ({ navigation }) => {
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
       setNotifModal(true);
       setNotifData(remoteMessage?.notification);
-      // console.log("remote message",remoteMessage)
     });
 
     return unsubscribe;
@@ -578,13 +577,13 @@ const Dashboard = ({ navigation }) => {
   }, [getKycStatusData, getKycStatusError]);
 
   useEffect(() => {
-    const keys = Object.keys(pointSharingData?.point_sharing_bw_user.user);
-    const values = Object.values(pointSharingData?.point_sharing_bw_user.user);
+    const keys = Object.keys(pointSharingData?.point_sharing_bw_user?.user);
+    const values = Object.values(pointSharingData?.point_sharing_bw_user?.user);
     const percentageKeys = Object.keys(
-      pointSharingData?.point_sharing_bw_user.percentage
+      pointSharingData?.point_sharing_bw_user?.percentage
     );
     const percentageValues = Object.values(
-      pointSharingData?.point_sharing_bw_user.percentage
+      pointSharingData?.point_sharing_bw_user?.percentage
     );
 
     let eligibleUser = "";
