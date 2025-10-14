@@ -38,19 +38,17 @@ useEffect(() => {
  }
   fetchPoints()
 }, []);
-useEffect(() => {
-  
-  fetchPoints()
-}, [focused, props]);
 
 useEffect(() => {
-  if (userPointData) {
-      console.log("userPointData", userPointData)
+  if(props.refreshing){
+    fetchPoints()
   }
-  else if (userPointError) {
-      console.log("userPointError", userPointError)
-  }
-}, [userPointData, userPointError])
+},[props.refreshing])
+
+useEffect(() => {
+  fetchPoints()
+}, [focused]);
+
 
 const fetchPoints = async () => {
   const credentials = await Keychain.getGenericPassword();

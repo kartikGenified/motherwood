@@ -11,6 +11,7 @@ import {
   PanResponder,
   Animated,
   Text,
+  RefreshControl,
 } from "react-native";
 import MenuItems from "../../components/atoms/MenuItems";
 import { BaseUrl } from "../../utils/BaseUrl";
@@ -140,6 +141,13 @@ const Dashboard = ({ navigation }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.appusersdata.userId);
   const userData = useSelector((state) => state.appusersdata.userData);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
 
   
   useEffect(() => {
@@ -737,6 +745,7 @@ const Dashboard = ({ navigation }) => {
     );
   };
 
+
   return (
     <View
       style={{
@@ -762,6 +771,7 @@ const Dashboard = ({ navigation }) => {
         style={{
           width: "100%",
         }}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         <View style={{ width: "100%", marginBottom: 20 }}>
           {bannerArray && <Banner images={bannerArray}></Banner>}
@@ -894,7 +904,7 @@ const Dashboard = ({ navigation }) => {
             <></>
           )}
 
-          {!isSales && <RewardBoxDashboard />}
+          {!isSales && <RewardBoxDashboard refreshing={refreshing}  />}
 
           {isSales && (
             <View style={{ width: "95%" }}>
