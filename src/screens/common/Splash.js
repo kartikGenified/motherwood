@@ -305,11 +305,11 @@ const Splash = ({ navigation }) => {
   useEffect(() => {
     if (currentAppVersion) {
       const asyncFunc = async () => {
-        console.log(
-          "currentVersiongetMinVersionSupportFunc",
-          currentAppVersion,
-          await apiCachingLogic("getAppThemeData")
-        );
+        // console.log(
+        //   "currentVersiongetMinVersionSupportFunc",
+        //   currentAppVersion,
+        //   JSON.stringify(await apiCachingLogic("getAppThemeData"))
+        // );
         if ((await apiCachingLogic("getAppThemeData")) != null) {
           getAppThemeCachedDispatch(
             dispatch,
