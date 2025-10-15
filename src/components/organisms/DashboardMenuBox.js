@@ -133,7 +133,7 @@ const DashboardMenuBox = (props) => {
 
     } 
     else if (data.toLowerCase() === "playzone") {
-      navigation.navigate("TapTheDot");
+      navigation.navigate("GamesMenu");
 
     } 
     else if (data.toLowerCase() === "training") {
