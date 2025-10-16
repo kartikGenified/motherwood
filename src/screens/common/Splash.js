@@ -107,6 +107,7 @@ import { getUsersDataCachedDispatch } from "../../../redux/dispatches/getUsersDa
 import { checkNotificationPermission, requestUserPermission } from "../../utils/notifications/notificationPermissionUtil";
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import store from "../../../redux/store";
+import i18n from "./i18n";
 
 const Splash = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -127,8 +128,16 @@ const Splash = ({ navigation }) => {
   // const [gotLoginData, setGotLoginData] = useState()
   const isConnected = useSelector((state) => state.internet.isConnected);
   const allApiArray = ["getAppThemeData", "getTermsData", "getPolicyData", "getWorkflowData", "getDashboardData", "getAppMenuData", "getFormData", "getBannerData", "getUsersData"]
-  const languages = useSelector(state => state.appLanguage.languages)
-  
+  useEffect(() => {
+    AsyncStorage.getItem('selectedLanguage')
+    .then(lang => {
+      if(lang){
+        i18n.changeLanguage(lang);
+      }
+    })
+  },[])
+  // const isFocused = useIsFocused();
+  // const appTheme = useSelector((state) => state.appTheme);
   const gifUri = Image.resolveAssetSource(
     require("../../../assets/gif/Splash-myronew.gif")
   ).uri;

@@ -47,19 +47,27 @@ const Setting = ({ navigation }) => {
     const [selected, setSelected] = useState(false)
     const [selectedIndex, setSelectedIndex] = useState()
     const {languages, selectedLanguage} = useSelector(state => state.appLanguage)
-    // console.log("languages inside the application", languages)
+    // console.log("languages inside the application", languages, selectedLanguage)
 
     useEffect(() => {
-      setSelectedIndex(languages.findIndex(lang => lang === selectedLanguage))
-    }, [selectedLanguage])
+      AsyncStorage.getItem('selectedLanguage').then(language => {
+        if (language) {
+          const index = languages.findIndex(lang => languageMap[lang] === language);
+          if (index !== -1) {
+            setSelectedIndex(index);
+            setSelected(true);
+          }
+        }
+      });
+    }, [])
 
     const dispatch = useDispatch()
 
 
-    const handleLanguageChange = (language) => {
-      
+    const handleLanguageChange = async(language) => {
       i18n.changeLanguage(languageMap[language] || 'en');
       dispatch(setSelectedLanguage(language))
+      await AsyncStorage.setItem('selectedLanguage', languageMap[language] || 'en')
     }
 
     return (
