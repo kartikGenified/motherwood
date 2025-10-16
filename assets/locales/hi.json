@@ -34,7 +34,6 @@
   "Date Filter": "दिनांक फ़िल्टर",
   "Gift Catalogue": "उपहार सूची",
   "Scan QR": "QR स्कैन",
-  "Passbook": "पासबुक",
   "points history": "पॉइंट्स इतिहास",
   "scanned history": "स्कैन इतिहास",
   "redeemed history": "रिडीम इतिहास",
@@ -575,7 +574,27 @@
 "IFSC Code": "IFSC Code",
 "End Date" : "समाप्ति तिथि",
 "Delete" : "हटाएं",
-"Select Bank" : "बैंक चुनें"
+"Select Bank" : "बैंक चुनें",
+
+"App tutorial": "ऐप ट्यूटोरियल",
+"Home": "होम",
+"About Motherwood": "मदरवुड के बारे में",
+"Motherwood Saathi": "मदरवुड साथी",
+"Points Calculator": "पॉइंट्स कैलकुलेटर",
+"KYC": "केवाईसी",
+"Passbook": "पासबुक",
+"Refer and earn": "रेफर करें और कमाएं",
+"Motherwood PlayZone": "मदरवुड प्लेज़ोन",
+"Media Gallery": "मीडिया गैलरी",
+"Events": "इवेंट्स",
+"Rating/Feedback": "रेटिंग/फीडबैक",
+"Privacy Policy": "गोपनीयता नीति",
+"FAQs": "अक्सर पूछे जाने वाले प्रश्न",
+
+"Platinum": "प्लैटिनम",
+"Gold": "गोल्ड",
+"Silver": "सिल्वर",
+"Member": "सदस्य"
 
 
   

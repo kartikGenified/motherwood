@@ -127,7 +127,8 @@ const Splash = ({ navigation }) => {
   // const [gotLoginData, setGotLoginData] = useState()
   const isConnected = useSelector((state) => state.internet.isConnected);
   const allApiArray = ["getAppThemeData", "getTermsData", "getPolicyData", "getWorkflowData", "getDashboardData", "getAppMenuData", "getFormData", "getBannerData", "getUsersData"]
-
+  const languages = useSelector(state => state.appLanguage.languages)
+  
   const gifUri = Image.resolveAssetSource(
     require("../../../assets/gif/Splash-myronew.gif")
   ).uri;
@@ -297,6 +298,7 @@ const Splash = ({ navigation }) => {
     };
     getData();
     requestPermission()
+
 
   }, []);
   //----------------------------------------------
