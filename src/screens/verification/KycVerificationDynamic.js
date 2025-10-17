@@ -45,7 +45,8 @@ import FastImage from "react-native-fast-image";
 import { gifUri } from "../../utils/GifUrl";
 import { useTranslation } from "react-i18next";
 import { useVerifyDocKycMutation } from "../../apiServices/verification/VerificationDocKycApi";
-import AadharVerify from "./AadharVerify";
+import KycOptionCards from "./KycOptionCards";
+import PanVerificationDialog from "./PanVerificationDialog";
 // import { is } from "immer/dist/internal";
  
 const KycVerificationDynamic = ({ navigation }) => {
@@ -492,334 +493,7 @@ const KycVerificationDynamic = ({ navigation }) => {
             refreshKycData();
         }
     }, [panModalVisible, panVerified]);
- 
-
-
- 
     // NEW PAN Verification Dialog
-    const PanVerificationDialog = React.memo(({ visible, onClose, refetchKycStatus }) => {
-        const isPreVerified = preVerifiedDocs.pan;
-        const [localPan, setLocalPan] = useState(pan ? pan : '');
-        const [localName, setLocalName] = useState(name ? name : '');
-        const [isVerified, setIsVerified] = useState(isPreVerified);
-        const [errorMessage, setErrorMessage] = useState(null);
-        const [verifiedApiData, setVerifiedApiData] = useState(null);
-        const [hasSubmitted, setHasSubmitted] = useState(false);
-        const [isSubmitting, setIsSubmitting] = useState(false);
- 
- 
-        // Reset states when dialog opens
-        useEffect(() => {
-            if (visible) {
-                console.log('PAN Dialog opened');
-                verificationCalledRef.current.pan = false;
-                setHasSubmitted(false);
-                setIsSubmitting(false);
- 
-                // For pre-verified cases, set hasSubmitted to true
-                if (isPreVerified) {
-                    setHasSubmitted(true);
-                }
-            }
-        }, [visible, isPreVerified]);
- 
-        const [
-            verifyPanFunc,
-            { data: verifyPanData, error: verifyPanError, isLoading: verifyPanIsLoading }
-        ] = useVerifyPanMutation();
- 
-        // Handle PAN verification response
-        useEffect(() => {
-            if (verifyPanData) {
-                console.log('PAN verification response received:', JSON.stringify(verifyPanData, null, 2));
- 
-                if (verifyPanData.success) {
-                    console.log('PAN verification successful!');
-                    setVerifiedApiData(verifyPanData);
- 
-                    // Extract data from the API response
-                    const responseBody = verifyPanData.body || {};
-                    const responseData = responseBody.body?.data || responseBody.body || responseBody;
-                    const verifiedPan = responseData.pan || responseData.PAN;
-                    const verifiedName = responseData.registered_name || responseData.full_name || responseData.name;
- 
-                    if (verifiedPan) {
-                        setLocalPan(verifiedPan);
-                        setLocalName(verifiedName || '');
-                        setIsVerified(true);
-                        setErrorMessage(null);
-                    }
-                }
-            }
- 
-            if (verifyPanError) {
-                console.log('PAN verification failed:', JSON.stringify(verifyPanError, null, 2));
-                const errorMsg = verifyPanError.data?.message || verifyPanError.message || 'Failed to verify PAN';
-                setErrorMessage(errorMsg);
-                setIsVerified(false);
-            }
-        }, [verifyPanData, verifyPanError, setPanVerified, setPan, setName]);
- 
-        // Function to handle PAN verification submission
-        const handleSubmitVerification = useCallback(() => {
-            if (!verifiedApiData || hasSubmitted || verificationCalledRef.current.pan) {
-                console.log('PAN already submitted or no verification data');
-                return;
-            }
- 
-            console.log('Submitting PAN verification data...');
-            setIsSubmitting(true);
- 
-            const responseBody = verifiedApiData.body || {};
-            const responseData = responseBody.data || responseBody;
- 
-            const effectivePan = responseData.pan || responseData.PAN || localPan;
-            const effectiveName = responseData.registered_name ||
-                responseData.full_name ||
-                responseData.name ||
-                localName;
- 
-            // Prepare complete payload with ALL available data from API response
-            const panVerificationData = {
-                // Basic identification
-                pan: effectivePan,
-                name: effectiveName,
- 
-                // Include ALL data from the API response
-                ...responseData,
- 
-                // Additional metadata
-                verification_source: 'pan_api',
-                verified_at: new Date().toISOString(),
-                verification_status: 'verified'
-            };
- 
-            console.log('Submitting to verifyDocKyc:', JSON.stringify(panVerificationData, null, 2));
- 
-            // Mark as submitted
-            // verificationCalledRef.current.pan = true;
- 
-            verificationGlobalData.current.pan = effectivePan;
-            verificationGlobalData.current.pan_details = panVerificationData;
- 
-            setCallSubmitPan(true);
-            onClose();
-        }, [verifiedApiData, localPan, localName, handleVerifyDocKyc, refetchKycStatus, hasSubmitted, setPanVerified]);
- 
- 
-        const handlePanChange = useCallback(
-            (text) => {
-                if (isPreVerified || isVerified) return;
- 
-                const upperText = text.toUpperCase().replace(/[^A-Z0-9]/g, '');
-                setLocalPan(upperText);
-                setErrorMessage(null);
-                setVerifiedApiData(null);
-                setHasSubmitted(false);
- 
-                if (upperText.length === 10) {
-                    console.log('PAN input reached 10 chars, verifying:', upperText);
-                    verifyPanFunc({ pan: upperText })
-                        .unwrap()
-                        .then(res => {
-                            console.log('PAN verify API success:', JSON.stringify(res));
-                        })
-                        .catch((error) => {
-                            console.log('PAN verify API error:', JSON.stringify(error));
-                            setErrorMessage(error.data?.message || error.message || 'Failed to verify PAN');
-                            setIsVerified(false);
-                        });
-                }
-            },
-            [isVerified, isPreVerified, verifyPanFunc]
-        );
- 
-        const handleNameChange = useCallback(
-            (text) => {
-                if (isPreVerified) return;
-                setLocalName(text);
-            },
-            [isPreVerified]
-        );
- 
-          const handleMainButtonPress = useCallback(() => {
-            if (isVerified && !hasSubmitted) {
-                handleSubmitVerification();
-            } else if (isPreVerified && !hasSubmitted) {
-                // Handle pre-verified case that hasn't been submitted
-                handleSubmitVerification();
-            } else {
-                onClose();
-            }
-        }, [isVerified, hasSubmitted, isPreVerified, handleSubmitVerification, onClose]);
- 
-        const handleClose = useCallback(() => {
-            console.log('Dialog close requested');
-            onClose();
-        }, [onClose]);
- 
-        // Determine button text
-        const getButtonText = useCallback(() => {
-            if (verifyPanIsLoading) return "Verifying...";
-            if (isSubmitting) return "Submitting...";
-            if (hasSubmitted) return "Done";
-            if (isVerified) return "Submit Verification";
-            if (isPreVerified) return "Done";
-            return "Verify PAN";
-        }, [verifyPanIsLoading, isSubmitting, hasSubmitted, isVerified, isPreVerified]);
- 
-        return (
-            <Modal
-                visible={visible}
-                animationType="slide"
-                transparent={true}
-                onRequestClose={handleClose}
-                hardwareAccelerated={true}
-                statusBarTranslucent={true}
-            >
-                <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                    <KeyboardAvoidingView
-                        behavior={Platform.OS === "ios" ? "padding" : "height"}
-                        style={styles.modalContainer}
-                        keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
-                    >
-                        <View style={styles.modalContent}>
-                            {/* Close Button */}
-                            <TouchableOpacity
-                                style={styles.closeButton}
-                                onPress={handleClose}
-                                hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-                            >
-                                <Icon name="cross" size={24} color="#000" />
-                            </TouchableOpacity>
- 
-                            {/* Title */}
-                            <PoppinsTextMedium
-                                style={styles.modalTitle}
-                                content={isPreVerified ? "PAN Already Verified" : "Kindly Enter Your PAN Details"}
-                            />
- 
-                        <Image
-                            style={styles.documentImage}
-                            source={require("../../../assets/images/panColor.png")}
-                        />
- 
- 
-                            {/* PAN Input */}
-                            <View style={styles.inputContainer}>
-                                <PoppinsTextMedium style={styles.inputLabel} content="Enter PAN" />
-                                <View style={styles.inputWrapper}>
-                                    <TextInput
-                                        maxLength={10}
-                                        value={localPan}
-                                        onChangeText={handlePanChange}
-                                        style={[styles.inputField, (isPreVerified || isVerified) && styles.disabledInput]}
-                                        placeholder="ABCDE1234F"
-                                        placeholderTextColor="#999"
-                                        autoCapitalize="characters"
-                                        autoCorrect={false}
-                                        blurOnSubmit={false}
-                                        autoComplete="off"
-                                        editable={!isPreVerified && !isVerified}
-                                        selectTextOnFocus={!isPreVerified && !isVerified}
-                                    />
-                                    {verifyPanIsLoading ? (
-                                        <FastImage
-                                            style={styles.loadingIcon}
-                                            source={{ uri: gifUri }}
-                                            resizeMode={FastImage.resizeMode.contain}
-                                        />
-                                    ) : (isVerified || isPreVerified) && (
-                                        <Image style={styles.verifiedIcon} source={require("../../../assets/images/tickBlue.png")} />
-                                    )}
-                                </View>
-                                {errorMessage && <PoppinsTextMedium style={styles.errorText} content={errorMessage} />}
-                            </View>
- 
-                            {/* Name */}
-                            <View style={styles.inputContainer}>
-                                <PoppinsTextMedium style={styles.inputLabel} content="Name" />
-                                <View style={styles.inputWrapper}>
-                                    <TextInput
-                                        value={localName}
-                                        onChangeText={handleNameChange}
-                                        style={[styles.inputField, (isPreVerified || isVerified) && styles.disabledInput]}
-                                        placeholder="Enter Name"
-                                        placeholderTextColor="#999"
-                                        editable={!isPreVerified && !isVerified}
-                                    />
-                                </View>
-                            </View>
- 
- 
- 
-                            {/* Verified Data Box */}
-                            {(isVerified || isPreVerified) && (
-                                <View style={[styles.dataBox, { marginBottom: 20 }]}>
-                                    <View style={{ flexDirection: "row", width: "100%" }}>
-                                        <PoppinsTextMedium content="PAN: " style={styles.dataLabel} />
-                                        <PoppinsTextMedium content={localPan} style={styles.dataValue} />
-                                    </View>
-                                    <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
-                                        <PoppinsTextMedium content="Name: " style={styles.dataLabel} />
-                                        <PoppinsTextMedium
-                                            content={localName}
-                                            style={[styles.dataValue, { flex: 1, flexWrap: 'wrap' }]}
-                                        />
-                                    </View>
-                                    {isPreVerified && (
-                                        <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
-                                            <PoppinsTextMedium content="Status:" style={styles.dataLabel} />
-                                            <PoppinsTextMedium content="Verified ✓" style={[styles.dataValue, { color: 'green' }]} />
-                                        </View>
-                                    )}
-                                    {hasSubmitted && (
-                                        <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
-                                            <PoppinsTextMedium content="Submission:" style={styles.dataLabel} />
-                                            <PoppinsTextMedium content="Submitted ✓" style={[styles.dataValue, { color: 'green' }]} />
-                                        </View>
-                                    )}
-                                </View>
-                            )}
-                            {/* Status Message */}
-                            {hasSubmitted && (
-                                <View style={styles.statusContainer}>
-                                    <PoppinsTextMedium
-                                        style={[styles.statusText, { color: 'green' }]}
-                                        content="✓ PAN verified and submitted successfully"
-                                    />
-                                </View>
-                            )}
-                               <TouchableOpacity
-                                style={[
-                                    styles.submitButton,
-                                    {
-                                        backgroundColor: ternaryThemeColor,
-                                        opacity: (verifyPanIsLoading || isSubmitting) ? 0.7 : 1
-                                    }
-                                ]}
-                                onPress={handleMainButtonPress}
-                                disabled={verifyPanIsLoading || isSubmitting}
-                            >
-                                {isSubmitting ? (
-                                    <FastImage
-                                        style={styles.buttonLoadingIcon}
-                                        source={{ uri: gifUri }}
-                                        resizeMode={FastImage.resizeMode.contain}
-                                    />
-                                ) : (
-                                    <PoppinsTextMedium
-                                        style={styles.submitButtonText}
-                                        content={getButtonText()}
-                                    />
-                                )}
-                            </TouchableOpacity>
-                        </View>
-                    </KeyboardAvoidingView>
-                </TouchableWithoutFeedback>
-            </Modal>
-        );
-    });
  
     // NEW GST Verification Dialog
     const GstVerificationDialog = React.memo(({ visible, onClose, refetchKycStatus }) => {
@@ -1175,232 +849,6 @@ const KycVerificationDynamic = ({ navigation }) => {
         );
     });
  
-    const KycOptionCards = () => {
-        const kycConfig = useSelector((state) => state.kycDataSlice.kycData);
- 
-        if (!kycConfig) {
-            return (
-                <View style={styles.errorContainer}>
-                    <PoppinsTextMedium
-                        content="Failed to load KYC options"
-                        style={styles.errorText}
-                    />
-                </View>
-            );
-        }
- 
-        const {
-            enabled_options = {},
-            valid_combinations = [],
-            api_details = {},
-            match_rules = {},
-            optional = [] // Keep this for display purposes
-        } = kycConfig;
- 
-        // All possible KYC options with their configurations
-        const allOptions = [
-            // {
-            //     id: 'aadhaar',
-            //     label: 'Aadhaar KYC',
-            //     icon: require('../../../assets/images/aadhaarkyc.png'),
-            //     verified: aadhaarVerified || preVerifiedDocs.aadhaar,
-            //     enabled: enabled_options.aadhaar,
-            //     apiDetails: api_details.aadhaar,
-            //     matchRules: match_rules.aadhaar,
-            //     isOptional: optional.includes('aadhaar') // For display only
-            // },
-            {
-                id: 'pan',
-                label: 'PAN Card KYC',
-                icon: require('../../../assets/images/pankyc.png'),
-                verified: panVerified || preVerifiedDocs.pan,
-                enabled: enabled_options.pan,
-                apiDetails: api_details.pan,
-                isOptional: optional.includes('pan') // For display only
-            },
-            {
-                id: 'gstin',
-                label: 'GSTIN',
-                icon: require('../../../assets/images/gstinkyc.png'),
-                verified: gstVerified || preVerifiedDocs.gstin,
-                enabled: enabled_options.gstin,
-                apiDetails: api_details.gstin,
-                isOptional: optional.includes('gstin') // For display only
-            },
-            {
-                id: 'bank',
-                label: 'Bank Account',
-                icon: require('../../../assets/images/bankColor.png'),
-                verified: bankVerified,
-                enabled: enabled_options.bank,
-                isOptional: optional.includes('bank'), // Use from config
-                onPress: () => setBankModalVisible(true)
-            },
-            {
-                id: 'upi',
-                label: 'UPI ID',
-                icon: require('../../../assets/images/upi.png'),
-                verified: upiVerified,
-                enabled: enabled_options.upi,
-                isOptional: optional.includes('upi'), // Use from config
-                onPress: () => setUpiModalVisible(true)
-            }
- 
- 
-        ].filter(opt => opt.enabled);
- 
-        const renderCombinationOptions = () => {
-            if (!valid_combinations || valid_combinations.length === 0) {
-                return null;
-            }
- 
-            return (
-                <>
-                    {valid_combinations.map((combo, comboIndex) => {
-                        const elements = combo.split('-');
-                        const isSingleMandatory = elements.length === 1;
- 
-                        return (
-                            <React.Fragment key={`combo-${comboIndex}`}>
-                                {comboIndex > 0 && (
-                                    <View style={styles.orSeparator}>
-                                        <View style={styles.orLine} />
-                                        <View style={styles.orLine} />
-                                    </View>
-                                )}
- 
-                                {isSingleMandatory ? (
-                                    <OptionCard
-                                        option={allOptions.find(opt => opt.id === combo)}
-                                        isMandatory={true}
-                                    />
-                                ) : (
-                                    <View style={styles.combinationContainer}>
-                                        {elements.map((element, elementIndex) => {
-                                            const option = allOptions.find(opt => opt.id === element);
-                                            if (!option) return null;
- 
-                                            return (
-                                                <React.Fragment key={`element-${elementIndex}`}>
-                                                    <OptionCard
-                                                        option={option}
-                                                        isMandatory={true}
-                                                    />
-                                                    {elementIndex < elements.length - 1 && (
-                                                        <View style={styles.orSeparator}>
-                                                            <View style={styles.orLine} />
-                                                            <PoppinsTextMedium style={styles.orText} content="OR" />
-                                                            <View style={styles.orLine} />
-                                                        </View>
-                                                    )}
-                                                </React.Fragment>
-                                            );
-                                        })}
-                                    </View>
-                                )}
-                            </React.Fragment>
-                        );
-                    })}
-                </>
-            );
-        };
- 
-        const OptionCard = ({ option, isMandatory }) => {
-            if (!option) return null;
- 
-            return (
-                <TouchableOpacity
-                    style={[
-                        styles.optionCard,
-                        option.verified && styles.verifiedCard,
-                        // Only style as optional if it's actually optional AND not mandatory in combinations
-                        (option.isOptional && !isMandatory) && styles.optionalCard
-                    ]}
-                    onPress={option.onPress || (() => handleSelectOption(option.id))}
-                >
-                    <Image source={option.icon} style={styles.optionIcon} />
-                    <View style={styles.optionTextContainer}>
-                        <View style={styles.labelContainer}>
-                            <PoppinsTextMedium
-                                style={styles.optionText}
-                                content={option.label}
-                            />
-                            {isMandatory && (
-                                <PoppinsTextMedium
-                                    style={styles.mandatoryAsterisk}
-                                    content="*"
-                                />
-                            )}
-                            {/* Show optional text only if it's optional AND not part of mandatory combinations */}
-                            {option.isOptional && !isMandatory && (
-                                <PoppinsTextMedium
-                                    style={styles.optionalText}
-                                    content="(Optional)"
-                                />
-                            )}
-                        </View>
-                        {option.matchRules && (
-                            <PoppinsTextMedium
-                                style={styles.matchRuleText}
-                                content={option.verified ? option.matchRules.success : option.matchRules.error}
-                            />
-                        )}
-                    </View>
-                    <Image
-                        source={option.verified
-                            ? require('../../../assets/images/verifiedKyc.png')
-                            : require('../../../assets/images/notVerifiedKyc.png')}
-                        style={styles.statusIcon}
-                    />
-                </TouchableOpacity>
-            );
-        };
- 
-        return (
-            <View style={styles.kycOptionsContainer}>
-                <View style={{width:'100%'}}>
-                    <PoppinsTextMedium
-                        style={styles.kycTitle}
-                        content="Complete Your KYC"
-                    />
- 
-                    <PoppinsTextMedium
-                        style={styles.kycSubtitle}
-                        content="Complete verification details"
-                    />
- 
-                    {renderCombinationOptions()}
- 
-                    {/* Render optional items that are not in valid_combinations */}
-                    {allOptions
-                        .filter(opt => opt.isOptional && !valid_combinations.some(combo => combo.includes(opt.id)))
-                        .map(option => (
-                            <OptionCard
-                                key={option.id}
-                                option={option}
-                                isMandatory={false}
-                            />
-                        ))
-                    }
-                    <AadharVerify 
-                    verifiedAadharDetails={verifiedAadharDetails}
-                    preVerifiedDocs={preVerifiedDocs}
-                    getKycDynamicFunc={getKycDynamic}
-                    optionCard={{
-                        id: 'aadhaar',
-                        label: 'Aadhaar KYC',
-                        icon: require('../../../assets/images/aadhaarkyc.png'),
-                        verified: aadhaarVerified || preVerifiedDocs.aadhaar,
-                        // verified: aadhaarVerified,
-                        enabled: enabled_options.aadhaar,
-                        apiDetails: api_details.aadhaar,
-                        matchRules: match_rules.aadhaar,
-                        isOptional: optional.includes('aadhaar'), // For display only
-                    }} />
-                </View>
-            </View>
-        );
-    };
  
     // Bank Account Modal
     const BankAccountModal = ({ visible, onClose }) => {
@@ -1955,20 +1403,44 @@ const KycVerificationDynamic = ({ navigation }) => {
                                 style={styles.kycLogo}
                                 source={require("../../../assets/images/kyclogo.png")}
                             />
-                            <KycOptionCards />
+                            <KycOptionCards
+                                verifiedAadharDetails={verifiedAadharDetails}
+                                preVerifiedDocs={preVerifiedDocs}
+                                getKycDynamicFunc={getKycDynamic}
+                                panVerified={panVerified}
+                                gstVerified={gstVerified}
+                                bankVerified={bankVerified}
+                                upiVerified={upiVerified}
+                                aadhaarVerified={aadhaarVerified}
+                                setBankModalVisible={setBankModalVisible}
+                                setUpiModalVisible={setUpiModalVisible}
+                                handleSelectOption={handleSelectOption}
+                            />
                         </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
             )}
             {/* Modals */}
           
+
             <PanVerificationDialog
+    
                 visible={panModalVisible}
                 onClose={closePanModal}
                 refetchKycStatus={getKycDynamicFunc}
- 
+                preVerifiedDocs={preVerifiedDocs}
+                pan={pan}
+                name={name}
+                setPanVerified={setPanVerified}
+                setPan={setPan}
+                setName={setName}
+                verificationCalledRef={verificationCalledRef}
+                verificationGlobalData={verificationGlobalData}
+                setCallSubmitPan={setCallSubmitPan}
+                handleVerifyDocKyc={handleVerifyDocKyc}
+                gifUri={gifUri}
             />
- 
+
             {/* <GstVerificationDialog
                 visible={gstModalVisible}
                 onClose={closeGstModal}
