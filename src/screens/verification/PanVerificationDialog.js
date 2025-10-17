@@ -18,7 +18,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import { useVerifyPanMutation } from '../../apiServices/verification/PanVerificationApi';
 
-const PanVerificationDialog2 = (({ 
+const PanVerificationDialog = (({ 
     visible, 
     onClose, 
     refetchKycStatus,
@@ -39,17 +39,18 @@ const PanVerificationDialog2 = (({
         ) ? useSelector((state) => state.apptheme.ternaryThemeColor) : "grey";
         
         const isPreVerified = preVerifiedDocs.pan;
-        const [localPan, setLocalPan] = useState(pan ? pan : '');
-        const [localName, setLocalName] = useState(name ? name : '');
+        const [localPan, setLocalPan] = useState('');
+        const [localName, setLocalName] = useState( '');
         const [isVerified, setIsVerified] = useState(isPreVerified);
         const [errorMessage, setErrorMessage] = useState(null);
         const [verifiedApiData, setVerifiedApiData] = useState(null);
         const [hasSubmitted, setHasSubmitted] = useState(false);
         const [isSubmitting, setIsSubmitting] = useState(false);
         useEffect(() => {
-            console.log('pan', pan);
-            
-        }, []);
+            setLocalPan(pan? pan : '');
+            setLocalName(name ? name : '');
+            setIsVerified(isPreVerified);
+        }, [pan, name]);
  
  
         // Reset states when dialog opens
@@ -489,4 +490,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PanVerificationDialog2;
+export default PanVerificationDialog;

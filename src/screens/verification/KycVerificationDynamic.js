@@ -1,50 +1,41 @@
-import React, { useEffect, useId, useState, useRef, useCallback, useMemo } from "react";
+import { useIsFocused } from "@react-navigation/native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
-    Image,
-    TextInput,
-    ScrollView,
-    KeyboardAvoidingView,
-    Platform,
-    Modal,
-    Text,
     ActivityIndicator,
+    Image,
+    Keyboard,
+    KeyboardAvoidingView,
+    Modal,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    TextInput,
+    TouchableOpacity,
     TouchableWithoutFeedback,
-    Keyboard
+    View
 } from "react-native";
-import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
-import { useSelector, useDispatch } from "react-redux";
-import Icon from "react-native-vector-icons/Entypo";
+import FastImage from "react-native-fast-image";
 import * as Keychain from "react-native-keychain";
-import ErrorModal from "../../components/modals/ErrorModal";
-import RectanglarUnderlinedTextInput from "../../components/atoms/input/RectanglarUnderlinedTextInput";
-import RectangularUnderlinedDropDown from "../../components/atoms/dropdown/RectangularUnderlinedDropDown";
-import { useVerifyPanMutation } from "../../apiServices/verification/PanVerificationApi";
+import Icon from "react-native-vector-icons/Entypo";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    setKycData
+} from "../../../redux/slices/userKycStatusSlice";
+import { useAddBankDetailsMutation } from "../../apiServices/bankAccount/AddBankAccount";
 import { useListAccountsMutation } from "../../apiServices/bankAccount/ListBankAccount";
 import {
-    useSendAadharOtpMutation,
-    useVerifyAadharMutation,
-} from "../../apiServices/verification/AadharVerificationApi";
-import { useVerifyGstMutation } from "../../apiServices/verification/GstinVerificationApi";
-import TextInputRectangularWithPlaceholder from "../../components/atoms/input/TextInputRectangularWithPlaceholder";
-import SuccessModal from "../../components/modals/SuccessModal";
-import MessageModal from "../../components/modals/MessageModal";
-import { useIsFocused } from "@react-navigation/native";
-import { useAddBankDetailsMutation } from "../../apiServices/bankAccount/AddBankAccount";
-import {
-    useGetkycDynamicMutation,
-    useUpdateKycDynamicMutation,
+    useGetkycDynamicMutation
 } from "../../apiServices/kyc/KycDynamicApi";
-import {
-    setKycCompleted,
-    setKycData,
-} from "../../../redux/slices/userKycStatusSlice";
-import FastImage from "react-native-fast-image";
-import { gifUri } from "../../utils/GifUrl";
-import { useTranslation } from "react-i18next";
+import { useVerifyGstMutation } from "../../apiServices/verification/GstinVerificationApi";
 import { useVerifyDocKycMutation } from "../../apiServices/verification/VerificationDocKycApi";
+import RectangularUnderlinedDropDown from "../../components/atoms/dropdown/RectangularUnderlinedDropDown";
+import RectanglarUnderlinedTextInput from "../../components/atoms/input/RectanglarUnderlinedTextInput";
+import TextInputRectangularWithPlaceholder from "../../components/atoms/input/TextInputRectangularWithPlaceholder";
+import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
+import ErrorModal from "../../components/modals/ErrorModal";
+import MessageModal from "../../components/modals/MessageModal";
+import { gifUri } from "../../utils/GifUrl";
 import KycOptionCards from "./KycOptionCards";
 import PanVerificationDialog from "./PanVerificationDialog";
 // import { is } from "immer/dist/internal";
@@ -1523,20 +1514,18 @@ const styles = StyleSheet.create({
         width: '100%',
         resizeMode: "contain",
     },
-    proceedButton: {
-        height: 50,
-        width: 200,
-        borderRadius: 4,
-        marginTop: 20,
-        alignItems: "center",
-        justifyContent: "center",
+    fullScreenLoader: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
     },
-    proceedButtonText: {
-        fontWeight: "bold",
-        fontSize: 20,
-        color: "white",
+    loaderText: {
+        marginTop: 16,
+        color: '#666',
+        fontSize: 16,
+        textAlign: 'center',
     },
- 
     // Modal styles
     modalContainer: {
         flex: 1,
@@ -1550,20 +1539,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 20,
         maxHeight: '90%',
-    },
-    inputField: {
-        flex: 1,
-        height: 40,
-        fontSize: 14,
-        color: 'black',
-        paddingVertical: 0, // Important for Android
-    },
-    submitButton: {
-        height: 50,
-        borderRadius: 5,
-        marginTop: 20,
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     closeButton: {
         alignSelf: 'flex-end',
@@ -1599,6 +1574,21 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingHorizontal: 10,
     },
+    inputField: {
+        flex: 1,
+        height: 40,
+        fontSize: 14,
+        color: 'black',
+        paddingVertical: 0, // Important for Android
+    },
+    disabledInput: {
+        backgroundColor: '#f5f5f5',
+        color: '#888',
+    },
+    disabledInput: {
+        backgroundColor: '#f5f5f5',
+        color: '#888',
+    },
     verifiedIcon: {
         height: 22,
         width: 22,
@@ -1610,16 +1600,10 @@ const styles = StyleSheet.create({
         height: 20,
         marginLeft: 10,
     },
-    otpSentText: {
-        fontWeight: "700",
-        fontSize: 16,
-        marginTop: 10,
-        textAlign: 'center',
-    },
-    submitButtonText: {
-        fontWeight: 'bold',
-        fontSize: 18,
-        color: 'white',
+    errorText: {
+        color: 'red',
+        fontSize: 12,
+        marginTop: 4,
     },
     dataBox: {
         width: "90%",
@@ -1643,165 +1627,31 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginLeft: 10,
     },
-    // KYC Options styles
-    kycOptionsContainer: {
-        padding: 10,
-        paddingTop: 0,
-        width:'90%'
-    },
-    kycTitle: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        color: '#333',
-        marginBottom: 8,
-        textAlign: 'center',
-    },
-    kycSubtitle: {
-        fontSize: 16,
-        color: '#666',
-        marginBottom: 20,
-        textAlign: 'center',
-    },
-    optionCard: {
-        flexDirection: 'row',
+    statusContainer: {
         alignItems: 'center',
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        padding: 16,
-        marginBottom: 8,
-        borderWidth: 1,
-        borderColor: '#e0e0e0',
-    },
-    verifiedCard: {
-        borderColor: '#4CAF50',
-        backgroundColor: '#F1F8E9',
-    },
-    optionalCard: {
-        justifyContent: 'space-between',
-        borderColor: '#e0e0e0',
-    },
-    optionTextContainer: {
-        flex: 1,
-    },
-    optionText: {
-        fontSize: 16,
-        color: '#333',
-    },
-    optionIcon: {
-        width: 38,
-        height: 38,
-        padding: 4,
-        resizeMode: 'contain',
-        marginRight: 12,
-    },
-    statusIcon: {
-        width: 24,
-        height: 24,
-        resizeMode: 'contain',
-    },
-    orSeparator: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 8,
-    },
-    orLine: {
-        flex: 1,
-        height: 1,
-        backgroundColor: '#e0e0e0',
-    },
-    orText: {
-        marginHorizontal: 10,
-        color: '#999',
-        fontSize: 14,
-    },
-    optionalSection: {
-        marginTop: 16,
-        borderTopWidth: 1,
-        borderTopColor: '#f0f0f0',
-        paddingTop: 16,
-    },
-    optionalTitle: {
-        fontSize: 14,
-        color: '#666',
-        marginBottom: 16,
-        fontStyle: 'italic',
-    },
-    matchRuleText: {
-        fontSize: 12,
-        color: '#666',
-        marginTop: 4,
-    },
-    errorText: {
-        color: 'red',
-        fontSize: 12,
-        marginTop: 4,
-    },
-    combinationContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-    },
-    inlineOrSeparator: {
-        marginHorizontal: 8,
-    },
-    inlineOrText: {
-        color: '#666',
-    },
-    labelContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    mandatoryAsterisk: {
-        color: 'red',
-        fontSize: 16,
-        marginLeft: 2,
-    },
-    fullScreenLoader: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white',
-    },
-    loaderText: {
-        marginTop: 16,
-        color: '#666',
-        fontSize: 16,
-        textAlign: 'center',
-    },
-    preVerifiedContainer: {
-        width: '100%',
-        marginBottom: 20,
-    },
-    detailRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 15,
-        padding: 12,
-        backgroundColor: '#f8f9fa',
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: '#e9ecef',
-    },
-    detailLabel: {
-        fontSize: 14,
-        color: '#6c757d',
-        flex: 1,
-    },
-    detailValue: {
-        fontSize: 14,
-        color: '#212529',
-        flex: 2,
-        textAlign: 'right',
-        marginRight: 10,
-    },
-    preVerifiedText: {
-        fontSize: 12,
-        color: '#6c757d',
-        textAlign: 'center',
-        fontStyle: 'italic',
         marginTop: 10,
     },
+    statusText: {
+        fontSize: 14,
+        textAlign: 'center',
+    },
+    submitButton: {
+        height: 50,
+        borderRadius: 5,
+        marginTop: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    submitButtonText: {
+        fontWeight: 'bold',
+        fontSize: 18,
+        color: 'white',
+    },
+    buttonLoadingIcon: {
+        width: 30,
+        height: 30,
+    },
+    // Bank form styles
     bankFormContainer: {
         width: '100%',
         alignItems: 'center',
@@ -1823,82 +1673,33 @@ const styles = StyleSheet.create({
     scrollContent: {
         paddingBottom: 20,
     },
-    optionalText: {
-        color: '#666',
-        fontSize: 12,
-        marginLeft: 4,
-        fontStyle: 'italic',
-    },
-    disabledCard: {
-        opacity: 0.6,
-    },
-    disabledIcon: {
-        opacity: 0.5,
-    },
-    disabledText: {
-        color: '#999',
-        fontSize: 12,
-        marginLeft: 4,
-        fontStyle: 'italic',
-    },
-    modalContainerBottom: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modalContentBottom: {
-        backgroundColor: 'white',
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        padding: 20,
-        maxHeight: '90%',
-    },
-    sendOtpButton: {
-        padding: 12,
-        borderRadius: 8,
+    // UPI form styles
+    upiFormContainer: {
+        width: '100%',
         alignItems: 'center',
-        marginTop: 10,
     },
-    sendOtpButtonText: {
-        color: 'white',
-        fontSize: 16,
+    verificationContainer: {
+        width: '100%',
+        alignItems: 'center',
+        marginTop: 20,
     },
-    loadingIconSmall: {
-        width: 20,
-        height: 20,
-    },
-    headerRow: {
+    verifiedInfo: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        textAlign:'center',
-        marginBottom: 15,
+        marginBottom: 20,
+        width: '100%',
     },
- 
-    maskedAadhaarText: {
-        fontSize: 16,
-        textAlign: 'center',
-        marginBottom: 15,
-        color: '#666',
-    },
-    verifyButton: {
-        paddingVertical: 12,
-        paddingHorizontal: 20,
-        borderRadius: 8,
-        alignItems: 'center',
+    initialsCircle: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: '#4CAF50',
         justifyContent: 'center',
-        marginTop: 10,
-        minHeight: 50,
+        alignItems: 'center',
+        marginRight: 15,
     },
-    verifyButtonText: {
-        color: '#FFFFFF',
-        fontSize: 16,
-        fontWeight: '600',
-    },
- 
-    buttonLoadingIcon: {
-        width: 30,
-        height: 30,
+    verifiedDetails: {
+        flex: 1,
     },
 });
  
