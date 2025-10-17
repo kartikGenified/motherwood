@@ -1844,7 +1844,7 @@ const KycVerificationDynamic = ({ navigation }) => {
  
     const KycOptionCards = () => {
         const kycConfig = useSelector((state) => state.kycDataSlice.kycData);
- 
+        console.log("kycConfig in cards", kycConfig);
         if (!kycConfig) {
             return (
                 <View style={styles.errorContainer}>
@@ -1920,13 +1920,16 @@ const KycVerificationDynamic = ({ navigation }) => {
             if (!valid_combinations || valid_combinations.length === 0) {
                 return null;
             }
+
  
             return (
                 <>
                     {valid_combinations.map((combo, comboIndex) => {
+                        console.log("pre check berore the ",combo, allOptions)
+
                         const elements = combo.split('-');
                         const isSingleMandatory = elements.length === 1;
- 
+                        console.log('Rendering combination:', combo, 'Elements:', elements, 'IsSingleMandatory:', isSingleMandatory);   
                         return (
                             <React.Fragment key={`combo-${comboIndex}`}>
                                 {comboIndex > 0 && (
@@ -1941,6 +1944,7 @@ const KycVerificationDynamic = ({ navigation }) => {
                                         option={allOptions.find(opt => opt.id === combo)}
                                         isMandatory={true}
                                     />
+                                    
                                 ) : (
                                     <View style={styles.combinationContainer}>
                                         {elements.map((element, elementIndex) => {
@@ -1973,6 +1977,7 @@ const KycVerificationDynamic = ({ navigation }) => {
         };
  
         const OptionCard = ({ option, isMandatory }) => {
+            console.log('Rendering OptionCard:', option);
             if (!option) return null;
  
             return (
@@ -2020,6 +2025,7 @@ const KycVerificationDynamic = ({ navigation }) => {
                         style={styles.statusIcon}
                     />
                 </TouchableOpacity>
+               
             );
         };
  
