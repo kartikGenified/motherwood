@@ -45,6 +45,7 @@ import FastImage from "react-native-fast-image";
 import { gifUri } from "../../utils/GifUrl";
 import { useTranslation } from "react-i18next";
 import { useVerifyDocKycMutation } from "../../apiServices/verification/VerificationDocKycApi";
+import AadharVerify from "./AadharVerify";
 // import { is } from "immer/dist/internal";
  
 const KycVerificationDynamic = ({ navigation }) => {
@@ -184,6 +185,19 @@ const KycVerificationDynamic = ({ navigation }) => {
         }
     }, [verifyDocKycIsLoading]);
  
+
+    const getKycDynamic = async () => {
+        try {
+            const credentials = await Keychain.getGenericPassword();
+            if (credentials) {
+                const token = credentials?.username;
+                console.log("token from dashboard getKycDynamic ", token);
+                getKycDynamicFunc(token);
+            }
+        } catch (error) {
+            console.log("Keychain couldn't be accessed!", error);
+        }
+    }
  
     useEffect(() => {
         const fetchOnPageActive = async () => {
@@ -1866,16 +1880,16 @@ const KycVerificationDynamic = ({ navigation }) => {
  
         // All possible KYC options with their configurations
         const allOptions = [
-            {
-                id: 'aadhaar',
-                label: 'Aadhaar KYC',
-                icon: require('../../../assets/images/aadhaarkyc.png'),
-                verified: aadhaarVerified || preVerifiedDocs.aadhaar,
-                enabled: enabled_options.aadhaar,
-                apiDetails: api_details.aadhaar,
-                matchRules: match_rules.aadhaar,
-                isOptional: optional.includes('aadhaar') // For display only
-            },
+            // {
+            //     id: 'aadhaar',
+            //     label: 'Aadhaar KYC',
+            //     icon: require('../../../assets/images/aadhaarkyc.png'),
+            //     verified: aadhaarVerified || preVerifiedDocs.aadhaar,
+            //     enabled: enabled_options.aadhaar,
+            //     apiDetails: api_details.aadhaar,
+            //     matchRules: match_rules.aadhaar,
+            //     isOptional: optional.includes('aadhaar') // For display only
+            // },
             {
                 id: 'pan',
                 label: 'PAN Card KYC',
@@ -2049,6 +2063,21 @@ const KycVerificationDynamic = ({ navigation }) => {
                             />
                         ))
                     }
+                    <AadharVerify 
+                    verifiedAadharDetails={verifiedAadharDetails}
+                    preVerifiedDocs={preVerifiedDocs}
+                    getKycDynamicFunc={getKycDynamic}
+                    optionCard={{
+                        id: 'aadhaar',
+                        label: 'Aadhaar KYC',
+                        icon: require('../../../assets/images/aadhaarkyc.png'),
+                        verified: aadhaarVerified || preVerifiedDocs.aadhaar,
+                        // verified: aadhaarVerified,
+                        enabled: enabled_options.aadhaar,
+                        apiDetails: api_details.aadhaar,
+                        matchRules: match_rules.aadhaar,
+                        isOptional: optional.includes('aadhaar'), // For display only
+                    }} />
                 </View>
             </View>
         );
