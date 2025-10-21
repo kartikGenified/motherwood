@@ -23,7 +23,6 @@ import { useSelector } from "react-redux";
 
 const AadharVerify = (props) => {
   const { optionCard, preVerifiedDocs, verifiedAadharDetails, getKycDynamicFunc} = props;
-  const [timer, setTimer] = React.useState(null);
   const [webviewVisible, setWebviewVisible] = React.useState(false);
   const [aadhaarModalVisible, setAadhaarModalVisible] = React.useState(false);
   const [aadharVerified, setAadharVerified] = React.useState(false);
@@ -303,6 +302,8 @@ const AadharVerify = (props) => {
             source={{ uri: aadharKycGenerateData?.body?.verification_link }}
             style={{ flex: 1, height: "100%", width: "100%" }}
             onNavigationStateChange={onNavigationStateChange}
+            startInLoadingState={true}
+
           />
         </View>
       </Modal>
@@ -320,7 +321,7 @@ export default AadharVerify;
 
 const styles = StyleSheet.create({
   dataBox: {
-    width: "90%",
+    width: "100%",
     borderStyle: "dashed",
     borderWidth: 1,
     borderColor: "#DDDDDD",
@@ -328,6 +329,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "center",
     padding: 10,
+    paddingRight: 20,
     marginTop: 10,
   },
   dataLabel: {
