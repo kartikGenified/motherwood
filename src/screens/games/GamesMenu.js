@@ -8,10 +8,8 @@ import {
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import { useSelector } from 'react-redux'
-import PoppinsText from '../../components/electrons/customFonts/PoppinsText'
-import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium'
-import TopHeader from '../../components/topBar/TopHeader'
-import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium'
+import { PoppinsText, PoppinsTextMedium, PoppinsTextLeftMedium } from '@/components/electrons/customFonts'
+import TopHeader from '@/components/topBar/TopHeader'
 
 const GamesMenu = ({ navigation }) => {
   const primaryThemeColor = useSelector(
@@ -23,7 +21,7 @@ const GamesMenu = ({ navigation }) => {
       id: 1,
       title: 'Flappy Bird',
       subtitle: 'Navigate through pipes',
-      image: require('../../../assets/images/flappy-icon.png'),
+      image: require('@assets/images/flappy-icon.png'),
       colors: ['#FF6B6B', '#FF8E53'],
       route: 'Flappy'
     },
@@ -31,7 +29,7 @@ const GamesMenu = ({ navigation }) => {
       id: 2,
       title: 'Tap The Dot',
       subtitle: 'Test your reflexes',
-      image: require('../../../assets/images/target.png'),
+      image: require('@assets/images/target.png'),
       colors: ['#4ECDC4', '#44A08D'],
       route: 'TapTheDot'
     }

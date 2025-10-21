@@ -1,3 +1,14 @@
 {
-  "extends": "@tsconfig/react-native/tsconfig.json"
+  "extends": "@tsconfig/react-native/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".", 
+    
+    "paths": {
+      // Map your alias to the relative path
+      // Note the '/*' to match files within the directory
+      "@/*": ["./src/*"],
+      "@assets/*": ["./assets/*"],
+      "@redux/*": ["./redux/*"],
+    },
+  }
 }
