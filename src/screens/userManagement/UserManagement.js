@@ -9,6 +9,7 @@ import {
   TextInput,
   ScrollView,
   FlatList,
+  RefreshControl,
 } from "react-native";
 
 import { useSelector } from "react-redux";
@@ -48,8 +49,7 @@ const UserManagement = () => {
   const { t } = useTranslation();
   const focused = useIsFocused()
   const navigation = useNavigation();
-
-
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const [
     getZoneWiseEmployeeUser,
@@ -66,14 +66,23 @@ const UserManagement = () => {
     fetchZoneWiseData();
   }, [focused]);
 
-  useEffect(() => {
-    const getToken = async () => {
-      const credentials = await Keychain.getGenericPassword();
-      const token = credentials.username;
+  const onRefresh = React.useCallback(() => {
+    fetchZoneWiseData();
+    getSalesPoints();
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
 
-      salesPointFunc({ token });
-    };
-    getToken();
+  const getSalesPoints = async () => {
+    const credentials = await Keychain.getGenericPassword();
+    const token = credentials.username;
+    salesPointFunc({ token });
+  }
+  
+  useEffect(() => {
+    getSalesPoints();
   }, []);
 
   useEffect(() => {
@@ -402,7 +411,9 @@ const UserManagement = () => {
 };
 
   return (
-    <ScrollView nestedScrollEnabled={true} style={styles.container}>
+    <ScrollView nestedScrollEnabled={true} style={styles.container}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+    >
       {/* coloured header */}
       <View style={{ width: "100%", backgroundColor: secondaryThemeColor }}>
         <View
