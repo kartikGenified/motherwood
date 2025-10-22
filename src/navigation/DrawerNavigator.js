@@ -596,7 +596,7 @@ const CustomDrawer = (props) => {
                 navigation.navigate("GiftCatalogue");
               }
               else if (props.title.toLowerCase() === "motherwood playzone") {
-                navigation.navigate("TapTheDot");
+                navigation.navigate("GamesMenu");
               }
               else if (props.title.toLowerCase() === "training") {
                 navigation.navigate("Training");
@@ -614,7 +614,7 @@ const CustomDrawer = (props) => {
               ) {
                 navigation.navigate("BankAccounts");
               } else if (props.title.toLowerCase() === "playzone") {
-                navigation.navigate("TapTheDot");
+                navigation.navigate("GamesMenu");
               } 
               else if (props.title.toLowerCase() === "profile") {
                 navigation.navigate("Profile");

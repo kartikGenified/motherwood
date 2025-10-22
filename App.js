@@ -15,6 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import NotificationModal from './src/components/modals/NotificationModal';
 import notifee from '@notifee/react-native';
 import { navigate } from './src/utils/notifications/navigationService';
+import Toast from 'react-native-toast-message';
 const App = () => {
   const [notifModal, setNotifModal] = useState(false)
   const [notifData, setNotifData] = useState(null)
@@ -154,7 +155,7 @@ const App = () => {
         </SafeAreaView>
         
         </InternetSpeedProvider>
-       
+        <Toast position='bottom' />
         </PaperProvider>
         </Provider>
     );
