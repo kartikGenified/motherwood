@@ -594,8 +594,28 @@
 "Platinum": "प्लैटिनम",
 "Gold": "गोल्ड",
 "Silver": "सिल्वर",
-"Member": "सदस्य"
-
-
-  
+"Member": "सदस्य",
+"Earn Badge": "बैज कमाएं",
+"Wallet Points":" वॉलेट पॉइंट्स",
+"Redeemed Points":"रिडीम्ड पॉइंट्स",
+"Points transfer":"पॉइंट्स ट्रांसफर",
+"Points calculator":"पॉइंट्स कैलकुलेटर",
+"Playzone":"प्लेज़ोन",
+"Refer & Earn":"रेफर करें और कमाएं",
+"Received points":"प्राप्त अंक",
+"Transferable points":"स्थानांतरित करने योग्य अंक",
+"Enter Mobile No (to transfer points)":"मोबाइल नंबर दर्ज करें (पॉइंट्स ट्रांसफर करने के लिए)",
+"Received Points Summary": "प्राप्त अंक सारांश",
+"Transferred Points Summary": "स्थानांतरित किए गए अंक सारांश",
+"Bonus Points Summary": "बोनस अंक सारांश",
+"Total SKU": "कुल SKU",
+"Quantity": "मात्रा",
+"Points Overview": "पॉइंट्स अवलोकन",
+"Orders Filter": "ऑर्डर फ़िल्टर",
+"SUBMIT":"जमा करें",
+"Order Details":"ऑर्डर विवरण",
+"QTY":"मात्रा",
+"Thickness(MM)":"मोटाई (एमएम)",
+"Overview":"अवलोकन",
+"Loading":"लोड हो रहा"
 }

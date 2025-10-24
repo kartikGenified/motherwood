@@ -284,5 +284,22 @@
   "Platinum": "Platinum",
   "Gold": "Gold",
   "Silver": "Silver",
-  "Member": "Member"
+  "Member": "Member",
+  "Points transfer": "Points Transfer",
+  "Received points": "Received Points",
+  "Transferable points":"Transferable points",
+  "Enter Mobile No (to transfer points)": "Enter Mobile No (to transfer points)",
+  "Received Points Summary": "Received Points Summary",
+  "Transferred Points Summary": "Transferred Points Summary",
+  "Bonus Points Summary": "Bonus Points Summary",
+  "Total SKU": "Total SKU",
+  "Quantity": "Quantity",
+  "Points Overview": "Points Overview",
+  "Orders Filter": "Orders Filter",
+  "SUBMIT":"SUBMIT",
+  "Order Details":"Order Details",
+  "QTY":"QTY",
+  "Thickness(MM)": "Thickness(MM)",
+  "Overview":"Overview",
+  "Loading":"Loading"
 }
