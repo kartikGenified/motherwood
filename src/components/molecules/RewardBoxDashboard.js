@@ -1,6 +1,6 @@
-import React, { useEffect,useState } from 'react';
-import { View, StyleSheet, ScrollView, Image,Text, TouchableOpacity } from 'react-native';
-
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFetchUserPointsMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
 import * as Keychain from 'react-native-keychain';
@@ -10,216 +10,272 @@ import RewardRectangular from '../atoms/RewardRectangular';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import { setAlreadyWalkedThrough, setStepId } from '../../../redux/slices/walkThroughSlice';
 import { useIsFocused } from '@react-navigation/native';
-const RewardBoxDashboard = ({refreshing}) => {
+const RewardBoxDashboard = ({ refreshing }) => {
     const [walkThrough, setWalkThrough] = useState(true);
-    const focused = useIsFocused()
-    const workflow = useSelector(state => state.appWorkflow.program)
-    const ternaryThemeColor = useSelector(
-        (state) => state.apptheme.ternaryThemeColor
-      )
-    const id = useSelector(state => state.appusersdata.id);
-    const userData = useSelector(state => state.appusersdata.userData)
-    const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loaderNew.gif')).uri;
-    const {t} = useTranslation();
-    const secondaryThemeColor = useSelector(state=>state.apptheme.secondaryThemeColor)
-
-    const dispatch = useDispatch();
-
-  const stepId = useSelector((state) => state.walkThrough.stepId);
-    console.log("asbfhjsahjvchjashvhhavshj",userData)
+    const focused = useIsFocused();
     
+    // Selectors
+    const workflow = useSelector(state => state.appWorkflow.program);
+    const ternaryThemeColor = useSelector(state => state.apptheme.ternaryThemeColor);
+    const secondaryThemeColor = useSelector(state => state.apptheme.secondaryThemeColor);
+    const id = useSelector(state => state.appusersdata.id);
+    const stepId = useSelector(state => state.walkThrough.stepId);
+    
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+    
+    const gifUri = useMemo(() => 
+        Image.resolveAssetSource(require('../../../assets/gif/loaderNew.gif')).uri
+    , []);
+
     const [userPointFunc, {
         data: userPointData,
         error: userPointError,
         isLoading: userPointIsLoading,
-        isError: userPointIsError
     }] = useFetchUserPointsMutation();
 
-    useEffect(() => {
-        fetchPoints()
-    }, [focused]);
+    // Memoized calculations
+    const pointsData = useMemo(() => {
+        if (!userPointData?.body) return null;
+        
+        const { point_balance, point_reserved, point_redeemed } = userPointData.body;
+        const balanceNum = Number(point_balance) || 0;
+        const reservedNum = Number(point_reserved) || 0;
+        const redeemedNum = Number(point_redeemed) || 0;
+        
+        return {
+            balance: balanceNum,
+            reserved: reservedNum,
+            redeemed: redeemedNum,
+            earned: (balanceNum + reservedNum).toFixed(2),
+            wallet: point_balance,
+        };
+    }, [userPointData]);
 
-    useEffect(() => {
-        if(refreshing){
-            fetchPoints()
-        }
-    }, [refreshing]);
-
-    useEffect(() => {
-      const getData = async () => {
+    const fetchPoints = useCallback(async () => {
         try {
-          const value = await AsyncStorage.getItem("isAlreadyWalkedThrough");
-          console.log("isAlreadyWalkedThrough", value);
-          if (value) {
-            setWalkThrough(false);
-          } else {
-            setWalkThrough(true);
-            setStepId(4)
-          }
-        } catch (e) {
-          // saving error
-          console.log("error", e);
+            const credentials = await Keychain.getGenericPassword();
+            if (!credentials || !id) return;
+            
+            const token = credentials.username;
+            const params = {
+                userId: id,
+                token: token
+            };
+            userPointFunc(params);
+        } catch (error) {
+            console.error('Error fetching points:', error);
         }
-      };
-      getData();
+    }, [id, userPointFunc]);
+
+    const checkWalkThroughStatus = useCallback(async () => {
+        try {
+            const value = await AsyncStorage.getItem("isAlreadyWalkedThrough");
+            if (value) {
+                setWalkThrough(false);
+            } else {
+                setWalkThrough(true);
+                dispatch(setStepId(4));
+            }
+        } catch (error) {
+            console.error("Error checking walkthrough status:", error);
+        }
+    }, [dispatch]);
+
+    const storeWalkThroughData = useCallback(async () => {
+        try {
+            await AsyncStorage.setItem('isAlreadyWalkedThrough', "true");
+        } catch (error) {
+            console.error("Error storing walkthrough data:", error);
+        }
     }, []);
 
-    const fetchPoints = async () => {
-        const credentials = await Keychain.getGenericPassword();
-        const token = credentials.username;
-        const params = {
-            userId: id,
-            token: token
-        }
-        userPointFunc(params)
-    }
+    const handleNextStep = useCallback(() => {
+        dispatch(setStepId(stepId + 1));
+    }, [dispatch, stepId]);
+
+    const handleSkip = useCallback(() => {
+        storeWalkThroughData();
+        dispatch(setAlreadyWalkedThrough(true));
+        setWalkThrough(false);
+    }, [dispatch, storeWalkThroughData]);
+    
+
+    // Effects
+    useEffect(() => {
+        checkWalkThroughStatus();
+    }, [checkWalkThroughStatus]);
 
     useEffect(() => {
-        if (userPointData) {
-            console.log("userPointData hello java", userPointData)
-            console.log("ek plate nan " ,Math.floor( Number(userPointData?.body?.point_reserved) + Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_redeemed)))
+        if (focused) {
+            fetchPoints();
         }
-        else if (userPointError) {
-            console.log("userPointError", userPointError)
+    }, [focused, fetchPoints]);
+
+    useEffect(() => {
+        if (refreshing) {
+            fetchPoints();
         }
+    }, [refreshing, fetchPoints]);
 
-    }, [userPointData, userPointError])
-
-    
-
-    const storeData = async () => {
-        try {
-          await AsyncStorage.setItem('isAlreadyWalkedThrough', "true");
-        } catch (e) {
-          console.log("error", e);
+    useEffect(() => {
+        if (userPointError) {
+            console.error("User point error:", userPointError);
         }
-      };
-    
-      const handleNextStep = () => {
-        dispatch(setStepId(stepId + 1));
-      };
-    
-      const handleSkip = () => {
-        storeData();
-        dispatch(setAlreadyWalkedThrough(true)); 
-        setWalkThrough(false);
-      };
-    
-
-
-    console.log(workflow)
+    }, [userPointError]);
     return (
-        <View style={{width: '100%', borderRadius: 14, elevation: 4, backgroundColor: secondaryThemeColor, height: 80 }}>
-
-
-            {userPointIsLoading &&
+        <View style={[styles.container, { backgroundColor: secondaryThemeColor }]}>
+            {userPointIsLoading && (
                 <FastImage
-                    style={{ width: 100, height: 100, alignSelf: 'center', marginTop: 20 }}
+                    style={styles.loadingGif}
                     source={{
-                        uri: gifUri, // Update the path to your GIF
+                        uri: gifUri,
                         priority: FastImage.priority.normal,
                     }}
                     resizeMode={FastImage.resizeMode.contain}
                 />
-            }
-<Tooltip
-        isVisible={walkThrough && stepId === 4}
-        content={
-          <View style={{ alignItems: "center" }}>
-            <Text style={{ color: "black", textAlign: "center", marginBottom: 10, fontWeight: "bold" }}>
-            Check your all points
-            </Text>
-            <View style={{ flexDirection: "row",alignItems:'center', justifyContent:'center' }}>
-              {/* <TouchableOpacity
-                style={styles.skipButton(ternaryThemeColor)}
-                onPress={handleSkip}
-              >
-                <Text style={{ color: "white" }}>Skip</Text>
-              </TouchableOpacity> */}
-
-              <TouchableOpacity
-                style={styles.nextButton(ternaryThemeColor)}
-                onPress={handleNextStep}
-              >
-                <Text style={{ color: "white", fontWeight: 'bold' }}>Next</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        }
-        placement="bottom"
-        animated
-        onClose={() => setWalkThrough(false)}
-        tooltipStyle={{ borderRadius: 30 }}
-        contentStyle={{
-          backgroundColor: "white",
-          minHeight: 100,
-          borderWidth: 2,
-          borderRadius: 10,
-          borderColor: ternaryThemeColor,
-          width:200
-        }}
-      >
-            <View style={{width:'100%',flexDirection:'row',alignItems:"center",justifyContent:'center'}}>
-                {
-                    workflow?.includes("Static Coupon") && <RewardRectangular color="#FFE2E6" image={require('../../../assets/images/voucher.png')} title="My Coupons"></RewardRectangular>
-                }
-                {
-                    workflow?.includes("Cashback") && <RewardRectangular color="#FFF4DE" image={require('../../../assets/images/cashback.png')} title="Cashback"></RewardRectangular>
-                }
-
-                {
-                    workflow?.includes("Wheel") && <RewardRectangular color="#FFE2E6" image={require('../../../assets/images/cashback.png')} title="Spin Wheel"></RewardRectangular>
-
-                }
-                {
-                    // userData && (userData?.user_type)?.toLowerCase() == 'distributor' && userPointData  && <RewardRectangular amount={userPointData.body.point_earned} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("earned points")}></RewardRectangular>
-                }
-                {
-                  userPointData && <RewardRectangular amount={(Number(userPointData?.body?.point_balance)+Number(userPointData?.body?.point_reserved)).toFixed(2)} color="#F0FCE7" image={require('../../../assets/images/current_point.png')} title={t("Earned Points")}></RewardRectangular>
-                }
-                
-                {
-                    // workflow?.includes("Points On Product") && userPointData && <RewardRectangular amount={userPointData.body.point_redeemed} color="#DCFCE7" image={require('../../../assets/images/reward.png')} title={t("redeemed points")}></RewardRectangular>
-                }
-                    {
-                  <RewardRectangular amount={userPointData?.body?.point_balance} color="#FFFCCF" image={require('../../../assets/images/rp.png')} title={t("Wallet Points")}></RewardRectangular>
-                }
-             
-
-                     {
-                  <RewardRectangular amount={userPointData?.body?.point_redeemed} color="#E4FFFB" image={require('../../../assets/images/rc.png')} title={t("Redeemed Points")}></RewardRectangular>
-                }
+            )}
             
-                {
-                    // workflow?.includes("Points On Product") && userPointData && <RewardRectangular amount={userPointData.body.point_reserved} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("reserved points")}></RewardRectangular>
+            <Tooltip
+                isVisible={walkThrough && stepId === 4}
+                content={
+                    <View style={styles.tooltipContent}>
+                        <Text style={styles.tooltipText}>
+                            Check your all points
+                        </Text>
+                        <View style={styles.tooltipButtonContainer}>
+                            <TouchableOpacity
+                                style={styles.nextButton(ternaryThemeColor)}
+                                onPress={handleNextStep}
+                            >
+                                <Text style={styles.buttonText}>Next</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 }
-                {/* {
-                    workflow?.includes("Points On Product") && userPointData && <RewardRectangular amount={((Number(userPointData.body.point_reserved) + Number(userPointData.body.point_balance)).toFixed(2))} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("Total Points")}></RewardRectangular>
-                } */}
-                {/* {
-                   userData && (userData?.user_type)?.toLowerCase() == 'distributor' &&  userPointData && <RewardRectangular amount={((Number(userPointData.body.point_reserved) + Number(userPointData.body.point_balance)).toFixed(2))} color="#DCFCE7" image={require('../../../assets/images/points.png')} title={t("Total Points")}></RewardRectangular>
-                } */}
-            </View>
-            </Tooltip>
+                placement="bottom"
+                animated
+                onClose={() => setWalkThrough(false)}
+                tooltipStyle={styles.tooltip}
+                contentStyle={[styles.tooltipContentStyle, { borderColor: ternaryThemeColor }]}
+            >
+                <View style={styles.rewardContainer}>
+                    {workflow?.includes("Static Coupon") && (
+                        <RewardRectangular 
+                            color="#FFE2E6" 
+                            image={require('../../../assets/images/voucher.png')} 
+                            title="My Coupons"
+                        />
+                    )}
+                    
+                    {workflow?.includes("Cashback") && (
+                        <RewardRectangular 
+                            color="#FFF4DE" 
+                            image={require('../../../assets/images/cashback.png')} 
+                            title="Cashback"
+                        />
+                    )}
 
+                    {workflow?.includes("Wheel") && (
+                        <RewardRectangular 
+                            color="#FFE2E6" 
+                            image={require('../../../assets/images/cashback.png')} 
+                            title="Spin Wheel"
+                        />
+                    )}
+                    
+                    {pointsData && (
+                        <RewardRectangular 
+                            amount={pointsData.earned} 
+                            color="#F0FCE7" 
+                            image={require('../../../assets/images/current_point.png')} 
+                            title={t("Earned Points")}
+                        />
+                    )}
+                    
+                    {pointsData && (
+                        <RewardRectangular 
+                            amount={pointsData.wallet} 
+                            color="#FFFCCF" 
+                            image={require('../../../assets/images/rp.png')} 
+                            title={t("Wallet Points")}
+                        />
+                    )}
+
+                    {pointsData && (
+                        <RewardRectangular 
+                            amount={pointsData.redeemed} 
+                            color="#E4FFFB" 
+                            image={require('../../../assets/images/rc.png')} 
+                            title={t("Redeemed Points")}
+                        />
+                    )}
+                </View>
+            </Tooltip>
         </View>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
+    container: {
+        width: '100%',
+        borderRadius: 14,
+        elevation: 4,
+        height: 80,
+    },
+    loadingGif: {
+        width: 100,
+        height: 100,
+        alignSelf: 'center',
+        marginTop: 20,
+    },
+    rewardContainer: {
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    tooltipContent: {
+        alignItems: 'center',
+    },
+    tooltipText: {
+        color: 'black',
+        textAlign: 'center',
+        marginBottom: 10,
+        fontWeight: 'bold',
+    },
+    tooltipButtonContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    tooltip: {
+        borderRadius: 30,
+    },
+    tooltipContentStyle: {
+        backgroundColor: 'white',
+        minHeight: 100,
+        borderWidth: 2,
+        borderRadius: 10,
+        width: 200,
+    },
+    buttonText: {
+        color: 'white',
+        fontWeight: 'bold',
+    },
     skipButton: (color) => ({
-      backgroundColor: color,
-      paddingVertical: 5,
-      paddingHorizontal: 15,
-      borderRadius: 5,
-      marginRight: 12,
+        backgroundColor: color,
+        paddingVertical: 5,
+        paddingHorizontal: 15,
+        borderRadius: 5,
+        marginRight: 12,
     }),
     nextButton: (color) => ({
-      backgroundColor: color,
-      paddingVertical: 5,
-      paddingHorizontal: 15,
-      borderRadius: 5,
+        backgroundColor: color,
+        paddingVertical: 5,
+        paddingHorizontal: 15,
+        borderRadius: 5,
     }),
-  });
+});
 
 export default RewardBoxDashboard;

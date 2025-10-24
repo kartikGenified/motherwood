@@ -41,6 +41,7 @@ import Edit from "react-native-vector-icons/Entypo";
 import { useGetFormMutation } from "../apiServices/workflow/GetForms";
 import { useDispatch } from "react-redux";
 import { setAlreadyWalkedThrough, setStepId } from "../../redux/slices/walkThroughSlice";
+import i18n from "../screens/common/i18n";
 const Drawer = createDrawerNavigator();
 const CustomDrawer = (props) => {
   const [profileImage, setProfileImage] = useState();
@@ -67,7 +68,13 @@ const CustomDrawer = (props) => {
   const getDetailsData = useSelector((state) => state.termsPolicy.details);
   const stepId = useSelector((state) => state.walkThrough.stepId);
 
-  console.log("getAboutDatagetDetailsData",getAboutData,getDetailsData,getTermsData)
+  // console drawerdata in useeffect
+  useEffect(()=>{
+    console.log('drawerdata', drawerData);
+    
+  },[])
+
+  // console.log("getAboutDatagetDetailsData",getAboutData,getDetailsData,getTermsData)
 
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
@@ -82,7 +89,9 @@ const CustomDrawer = (props) => {
   const userData = useSelector((state) => state.appusersdata.userData);
   const kycData = useSelector((state) => state.kycDataSlice.kycData);
 
-  console.log("drawer data tabs", userData);
+  
+
+  // console.log("drawer data tabs", userData);
 
   const [
     getFAQ,
@@ -134,9 +143,9 @@ const CustomDrawer = (props) => {
     const fetchData = async () => {
       const credentials = await Keychain.getGenericPassword();
       if (credentials) {
-        console.log(
-          "Credentials successfully loaded for user " + credentials.username
-        );
+        // console.log(
+        //   "Credentials successfully loaded for user " + credentials.username
+        // );
         const token = credentials.username;
         const form_type = "6";
 
@@ -151,9 +160,9 @@ const CustomDrawer = (props) => {
     const fetchData = async () => {
       const credentials = await Keychain.getGenericPassword();
       if (credentials) {
-        console.log(
-          "Credentials successfully loaded for user " + credentials.username
-        );
+        // console.log(
+        //   "Credentials successfully loaded for user " + credentials.username
+        // );
         const token = credentials.username;
         fetchProfileFunc(token);
       }
@@ -166,7 +175,7 @@ const CustomDrawer = (props) => {
   useEffect(() => {
     if (getFormData) {
       if (getFormData.body.length !== 0) {
-        console.log("Form Fields", JSON.stringify(getFormData));
+        // console.log("Form Fields", JSON.stringify(getFormData));
 
         const filteredData = Object.values(getFormData.body.template).filter(
           (item, index) => {
@@ -179,18 +188,18 @@ const CustomDrawer = (props) => {
 
         filterNameFromFormFields(filteredData);
       } else {
-        console.log("no Form");
+        // console.log("no Form");
         setShowNoDataFoundMessage(true);
       }
     } else if (getFormError) {
-      console.log("Form Field Error", getFormError);
+      // console.log("Form Field Error", getFormError);
     } else if (fetchProfileData) {
-      console.log("fetchProfileData", fetchProfileData);
+      // console.log("fetchProfileData", fetchProfileData);
       if (fetchProfileData.success) {
         setProfileData(fetchProfileData);
       }
     } else if (fetchProfileError) {
-      console.log("fetchProfileError", fetchProfileError);
+      // console.log("fetchProfileError", fetchProfileError);
     }
   }, [
     getFormData,
@@ -209,13 +218,13 @@ const CustomDrawer = (props) => {
     }
   }, [locationSetup]);
 
-  useEffect(() => {
-    if (getFAQData) {
-      console.log("getFAQData Here i am ", getFAQData);
-    } else if (getFAQError) {
-      console.log("getFAQError", getFAQError);
-    }
-  }, [getFAQData, getFAQError]);
+  // useEffect(() => {
+  //   if (getFAQData) {
+  //     console.log("getFAQData Here i am ", getFAQData);
+  //   } else if (getFAQError) {
+  //     console.log("getFAQError", getFAQError);
+  //   }
+  // }, [getFAQData, getFAQError]);
 
   const handleLogout = async () => {
     try {
@@ -228,7 +237,7 @@ const CustomDrawer = (props) => {
       console.log("error deleting loginData", e);
     }
 
-    console.log("Done.");
+    // console.log("Done.");
   };
 
   const fetchFaq = async () => {
@@ -243,9 +252,9 @@ const CustomDrawer = (props) => {
   const getMembership = async () => {
     const credentials = await Keychain.getGenericPassword();
     if (credentials) {
-      console.log(
-        "Credentials successfully loaded for user " + credentials.username
-      );
+      // console.log(
+      //   "Credentials successfully loaded for user " + credentials.username
+      // );
       const token = credentials.username;
       getActiveMembershipFunc(token);
     }
@@ -253,23 +262,23 @@ const CustomDrawer = (props) => {
 
   useEffect(() => {
     if (fetchProfileData) {
-      console.log("fetchProfileData", fetchProfileData);
+      // console.log("fetchProfileData", fetchProfileData);
       if (fetchProfileData.success) {
         setProfileImage(fetchProfileData.body.profile_pic);
       }
     } else if (fetchProfileError) {
-      console.log("fetchProfileError", fetchProfileError);
+      // console.log("fetchProfileError", fetchProfileError);
     }
   }, [fetchProfileData, fetchProfileError]);
 
   useEffect(() => {
     if (getActiveMembershipData) {
-      console.log(
-        "getActiveMembershipData",
-        JSON.stringify(getActiveMembershipData)
-      );
+      // console.log(
+      //   "getActiveMembershipData",
+      //   JSON.stringify(getActiveMembershipData)
+      // );
     } else if (getActiveMembershipError) {
-      console.log("getActiveMembershipError", getActiveMembershipError);
+      // console.log("getActiveMembershipError", getActiveMembershipError);
     }
   }, [getActiveMembershipData, getActiveMembershipError]);
 
@@ -278,7 +287,7 @@ const CustomDrawer = (props) => {
   };
 
   const filterNameFromFormFields = (data) => {
-    console.log("filterNameFromFormFields");
+    // console.log("filterNameFromFormFields");
     const nameFromFormFields = data.map((item) => {
       if (item.name === "name") {
         //  setProfileName(true);
@@ -290,23 +299,23 @@ const CustomDrawer = (props) => {
   };
 
   const filterProfileDataAccordingToForm = (arrayNames) => {
-    console.log("inside filterProfileDataAccordingToForm");
+    // console.log("inside filterProfileDataAccordingToForm");
     if (profileData) {
-      console.log("filterProfileDataAccordingToForm", arrayNames, profileData);
+      // console.log("filterProfileDataAccordingToForm", arrayNames, profileData);
 
       if (arrayNames) {
         let temparr = [];
         arrayNames.map((item) => {
           temparr.push(profileData.body[item]);
         });
-        console.log("Form Values", temparr);
+        // console.log("Form Values", temparr);
 
 
         let newTempArr = temparr;
 
         newTempArr.push(fetchProfileData?.body?.profile_pic);
 
-        console.log("Form Values new", newTempArr);
+        // console.log("Form Values new", newTempArr);
 
         const totalLength = newTempArr.length;
         //
@@ -316,14 +325,14 @@ const CustomDrawer = (props) => {
 
         const dataPercentage = ((nullLength / totalLength) * 100).toFixed();
 
-        console.log("Null length", nullLength, totalLength, dataPercentage);
+        // console.log("Null length", nullLength, totalLength, dataPercentage);
 
         setProfilePercentafe(dataPercentage + "");
 
         // console.log(temparr);
       }
     } else {
-      console.log("filterProfileDataAccordingToForm profileData empty");
+      // console.log("filterProfileDataAccordingToForm profileData empty");
       if (fetchProfileData) {
         setProfileData(fetchProfileData);
       }
@@ -463,7 +472,7 @@ const CustomDrawer = (props) => {
           navigation.navigate("PdfComponent", { pdf: getAboutData, title:"About Motherwood" })
         }
         else if (props.title.toLowerCase() === "motherwood saathi") {
-          console.log("hansldasjdjhgsa",getDetailsData)
+          // console.log("hansldasjdjhgsa",getDetailsData)
           if(getDetailsData.length!=0)
           navigation.navigate("PdfComponent", { pdf: getDetailsData, title:"MotherWood Saathi" })
         }
@@ -558,13 +567,12 @@ const CustomDrawer = (props) => {
                 navigation.navigate("MediaGallery");
               }
               else if (props.title.toLowerCase() === "app tutorial") {
-                console.log("hasbdhjghjasjcbabsvcjhhasvjhvjh")
                 // navigation.navigate("CommingSoon");
                 const storeData = async () => {
                   
                     await AsyncStorage.setItem('isAlreadyWalkedThrough', "false" );
                    const value = await AsyncStorage.getItem('isAlreadyWalkedThrough');
-                   console.log("drawernavigator kitne bada", value, stepId )
+                  //  console.log("drawernavigator kitne bada", value, stepId )
                   navigation.dispatch(DrawerActions.closeDrawer());
 
                    setTimeout(() => {
@@ -741,7 +749,7 @@ const CustomDrawer = (props) => {
                 : props.title == "My Rewards"
                 ? `${t("My Rewards")}`
                 : props.title.toLowerCase().trim() == "refer and earn"
-                ? `${t("Refer and Earn")}`
+                ? `${t("Refer and earn")}`
                 : props.title == "Earn Extra Points"
                 ? `${t("Earn Extra Points")}`
                 : props.title == "My Points"
@@ -774,6 +782,36 @@ const CustomDrawer = (props) => {
                 ? `${t("Bank Details")}`
                 : props.title == "Contact Us"
                 ? `${t("Contact Us")}`
+                : props.title == "App tutorial"
+                ? `${t("App tutorial")}`
+                : props.title == "Home"
+                ? `${t("Home")}`
+                : props.title == "About Motherwood"
+                ? `${t("About Motherwood")}`
+                : props.title == "Motherwood Saathi"
+                ? `${t("Motherwood Saathi")}`
+                : props.title == "Points Calculator"
+                ? `${t("Points Calculator")}`
+                : props.title == "KYC"
+                ? `${t("KYC")}`
+                : props.title == "Redeem"
+                ? `${t("Redeem")}`
+                : props.title == "Motherwood PlayZone"
+                ? `${t("Motherwood PlayZone")}`
+                : props.title == "Media Gallery"
+                ? `${t("Media Gallery")}`
+                : props.title == "Events"
+                ? `${t("Events")}`
+                : props.title == "Rating/Feedback"
+                ? `${t("Rating/Feedback")}`
+                : props.title == "Terms and Conditions"
+                ? `${t("Terms and Conditions")}`
+                : props.title == "Privacy Policy"
+                ? `${t("Privacy Policy")}`
+                : props.title == "FAQs"
+                ? `${t("FAQs")}`
+                : props.title == "Settings"
+                ? `${t("Settings")}`
                 : props.title}
             </Text>
           </TouchableOpacity>
@@ -970,7 +1008,7 @@ const CustomDrawer = (props) => {
               <Image style={{height:20,width:20,resizeMode:'contain'}} source={require('../../assets/images/mem.png')}></Image>
           <PoppinsTextMedium
             style={{ color: "black",marginTop:2 }}
-            content={getActiveMembershipData?.body?.tier?.name + " Member"}
+            content={t(getActiveMembershipData?.body?.tier?.name) + " " + t("Member")}
           ></PoppinsTextMedium>
             </View>
             
@@ -1040,8 +1078,10 @@ const CustomDrawer = (props) => {
             }}
           >
             <Text style={{ color: "black", textAlign: "center" }}>
-              Your Profile Is {100 - profilePercentage}% Completed
-            </Text>
+              {i18n.language == "en"
+                ? `Your Profile Is ${100 - profilePercentage}% Completed`
+                : `आपकी प्रोफ़ाइल ${100 - profilePercentage}% पूरी हुई है`}
+            </Text> 
             <View style={styles.progressBar}>
               <View
                 style={[

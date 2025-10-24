@@ -23,6 +23,7 @@ import * as Keychain from "react-native-keychain";
 import { useFetchUserPointsMutation } from "../../apiServices/workflow/rewards/GetPointsApi";
 import { useSelector } from "react-redux";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import { useTranslation } from "react-i18next";
 
 // for userSearch
 const PointsTransfer = () => {
@@ -30,6 +31,7 @@ const PointsTransfer = () => {
   const [mobile, setMobile] = useState();
   const id = useSelector((state) => state.appusersdata.id);
   const [token, setToken] = useState();
+  const { t } = useTranslation();
   const [
     getNameFunc,
     {
@@ -98,7 +100,7 @@ const PointsTransfer = () => {
   return (
     <>
     <ScrollView style={styles.container}>
-      <TopHeader title={"Point Transfer"} />
+      <TopHeader title={t("Points transfer")} />
       <RewardBox />
 
       {/* Red Strip */}
@@ -149,7 +151,7 @@ const PointsTransfer = () => {
             fontSize: 17,
             color: "black",
           }}
-          content={"Enter Mobile No (to transfer points)"}
+          content={t("Enter Mobile No (to transfer points)")}
         ></PoppinsTextLeftMedium>
         <TextInput
           onChangeText={setMobile}

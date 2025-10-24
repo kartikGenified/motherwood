@@ -577,6 +577,9 @@ const Dashboard = ({ navigation }) => {
   }, [getKycStatusData, getKycStatusError]);
 
   useEffect(() => {
+    if(!pointSharingData?.point_sharing_bw_user){
+      return;
+    }
     const keys = Object.keys(pointSharingData?.point_sharing_bw_user?.user);
     const values = Object.values(pointSharingData?.point_sharing_bw_user?.user);
     const percentageKeys = Object.keys(

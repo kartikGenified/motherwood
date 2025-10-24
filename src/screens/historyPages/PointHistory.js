@@ -452,7 +452,7 @@ const PointHistory = ({ navigation }) => {
             }}
           >
             <PoppinsTextMedium
-              content="SUBMIT"
+              content={t("SUBMIT")}
               style={{ color: "white", fontSize: 20, borderRadius: 10 }}
             ></PoppinsTextMedium>
           </TouchableOpacity>
@@ -479,7 +479,7 @@ const PointHistory = ({ navigation }) => {
             left: 10,
             color: "black",
           }}
-          content="Points Overview"
+          content={t("Points Overview")}
         ></PoppinsTextMedium>
 
         <TouchableOpacity
@@ -600,7 +600,7 @@ const PointHistory = ({ navigation }) => {
         ></PoppinsTextMedium>
              <PoppinsTextMedium
           style={{ fontWeight: "400", fontSize: 12, color: "black" }}
-          content={`${t(" | Quantity")} : ${quantity}`}
+          content={` | ${t("Quantity")} : ${quantity}`}
         ></PoppinsTextMedium>
 
         </View>
@@ -631,7 +631,7 @@ const PointHistory = ({ navigation }) => {
         height: "100%",
       }}
     >
-      <TopHeader title={"Received Points Summary"} />
+      <TopHeader title={t("Received Points Summary")} />
 
       <View
         style={{
@@ -651,7 +651,7 @@ const PointHistory = ({ navigation }) => {
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontWeight: "700", fontSize: 16 }}
-              content={"Received Points"}
+              content={t("Received points")}
             ></PoppinsTextLeftMedium>
           </View>
           {
@@ -661,7 +661,7 @@ const PointHistory = ({ navigation }) => {
   
           }}>
               <Image style={{height:20,width:20,resizeMode:'contain'}} source={require("../../../assets/images/gg.png")}></Image>
-              <PoppinsTextMedium style={{color:'white', fontSize:12, fontWeight:'bold',marginLeft:8}} content={"Points Transfer"}></PoppinsTextMedium>
+              <PoppinsTextMedium style={{color:'white', fontSize:12, fontWeight:'bold',marginLeft:8}} content={t("Points transfer")}></PoppinsTextMedium>
           </TouchableOpacity>
           :
           <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:140,marginLeft:20,flexDirection:'row'}} onPress={()=>{
@@ -683,7 +683,7 @@ const PointHistory = ({ navigation }) => {
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontWeight: "700", fontSize: 16 }}
-              content={"Received Points"}
+              content={t("Received points")}
             ></PoppinsTextLeftMedium>
           </View>
           {
@@ -693,7 +693,7 @@ const PointHistory = ({ navigation }) => {
   
           }}>
               <Image style={{height:20,width:20,resizeMode:'contain'}} source={require("../../../assets/images/gg.png")}></Image>
-              <PoppinsTextMedium style={{color:'white', fontSize:12, fontWeight:'bold',marginLeft:8}} content={"Points Transfer"}></PoppinsTextMedium>
+              <PoppinsTextMedium style={{color:'white', fontSize:12, fontWeight:'bold',marginLeft:8}} content={t("Points transfer")}></PoppinsTextMedium>
           </TouchableOpacity>
           :
           <TouchableOpacity style={{ backgroundColor:ternaryThemeColor, alignItems:'center', justifyContent:'center', borderRadius:30,height:45,width:140,marginLeft:20,flexDirection:'row'}} onPress={()=>{
@@ -701,7 +701,7 @@ const PointHistory = ({ navigation }) => {
 
         }}>
             <Image style={{height:20,width:20,resizeMode:'contain'}} source={require("../../../assets/images/gg.png")}></Image>
-            <PoppinsTextMedium style={{color:'white', fontSize:12, fontWeight:'bold',marginLeft:8}} content={"Redeem"}></PoppinsTextMedium>
+            <PoppinsTextMedium style={{color:'white', fontSize:12, fontWeight:'bold',marginLeft:8}} content={t("Redeem")}></PoppinsTextMedium>
         </TouchableOpacity>
           }
 

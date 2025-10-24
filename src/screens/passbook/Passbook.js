@@ -702,13 +702,13 @@ const Passbook = ({ navigation }) => {
                   content={`Registration Bonus : ${
                     getPointSharingData?.body?.data?.[0]?.points
                       ? getPointSharingData?.body?.data?.[0]?.points + "Points"
-                      : "loading"
+                      : t("Loading")
                   } `}
                 ></PoppinsTextMedium>
               ) : (
                 <PoppinsTextMedium
                   style={{ fontWeight: "bold", position: "absolute", left: 20 }}
-                  content="Overview"
+                  content={t("Overview")}
                 ></PoppinsTextMedium>
               )}
               <View

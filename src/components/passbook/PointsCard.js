@@ -9,6 +9,7 @@ import * as Keychain from 'react-native-keychain';
 import { useSelector } from "react-redux";
 import capitalizeFirstChar from "../../utils/capitalizeFirstChar";
 import { useIsFocused } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 const PointsCard = (props) => {
 const [isTertiary, setIsTertiary] = useState()
@@ -18,6 +19,7 @@ const [isTertiary, setIsTertiary] = useState()
     isLoading: userPointIsLoading,
     isError: userPointIsError
 }] = useFetchUserPointsMutation();
+const { t } = useTranslation();
 const focused = useIsFocused()
 const ternaryThemeColor = useSelector(
   (state) => state.apptheme.ternaryThemeColor
@@ -26,7 +28,18 @@ const id = useSelector(state => state.appusersdata.id);
 const userData = useSelector((state) => state.appusersdata.userData);
 const membership = props?.memberShip?.toLowerCase()
 
-console.log("dashjgdhjgasjjcbjkasbcv gcahgvs",userData,membership)
+// Translation constants
+const POINTS_TITLES = {
+  EARNED_POINTS: t("earned points"),
+  RECEIVED_POINTS: t("Received points"),
+  TRANSFERRED_POINTS: t("Points transfer"),
+  WALLET_POINTS: t("Wallet Points"),
+  REDEEMED_POINTS: t("Redeemed Points"),
+  EARN_BADGES: t("Earn Badge"),
+  MEMBER: t("Member")
+};
+
+// console.log("dashjgdhjgasjjcbjkasbcv gcahgvs",userData,membership)
 
 useEffect(() => {
   if( (userData?.user_type)?.toLowerCase() == 'carpenter' ||  (userData?.user_type)?.toLowerCase() == 'contractor' ||  (userData?.user_type)?.toLowerCase() == 'oem' ||  (userData?.user_type)?.toLowerCase() == 'directoem')
@@ -174,12 +187,12 @@ console.log("cpasdjashjbchasbjhbas",capitalizeFirstChar(membership))
             ></Image>
             {membership ? <PoppinsTextMedium
             style={{ color: "white",fontSize:14 }}
-            content={`${capitalizeFirstChar(membership)} Member`}
+            content={`${t(capitalizeFirstChar(membership))} ${t(POINTS_TITLES.MEMBER)}`}
           ></PoppinsTextMedium>
           :
           <PoppinsTextMedium
             style={{ color: "white",fontSize:16 }}
-            content={"Earn Badges"}
+            content={POINTS_TITLES.EARN_BADGES}
           ></PoppinsTextMedium>
           }
           </TouchableOpacity>
@@ -193,13 +206,13 @@ console.log("cpasdjashjbchasbjhbas",capitalizeFirstChar(membership))
           <IconBox
             image={require("../../../assets/images/hand_coin_white.png")}
             points={userPointData?.body?.point_earned}
-            title={"Recieved Points"}
+            title={POINTS_TITLES.RECEIVED_POINTS}
           ></IconBox>
           :
           <IconBox
           image={require("../../../assets/images/hand_coin_white.png")}
           points={userPointData?.body?.point_earned}
-          title={"Earned Points"}
+          title={POINTS_TITLES.EARNED_POINTS}
         ></IconBox>
 }
           {userData?.user_type?.toLowerCase() != "carpenter" &&
@@ -209,17 +222,17 @@ console.log("cpasdjashjbchasbjhbas",capitalizeFirstChar(membership))
               <IconBox
             image={require("../../../assets/images/loop_star.png")}
             points={userPointData?.body?.point_earned - userPointData?.body?.point_balance - userPointData?.body?.point_redeemed - userPointData?.body?.point_reserved- userPointData?.body?.transfer_points}
-            title={"Transferred Points"}
+            title={POINTS_TITLES.TRANSFERRED_POINTS}
           ></IconBox>}
           <IconBox
             image={require("../../../assets/images/white_coin.png")}
             points={userPointData?.body?.point_balance}
-            title={"Wallet Points"}
+            title={POINTS_TITLES.WALLET_POINTS}
           ></IconBox>
           <IconBox
             image={require("../../../assets/images/white_gift.png")}
             points={userPointData?.body?.point_redeemed}
-            title={"Redeemed Points"}
+            title={POINTS_TITLES.REDEEMED_POINTS}
           ></IconBox>
       </View>
     </LinearGradient>
