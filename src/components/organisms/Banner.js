@@ -7,6 +7,7 @@ import Tooltip from 'react-native-walkthrough-tooltip';
 import { setAlreadyWalkedThrough, setStepId } from '../../../redux/slices/walkThroughSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 const Banner = (props) => {
   const [showImage, setShowImage] = useState(props?.images[0]);
   const [index, setIndex] = useState(0);
@@ -16,6 +17,7 @@ const Banner = (props) => {
   const ternaryThemeColor = useSelector((state) => state.apptheme.ternaryThemeColor);
   const isAlreadyWalkedThrough = useSelector((state) => state.walkThrough.isAlreadyWalkedThrough);
   let walkThrough = !isAlreadyWalkedThrough
+  const { t } = useTranslation();
   useEffect(() => {
     const interval = setInterval(() => {
       const newIndex = (index + 1) % props?.images?.length;
@@ -81,21 +83,21 @@ const Banner = (props) => {
         content={
           <View style={{ alignItems: "center" }}>
             <Text style={{ color: "black", textAlign: "center", marginBottom: 10, fontWeight: "bold" }}>
-              Swipe left or right for more banners
+              {t("Swipe left or right for more banners")}
             </Text>
             <View style={{ flexDirection: "row" }}>
               <TouchableOpacity
                 style={styles.skipButton(ternaryThemeColor)}
                 onPress={handleSkip}
               >
-                <Text style={{ color: "white" }}>Skip</Text>
+                <Text style={{ color: "white" }}>{t("Skip")}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.nextButton(ternaryThemeColor)}
                 onPress={handleNextStep}
               >
-                <Text style={{ color: "white", fontWeight: 'bold' }}>Next</Text>
+                <Text style={{ color: "white", fontWeight: 'bold' }}>{t("Next")}</Text>
               </TouchableOpacity>
             </View>
           </View>

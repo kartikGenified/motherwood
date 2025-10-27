@@ -589,7 +589,7 @@
   "Created By": "द्वारा बनाया गया",
   "Rating/Feedback": "रेटिंग/फीडबैक",
   "Privacy Policy": "गोपनीयता नीति",
-  "FAQs": "अक्सर पूछे जाने वाले प्रश्न",
+  "FAQs": "सामान्य प्रश्न",
   "Platinum": "प्लैटिनम",
   "Gold": "गोल्ड",
   "Silver": "सिल्वर",
@@ -713,5 +713,17 @@
   "how would you rate {{appName}} App": "आप {{appName}} ऐप को कैसे रेट करेंगे",
   "Describe your experience": "अपने अनुभव का वर्णन करें",
   "Type Something Here...": "यहाँ टाइप करें...",
-  "Select Language": "भाषा चुनें"
+  "Update Required": "अपडेट",
+  "A new version of the app is available. Please update to continue using the app.": "ऐप का एक नया अपडेट उपलब्ध है। ऐप का उपयोग जारी रखने के लिए कृपया अपडेट करें।",
+  "Update Now": "अब अपडेट करें",
+  "Select Language": "भाषा चुनें",
+  "Your Profile Is {{percent}}% Completed": "आपकी प्रोफ़ाइल {{percent}}% पूरी हुई है",
+  "Hamburger button (Select for more menu)":"हैमबर्गर बटन (मेनू के लिए चुनें)",
+  "Skip":"छोड़ें",
+  "Next":"अगला",
+  "Check Notifications":"नोटिफिकेशन देखें",
+  "Club": "क्लब",
+  "Milestone": "लक्ष्य बिंदु",
+  "Bonus Points": "बोनस अंक",
+  "Swipe left or right for more banners":"अधिक बैनरों के लिए बाएं या दाएं स्वाइप करें"
 }

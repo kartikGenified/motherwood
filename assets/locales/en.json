@@ -420,5 +420,18 @@
   "Describe your experience":"Describe your experience",
   "Type Something Here...":"Type Something Here...",
   "Please fill all fields":"Please fill all fields",
-  "Select Language":"Select Language"
+  "Update Required":"Update Required",
+  "A new version of the app is available. Please update to continue using the app.":"A new version of the app is available. Please update to continue using the app.",
+  "Update Now":"Update Now",
+  "Select Language": "Select Language",
+  "Your Profile Is {{percent}}% Completed": "Your Profile Is {{percent}}% Completed",
+  "Hamburger button (Select for more menu)":"Hamburger button (Select for more menu)",
+    "Skip":"Skip",
+  "Next":"Next",
+  "Check Notifications":"Check Notifications",
+  "Earn Badge":"Earn Badge",
+  "Club":"Club",
+  "Milestone":"Milestone",
+  "Bonus Points":"Bonus Points",
+  "Swipe left or right for more banners":"Swipe left or right for more banners"
 }

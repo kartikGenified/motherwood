@@ -1078,10 +1078,8 @@ const CustomDrawer = (props) => {
             }}
           >
             <Text style={{ color: "black", textAlign: "center" }}>
-              {i18n.language == "en"
-                ? `Your Profile Is ${100 - profilePercentage}% Completed`
-                : `आपकी प्रोफ़ाइल ${100 - profilePercentage}% पूरी हुई है`}
-            </Text> 
+              {t("Your Profile Is {{percent}}% Completed", { percent: 100 - profilePercentage })}
+            </Text>
             <View style={styles.progressBar}>
               <View
                 style={[

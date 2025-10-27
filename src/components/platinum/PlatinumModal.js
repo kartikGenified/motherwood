@@ -105,7 +105,7 @@ const PlatinumModal = ({memberShip, isVisible, onClose, getActiveMembershipData 
                   fontSize: 14,
                   fontWeight: "600",
                 }}
-                content="Club"
+                content={t("Club")}
               ></PoppinsTextMedium>
             </View>
             <View
@@ -125,7 +125,7 @@ const PlatinumModal = ({memberShip, isVisible, onClose, getActiveMembershipData 
                   fontSize: 14,
                   fontWeight: "600",
                 }}
-                content="Milestone"
+                content={t("Milestone")}
               ></PoppinsTextMedium>
             </View>
             <View
@@ -145,7 +145,7 @@ const PlatinumModal = ({memberShip, isVisible, onClose, getActiveMembershipData 
                   fontSize: 14,
                   fontWeight: "600",
                 }}
-                content="Bonus Points"
+                content={t("Bonus Points")}
               ></PoppinsTextMedium>
             </View>
           </View>
@@ -182,7 +182,7 @@ const PlatinumModal = ({memberShip, isVisible, onClose, getActiveMembershipData 
                         fontWeight: "600",
                         left: 10,
                       }}
-                      content={item?.tier?.name}
+                      content={t(item?.tier?.name)}
                     ></PoppinsTextMedium>
                   </View>
                   <View

@@ -10,6 +10,7 @@ import FastImage from 'react-native-fast-image';
 import DataNotFound from '../data not found/DataNotFound';
 import { useTranslation } from 'react-i18next';
 import SocialBottomBar from '../../components/socialBar/SocialBottomBar';
+import TopHeader from '../../components/topBar/TopHeader';
 
 // create a component
 const WhatsNew = ({ navigation }) => {
@@ -26,7 +27,7 @@ const WhatsNew = ({ navigation }) => {
         state => state.apptheme.secondaryThemeColor,
     )
 
-        const {t} = useTranslation()
+    const { t } = useTranslation()
 
     const [getMediafunc, {
         data: getMediaData,
@@ -51,15 +52,14 @@ const WhatsNew = ({ navigation }) => {
     useEffect(() => {
         if (getMediaData) {
             console.log("getMediaData", getMediaData);
-            if(getMediaData.success && getMediaData.body.length!==0)
-            {
+            if (getMediaData.success && getMediaData.body.length !== 0) {
                 getCategories(getMediaData.body)
                 setMedia(getMediaData.body);
             }
-            else{
+            else {
                 setMedia([])
             }
-           
+
 
         }
         else {
@@ -177,44 +177,15 @@ const WhatsNew = ({ navigation }) => {
 
 
     return (
-        <View style={{height:'100%'}}>
-            {/* Navigator */}
-            <View
-                style={{
-                    height: '7%',
-                    width: '100%',
-                    backgroundColor: secondaryThemeColor,
-                    alignItems: 'flex-start',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    // marginTop: 10,
-                }}>
-                <TouchableOpacity
-                    style={{ height: 20, width: 20, position: 'absolute', left: 20, marginTop: 20 }}
-                    onPress={() => {
-                        navigation.goBack();
-                    }}>
-                    <Image
-                        style={{ height: 20, width: 20, resizeMode: 'contain' }}
-                        source={require('../../../assets/images/blackBack.png')}></Image>
-                </TouchableOpacity>
-
-                <PoppinsTextMedium style={{ fontSize: 20, color: 'black', marginTop: 15, position: 'absolute', left: 60 }} content={t("What's New")}></PoppinsTextMedium>
-
-
-            </View>
-            {/* navigator */}
-
-            
+        <View style={{ height: '100%' }}>
+            <TopHeader title={t("What's New")}></TopHeader>
 
             {/* Showing Data */}
             {console.log("the media", media)}
-
-
             <View style={{ height: '83%' }}>
 
                 {mediaIsLoading &&
-                    <View style={{height:'100%'}}>
+                    <View style={{ height: '100%' }}>
                         <FastImage
                             style={{ width: 50, height: 50, alignItems: 'center', marginLeft: '45%', marginTop: '60%' }}
                             source={{
@@ -227,47 +198,47 @@ const WhatsNew = ({ navigation }) => {
 
                 }
                 {
-                    media  &&
-                        <FlatList
+                    media &&
+                    <FlatList
                         style={{}}
-                            data={media}
-                            renderItem={({ item }) =>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, height: 120, backgroundColor: "#80808020", borderRadius: 10, marginHorizontal: 10, }}>
-                                    {console.log("itm", item)}
-                                    <View style={{ borderRadius: 100, borderColor: 'black', height: 50, borderWidth: 1, width: 50, marginLeft: 10, marginRight: 20, padding: 2,alignItems:'center',justifyContent:'center' }}>
-                                        <Image
-                                            style={{ height: '70%', width: '70%', resizeMode: 'contain' }}
-                                            source={{ uri: item?.images[0] }}></Image>
-                                    </View>
+                        data={media}
+                        renderItem={({ item }) =>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, height: 120, backgroundColor: "#80808020", borderRadius: 10, marginHorizontal: 10, }}>
+                                {console.log("itm", item)}
+                                <View style={{ borderRadius: 100, borderColor: 'black', height: 50, borderWidth: 1, width: 50, marginLeft: 10, marginRight: 20, padding: 2, alignItems: 'center', justifyContent: 'center' }}>
+                                    <Image
+                                        style={{ height: '70%', width: '70%', resizeMode: 'contain' }}
+                                        source={{ uri: item?.images[0] }}></Image>
+                                </View>
 
-                                    <View style={{ flexDirection: 'column', width: '80%' }}>
-                                        <PoppinsTextLeftMedium style={{ color: 'black', fontWeight: '600' }} content={`${item.title}`}></PoppinsTextLeftMedium>
+                                <View style={{ flexDirection: 'column', width: '80%' }}>
+                                    <PoppinsTextLeftMedium style={{ color: 'black', fontWeight: '600' }} content={`${item.title}`}></PoppinsTextLeftMedium>
 
-                                        <PoppinsTextLeftMedium style={{ marginTop: 5, color:'black' }} content={`${item.description}`}></PoppinsTextLeftMedium>
-
-                                    </View>
+                                    <PoppinsTextLeftMedium style={{ marginTop: 5, color: 'black' }} content={`${item.description}`}></PoppinsTextLeftMedium>
 
                                 </View>
-                            }
-                            keyExtractor={item => item.id}
-                        />
 
-                       
+                            </View>
+                        }
+                        keyExtractor={item => item.id}
+                    />
 
-                        
+
+
+
 
 
                 }
                 {
-                    media && media.length===0 && <DataNotFound />
+                    media && media.length === 0 && <DataNotFound />
                 }
 
 
 
             </View>
-                <View style={{height:'10%', width:'100%'}}>
-                    <SocialBottomBar></SocialBottomBar>
-                </View>
+            <View style={{ height: '10%', width: '100%' }}>
+                <SocialBottomBar></SocialBottomBar>
+            </View>
         </View>
 
     );
