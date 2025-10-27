@@ -39,6 +39,7 @@ import { gifUri } from "../../utils/GifUrl";
 import KycOptionCards from "./KycOptionCards";
 import PanVerificationDialog from "./PanVerificationDialog";
 import GstVerificationDialog from "./GstVerificationDialog";
+import TopHeader from "../../components/topBar/TopHeader";
 // import { is } from "immer/dist/internal";
  
 const KycVerificationDynamic = ({ navigation }) => {
@@ -1022,19 +1023,7 @@ const KycVerificationDynamic = ({ navigation }) => {
                     behavior={Platform.OS === "ios" ? "padding" : "height"}
                     style={styles.keyboardAvoidingView}
                 >
-                    <View style={styles.header}>
-                        <TouchableOpacity onPress={() => navigation.goBack()}>
-                            <Image
-                                style={styles.backIcon}
-                                source={require("../../../assets/images/backIcon.png")}
-                            />
-                        </TouchableOpacity>
-                        <PoppinsTextMedium
-                            content="Verify your KYC"
-                            style={styles.headerTitle}
-                        />
-                    </View>
- 
+                    <TopHeader title={t('Verify your KYC')} transparent />
                     <ScrollView style={styles.scrollView}>
                         <View style={styles.contentContainer}>
                             <Image

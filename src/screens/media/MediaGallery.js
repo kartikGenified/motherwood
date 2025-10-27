@@ -5,29 +5,31 @@ import TopHeader from '../../components/topBar/TopHeader';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 // create a component
 const MediaGallery = () => {
+    const { t } = useTranslation();
     const navigation = useNavigation()
     const galleryArr = [
         {
-        title:"Video Gallery",
+        title: t("Video Gallery"),
         image: require("../../../assets/images/video_gallery.png"),
         navigateTo:"VideoGallery"
     },
 
     {
-        title:"Photo Gallery",
+        title: t("Photo Gallery"),
         image: require("../../../assets/images/photo_gallery.png"),
         navigateTo:"ImageGallery"
     },
     {
-        title:"E-Catalogues",
+        title: t("E-Catalogues"),
         image: require("../../../assets/images/eCatalogue.png"),
         navigateTo:"ProductCatalogue"
     },
     {
-        title:"What's New",
+        title: t("What's New"),
         image: require("../../../assets/images/whatsNew.png"),
         navigateTo:"WhatsNew"
     },
@@ -41,7 +43,7 @@ const MediaGallery = () => {
 
     return (
         <View style={styles.container}>
-        <TopHeader title={"Media Gallery"}></TopHeader>
+        <TopHeader title={t("Media Gallery")}></TopHeader>
         
         <FlatList
         contentContainerStyle={{alignItems:'center',justifyContent:'center'}}

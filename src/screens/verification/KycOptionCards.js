@@ -8,6 +8,7 @@ import {
 import { useSelector } from 'react-redux';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import AadharVerify from './AadharVerify';
+import { useTranslation } from 'react-i18next';
 
 const KycOptionCards = ({
     panVerified,
@@ -34,6 +35,7 @@ const KycOptionCards = ({
                 </View>
             );
         }
+        const { t } = useTranslation();
  
         const {
             enabled_options = {},
@@ -57,7 +59,7 @@ const KycOptionCards = ({
             // },
             {
                 id: 'pan',
-                label: 'PAN Card KYC',
+                label: t('PAN Card KYC'),
                 icon: require('../../../assets/images/pankyc.png'),
                 verified: panVerified || preVerifiedDocs.pan,
                 enabled: enabled_options.pan,
@@ -207,12 +209,12 @@ const KycOptionCards = ({
                 <View style={{width:'100%'}}>
                     <PoppinsTextMedium
                         style={styles.kycTitle}
-                        content="Complete Your KYC"
+                        content={t("Complete Your KYC")}
                     />
  
                     <PoppinsTextMedium
                         style={styles.kycSubtitle}
-                        content="Complete verification details"
+                        content={t("Complete verification details")}
                     />
  
                     {renderCombinationOptions()}
@@ -234,7 +236,7 @@ const KycOptionCards = ({
                     getKycDynamicFunc={getKycDynamic}
                     optionCard={{
                         id: 'aadhaar',
-                        label: 'Aadhaar KYC',
+                        label: t('Aadhaar KYC'),
                         icon: require('../../../assets/images/aadhaarkyc.png'),
                         verified: aadhaarVerified || preVerifiedDocs.aadhaar,
                         // verified: aadhaarVerified,

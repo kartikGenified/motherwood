@@ -26,6 +26,7 @@ import { useSelector } from "react-redux";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import { Social } from "react-native-share";
 import usePrevious from "../../hooks/usePrevious";
+import { useTranslation } from "react-i18next";
 
 
 const PointsCalculator = () => {
@@ -44,6 +45,7 @@ const PointsCalculator = () => {
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   )
+  const {t} = useTranslation();
   const users = useSelector((state)=>state.appusers.value)
   const preferredOrder = [
     "distributor",
@@ -292,7 +294,7 @@ const PointsCalculator = () => {
         console.log("djkdkdkd", productRows);
       }
       else{
-        alert("Kindly select the user first")
+        alert(t("Kindly select the user first"))
       }
     }
     else{
@@ -391,7 +393,7 @@ const PointsCalculator = () => {
 
   return (
     <View style={styles.container}>
-      <TopHeader title={"Point Calculator"} />
+      <TopHeader title={t("Points Calculator")} />
       {(userData.user_type).toLowerCase() == "sales" &&  
       <View style={{ width:'44%',position:'absolute',top:18,right:10, zIndex:1}}>
        <TouchableOpacity onPress={()=>{
@@ -455,7 +457,7 @@ const PointsCalculator = () => {
         }}
         onPress={handleAddRow}
       >
-        <Text style={{ color: "white", fontSize: 18 }}>+ Add Product</Text>
+        <Text style={{ color: "white", fontSize: 18 }}>{t("+ Add Product")}</Text>
       </TouchableOpacity>
 
      
@@ -473,7 +475,7 @@ const PointsCalculator = () => {
         <View
           style={{ flexDirection: "row", alignItems: "center", marginLeft: 20 }}
         >
-          <Text style={{ color: "white", fontSize: 16 }}>Total Qty : </Text>
+          <Text style={{ color: "white", fontSize: 16 }}>{t("Total Qty")} : </Text>
           <Text style={{ color: "white", fontSize: 16 }}>{totalQty}</Text>
         </View>
         <View
@@ -483,7 +485,7 @@ const PointsCalculator = () => {
             marginRight: 20,
           }}
         >
-          <Text style={{ color: "white", fontSize: 16 }}>Total Points : </Text>
+          <Text style={{ color: "white", fontSize: 16 }}>{t("Total Points")} : </Text>
           <Image
             style={{ height: 20, width: 20, marginHorizontal: 5 }}
             source={require("../../../assets/images/coin.png")}
@@ -511,8 +513,9 @@ const UiList = ({
   onCategoryChange,
   onThicknessChange,
   onQtyChange,
-  row,
+  row
 }) => {
+  const {t} = useTranslation();
   return (
     <View
       style={{
@@ -525,13 +528,13 @@ const UiList = ({
       <View>
         <PoppinsTextLeftMedium
           style={{ color: "black", fontWeight: "bold" }}
-          content={"Product/ SKU"}
+          content={t("Product/ SKU")}
         />
         <View style={{ width: 170, marginRight: 14 }}>
           <DropDownWithSearch
             handleSearchData={handleSearch}
             handleData={onCategoryChange}
-            placeholder={"Select Product"}
+            placeholder={t("Select Product")}
             data={data}
             value={row.category}
           />
@@ -548,13 +551,13 @@ const UiList = ({
         >
           <PoppinsTextLeftMedium
             style={{ color: "black", fontWeight: "bold" }}
-            content={"Thickness"}
+            content={t("Thickness")}
           />
           <View style={{ width: 80 }}>
             <DropDownWithSearch
-              handleSearchData={(t) => handleThicknessSearch(t)}
+              handleSearchData={(text) => handleThicknessSearch(text)}
               handleData={(data) => onThicknessChange(data)}
-              placeholder={"select"}
+              placeholder={t("select")}
               data={thicknessOptions}
               value={row.thickness}
             />
@@ -564,7 +567,7 @@ const UiList = ({
       <View style={{marginLeft:4}}>
         <PoppinsTextMedium
           style={{ color: "black", fontWeight: "bold" }}
-          content={"Qty"}
+          content={t("QTY")}
         />
         <TextInput
           onChangeText={onQtyChange}

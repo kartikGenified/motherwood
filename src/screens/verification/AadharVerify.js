@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
 import WebView from "react-native-webview";
+import { useTranslation } from 'react-i18next';
 import {
   useAadharKycGenerateMutation,
   useAadharKycStatusMutation,
@@ -22,6 +23,7 @@ import Toast from "react-native-toast-message";
 import { useSelector } from "react-redux";
 
 const AadharVerify = (props) => {
+  const { t } = useTranslation();
   const { optionCard, preVerifiedDocs, verifiedAadharDetails, getKycDynamicFunc} = props;
   const [webviewVisible, setWebviewVisible] = React.useState(false);
   const [aadhaarModalVisible, setAadhaarModalVisible] = React.useState(false);
@@ -49,23 +51,23 @@ const AadharVerify = (props) => {
     return (
       <View style={styles.dataBox}>
         <View style={{ flexDirection: "row", width: "90%" }}>
-          <PoppinsTextMedium content="Aadhaar No :" style={styles.dataLabel} />
+          <PoppinsTextMedium content={t("Aadhaar No") + " :"} style={styles.dataLabel} />
           <PoppinsTextMedium content={aadhaar} style={styles.dataValue} />
         </View>
         <View style={{ flexDirection: "row", width: "90%", marginTop: 10 }}>
-          <PoppinsTextMedium content="Name :" style={styles.dataLabel} />
+          <PoppinsTextMedium content={t("name") + " :"} style={styles.dataLabel} />
           <PoppinsTextMedium content={name} style={styles.dataValue} />
         </View>
         <View style={{ flexDirection: "row", width: "90%", marginTop: 10 }}>
-          <PoppinsTextMedium content="DOB :" style={styles.dataLabel} />
+          <PoppinsTextMedium content={t("DOB") + " :"} style={styles.dataLabel} />
           <PoppinsTextMedium content={dob} style={styles.dataValue} />
         </View>
         <View style={{ flexDirection: "row", width: "90%", marginTop: 10 }}>
-          <PoppinsTextMedium content="Gender :" style={styles.dataLabel} />
+          <PoppinsTextMedium content={t("Gender") + " :"} style={styles.dataLabel} />
           <PoppinsTextMedium content={gender} style={styles.dataValue} />
         </View>
         <View style={{ flexDirection: "row", width: "90%", marginTop: 10 }}>
-          <PoppinsTextMedium content="Address:" style={styles.dataLabel} />
+          <PoppinsTextMedium content={t("address") + ":"} style={styles.dataLabel} />
           <PoppinsTextMedium content={address} style={styles.dataValue} />
         </View>
       </View>
@@ -123,13 +125,13 @@ const AadharVerify = (props) => {
           case "0":
             Toast.show({
               type: "error",
-              text1: "Aadhar KYC API call failed. Please try again.",
+              text1: t("Aadhar KYC API call failed. Please try again."),
             });
             break;
           case "1":
             Toast.show({
               type: "success",
-              text1: "Aadhar KYC is verified.",
+              text1: t("Aadhar KYC is verified."),
             });
             setAadharVerified(true);
             getKycDynamicFunc();
@@ -137,19 +139,19 @@ const AadharVerify = (props) => {
           case "2":
             Toast.show({
               type: "info",
-              text1: "Aadhar KYC status is in progress. You can try again.",
+              text1: t("Aadhar KYC status is in progress. You can try again."),
             });
             break;
           case "3":
             Toast.show({
               type: "error",
-              text1: "Aadhar KYC has failed. Please try again.",
+              text1: t("Aadhar KYC has failed. Please try again."),
             });
             break;
           default:
             Toast.show({
               type: "error",
-              text1: "Unknown Aadhar KYC status.",
+              text1: t("Unknown Aadhar KYC status."),
             });
         }
         
@@ -211,7 +213,7 @@ const AadharVerify = (props) => {
               <PoppinsTextMedium
                 style={styles.modalTitle}
                 content={
-                  isPreVerified ? "Your Aadhaar Details" : "Kindly Enter Your Aadhaar Details"
+                  isPreVerified ? t("Your Aadhaar Details") : t("Kindly Enter Your Aadhaar Details")
                 }
               />
               {/* </View> */}
@@ -234,7 +236,7 @@ const AadharVerify = (props) => {
 
                 <PoppinsTextMedium
                   style={styles.preVerifiedText}
-                  content="Your Aadhaar has been verified and cannot be edited"
+                  content={t("Your Aadhaar has been verified and cannot be edited")}
                 />
               </View>
 
@@ -243,7 +245,7 @@ const AadharVerify = (props) => {
               <View style={{}}>
                 <PoppinsTextMedium
                   style={[styles.statusText, { color: "green" }]}
-                  content="✓ Aadhaar verified and submitted successfully"
+                  content={"✓ " + t("Aadhaar verified and submitted successfully")}
                 />
               </View>
 
@@ -259,7 +261,7 @@ const AadharVerify = (props) => {
 
                 <PoppinsTextMedium
                   style={styles.submitButtonText}
-                  content={'Done'}
+                  content={t('Done')}
                 />
               </TouchableOpacity>
             </View>
