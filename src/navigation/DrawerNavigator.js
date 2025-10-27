@@ -1051,12 +1051,12 @@ const CustomDrawer = (props) => {
           )} */}
         </View>
         <PoppinsTextMedium
-          content={`Version : ${currentVersion}`}
+          content={`${t("Version")} : ${currentVersion}`}
           style={{
             position: "absolute",
             bottom: 4,
             right: 10,
-            color: "white",
+            color: "black",
             fontSize: 12,
           }}
         ></PoppinsTextMedium>

@@ -201,7 +201,7 @@ const Setting = ({ navigation }) => {
           </TouchableOpacity>
 
           <PoppinsTextMedium
-            content={`Version : ${currentVersion}`}
+            content={`${t("Version")} : ${currentVersion}`}
             style={{
               color: "black",
               fontSize: 12,

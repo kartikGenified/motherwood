@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Image,
   ScrollView,
@@ -8,11 +9,8 @@ import {
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import { useSelector } from 'react-redux'
-import { useTranslation } from 'react-i18next'
-import PoppinsText from '../../components/electrons/customFonts/PoppinsText'
-import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium'
-import TopHeader from '../../components/topBar/TopHeader'
-import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium'
+import {PoppinsText, PoppinsTextMedium, PoppinsTextLeftMedium } from '@/components/electrons/customFonts'
+import TopHeader from '@/components/topBar/TopHeader'
 
 const GamesMenu = ({ navigation }) => {
   const { t } = useTranslation()
@@ -25,7 +23,7 @@ const GamesMenu = ({ navigation }) => {
       id: 1,
       title: t('Flappy Bird'),
       subtitle: t('Navigate through pipes'),
-      image: require('../../../assets/images/flappy-icon.png'),
+      image: require('@assets/images/flappy-icon.png'),
       colors: ['#FF6B6B', '#FF8E53'],
       route: 'Flappy'
     },
@@ -33,7 +31,7 @@ const GamesMenu = ({ navigation }) => {
       id: 2,
       title: t('Tap The Dot'),
       subtitle: t('Test your reflexes'),
-      image: require('../../../assets/images/target.png'),
+      image: require('@assets/images/target.png'),
       colors: ['#4ECDC4', '#44A08D'],
       route: 'TapTheDot'
     }
