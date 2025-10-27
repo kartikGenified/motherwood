@@ -47,7 +47,7 @@ const Setting = ({ navigation }) => {
     const [selected, setSelected] = useState(false)
     const [selectedIndex, setSelectedIndex] = useState()
     const {languages, selectedLanguage} = useSelector(state => state.appLanguage)
-    // console.log("languages inside the application", languages, selectedLanguage)
+    console.log("languages inside the application", languages, selectedLanguage)
 
     useEffect(() => {
       AsyncStorage.getItem('selectedLanguage').then(language => {

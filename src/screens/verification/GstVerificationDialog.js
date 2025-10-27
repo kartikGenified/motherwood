@@ -13,6 +13,7 @@ import {
     StyleSheet,
 } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/Entypo';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
@@ -36,19 +37,25 @@ const GstVerificationDialog = React.memo(({
     handleVerifyDocKyc,
     gifUri
 }) => {
+        const { t } = useTranslation();
         const ternaryThemeColor = useSelector(
             (state) => state.apptheme.ternaryThemeColor
         ) ? useSelector((state) => state.apptheme.ternaryThemeColor) : "grey";
         
         // const isPreVerified = preVerifiedDocs.gstin || gstVerified; 
         const isPreVerified = preVerifiedDocs.gstin; 
-        const [localGstin, setLocalGstin] = useState(gstin ? gstin : '');
-        const [localBusinessName, setLocalBusinessName] = useState(businessName ? businessName : '');
+        const [localGstin, setLocalGstin] = useState('');
+        const [localBusinessName, setLocalBusinessName] = useState( '');
         const [isVerified, setIsVerified] = useState(isPreVerified);
         const [errorMessage, setErrorMessage] = useState(null);
         const [verifiedApiData, setVerifiedApiData] = useState(null);
         const [hasSubmitted, setHasSubmitted] = useState(false);
         const [isSubmitting, setIsSubmitting] = useState(false);
+
+        useEffect(() => {
+            setLocalBusinessName(businessName ? businessName : '');
+            setLocalGstin(gstin ? gstin : '');
+        }, [businessName, gstin]);
  
         // Reset states when dialog opens
         useEffect(() => {
@@ -114,7 +121,7 @@ const GstVerificationDialog = React.memo(({
  
             if (verifyGstError) {
                 // console.log('GST verification failed:', JSON.stringify(verifyGstError, null, 2));
-                const errorMsg = verifyGstError.data?.message || verifyGstError.message || 'Failed to verify GSTIN';
+                const errorMsg = verifyGstError.data?.message || verifyGstError.message || t('Failed to verify GSTIN');
                 setErrorMessage(errorMsg);
                 setIsVerified(false);
             }
@@ -200,7 +207,7 @@ const GstVerificationDialog = React.memo(({
                         })
                         .catch((error) => {
                             // console.log('GSTIN verify API error:', JSON.stringify(error));
-                            setErrorMessage(error.data?.message || error.message || 'Failed to verify GSTIN');
+                            setErrorMessage(error.data?.message || error.message || t('Failed to verify GSTIN'));
                             setIsVerified(false);
                         });
                 }
@@ -233,13 +240,13 @@ const GstVerificationDialog = React.memo(({
  
         // Determine button text
         const getButtonText = useCallback(() => {
-            if (verifyGstIsLoading) return "Verifying...";
-            if (isSubmitting) return "Submitting...";
-            if (hasSubmitted) return "Done";
-            if (isVerified) return "Submit Verification";
-            if (isPreVerified) return "Done";
-            return "Verify GSTIN";
-        }, [verifyGstIsLoading, isSubmitting, hasSubmitted, isVerified, isPreVerified]);
+            if (verifyGstIsLoading) return t("Verifying...");
+            if (isSubmitting) return t("Submitting...");
+            if (hasSubmitted) return t("Done");
+            if (isVerified) return t("Submit Verification");
+            if (isPreVerified) return t("Done");
+            return t("Verify GSTIN");
+        }, [verifyGstIsLoading, isSubmitting, hasSubmitted, isVerified, isPreVerified, t]);
  
         return (
             <Modal
@@ -269,14 +276,14 @@ const GstVerificationDialog = React.memo(({
                             {/* Title */}
                             <PoppinsTextMedium
                                 style={styles.modalTitle}
-                                content={isPreVerified ? "GSTIN Already Verified" : "Kindly Enter Your GSTIN Details"}
+                                content={isPreVerified ? t("GSTIN Already Verified") : t("Kindly Enter Your GSTIN Details")}
                             />
  
                             <Image style={styles.documentImage} source={require("../../../assets/images/gstindummy.jpeg")} />
  
                             {/* GSTIN Input */}
                             <View style={styles.inputContainer}>
-                                <PoppinsTextMedium style={styles.inputLabel} content="Enter GSTIN" />
+                                <PoppinsTextMedium style={styles.inputLabel} content={t("Enter GSTIN")} />
                                 <View style={styles.inputWrapper}>
                                     <TextInput
                                         maxLength={15}
@@ -307,13 +314,13 @@ const GstVerificationDialog = React.memo(({
  
                             {/* Business Name */}
                             <View style={styles.inputContainer}>
-                                <PoppinsTextMedium style={styles.inputLabel} content="Business Name" />
+                                <PoppinsTextMedium style={styles.inputLabel} content={t("Business Name")} />
                                 <View style={styles.inputWrapper}>
                                     <TextInput
                                         value={localBusinessName}
                                         onChangeText={handleBusinessNameChange}
                                         style={[styles.inputField, (isPreVerified || isVerified) && styles.disabledInput]}
-                                        placeholder="Enter Business Name"
+                                        placeholder={t("Enter Business Name")}
                                         placeholderTextColor="#999"
                                         editable={!isPreVerified && !isVerified}
                                     />
@@ -325,12 +332,12 @@ const GstVerificationDialog = React.memo(({
                             {(isVerified || isPreVerified) && (
                                 <View style={[styles.dataBox, { marginBottom: 20 }]}>
                                     <View style={{ flexDirection: "row", width: "100%" }}>
-                                        <PoppinsTextMedium content="GSTIN:" style={styles.dataLabel} />
+                                        <PoppinsTextMedium content={t("GSTIN") + ":"} style={styles.dataLabel} />
                                         <PoppinsTextMedium content={localGstin} style={styles.dataValue} />
                                     </View>
                                     <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
                                         <Text>
-                                        <PoppinsTextMedium content="Business Name:" style={styles.dataLabel} />
+                                        <PoppinsTextMedium content={t("Business Name") + ":"} style={styles.dataLabel} />
                                         <PoppinsTextMedium
                                             content={localBusinessName}
                                             style={styles.dataValue}
@@ -339,14 +346,14 @@ const GstVerificationDialog = React.memo(({
                                     </View>
                                     {isPreVerified && (
                                         <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
-                                            <PoppinsTextMedium content="Status:" style={styles.dataLabel} />
-                                            <PoppinsTextMedium content="Verified ✓" style={[styles.dataValue, { color: 'green' }]} />
+                                            <PoppinsTextMedium content={t("Status") + ":"} style={styles.dataLabel} />
+                                            <PoppinsTextMedium content={t("Verified") + " ✓"} style={[styles.dataValue, { color: 'green' }]} />
                                         </View>
                                     )}
                                     {hasSubmitted && (
                                         <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
-                                            <PoppinsTextMedium content="Submission:" style={styles.dataLabel} />
-                                            <PoppinsTextMedium content="Submitted ✓" style={[styles.dataValue, { color: 'green' }]} />
+                                            <PoppinsTextMedium content={t("Submission") + ":"} style={styles.dataLabel} />
+                                            <PoppinsTextMedium content={t("Submitted") + " ✓"} style={[styles.dataValue, { color: 'green' }]} />
                                         </View>
                                     )}
                                 </View>
@@ -357,7 +364,7 @@ const GstVerificationDialog = React.memo(({
                                 <View style={styles.statusContainer}>
                                     <PoppinsTextMedium
                                         style={[styles.statusText, { color: 'green' }]}
-                                        content="✓ GSTIN verified and submitted successfully"
+                                        content={"✓ "+t("GSTIN verified and submitted successfully")}
                                     />
                                 </View>
                             )}

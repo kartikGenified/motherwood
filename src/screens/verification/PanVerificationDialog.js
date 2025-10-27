@@ -13,6 +13,7 @@ import {
     StyleSheet,
 } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/Entypo';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
@@ -34,6 +35,7 @@ const PanVerificationDialog = (({
     handleVerifyDocKyc,
     gifUri
 }) => {
+        const { t } = useTranslation();
         const ternaryThemeColor = useSelector(
             (state) => state.apptheme.ternaryThemeColor
         ) ? useSelector((state) => state.apptheme.ternaryThemeColor) : "grey";
@@ -99,7 +101,7 @@ const PanVerificationDialog = (({
  
             if (verifyPanError) {
                 console.log('PAN verification failed:', JSON.stringify(verifyPanError, null, 2));
-                const errorMsg = verifyPanError.data?.message || verifyPanError.message || 'Failed to verify PAN';
+                const errorMsg = verifyPanError.data?.message || verifyPanError.message || t('Failed to verify PAN');
                 setErrorMessage(errorMsg);
                 setIsVerified(false);
             }
@@ -171,7 +173,7 @@ const PanVerificationDialog = (({
                         })
                         .catch((error) => {
                             console.log('PAN verify API error:', JSON.stringify(error));
-                            setErrorMessage(error.data?.message || error.message || 'Failed to verify PAN');
+                            setErrorMessage(error.data?.message || error.message || t('Failed to verify PAN'));
                             setIsVerified(false);
                         });
                 }
@@ -205,13 +207,13 @@ const PanVerificationDialog = (({
  
         // Determine button text
         const getButtonText = useCallback(() => {
-            if (verifyPanIsLoading) return "Verifying...";
-            if (isSubmitting) return "Submitting...";
-            if (hasSubmitted) return "Done";
-            if (isVerified) return "Submit Verification";
-            if (isPreVerified) return "Done";
-            return "Verify PAN";
-        }, [verifyPanIsLoading, isSubmitting, hasSubmitted, isVerified, isPreVerified]);
+            if (verifyPanIsLoading) return t("Verifying...");
+            if (isSubmitting) return t("Submitting...");
+            if (hasSubmitted) return t("Done");
+            if (isVerified) return t("Submit Verification");
+            if (isPreVerified) return t("Done");
+            return t("Verify PAN");
+        }, [verifyPanIsLoading, isSubmitting, hasSubmitted, isVerified, isPreVerified, t]);
  
         return (
             <Modal
@@ -241,7 +243,7 @@ const PanVerificationDialog = (({
                             {/* Title */}
                             <PoppinsTextMedium
                                 style={styles.modalTitle}
-                                content={isPreVerified ? "PAN Already Verified" : "Kindly Enter Your PAN Details"}
+                                content={isPreVerified ? t("PAN Already Verified") : t("Kindly Enter Your PAN Details")}
                             />
  
                         <Image
@@ -252,7 +254,7 @@ const PanVerificationDialog = (({
  
                             {/* PAN Input */}
                             <View style={styles.inputContainer}>
-                                <PoppinsTextMedium style={styles.inputLabel} content="Enter PAN" />
+                                <PoppinsTextMedium style={styles.inputLabel} content={t("Enter PAN")} />
                                 <View style={styles.inputWrapper}>
                                     <TextInput
                                         maxLength={10}
@@ -283,13 +285,13 @@ const PanVerificationDialog = (({
  
                             {/* Name */}
                             <View style={styles.inputContainer}>
-                                <PoppinsTextMedium style={styles.inputLabel} content="Name" />
+                                <PoppinsTextMedium style={styles.inputLabel} content={t("name")} />
                                 <View style={styles.inputWrapper}>
                                     <TextInput
                                         value={localName}
                                         onChangeText={handleNameChange}
                                         style={[styles.inputField, (isPreVerified || isVerified) && styles.disabledInput]}
-                                        placeholder="Enter Name"
+                                        placeholder={t("Enter Name")}
                                         placeholderTextColor="#999"
                                         editable={!isPreVerified && !isVerified}
                                     />
@@ -302,11 +304,11 @@ const PanVerificationDialog = (({
                             {(isVerified || isPreVerified) && (
                                 <View style={[styles.dataBox, { marginBottom: 20 }]}>
                                     <View style={{ flexDirection: "row", width: "100%" }}>
-                                        <PoppinsTextMedium content="PAN: " style={styles.dataLabel} />
+                                        <PoppinsTextMedium content={t("PAN") + ": "} style={styles.dataLabel} />
                                         <PoppinsTextMedium content={localPan} style={styles.dataValue} />
                                     </View>
                                     <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
-                                        <PoppinsTextMedium content="Name: " style={styles.dataLabel} />
+                                        <PoppinsTextMedium content={t("name") + ": "} style={styles.dataLabel} />
                                         <PoppinsTextMedium
                                             content={localName}
                                             style={[styles.dataValue, { flex: 1, flexWrap: 'wrap' }]}
@@ -314,14 +316,14 @@ const PanVerificationDialog = (({
                                     </View>
                                     {isPreVerified && (
                                         <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
-                                            <PoppinsTextMedium content="Status:" style={styles.dataLabel} />
-                                            <PoppinsTextMedium content="Verified ✓" style={[styles.dataValue, { color: 'green' }]} />
+                                            <PoppinsTextMedium content={t("Status") + ":"} style={styles.dataLabel} />
+                                            <PoppinsTextMedium content={t("Verified") + " ✓"} style={[styles.dataValue, { color: 'green' }]} />
                                         </View>
                                     )}
                                     {hasSubmitted && (
                                         <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
-                                            <PoppinsTextMedium content="Submission:" style={styles.dataLabel} />
-                                            <PoppinsTextMedium content="Submitted ✓" style={[styles.dataValue, { color: 'green' }]} />
+                                            <PoppinsTextMedium content={t("Submission") + ":"} style={styles.dataLabel} />
+                                            <PoppinsTextMedium content={t("Submitted") + " ✓"} style={[styles.dataValue, { color: 'green' }]} />
                                         </View>
                                     )}
                                 </View>
@@ -331,7 +333,7 @@ const PanVerificationDialog = (({
                                 <View style={styles.statusContainer}>
                                     <PoppinsTextMedium
                                         style={[styles.statusText, { color: 'green' }]}
-                                        content="✓ PAN verified and submitted successfully"
+                                        content={"✓ " +t("PAN verified and submitted successfully")}
                                     />
                                 </View>
                             )}

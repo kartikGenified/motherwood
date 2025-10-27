@@ -13,6 +13,7 @@ import {
     View,
 } from "react-native";
 import { GameEngine } from "react-native-game-engine";
+import { useTranslation } from 'react-i18next';
 
 import Bird from "./Bird";
 import Pipe from "./Pipe";
@@ -38,6 +39,7 @@ import {
 // Extend Matter.Body type to include our custom properties
 
 function Flappy({ navigation }) {
+    const { t } = useTranslation();
     const [gameState, setGameState] = useState(GAME_STATES.READY);
     const [score, setScore] = useState(0);
     const [highScore, setHighScore] = useState(0);
@@ -380,8 +382,8 @@ function Flappy({ navigation }) {
                                 <View style={styles.readyContainer}>
                                     <Text style={[styles.readyText, styles.textShadow]}>
                                         {__DEV__ && Platform.OS === "ios"
-                                            ? "Tap or Press Space to Start"
-                                            : "Tap to Start"}
+                                            ? t("Tap or Press Space to Start")
+                                            : t("Tap to Start")}
                                     </Text>
                                 </View>
                             )}
@@ -390,14 +392,14 @@ function Flappy({ navigation }) {
                             )}
                             {gameState === GAME_STATES.GAME_OVER && (
                                 <View style={styles.gameOverContainer}>
-                                    <Text style={[styles.gameOverText, styles.textShadow]}>Game Over</Text>
-                                    <Text style={[styles.scoreText, styles.textShadow]}>Score: {score}</Text>
+                                    <Text style={[styles.gameOverText, styles.textShadow]}>{t('Game Over')}</Text>
+                                    <Text style={[styles.scoreText, styles.textShadow]}>{t('Score')}: {score}</Text>
                                     <Text style={[styles.highScoreText, styles.textShadow]}>
-                                        High Score: {highScore}
+                                        {t('High Score')}: {highScore}
                                     </Text>
                                     <TouchableWithoutFeedback onPress={handleRestart}>
                                         <View style={styles.restartButton}>
-                                            <Text style={[styles.restartButtonText, styles.textShadow]}>Restart</Text>
+                                            <Text style={[styles.restartButtonText, styles.textShadow]}>{t('Restart')}</Text>
                                         </View>
                                     </TouchableWithoutFeedback>
                                 </View>

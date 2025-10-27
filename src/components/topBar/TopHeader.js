@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 
 // create a component
-const TopHeader = ({title}) => {
+const TopHeader = ({title, transparent}) => {
 
     const ternaryThemeColor = useSelector(
         (state) => state.apptheme.ternaryThemeColor
@@ -28,7 +28,7 @@ const TopHeader = ({title}) => {
         style={{
           height: 70,
           width: "100%",
-          backgroundColor: secondaryThemeColor,
+          backgroundColor: transparent ? "transparent" : secondaryThemeColor,
           alignItems: "center",
           justifyContent: "center",
           flexDirection: "row",

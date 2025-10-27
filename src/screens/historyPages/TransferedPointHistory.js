@@ -453,7 +453,7 @@ const TransferredPointHistory = ({ navigation }) => {
             }}
           >
             <PoppinsTextMedium
-              content="SUBMIT"
+              content={t("SUBMIT")}
               style={{ color: "white", fontSize: 20, borderRadius: 10 }}
             ></PoppinsTextMedium>
           </TouchableOpacity>
@@ -480,7 +480,7 @@ const TransferredPointHistory = ({ navigation }) => {
             left: 10,
             color: "black",
           }}
-          content="Transfers Overview"
+          content={t("Transfers Overview")}
         ></PoppinsTextMedium>
 
         <TouchableOpacity
@@ -599,7 +599,7 @@ const TransferredPointHistory = ({ navigation }) => {
         ></PoppinsTextMedium>
              <PoppinsTextMedium
           style={{ fontWeight: "400", fontSize: 12, color: "black" }}
-          content={`${t(" | Quantity")} : ${quantity}`}
+          content={` | ${t("Quantity")} : ${quantity}`}
         ></PoppinsTextMedium>
 
         </View>
@@ -630,7 +630,7 @@ const TransferredPointHistory = ({ navigation }) => {
         height: "100%",
       }}
     >
-      <TopHeader title={"Transferred Points Summary"} />
+      <TopHeader title={t("Transferred Points Summary")} />
 
       <View
         style={{
@@ -650,7 +650,7 @@ const TransferredPointHistory = ({ navigation }) => {
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontWeight: "700", fontSize: 14 }}
-              content={"Transferable Points"}
+              content={t("Transferable Points")}
             ></PoppinsTextLeftMedium>
           </View>
           {
@@ -661,7 +661,7 @@ const TransferredPointHistory = ({ navigation }) => {
           }}>
                        <Image style={{ height: 20, width: 20, resizeMode: "contain" }} source={require('../../../assets/images/gg.png')}></Image>
 
-              <PoppinsTextMedium style={{color:'white', fontSize:14, fontWeight:'600',marginLeft:8}} content={"Points Transfer"}></PoppinsTextMedium>
+              <PoppinsTextMedium style={{color:'white', fontSize:14, fontWeight:'600',marginLeft:8}} content={t("Points Transfer")}></PoppinsTextMedium>
           </TouchableOpacity>
           }
         

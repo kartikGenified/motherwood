@@ -503,7 +503,7 @@ const ExtraPointHistory = ({ navigation }) => {
             left: 10,
             color: "black",
           }}
-          content="Orders Overview"
+          content={t("Orders Overview")}
         ></PoppinsTextMedium>
 
         {/* <TouchableOpacity
@@ -680,7 +680,7 @@ const ExtraPointHistory = ({ navigation }) => {
         height: "100%",
       }}
     >
-      <TopHeader title={"Bonus Point Summary"} />
+      <TopHeader title={t("Bonus Points Summary")} />
       {error && navigateTo && (
         <ErrorModal
           modalClose={modalClose}
