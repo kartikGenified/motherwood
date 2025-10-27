@@ -393,23 +393,23 @@ const FeedbackProducts = ({ navigation }) => {
         </View>
         {/* Cascading Category and Thickness Dropdowns */}
         <View style={{ width: '90%', marginTop: 20 }}>
-          <PoppinsTextMedium style={{ color: 'black', fontWeight: '600', marginBottom: 5, fontSize:16 }} content={"Select Category"} />
+          <PoppinsTextMedium style={{ color: 'black', fontWeight: '600', marginBottom: 5, fontSize:16 }} content={t("Select Category")} />
           <DropDownWithSearch
             handleSearchData={(t) => handleSearchCategory(t)}
             data={categoryOptions}
             value={category}
             handleData={handleCategoryChange}
-            placeholder={"Select Category"}
+            placeholder={t("Select Category")}
           />
         </View>
         <View style={{ width: '90%', marginTop: 10 , marginBottom:10}}>
-          <PoppinsTextMedium style={{ color: 'black', fontWeight: '600', marginBottom: 5 , fontSize:16, marginTop:10}} content={"Select Thickness"} />
+          <PoppinsTextMedium style={{ color: 'black', fontWeight: '600', marginBottom: 5 , fontSize:16, marginTop:10}} content={t("Select Thickness")} />
           <DropDownWithSearch
             handleSearchData={(t) => handleSearchThickness(t)}
             data={thicknessOptions}
             value={thickness}
             handleData={handleThicknessChange}
-            placeholder={"Select Thickness"}
+            placeholder={t("Select Thickness")}
           />
         </View>
         {uploadedImage && 
@@ -442,7 +442,7 @@ const FeedbackProducts = ({ navigation }) => {
           ></Image>
           <PoppinsTextMedium
             style={{ marginTop: 10, color: "black" }}
-            content={"Upload Image"}
+            content={t("Upload Image")}
           ></PoppinsTextMedium>
         </TouchableOpacity>
 
@@ -458,7 +458,7 @@ const FeedbackProducts = ({ navigation }) => {
                   fontWeight: "600",
                   marginTop: 20,
                 }}
-                content={t(`how would you rate ${clientOfficialName} App`)}
+                content={t("how would you rate {{appName}} App", { appName: clientOfficialName })}
               ></PoppinsTextMedium>
             </View>
 
@@ -494,7 +494,7 @@ const FeedbackProducts = ({ navigation }) => {
 
           <View style={{ marginHorizontal: "5%" , marginBottom:30}}>
             <ButtonWithPlane
-              title={t("submit")}
+              title={t("SUBMIT")}
               navigate=""
               plane={false}
               type={"feedback"}

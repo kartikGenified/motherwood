@@ -18,6 +18,7 @@ import DeleteModal from "../../components/modals/DeleteModal";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import { removeCachingLogic } from "../../utils/removeCachingLogic";
 import i18n from "../common/i18n";
+import { useTranslation } from "react-i18next";
 
 
 const languageMap = {
@@ -41,6 +42,7 @@ const Setting = ({ navigation }) => {
   const hideModal = () => {
     setShowDeleteModal(false);
   };
+  const { t } = useTranslation();
 
 
   const LanguageBar = () => {
@@ -72,7 +74,7 @@ const Setting = ({ navigation }) => {
 
     return (
       <View style={{ width: '90%', margin: 4 }}>
-        <PoppinsTextLeftMedium content="Select Language" style={{ color: '#716C6C', fontSize: 14, fontWeight: '700' }}></PoppinsTextLeftMedium>
+        <PoppinsTextLeftMedium content={t("Select Language")} style={{ color: '#716C6C', fontSize: 14, fontWeight: '700' }}></PoppinsTextLeftMedium>
 
         <FlatList
           data={languages}
@@ -127,7 +129,7 @@ const Setting = ({ navigation }) => {
           ></Image>
         </TouchableOpacity>
         <PoppinsTextMedium
-          content="Settings"
+          content={t("Settings")}
           style={{
             marginLeft: 10,
             fontSize: 16,
@@ -188,7 +190,7 @@ const Setting = ({ navigation }) => {
             removeCachingLogic()
           }} style={{ height: 40, width: 100, backgroundColor: "#B6202D", borderRadius: 30, alignItems: "center", justifyContent: 'center' }}>
             <PoppinsTextMedium
-              content="Log Out"
+              content={t("Log Out")}
               style={{
                 marginLeft: 10,
                 fontSize: 13,
