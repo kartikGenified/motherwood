@@ -9,12 +9,14 @@ import Close from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
+import { useTranslation } from "react-i18next";
 
 const EventModal = (props) => {
 
   const {selectedEvent, modalVisible, setModalVisible} = props
   const secondaryThemeColor = useSelector(state=>state.apptheme.secondaryThemeColor)
   const ternaryThemeColor = useSelector(state=>state.apptheme.ternaryThemeColor)
+  const { t } = useTranslation();
 
  const ref = React.useRef(null);
   const progress = useSharedValue(0);
@@ -82,9 +84,9 @@ const EventModal = (props) => {
           >
             <PoppinsTextMedium style={{color:'white'}} content={selectedEvent?.title} />
             <PoppinsTextLeftMedium style={{color:'white'}} content={selectedEvent?.description} />
-            <PoppinsTextLeftMedium style={{color:'white'}} content={selectedEvent?.created_by_name ? `Created By : ${selectedEvent.created_by_name}` : ""} />
-            <PoppinsTextLeftMedium style={{color:'white'}} content={selectedEvent?.start_date ? `Start Date : ${new dayjs(selectedEvent.start_date).format('DD MMM YYYY')}` : ""} />
-            <PoppinsTextLeftMedium style={{color:'white'}} content={selectedEvent?.end_date ? `End Date : ${new dayjs(selectedEvent.end_date).format('DD MMM YYYY')}` : ""} />
+            <PoppinsTextLeftMedium style={{color:'white'}} content={selectedEvent?.created_by_name ? `${t("Created By")} : ${selectedEvent.created_by_name}` : ""} />
+            <PoppinsTextLeftMedium style={{color:'white'}} content={selectedEvent?.start_date ? `${t("Start Date")} : ${new dayjs(selectedEvent.start_date).format('DD MMM YYYY')}` : ""} />
+            <PoppinsTextLeftMedium style={{color:'white'}} content={selectedEvent?.end_date ? `${t("End Date")} : ${new dayjs(selectedEvent.end_date).format('DD MMM YYYY')}` : ""} />
           </View>
         </View>
       </View>

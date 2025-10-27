@@ -184,12 +184,12 @@ const fetchMediaData = async () => {
           <TouchableOpacity onPress={()=>{
             setSelected("current")
           }} style={{width:'49%',alignItems:'center', justifyContent:'center',height:40,borderBottomWidth:selected == "current" ? 2 : 0, borderColor:selected == "current" ? ternaryThemeColor : ""}}>
-            <PoppinsTextLeftMedium content="Events" style={{color:"black",fontSize:16, fontWeight:'600'}}></PoppinsTextLeftMedium>
+            <PoppinsTextLeftMedium content={t("Events")} style={{color:"black",fontSize:16, fontWeight:'600'}}></PoppinsTextLeftMedium>
           </TouchableOpacity>
           <TouchableOpacity onPress={()=>{
             setSelected("upcoming")
           }} style={{width:'49%',alignItems:'center', justifyContent:'center',height:40,borderBottomWidth:selected == "upcoming" ? 2 : 0, borderColor:selected == "upcoming" ? ternaryThemeColor : ""}}>
-            <PoppinsTextLeftMedium content="Upcoming Events" style={{color:"black",fontSize:16, fontWeight:'600'}}></PoppinsTextLeftMedium>
+            <PoppinsTextLeftMedium content={t("Upcoming Events")} style={{color:"black",fontSize:16, fontWeight:'600'}}></PoppinsTextLeftMedium>
           </TouchableOpacity>
       </View>
 

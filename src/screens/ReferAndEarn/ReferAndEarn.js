@@ -150,12 +150,12 @@ const ReferAndEarn = ({ navigation }) => {
     else{
       const showAlert = () => {
         Alert.alert(
-          'Unable to refer',
-          'Your approval from sales end is pending',
+          t('Unable to refer'),
+          t('Your approval from sales end is pending'),
           [
             
             {
-              text: 'OK',
+              text: t('OK'),
               onPress: () => console.log('OK Pressed'),
             },
           ],
@@ -173,7 +173,7 @@ const ReferAndEarn = ({ navigation }) => {
       <View style={{ alignItems: "center", justifyContent: 'center', width: '100%', marginTop: 20, marginBottom: 20 }}>
 
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", width: '100%', padding: 10 }}>
-          <PoppinsTextMedium style={{ color: '#171717', fontSize: 16, marginRight: 40, fontWeight: '700' }} content="Share Your Referral"></PoppinsTextMedium>
+          <PoppinsTextMedium style={{ color: '#171717', fontSize: 16, marginRight: 40, fontWeight: '700' }} content={t("Share Your Referral")}></PoppinsTextMedium>
           <TouchableOpacity onPress={() => { setOpenBottomReferModal(false) }}>
             <Cancel style={{ marginLeft: 120 }} name="cancel" size={30} color={ternaryThemeColor}></Cancel>
           </TouchableOpacity>
@@ -185,7 +185,7 @@ const ReferAndEarn = ({ navigation }) => {
 
           }} style={{ height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center' }}>
             <Whatsapp name="whatsapp" size={30} color="green"></Whatsapp>
-            <PoppinsTextMedium style={{ color: 'green', marginTop: 4, fontWeight: '600', fontSize: 12 }} content="WhatsApp"></PoppinsTextMedium>
+            <PoppinsTextMedium style={{ color: 'green', marginTop: 4, fontWeight: '600', fontSize: 12 }} content={t("WhatsApp")}></PoppinsTextMedium>
           </TouchableOpacity>
           <TouchableOpacity onPress={async () => {
 
@@ -193,7 +193,7 @@ const ReferAndEarn = ({ navigation }) => {
 
           }} style={{ height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center' }}>
             <Error name="message-square" size={30} color="#FF9100"></Error>
-            <PoppinsTextMedium style={{ color: '#FF9100', marginTop: 4, fontWeight: '600', fontSize: 12 }} content="SMS"></PoppinsTextMedium>
+            <PoppinsTextMedium style={{ color: '#FF9100', marginTop: 4, fontWeight: '600', fontSize: 12 }} content={t("SMS")}></PoppinsTextMedium>
           </TouchableOpacity>
           <TouchableOpacity onPress={async () => {
 
@@ -201,7 +201,7 @@ const ReferAndEarn = ({ navigation }) => {
 
           }} style={{ height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center' }}>
             <Facebook name="facebook" size={30} color="blue"></Facebook>
-            <PoppinsTextMedium style={{ color: 'blue', marginTop: 4, fontWeight: '600', fontSize: 12 }} content="Facebook"></PoppinsTextMedium>
+            <PoppinsTextMedium style={{ color: 'blue', marginTop: 4, fontWeight: '600', fontSize: 12 }} content={t("Facebook")}></PoppinsTextMedium>
           </TouchableOpacity>
         </View>
       </View>
@@ -212,7 +212,7 @@ const ReferAndEarn = ({ navigation }) => {
       <View style={{ alignItems: "center", justifyContent: 'center', width: '100%' }}>
 
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", width: '100%', padding: 10 }}>
-          <PoppinsTextMedium style={{ color: '#171717', fontSize: 16, marginRight: 40, fontWeight: '700' }} content="Invitation Rules"></PoppinsTextMedium>
+          <PoppinsTextMedium style={{ color: '#171717', fontSize: 16, marginRight: 40, fontWeight: '700' }} content={t("Invitation Rules")}></PoppinsTextMedium>
           <TouchableOpacity onPress={() => { setOpenBottomInvitationModal(false) }}>
             <Cancel style={{ marginLeft: 120 }} name="cancel" size={30} color={ternaryThemeColor}></Cancel>
           </TouchableOpacity>
@@ -294,7 +294,7 @@ const ReferAndEarn = ({ navigation }) => {
             source={require('../../../assets/images/blackBack.png')}></Image>
         </TouchableOpacity>
         <PoppinsTextMedium
-          content="Refer & Earn"
+          content={t("Refer & Earn")}
           style={{
             marginLeft: 10,
             fontSize: 16,
@@ -318,7 +318,7 @@ const ReferAndEarn = ({ navigation }) => {
           }}>
           <PoppinsTextMedium
             style={{ color: 'white', fontSize: 16 }}
-            content="My Bonus"></PoppinsTextMedium>
+            content={t("My Bonus")}></PoppinsTextMedium>
           <Image
             style={{
               height: 20,
@@ -352,7 +352,7 @@ const ReferAndEarn = ({ navigation }) => {
               fontWeight: '700',
               width: '80%',
             }}
-            content="Refer to your friend and Get a Point"></PoppinsText>
+            content={t("refer to your friend and get a point")}></PoppinsText>
           <View
             style={{
               width: '80%',
@@ -362,7 +362,7 @@ const ReferAndEarn = ({ navigation }) => {
             }}>
             <PoppinsText
               style={{ color: 'black', fontSize: 18, fontWeight: '700' }}
-              content="Reward of"></PoppinsText>
+              content={t("Reward of")}></PoppinsText>
             <Image
               style={{ height: 14, width: 14, resizeMode: 'contain', margin: 4 }}
               source={require('../../../assets/images/coin.png')}></Image>
@@ -372,11 +372,11 @@ const ReferAndEarn = ({ navigation }) => {
           </View>
           <PoppinsTextMedium
             style={{ color: '#525252', fontSize: 15, width: '80%', marginTop: 20 }}
-            content={`Share this link with your friend and after they install, you will get ${rewardAmount} points rewards.`}></PoppinsTextMedium>
+            content={`${t("Share this link with your friend and after they install, you will get")} ${rewardAmount} ${t("points rewards")}.`}></PoppinsTextMedium>
           <TouchableOpacity
             style={{
               padding: 10,
-              borderColor: '#CDCDCD',
+              borderColor: '#ßCDCDCD',
               borderWidth: 1,
               borderStyle: 'dashed',
               flexDirection: 'row',
@@ -409,7 +409,7 @@ const ReferAndEarn = ({ navigation }) => {
                 fontWeight: '500',
                 marginTop: 10
               }}
-              content="To understand how referral works."></PoppinsTextMedium>
+              content={t("To understand how referral works.")}></PoppinsTextMedium>
             <TouchableOpacity onPress={() => { setOpenBottomInvitationModal(!openBottomInvitationModal) }}>
               <PoppinsTextMedium
                 style={{
@@ -418,26 +418,26 @@ const ReferAndEarn = ({ navigation }) => {
                   fontWeight: '700',
 
                 }}
-                content="View Invitation Rules"></PoppinsTextMedium>
+                content={t("View Invitation Rules")}></PoppinsTextMedium>
             </TouchableOpacity> */}
 
             <View style={{ height: 100, borderRadius: 10, width: '100%', alignItems: "center", justifyContent: "center", flexDirection: "row", backgroundColor: "#F2F3F5", marginTop: 20 }}>
               <View style={{ alignItems: "center", justifyContent: "center",width:'33%' }}>
                 <Icon name="copy-sharp" size={20} color="#7C7979"></Icon>
-                <PoppinsTextMedium style={{ color: "#7C7979", marginTop: 6, fontSize: 12 }} content="Copy Link"></PoppinsTextMedium>
+                <PoppinsTextMedium style={{ color: "#7C7979", marginTop: 6, fontSize: 12 }} content={t("Copy Link")}></PoppinsTextMedium>
               </View>
               <View style={{ alignItems: "center", justifyContent: "center",width:'33%' }}>
                 <Image style={{ height: 20, width: 20, resizeMode: 'contain' }} source={require('../../../assets/images/circularTickGrey.png')}></Image>
-                <PoppinsTextMedium style={{ color: "#7C7979", marginTop: 6, width: 100, fontSize: 12 }} content="Friend Registered Successfully"></PoppinsTextMedium>
+                <PoppinsTextMedium style={{ color: "#7C7979", marginTop: 6, width: 100, fontSize: 12 }} content={t("Friend Registered Successfully")}></PoppinsTextMedium>
               </View>
               <View style={{ alignItems: "center", justifyContent: "center",width:'33%'}}>
                 <Image style={{ height: 20, width: 20, resizeMode: 'contain' }} source={require('../../../assets/images/coinStack.png')}></Image>
-                <PoppinsTextMedium style={{ color: "#7C7979", marginTop: 6, fontSize: 12 }} content="Earn Points Rewards"></PoppinsTextMedium>
+                <PoppinsTextMedium style={{ color: "#7C7979", marginTop: 6, fontSize: 12 }} content={t("Earn Points Rewards")}></PoppinsTextMedium>
               </View>
             </View>
           </View>
           <View style={{ alignItems: "center", justifyContent: 'center', marginTop: 40, width: '100%', backgroundColor: "white", paddingBottom: 20 }}>
-            <ButtonRectangle handleOperation={handleProceedButton} style={{ color: 'white' }} backgroundColor="#171717" content="Refer Friend"></ButtonRectangle>
+            <ButtonRectangle handleOperation={handleProceedButton} style={{ color: 'white' }} backgroundColor="#171717" content={t("Refer Friend")}></ButtonRectangle>
 
           </View>
         </View>
