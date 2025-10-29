@@ -205,7 +205,7 @@ const AddAddress = ({ navigation }) => {
         console.log("addAddressFunc",params)
         !check && addAddressFunc(params);
         !check && setHideButton(true);
-        check && alert("fields cant be empty");
+        check && alert(t("fields cant be empty"));
       } else {
         console.log("response Array is empty");
       }
@@ -266,8 +266,8 @@ const AddAddress = ({ navigation }) => {
               type: "text",
             }}
             handleData={handleChildComponentData}
-            placeHolder={"House Number"}
-            label={"House Number"}
+            placeHolder={t("House Number")}
+            label={t("House Number")}
           ></PrefilledTextInput>
 
           <PrefilledTextInput
@@ -280,8 +280,8 @@ const AddAddress = ({ navigation }) => {
               type: "text",
             }}
             handleData={handleChildComponentData}
-            placeHolder={"Street"}
-            label={"Street"}
+            placeHolder={t("Street")}
+            label={t("Street")}
           ></PrefilledTextInput>
 
           <PincodeTextInput
@@ -295,9 +295,9 @@ const AddAddress = ({ navigation }) => {
             }}
             handleData={handleChildComponentData}
             handleFetchPincode={handleFetchPincode}
-            placeHolder={"PostCode"}
+            placeHolder={t("PostCode")}
             value={location?.postcode}
-            label={"PostCOde"}
+            label={t("PostCode")}
             maxLength={6}
           ></PincodeTextInput>
           <PrefilledTextInput

@@ -16,12 +16,13 @@ import NotificationModal from './src/components/modals/NotificationModal';
 import notifee from '@notifee/react-native';
 import { navigate } from './src/utils/notifications/navigationService';
 import Toast from 'react-native-toast-message';
+import { useTranslation } from 'react-i18next';
 const App = () => {
   const [notifModal, setNotifModal] = useState(false)
   const [notifData, setNotifData] = useState(null)
   const [notificationBody, setNotificationBody] = useState()
 
-
+  const { t } = useTranslation();
   console.log("Version check",JSON.stringify(VersionCheck.getPlayStoreUrl({ packageName: 'com.genefied.motherwood' })))
   useEffect(() => {
     console.log("inside onmessage use effect")
@@ -76,11 +77,11 @@ const App = () => {
             console.log("current verison and new version,",currentVersion, latestVersion)
             if (latestVersion > currentVersion) {
               Alert.alert(
-                'Update Required',
-    'A new version of the app is available. Please update to continue using the app.',
+                t('Update Required'),
+                t('A new version of the app is available. Please update to continue using the app.'),
                 [
                   {
-                    text: 'Update Now',
+                    text: t('Update Now'),
                     onPress: () => {
                       Linking.openURL(
                         Platform.OS === 'ios'

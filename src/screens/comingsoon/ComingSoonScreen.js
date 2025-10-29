@@ -70,7 +70,7 @@ const ComingSoonScreen = ({ navigation }) => {
                     }}
                     resizeMode={FastImage.resizeMode.contain}
                 />
-          <Text style={{marginBottom:10, fontSize:20, fontWeight:'bold', color:'black', marginTop:-5}}>Something awesome is on the way. Stay tuned!</Text>
+          <Text style={{marginBottom:10, fontSize:20, fontWeight:'bold', color:'black', marginTop:-5}}>{t("Something awesome is on the way. Stay tuned!")}</Text>
 
             {/* <Text style={styles.cardText}>Please Wait until We are working on this screen and will be provided as soon as possible, Thanks</Text> */}
           </View>

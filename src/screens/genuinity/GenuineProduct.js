@@ -4,8 +4,10 @@ import { useSelector,useDispatch } from 'react-redux';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import ButtonProceed from '../../components/atoms/buttons/ButtonProceed';
+import { useTranslation } from 'react-i18next';
 
 const GenuineProduct = ({navigation,route}) => {
+  const { t } = useTranslation();
   const buttonThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
   )
@@ -84,16 +86,16 @@ const workflowProgram = route.params.workflowProgram
           style={{height: 20, width: 20, resizeMode: 'contain'}}
           source={require('../../../assets/images/blackBack.png')}></Image>
       </TouchableOpacity>
-        <PoppinsTextMedium style={{fontSize:16,fontWeight:'700',color:"white",position:"absolute" ,left:60}} content="Genuine Product"></PoppinsTextMedium>
+        <PoppinsTextMedium style={{fontSize:16,fontWeight:'700',color:"white",position:"absolute" ,left:60}} content={t("Genuine Product")}></PoppinsTextMedium>
         </View>
         
     <View style={{height:'90%',width:'100%',backgroundColor:'white',borderTopRightRadius:30,borderTopLeftRadius:30,position:"absolute",bottom:0,alignItems:'center',justifyContent:"flex-start"}}>
         <Image style={{height:100,width:100,resizeMode:"contain",marginTop:100,marginBottom:20}} source={require('../../../assets/images/genuine.png')}></Image>
-        <PoppinsText style={{color:'black',fontSize:22}}  content="Genuine Product"></PoppinsText>
+        <PoppinsText style={{color:'black',fontSize:22}}  content={t("Genuine Product")}></PoppinsText>
         <View style={{height:120,width:'90%',borderWidth:1,borderStyle:'dotted',borderColor:"#85BFF1",borderRadius:10,alignItems:"center",justifyContent:"center",marginTop:20,backgroundColor:'#EBF3FA'}}>
-        <PoppinsTextMedium style={{color:'#494A4B',fontSize:20,fontWeight:"700"}} content="Please note that you are registered with us. This is a genuine product."></PoppinsTextMedium>
+        <PoppinsTextMedium style={{color:'#494A4B',fontSize:20,fontWeight:"700"}} content={t("Please note that you are registered with us. This is a genuine product.")}></PoppinsTextMedium>
         </View>
-        <ButtonProceed handleOperation={handleWorkflowNavigation} style={{color:"white",fontSize:18}} content="Ok"></ButtonProceed>
+        <ButtonProceed handleOperation={handleWorkflowNavigation} style={{color:"white",fontSize:18}} content={t("Ok")}></ButtonProceed>
         </View>
         </View>
 

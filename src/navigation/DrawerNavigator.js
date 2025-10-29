@@ -384,9 +384,9 @@ const CustomDrawer = (props) => {
         }else if (props.title.toLowerCase() === "media gallery") {
           navigation.navigate("MediaGallery");
         }else if (props.title.toLowerCase() === "terms and conditions") {
-          navigation.navigate("PdfComponent", { pdf: getTermsData, title:"Terms and Condition" })
+          navigation.navigate("PdfComponent", { pdf: getTermsData, title: t("Terms and Condition") })
         }else if (props.title.toLowerCase() === "privacy policy") {
-          navigation.navigate("PdfComponent", { pdf: getPolicyData, title:"Privacy Policy" })
+          navigation.navigate("PdfComponent", { pdf: getPolicyData, title:t("Privacy Policy") })
         } else if (props.title.toLowerCase() === "rewards") {
           navigation.navigate("RedeemRewardHistory");
         } else if (props.title.toLowerCase() === "events") {
@@ -469,12 +469,12 @@ const CustomDrawer = (props) => {
           navigation.navigate("QueryList");
         } else if (props.title.toLowerCase() === "about motherwood") {
           if(getAboutData.length!=0)
-          navigation.navigate("PdfComponent", { pdf: getAboutData, title:"About Motherwood" })
+          navigation.navigate("PdfComponent", { pdf: getAboutData, title:t("About Motherwood") })
         }
         else if (props.title.toLowerCase() === "motherwood saathi") {
           // console.log("hansldasjdjhgsa",getDetailsData)
           if(getDetailsData.length!=0)
-          navigation.navigate("PdfComponent", { pdf: getDetailsData, title:"MotherWood Saathi" })
+          navigation.navigate("PdfComponent", { pdf: getDetailsData, title: t("MotherWood Saathi") })
         }
         else if (props.title.toLowerCase() === "share app") {
           const options = {
@@ -584,9 +584,9 @@ const CustomDrawer = (props) => {
                 
               }
               else if (props.title.toLowerCase() === "terms and conditions") {
-                navigation.navigate("PdfComponent", { pdf: getTermsData, title:"Terms and Condition" })
+                navigation.navigate("PdfComponent", { pdf: getTermsData, title:t("Terms and Condition") })
               }else if (props.title.toLowerCase() === "privacy policy") {
-                navigation.navigate("PdfComponent", { pdf: getPolicyData, title:"Privacy Policy" })
+                navigation.navigate("PdfComponent", { pdf: getPolicyData, title:t("Privacy Policy") })
               } else if (props.title.toLowerCase() === "rewards") {
                 navigation.navigate("RedeemRewardHistory");
               } else if (props.title.toLowerCase() === "events") {
@@ -682,16 +682,16 @@ const CustomDrawer = (props) => {
                 navigation.navigate("QueryList");
               } else if (props.title.toLowerCase() === "about motherwood") {
                 if(getAboutData.length!=0)
-                navigation.navigate("PdfComponent", { pdf: getAboutData, title:"About Motherwood" })
+                navigation.navigate("PdfComponent", { pdf: getAboutData, title:t("About Motherwood") })
               }
               else if (props.title.toLowerCase() === "motherwood saathi") {
                 console.log("hansldasjdjhgsa",getDetailsData)
                 if(getDetailsData.length!=0)
-                navigation.navigate("PdfComponent", { pdf: getDetailsData, title:"MotherWood Saathi" })
+                navigation.navigate("PdfComponent", { pdf: getDetailsData, title:t("Motherwood Saathi") })
               }
               else if (props.title.toLowerCase() === "share app") {
                 const options = {
-                  title: "Share APP",
+                  title: t("Share APP"),
                   url: shareAppLink,
                 };
                 Share.open(options)
@@ -1051,12 +1051,12 @@ const CustomDrawer = (props) => {
           )} */}
         </View>
         <PoppinsTextMedium
-          content={`Version : ${currentVersion}`}
+          content={`${t("Version")} : ${currentVersion}`}
           style={{
             position: "absolute",
             bottom: 4,
             right: 10,
-            color: "white",
+            color: "black",
             fontSize: 12,
           }}
         ></PoppinsTextMedium>
@@ -1078,10 +1078,8 @@ const CustomDrawer = (props) => {
             }}
           >
             <Text style={{ color: "black", textAlign: "center" }}>
-              {i18n.language == "en"
-                ? `Your Profile Is ${100 - profilePercentage}% Completed`
-                : `आपकी प्रोफ़ाइल ${100 - profilePercentage}% पूरी हुई है`}
-            </Text> 
+              {t("Your Profile Is {{percent}}% Completed", { percent: 100 - profilePercentage })}
+            </Text>
             <View style={styles.progressBar}>
               <View
                 style={[

@@ -210,17 +210,17 @@ const dispatch = useDispatch()
           <View style={{ width: '90%', alignItems: "flex-start", justifyContent: 'center', padding: 4}}>
             <View style={{flexDirection:'row', marginBottom:8}}>
               <User size={20} color={"grey"} name='user'></User>
-            <PoppinsTextMedium style={{ color: '#413E3E', fontWeight: "700", marginLeft:4,letterSpacing:1 }} content={`Name : ${name}`}></PoppinsTextMedium>
+            <PoppinsTextMedium style={{ color: '#413E3E', fontWeight: "700", marginLeft:4,letterSpacing:1 }} content={`${t("Name")} : ${name}`}></PoppinsTextMedium>
 
             </View>
             <View style={{flexDirection:'row', marginBottom:8}}>
               <User size={20} color={"grey"} name='user'></User>
-            <PoppinsTextMedium style={{ color: '#413E3E', fontWeight: "700", marginLeft:4,letterSpacing:1 }} content={`User Type : ${userType}`}></PoppinsTextMedium>
+            <PoppinsTextMedium style={{ color: '#413E3E', fontWeight: "700", marginLeft:4,letterSpacing:1 }} content={`${t("User Type")} : ${userType}`}></PoppinsTextMedium>
 
             </View>
             <View style={{flexDirection:'row', marginBottom:8}}>
               <Mobile size={20} color={"grey"} name='mobile'></Mobile>
-            <PoppinsTextMedium style={{ color: '#413E3E', fontWeight: "700", marginLeft:4,letterSpacing:1 }} content={`Mobile : ${mobile}`}></PoppinsTextMedium>
+            <PoppinsTextMedium style={{ color: '#413E3E', fontWeight: "700", marginLeft:4,letterSpacing:1 }} content={`${t("Mobile")} : ${mobile}`}></PoppinsTextMedium>
 
             </View>
             <View style={{flexDirection:'row', marginBottom:8}}>
@@ -244,7 +244,7 @@ const dispatch = useDispatch()
           </View>
         </View>
         <View style={{ backgroundColor: ternaryThemeColor, height: 50, justifyContent: 'center',borderRadius:10,elevation:4 }}>
-          <PoppinsTextMedium style={{ color: 'white', fontWeight: "700",letterSpacing:2 }} content={`View Details`}></PoppinsTextMedium>
+          <PoppinsTextMedium style={{ color: 'white', fontWeight: "700",letterSpacing:2 }} content={t("View Details")}></PoppinsTextMedium>
         </View>
       </TouchableOpacity>
     )

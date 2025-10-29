@@ -37,7 +37,7 @@ const FeedbackOptions = () => {
                         style={{ height: 20, width: 20, resizeMode: 'contain' }}
                         source={require('../../../assets/images/blackBack.png')}></Image>
                 </TouchableOpacity>
-                <PoppinsTextMedium style={{ fontSize: 20, color: 'black', marginTop: 5, position: 'absolute', left: 60, fontWeight:'bold'}} content={t("Rating/ Feedback")}></PoppinsTextMedium>
+                <PoppinsTextMedium style={{ fontSize: 20, color: 'black', marginTop: 5, position: 'absolute', left: 60, fontWeight:'bold'}} content={t("Rating/Feedback")}></PoppinsTextMedium>
             </View>
 
         <View style={{marginTop:'20%',alignItems:'center'}}>
@@ -45,13 +45,13 @@ const FeedbackOptions = () => {
                         navigation.navigate("Feedback")
                     }} style={{width:330, height:200, borderRadius:10,borderColor:"#B6202D", borderWidth:1,alignItems:'center',justifyContent:'center'}}>
                         <Image style={{height:100,width:100, resizeMode:'contain', }} source={require("../../../assets/images/feedback_app_red.png")}></Image>
-                        <PoppinsTextMedium style={{marginTop:10, fontWeight:'600', color:'black', fontSize:20}} content={"Feedback For App"}></PoppinsTextMedium>
+                        <PoppinsTextMedium style={{marginTop:10, fontWeight:'600', color:'black', fontSize:20}} content={t("Feedback For App")}></PoppinsTextMedium>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{
                         navigation.navigate("FeedbackProducts")
                     }} style={{width:330, height:200, borderRadius:10,borderColor:"#B6202D", borderWidth:1,alignItems:'center',justifyContent:'center',marginTop:30}}>
                         <Image style={{height:100,width:100, resizeMode:'contain', }} source={require("../../../assets/images/feedback_for_product.png")}></Image>
-                        <PoppinsTextMedium style={{marginTop:10, fontWeight:'600', color:'black', fontSize:20}} content={"Feedback For Product"}></PoppinsTextMedium>
+                        <PoppinsTextMedium style={{marginTop:10, fontWeight:'600', color:'black', fontSize:20}} content={t("Feedback For Product")}></PoppinsTextMedium>
                     </TouchableOpacity>
         </View>
                     <SocialBottomBar></SocialBottomBar>

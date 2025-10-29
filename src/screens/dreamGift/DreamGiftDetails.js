@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import  ConfettiCannon from "react-native-confetti-cannon"
 import { useAddDreamGiftMutation } from "../../apiServices/dreamGift/DreamGiftApi";
 import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -18,6 +19,7 @@ const DreamGiftDetails = (params) => {
   console.log("DreamGiftDetails: params",JSON.stringify(params.route.params.gift))
 
 const navigation = useNavigation()
+  const { t } = useTranslation();
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );
@@ -71,15 +73,13 @@ const navigation = useNavigation()
         >
           <Text
             style={{
-              textAlignVertical: "center",
-              color: "black",
-              fontWeight: "600",
-            }}
-          >
-            Points in Your Wallet
-          </Text>
-
-          <View
+            textAlignVertical: "center",
+            color: "black",
+            fontWeight: "600",
+          }}
+        >
+          {t("Points in Your Wallet")}
+        </Text>          <View
             style={{
               flexDirection: "row",
               backgroundColor: "#B6202D",
@@ -121,15 +121,13 @@ const navigation = useNavigation()
         >
           <Text
             style={{
-              textAlignVertical: "center",
-              color: "black",
-              fontWeight: "600",
-            }}
-          >
-            Dream Gift Points
-          </Text>
-
-          <View
+            textAlignVertical: "center",
+            color: "black",
+            fontWeight: "600",
+          }}
+        >
+          {t("Dream Gift Points")}
+        </Text>          <View
             style={{
               flexDirection: "row",
               backgroundColor: "#B6202D",
@@ -170,7 +168,7 @@ const navigation = useNavigation()
           }}
         >
           <Text style={{ textAlignVertical: "center", color: "black",marginRight:10,fontWeight:'600', fontSize:16 }}>
-            Collect
+            {t("Collect")}
           </Text>
           <View
             style={{
@@ -194,9 +192,9 @@ const navigation = useNavigation()
             <Text style={{ color: "white" }}>{collect}</Text>
             
           </View>
-          <Text style={{ textAlignVertical: "center", color: "black",marginLeft:5,fontSize:16, fontWeight:'600' }}>in total and</Text>
+          <Text style={{ textAlignVertical: "center", color: "black",marginLeft:5,fontSize:16, fontWeight:'600' }}>{t("in total and")}</Text>
           <Text style={{ textAlignVertical: "center", color: "black",marginLeft:5,fontSize:16, fontWeight:'600' }}>
-            and make this gift Yours!
+            {t("and make this gift Yours!")}
           </Text>
           
         </View>
@@ -220,7 +218,7 @@ const navigation = useNavigation()
           source={require("../../../assets/images/congratulation.png")}
         ></Image>
         <Text style={{ color: "white", fontSize: 27, fontWeight: "500" }}>
-          Your Dream Gift
+          {t("Your Dream Gift")}
         </Text>
         <Image
           style={{
@@ -263,7 +261,7 @@ const navigation = useNavigation()
         <TouchableOpacity onPress={()=>{
             navigation.navigate("Dashboard")
         }} style={{alignItems:'center', justifyContent:'center',marginTop:40,marginBottom:100,backgroundColor:'black', width:100, height:40, borderRadius:5}}>
-            <Text style={{color:'white', fontSize:15}}>Submit</Text>
+            <Text style={{color:'white', fontSize:15}}>{t("Submit")}</Text>
       </TouchableOpacity>
 
   

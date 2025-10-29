@@ -480,7 +480,7 @@ const AddedUserScanList = ({ navigation,route }) => {
             left: 10,
             color: "black",
           }}
-          content="Orders Overview"
+          content={t("Orders Overview")}
         ></PoppinsTextMedium>
 
         <TouchableOpacity
@@ -659,7 +659,7 @@ const AddedUserScanList = ({ navigation,route }) => {
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontWeight: "700", fontSize: 16 }}
-              content={"Received Points"}
+              content={t("Received Points")}
             ></PoppinsTextLeftMedium>
           </View>
           {/* {
@@ -692,7 +692,7 @@ const AddedUserScanList = ({ navigation,route }) => {
           />
           <PoppinsTextMedium
             style={{ color: "#808080", marginTop: -20, fontWeight: "bold" }}
-            content="NO DATA"
+            content={t("NO DATA")}
           ></PoppinsTextMedium>
         </View>
       )}

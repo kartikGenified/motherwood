@@ -23,8 +23,10 @@ import {
 } from "../../../redux/slices/walkThroughSlice";
 import { useIsFocused } from "@react-navigation/native";
 import PoppinsTextMedium from "../electrons/customFonts/PoppinsTextMedium";
+import { useTranslation } from "react-i18next";
 
 const DrawerHeader = (props) => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const focused = useIsFocused();
@@ -127,7 +129,7 @@ const DrawerHeader = (props) => {
                 fontWeight: "bold",
               }}
             >
-              Hamburger button (Select for more menu)
+              {t("Hamburger button (Select for more menu)")}
             </Text>
             <View style={{ flexDirection: "row" }}>
               <TouchableOpacity
@@ -140,7 +142,7 @@ const DrawerHeader = (props) => {
                 }}
                 onPress={() => handleSkip()}
               >
-                <Text style={{ color: "white" }}>Skip</Text>
+                <Text style={{ color: "white" }}>{t("Skip")}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -152,7 +154,7 @@ const DrawerHeader = (props) => {
                 }}
                 onPress={() => handleNextStep()}
               >
-                <Text style={{ color: "white", fontWeight: "bold" }}>Next</Text>
+                <Text style={{ color: "white", fontWeight: "bold" }}>{t("Next")}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -195,7 +197,7 @@ const DrawerHeader = (props) => {
                   fontWeight: "bold",
                 }}
               >
-                Check Notifications
+                {t("Check Notifications")}
               </Text>
               <View style={{ flexDirection: "row" }}>
                 <TouchableOpacity
@@ -208,7 +210,7 @@ const DrawerHeader = (props) => {
                   }}
                   onPress={() => handleSkip()}
                 >
-                  <Text style={{ color: "white" }}>Skip</Text>
+                  <Text style={{ color: "white" }}>{t("Skip")}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -221,7 +223,7 @@ const DrawerHeader = (props) => {
                   onPress={() => handleNextStep()}
                 >
                   <Text style={{ color: "white", fontWeight: "bold" }}>
-                    Next
+                    {t("Next")}
                   </Text>
                 </TouchableOpacity>
               </View>
