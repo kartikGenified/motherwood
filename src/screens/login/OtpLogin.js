@@ -260,7 +260,7 @@ const OtpLogin = ({ navigation, route }) => {
       else
       {
         setError(true)
-        setMessage("Kindly Enter Mobile Number and Check Terms and Condition Before Proceeding")
+        setMessage(t("Kindly Enter Mobile Number and Check Terms and Condition Before Proceeding"))
       }
     }
   }
@@ -316,7 +316,7 @@ const OtpLogin = ({ navigation, route }) => {
         >
           <PoppinsTextMedium
             style={{ color: "#00A79D", fontSize: 28, fontWeight: "800" }}
-            content={t("Welcome")}
+            content={t("welcome")}
           ></PoppinsTextMedium>
           <PoppinsTextMedium
             style={{ color: "#00A79D", fontSize: 16 }}
@@ -355,9 +355,9 @@ const OtpLogin = ({ navigation, route }) => {
           <TextInputInsIdePlaceholder
             value={mobile}
             title="mobile"
-            placeHolder="Mobile No"
+            placeHolder={t("Mobile No")}
             keyboardType="numeric"
-            inputHolder={"Enter Your Number"}
+            inputHolder={t("Enter Your Number")}
             maxLength={10}
             handleData={getMobile}
           />
@@ -436,7 +436,7 @@ const OtpLogin = ({ navigation, route }) => {
               <TouchableOpacity onPress={()=>{
                 handleNavigation()
               }} style={{alignItems:'center', justifyContent:'center', height:50,width:'86%',backgroundColor:"black",borderRadius:4}}>
-                <PoppinsTextLeftMedium style={{color:'white', fontSize:20}} content ="Proceed"></PoppinsTextLeftMedium>
+                <PoppinsTextLeftMedium style={{color:'white', fontSize:20}} content={t("Proceed")}></PoppinsTextLeftMedium>
               </TouchableOpacity>
             }
 
