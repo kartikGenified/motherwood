@@ -528,7 +528,7 @@ const ListAddress = ({ navigation, route }) => {
             }}
           >
             <Text style={{ textAlign: "center", fontSize: 18, color: "black", fontWeight:'700' }}>
-              Would you like to deliver to the same address ?
+              {t("Would you like to deliver to the same address ?")}
             </Text>
           </View>
             
@@ -577,7 +577,7 @@ const ListAddress = ({ navigation, route }) => {
 
             }}
           >
-            <Text style={{fontSize:18, color:'black', fontWeight:'800'}}>OR</Text>
+            <Text style={{fontSize:18, color:'black', fontWeight:'800'}}>{t("OR")}</Text>
           </View>
           
           <View
@@ -595,7 +595,7 @@ const ListAddress = ({ navigation, route }) => {
           <TouchableOpacity onPress={()=>{
             navigation.navigate("AddAddress",{type:type});
           }} style={{marginTop:20, paddingHorizontal:40, backgroundColor:ternaryThemeColor, borderRadius:30,paddingVertical:10}}>
-            <Text style={{color:'white', fontSize:18}}>Add New Address</Text>
+            <Text style={{color:'white', fontSize:18}}>{t("Add New Address")}</Text>
           </TouchableOpacity>
         
         </ScrollView>

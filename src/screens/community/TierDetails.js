@@ -133,7 +133,7 @@ const TierDetails = ({navigation}) => {
                                             <View style={styles.flexRow}>
                                                 <PoppinsTextMedium
                                                     style={{ color: '#000000', fontSize: 18, fontWeight: '700' }}
-                                                    content={"Scan Value"}></PoppinsTextMedium>
+                                                    content={t("Scan Value")}></PoppinsTextMedium>
 
                                                 <View style={{ flexDirection: 'row' }}>
                                                     <PoppinsTextMedium
@@ -149,7 +149,7 @@ const TierDetails = ({navigation}) => {
                                             <View style={styles.flexRow}>
                                                 <PoppinsTextMedium
                                                     style={{ color: '#000000', fontSize: 18, fontWeight: '700' }}
-                                                    content={"Scan/ Month"}></PoppinsTextMedium>
+                                                    content={t("Scan/ Month")}></PoppinsTextMedium>
                                                 
                                 <View style={{ flexDirection: 'row' }}>
                                     <PoppinsTextMedium
@@ -164,7 +164,7 @@ const TierDetails = ({navigation}) => {
                                             <View style={styles.flexRow}>
                                                 <PoppinsTextMedium
                                                     style={{ color: '#000000', fontSize: 18, fontWeight: '700' }}
-                                                    content={"Points Multiplier %"}></PoppinsTextMedium>
+                                                    content={t("Points Multiplier %")}></PoppinsTextMedium>
 
                                                 <View style={{ flexDirection: 'row' }}>
                                                     <PoppinsTextMedium
@@ -179,7 +179,7 @@ const TierDetails = ({navigation}) => {
                                             <View style={styles.flexRow}>
                                                 <PoppinsTextMedium
                                                     style={{ color: '#000000', fontSize: 18, fontWeight: '700' }}
-                                                    content={"Gift Discount %"}></PoppinsTextMedium>
+                                                    content={t("Gift Discount %")}></PoppinsTextMedium>
                                                 
                                 <View style={{ flexDirection: 'row' }}>
                                     <PoppinsTextMedium
@@ -194,12 +194,12 @@ const TierDetails = ({navigation}) => {
                                             <View style={styles.flexRow}>
                                                 <PoppinsTextMedium
                                                     style={{ color: '#000000', fontSize: 18, fontWeight: '700' }}
-                                                    content={"Cashback Option"}></PoppinsTextMedium>
+                                                    content={t("Cashback Option")}></PoppinsTextMedium>
                                                 
                                 <View style={{ flexDirection: 'row' }}>
                                     <PoppinsTextMedium
                                         style={{ color: itm.cashback == true ? "#268F07" : '#000000', fontSize: 18, fontWeight: '600' }}
-                                        content={itm.cashback == true ? "Yes" : "No"}></PoppinsTextMedium>
+                                        content={itm.cashback == true ? t("Yes") : t("No")}></PoppinsTextMedium>
                                 </View>
 
                                             </View>

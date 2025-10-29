@@ -495,7 +495,7 @@ const AddUser = ({ navigation }) => {
           {usersList.length === 0 && <PoppinsTextMedium content={t("There are no user to select")} style={{ color: 'black', fontSize: 16 }}></PoppinsTextMedium>}
           {usersList.length !== 0 && <DropDownRegistration
             title={selectedOption?.[0]}
-            header={selectedOption?.[0] ? selectedOption?.[0] : selectUsers ? selectUsers : ("Select Type")}
+            header={selectedOption?.[0] ? selectedOption?.[0] : selectUsers ? selectUsers : t("Select Type")}
             jsonData={{ "label": "UserType", "maxLength": "100", "name": "user_type", "options": [], "required": true, "type": "text" }}
             data={usersList}
             handleData={handleDataFromDropDown}

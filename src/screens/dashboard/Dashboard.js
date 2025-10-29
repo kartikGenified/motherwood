@@ -921,13 +921,13 @@ const Dashboard = ({ navigation }) => {
                   borderColor={"#F9BEC3"}
                   scoreOutOf={salesPointData?.body?.users?.total_users}
                   score={salesPointData?.body?.users?.today_pending_users}
-                  title={"Approval's Pending"}
+                  title={t("Approval's Pending")}
                   icon={require("../../../assets/images/aprovalPending.png")}
                 />
                 <DashboardSalesBox
                   backgroundColor={"#FFFCCF"}
                   borderColor={"#F6F19D"}
-                  title={"User's Collected Points"}
+                  title={t("User's Collected Points")}
                   scoreOutOf={salesPointData?.body?.users?.total_users}
                   score={salesPointData?.body?.users?.today_pending_users}
                   icon={require("../../../assets/images/coinSales.png")}
@@ -942,7 +942,7 @@ const Dashboard = ({ navigation }) => {
                 <DashboardSalesBox
                   backgroundColor={"#DDE8D2"}
                   borderColor={"#9BBF76"}
-                  title={"Points Earned"}
+                  title={t("Points Earned")}
                   scoreOutOf={Math.floor(salesPointData?.body?.points?.total_point)}
                   score={Math.floor(salesPointData?.body?.points?.today_point)}
                   icon={require("../../../assets/images/handPoint.png")}
@@ -953,7 +953,7 @@ const Dashboard = ({ navigation }) => {
                   icon={require("../../../assets/images/giftSales.png")}
                   scoreOutOf={salesPointData?.body?.redemption?.total_redemption}
                   score={salesPointData?.body?.redemption?.today_redemption}
-                  title={"Number of Redemption"}
+                  title={t("Number of Redemption")}
                 />
               </View>
             </View>

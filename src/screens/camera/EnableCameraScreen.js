@@ -19,6 +19,7 @@ import {
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import { useIsFocused } from "@react-navigation/native";
 import { cameraPermissionMessage } from "../../utils/HandleClientSetup";
+import { useTranslation } from "react-i18next";
 
 const EnableCameraScreen = ({ navigation, route }) => {
   const appState = useRef(AppState.currentState);
@@ -32,6 +33,7 @@ const EnableCameraScreen = ({ navigation, route }) => {
   const message = route.params?.message;
   const navigateTo = route.params?.navigateTo
   let alertShown = false;
+  const { t } = useTranslation();
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   )
@@ -169,7 +171,7 @@ const EnableCameraScreen = ({ navigation, route }) => {
         {!cameraPermissionStatus && (
           <PoppinsTextMedium
             style={{ color: "black", fontSize: 22, fontWeight: "700" }}
-            content="Checking Camera Access"
+            content={t("Checking Camera Access")}
           ></PoppinsTextMedium>
         )}
 
@@ -180,7 +182,7 @@ const EnableCameraScreen = ({ navigation, route }) => {
               fontSize: 22,
               fontWeight: "700",
             }}
-            content="Camera Access Granted"
+            content={t("Camera Access Granted")}
           ></PoppinsTextMedium>
         )}
 
@@ -192,7 +194,7 @@ const EnableCameraScreen = ({ navigation, route }) => {
               fontWeight: "700",
               marginTop: 20,
             }}
-            content="You can still enable camera access by pressing the button below."
+            content={t("You can still enable camera access by pressing the button below.")}
           ></PoppinsTextMedium>
         )}
         {!cameraPermissionStatus && !cameraStatus && (
@@ -204,7 +206,7 @@ const EnableCameraScreen = ({ navigation, route }) => {
           >
             <PoppinsTextMedium
               style={{ ...styles.buttonText, color: "white" }}
-              content="Enable Camera Access"
+              content={t("Enable Camera Access")}
             ></PoppinsTextMedium>
           </TouchableOpacity>
         )}
@@ -221,7 +223,7 @@ const EnableCameraScreen = ({ navigation, route }) => {
           >
             <PoppinsTextMedium
               style={{ ...styles.buttonText, color: ternaryThemeColor }}
-              content="Go Back"
+              content={t("Go Back")}
             ></PoppinsTextMedium>
           </TouchableOpacity>
         )}
