@@ -19,6 +19,7 @@ import {
 } from "../../apiServices/dreamGift/DreamGiftApi";
 import moment from "moment";
 import ErrorModal from "../../components/modals/ErrorModal";
+import { useTranslation } from "react-i18next";
 
 // create a component
 
@@ -34,6 +35,7 @@ const DreamGift = () => {
   const [isTertiary, setIsTertiary] = useState(false)
   // const [selected, setSelected] = useState(false);
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );
@@ -144,7 +146,7 @@ const DreamGift = () => {
       dreamAddFunc(parmas);
     } else {
       setError(true);
-      setMessage("Please select a gift");
+      setMessage(t("Please select a gift"));
     }
   };
 
@@ -214,7 +216,7 @@ const DreamGift = () => {
               letterSpacing: 1.5,
             }}
           >
-            {"Points " + gift.points}
+            {t("Points") + " " + gift.points}
           </Text>
         </View>
         <TouchableOpacity
@@ -295,7 +297,7 @@ const DreamGift = () => {
           }}
         >
           <Text style={{ color: "white", fontWeight: "600", fontSize: 17 }}>
-            NEXT
+            {t("NEXT")}
           </Text>
           <Image
             style={{

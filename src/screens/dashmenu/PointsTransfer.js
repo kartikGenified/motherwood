@@ -199,7 +199,7 @@ const PointsTransfer = () => {
           <View style={{ flexDirection: "row" }}>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
-              content={"Name :"}
+              content={t("Name :")}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
@@ -209,7 +209,7 @@ const PointsTransfer = () => {
           <View style={{ flexDirection: "row" }}>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
-              content={"ID :"}
+              content={t("ID :")}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
@@ -220,7 +220,7 @@ const PointsTransfer = () => {
           <View style={{ flexDirection: "row" }}>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
-              content={"Type :"}
+              content={t("Type :")}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
@@ -231,7 +231,7 @@ const PointsTransfer = () => {
           <View style={{ flexDirection: "row" }}>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
-              content={"State :"}
+              content={t("State :")}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
@@ -242,7 +242,7 @@ const PointsTransfer = () => {
           <View style={{ flexDirection: "row" }}>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
-              content={"City :"}
+              content={t("City :")}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
@@ -288,7 +288,7 @@ const PointsTransfer = () => {
         >
           <PoppinsTextLeftMedium
             style={{ color: "white", fontSize: 23, fontWeight: "bold" }}
-            content="Next"
+            content={t("Next")}
           ></PoppinsTextLeftMedium>
         </TouchableOpacity>
       )}

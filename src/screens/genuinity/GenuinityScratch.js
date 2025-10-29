@@ -213,7 +213,7 @@ const GenuinityScratch = ({navigation,route}) => {
         }}>
         <PoppinsText
           style={{fontSize: 22, color: '#494A4B'}}
-          content="Scratch Code"></PoppinsText>
+          content={t("Scratch Code")}></PoppinsText>
         <View
           style={{
             height: 52,
@@ -226,7 +226,7 @@ const GenuinityScratch = ({navigation,route}) => {
             marginBottom: 10,
           }}>
           <TextInput
-            placeholder="Enter Scratch Code"
+            placeholder={t("Enter Scratch Code")}
             placeholderTextColor="#A5A6A8"
             value ={value}
             onChangeText={(text)=>{setValue(text)}}
@@ -283,7 +283,7 @@ const GenuinityScratch = ({navigation,route}) => {
             position: 'absolute',
             left: 60,
           }}
-          content="Genuine Product"></PoppinsTextMedium>
+          content={t("Genuine Product")}></PoppinsTextMedium>
       </View>
       <View
         style={{

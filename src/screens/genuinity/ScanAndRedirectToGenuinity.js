@@ -189,7 +189,7 @@ const ScanAndRedirectToGenuinity = ({ navigation }) => {
       if(productDataData.body?.products.length===0)
       {
         setError(true)
-        setMessage("Product data not found")
+        setMessage(t("Product data not found"))
         setHideProceed(false)
       }
       else{
@@ -251,7 +251,7 @@ const ScanAndRedirectToGenuinity = ({ navigation }) => {
 if(e.data===undefined)
 {
   setError(true)
-  setMessage("Please scan a valid QR")
+  setMessage(t("Please scan a valid QR"))
 }
 else{
   const qrData = e?.data?.split('=')[1];
@@ -319,7 +319,7 @@ else{
         setAddedQrList([...addedQrList, data]);
       } else {
         setError(true);
-        setMessage('This QR is already added to the list');
+        setMessage(t('This QR is already added to the list'));
       }
     }
   };
@@ -534,7 +534,7 @@ else{
                   marginLeft: 75,
                   marginBottom: 30,
                 }}
-                content="Scan Product QR Code"
+                content={t("Scan Product QR Code")}
               ></PoppinsTextMedium>
               <View
                 style={{
