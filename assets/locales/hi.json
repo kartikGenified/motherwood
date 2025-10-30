@@ -824,5 +824,15 @@
   "Declined Date": "अस्वीकृत तिथि",
   "Pending From": "से लंबित",
   "Beneficiary UPI": "लाभार्थी UPI",
-  "Beneficiary Mobile": "लाभार्थी मोबाइल"
+  "Beneficiary Mobile": "लाभार्थी मोबाइल",
+  "Contacts": "संपर्क",
+  "This app needs access to your contacts.":"इस ऐप को आपके संपर्कों तक पहुंच की आवश्यकता है।",
+  "Select Contact": "संपर्क चुनें",
+  "Search contacts...": "संपर्क खोजें...",
+  "Loading contacts...": "संपर्क लोड हो रहे हैं...",
+  "Failed to load contacts": "संपर्क लोड करने में विफल",
+  "No contacts found": "कोई संपर्क नहीं मिला",
+  "No contacts available": "कोई संपर्क उपलब्ध नहीं",
+  "Contact permission is required to select contacts": "संपर्क चुनने के लिए संपर्क अनुमति आवश्यक है",
+  "Grant Permission": "अनुमति दें"
 }
