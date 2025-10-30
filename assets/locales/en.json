@@ -822,5 +822,15 @@
   "Declined Date": "Declined Date",
   "Pending From": "Pending From",
   "Beneficiary UPI": "Beneficiary UPI",
-  "Beneficiary Mobile": "Beneficiary Mobile"
+  "Beneficiary Mobile": "Beneficiary Mobile",
+  "Contacts": "Contacts",
+  "This app needs access to your contacts.": "This app needs access to your contacts.",
+  "Select Contact": "Select Contact",
+  "Search contacts...": "Search contacts...",
+  "Loading contacts...": "Loading contacts...",
+  "Failed to load contacts": "Failed to load contacts",
+  "No contacts found": "No contacts found",
+  "No contacts available": "No contacts available",
+  "Contact permission is required to select contacts": "Contact permission is required to select contacts",
+  "Grant Permission": "Grant Permission"
 }

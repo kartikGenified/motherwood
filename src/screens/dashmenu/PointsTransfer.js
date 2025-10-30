@@ -24,6 +24,7 @@ import { useFetchUserPointsMutation } from "../../apiServices/workflow/rewards/G
 import { useSelector } from "react-redux";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import { useTranslation } from "react-i18next";
+import useContacts from "@/hooks/customHooks/useContacts";
 
 // for userSearch
 const PointsTransfer = () => {
@@ -32,6 +33,10 @@ const PointsTransfer = () => {
   const id = useSelector((state) => state.appusersdata.id);
   const [token, setToken] = useState();
   const { t } = useTranslation();
+  const {contacts, status, loading, error, refresh, requestPermission} = useContacts();
+  useEffect(() => {
+    console.log("contactsList", contacts);
+  }, [contacts]);
   const [
     getNameFunc,
     {
@@ -97,6 +102,10 @@ const PointsTransfer = () => {
     }
   }, [mobile]);
 
+  const onContactSelect = (phoneNumber) => {
+    setMobile(phoneNumber);
+  };
+
   return (
     <>
     <ScrollView style={styles.container}>
@@ -154,6 +163,7 @@ const PointsTransfer = () => {
           content={t("Enter Mobile No (to transfer points)")}
         ></PoppinsTextLeftMedium>
         <TextInput
+          value={mobile}
           onChangeText={setMobile}
           placeholder="9999999999"
           placeholderTextColor={"#808080"}
@@ -170,17 +180,27 @@ const PointsTransfer = () => {
             paddingLeft: 20,
           }}
         ></TextInput>
-        <Image
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("SelectContact", {
+              onContactSelect:onContactSelect
+            });
+          }}
           style={{
-            height: 35,
-            width: 35,
-            resizeMode: "contain",
             position: "absolute",
             right: 30,
             top: 70,
           }}
-          source={require("../../../assets/images/mobile_icon.png")}
-        />
+        >
+          <Image
+            style={{
+              height: 35,
+              width: 35,
+              resizeMode: "contain",
+            }}
+            source={require("../../../assets/images/mobile_icon.png")}
+          />
+        </TouchableOpacity>
       </View>
 
       {/* Detail Box */}

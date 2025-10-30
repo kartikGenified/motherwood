@@ -120,6 +120,7 @@ import BirthdayScreen from "../screens/birthday/BirthdayScreen";
 import KycVerificationDynamic from "../screens/verification/KycVerificationDynamic";
 import Flappy from "../screens/games/Flappy";
 import GamesMenu from "../screens/games/GamesMenu";
+import SelectContact from "@/screens/common/SelectContact";
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
@@ -979,6 +980,13 @@ const StackNavigator = () => {
           }}
           name="UserManagement"
           component={UserManagement}
+        ></Stack.Screen>
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="SelectContact"
+          component={SelectContact}
         ></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
