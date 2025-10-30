@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, {  useEffect } from "react";
 import {
   Image,
   KeyboardAvoidingView,
@@ -13,14 +13,15 @@ import { useTranslation } from 'react-i18next';
 import {
   useAadharKycGenerateMutation,
   useAadharKycStatusMutation,
-} from "../../apiServices/kyc/AadharKyc";
-import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
+} from "@/apiServices/kyc/AadharKyc";
+import PoppinsTextMedium from "@/components/electrons/customFonts/PoppinsTextMedium";
 import OptionCard from "./OptionCard";
 
 import { Platform } from "react-native";
 import * as Keychain from "react-native-keychain";
 import Toast from "react-native-toast-message";
 import { useSelector } from "react-redux";
+import { TextInput } from "react-native";
 
 const AadharVerify = (props) => {
   const { t } = useTranslation();
@@ -29,6 +30,7 @@ const AadharVerify = (props) => {
   const [aadhaarModalVisible, setAadhaarModalVisible] = React.useState(false);
   const [aadharVerified, setAadharVerified] = React.useState(false);
   const ternaryThemeColor = useSelector((state) => state.apptheme.ternaryThemeColor) || "grey";
+  const [inputAadhaar, setInputAadhaar] = React.useState("");
 
   const onNavigationStateChange = (navState) => {
     // console.log("url", navState.url);
@@ -68,26 +70,24 @@ const AadharVerify = (props) => {
         </View>
         <View style={{ flexDirection: "row", width: "90%", marginTop: 10 }}>
           <PoppinsTextMedium content={t("address") + ":"} style={styles.dataLabel} />
-          <PoppinsTextMedium content={address} style={styles.dataValue} />
+          <PoppinsTextMedium content={`${address?.house || ""}, ${address?.locality || ""}, ${address?.vtc || ""}, ${address?.dist || ""}, ${address?.state || ""}, ${address?.pincode || ""}`} style={styles.dataValue} />
         </View>
       </View>
     );
   };
 
-  const handleAadhar = async () => {
-    // console.log("Aadhar menu");
-    if (preVerifiedDocs.aadhaar || aadharVerified) {
-      setAadhaarModalVisible(true);
-      // console.log('Aadhar already verified');
-      return;
-    }
-
+  const verifyAadhaar = async (aadhaar) => {
+    setInputAadhaar(aadhaar);
     try {
         const credentials = await Keychain.getGenericPassword();
         if (!credentials) throw new Error('No authentication credentials found');
-
-        const token = credentials.username;
-        aadharKycGenerateFunc(token);
+        const body = {
+            data: {
+                "aadhaar": aadhaar
+            },
+            token: credentials.username
+          }
+        aadharKycGenerateFunc(body);
     } catch (error) {
         console.error("Error handling Aadhar KYC:", error);
     }
@@ -120,73 +120,78 @@ const AadharVerify = (props) => {
         // 1 - success
         // 2 - pending
         // 3 - failure
-
-        switch (aadharKycStatusData.body?.status) {
-          case "0":
-            Toast.show({
-              type: "error",
-              text1: t("Aadhar KYC API call failed. Please try again."),
-            });
-            break;
-          case "1":
-            Toast.show({
-              type: "success",
-              text1: t("Aadhar KYC is verified."),
-            });
-            setAadharVerified(true);
-            getKycDynamicFunc();
-            break;
-          case "2":
-            Toast.show({
-              type: "info",
-              text1: t("Aadhar KYC status is in progress. You can try again."),
-            });
-            break;
-          case "3":
-            Toast.show({
-              type: "error",
-              text1: t("Aadhar KYC has failed. Please try again."),
-            });
-            break;
-          default:
-            Toast.show({
-              type: "error",
-              text1: t("Unknown Aadhar KYC status."),
-            });
+        // 4 - invalid aadhaar number going to error 500
+        if(aadharKycStatusData.body?.status === "1"){
+          Toast.show({
+            type: "success",
+            text1: t("Aadhaar KYC is verified."),
+          });
+          setAadharVerified(true);
+          getKycDynamicFunc();
+          // setAadharName(aadharKycStatusData?.body?.response?.name);
+        }else{
+          Toast.show({
+            type: "error",
+            text1: t("Aadhaar KYC verification failed, please try again."),
+          });
+          // setAadharVerified(false);
+          // setAadhar("");
+          // setAadharNumber("");
+          // setAadharName("");
         }
-        
       }
     }
 
     if (aadharKycStatusError) {
       console.log("Error status Aadhar KYC:", aadharKycStatusError);
+      Toast.show({
+        type: "error",
+        text1: aadharKycStatusError?.data?.message || "Error verifying Aadhaar KYC, please try again.",
+      });
+      
     }
   }, [aadharKycStatusData, aadharKycStatusError]);
   const getAadharStatus = async () => {
     try {
       const credentials = await Keychain.getGenericPassword();
       if (credentials) {
-        const token = credentials?.username;
-        console.log("Aadhar Token: ", token);
+        const body = {
+          data: {
+              "aadhaar": inputAadhaar
+          },
+          token: credentials?.username
+        }
 
-        aadharKycStatusFunc(token);
+        aadharKycStatusFunc(body);
       } 
     } catch (error) {
       console.log("Keychain couldn't be accessed!", error);
     }
   };
 
-  const AadhaarVerificationDialog = React.memo(
+  const AadhaarVerificationDialog = (
     ({ visible, onClose, refetchKycStatus, initialAadhar = "" }) => {
       console.log("AadhaarVerificationDialog rendered with visible:", visible);
+      const [localAadhaar, setLocalAadhaar] = React.useState(initialAadhar);
 
       const isPreVerified = preVerifiedDocs.aadhaar;
       console.log("isPreVerified:", isPreVerified);
 
-      const handleClose = useCallback(() => {
-        console.log("Dialog close requested");
-        onClose();
-      }, [onClose]);
+      const onHandleOk = ()=>{
+        if(isPreVerified){
+          onClose();
+        }else{
+          if(localAadhaar.length !== 12 || !/^\d{12}$/.test(localAadhaar)){
+            Toast.show({
+              type: "error",
+              text1: t("Invalid Aadhaar number."),
+            });
+            return;
+          }
+          verifyAadhaar(localAadhaar);
+          onClose();
+        }
+      }
 
       // Determine button text and behavior
       return (
@@ -194,8 +199,8 @@ const AadharVerify = (props) => {
           visible={visible}
           animationType="slide"
           transparent={true}
-          onRequestClose={handleClose}
-          onDismiss={handleClose}
+          onRequestClose={onClose}
+          onDismiss={onClose}
           hardwareAccelerated={true}
           statusBarTranslucent={true}
         >
@@ -205,7 +210,7 @@ const AadharVerify = (props) => {
             style={styles.modalContainer}
           >
             <View style={styles.modalContent}>
-              <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+              <TouchableOpacity style={styles.closeButton} onPress={onClose}>
                 <Icon name="cross" size={24} color="#000" />
               </TouchableOpacity>
 
@@ -218,7 +223,9 @@ const AadharVerify = (props) => {
               />
               {/* </View> */}
 
-              <Image
+              {isPreVerified && (
+                <>
+                <Image
                 style={styles.documentImage}
                 source={require("../../../assets/images/addharColor.png")}
               />
@@ -226,11 +233,11 @@ const AadharVerify = (props) => {
               <View style={styles.preVerifiedContainer}>
                 {verifiedAadharDetails && (
                   <AadharDataBox
-                    aadhaar={true}
+                    aadhaar={verifiedAadharDetails.aadhaar}
                     dob={verifiedAadharDetails.dob}
                     name={verifiedAadharDetails.name}
                     gender={verifiedAadharDetails.gender}
-                    address={verifiedAadharDetails.address}
+                    address={verifiedAadharDetails.split_address}
                   />
                 )}
 
@@ -239,15 +246,34 @@ const AadharVerify = (props) => {
                   content={t("Your Aadhaar has been verified and cannot be edited")}
                 />
               </View>
-
-              {/* Status Message */}
-
               <View style={{}}>
                 <PoppinsTextMedium
                   style={[styles.statusText, { color: "green" }]}
                   content={"✓ " + t("Aadhaar verified and submitted successfully")}
                 />
               </View>
+                </>
+              )}
+              {!isPreVerified && (
+                <>
+              <TextInput
+                    maxLength={12}
+                    value={localAadhaar}
+                    onChangeText={setLocalAadhaar}
+                    style={styles.inputField}
+                    placeholder="Enter Aadhaar Number"
+                    placeholderTextColor="#999"
+                    keyboardType="numeric"
+                />
+                </>
+              )}
+
+              
+              
+
+              {/* Status Message */}
+
+              
 
               <TouchableOpacity
                 style={[
@@ -256,15 +282,16 @@ const AadharVerify = (props) => {
                     backgroundColor: ternaryThemeColor,
                   }
                 ]}
-                onPress={handleClose}
+                onPress={ onHandleOk }
               >
 
                 <PoppinsTextMedium
                   style={styles.submitButtonText}
-                  content={t('Done')}
+                  content={ isPreVerified ? t('Done') : t('Verify')}
                 />
               </TouchableOpacity>
             </View>
+            <Toast position="bottom" />
           </KeyboardAvoidingView>
         </Modal>
       );
@@ -276,7 +303,7 @@ const AadharVerify = (props) => {
 
       <OptionCard
           option={{ ...optionCard , verified: preVerifiedDocs.aadhaar || aadharVerified }}
-          onPress={handleAadhar}
+          onPress={()=>setAadhaarModalVisible(true)}
           isMandatory={!optionCard.isOptional}
         />
       <Modal
@@ -312,7 +339,7 @@ const AadharVerify = (props) => {
       <AadhaarVerificationDialog
         visible={aadhaarModalVisible}
         onClose={() => setAadhaarModalVisible(false)}
-        refetchKycStatus={getAadharStatus}
+        refetchKycStatus={()=>{}}
         initialAadhar={""}
       />
     </View>
@@ -399,4 +426,14 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     padding: 5,
   },
+  inputField: {
+    // height: 40,
+    borderColor:'#DDDDDD',
+    borderWidth:1,
+    borderRadius:10,
+    fontSize: 14,
+    color: 'black',
+    paddingHorizontal:15,
+    marginVertical:20
+},
 });

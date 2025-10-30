@@ -4,28 +4,32 @@ import { slug } from '../../utils/Slug';
 export const KycStatusApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     aadharKycGenerate: builder.mutation({
-      query: (token) => {
-        console.log("aadharKycGenerate", token)
+      query: (body) => {
+        console.log("aadharKycGenerate body", body.data);
         return {
-          method: "GET",
+          method: "POST",
           url: `/api/app/digilocker-aadhaar/generate`,
           headers: {
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + body.token,
             slug: slug,
           },
+          body: body.data,
         };
       },
     }),
     aadharKycStatus: builder.mutation({
-      query: (token) => {
-        console.log("aadharKycStatus", token)
+      query: (body) => {
+        console.log("boddyyyy", body.data);
+        
+
         return {
-          method: "GET",
+          method: "POST",
           url: `/api/app/digilocker-aadhaar/verify`,
           headers: {
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + body.token,
             slug: slug,
           },
+          body: body.data,
         };
       },
     }),
