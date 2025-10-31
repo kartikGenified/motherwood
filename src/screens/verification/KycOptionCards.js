@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import AadharVerify from './AadharVerify';
 import { useTranslation } from 'react-i18next';
+import OptionCard from './OptionCard';
 
 const KycOptionCards = ({
     panVerified,
@@ -121,6 +122,7 @@ const KycOptionCards = ({
                                     <OptionCard
                                         option={allOptions.find(opt => opt.id === combo)}
                                         isMandatory={true}
+                                        onPress={handleSelectOption}
                                     />
                                 ) : (
                                     <View style={styles.combinationContainer}>
@@ -133,6 +135,7 @@ const KycOptionCards = ({
                                                     <OptionCard
                                                         option={option}
                                                         isMandatory={true}
+                                                        onPress={handleSelectOption}
                                                     />
                                                     {elementIndex < elements.length - 1 && (
                                                         <View style={styles.orSeparator}>
@@ -150,57 +153,6 @@ const KycOptionCards = ({
                         );
                     })}
                 </>
-            );
-        };
- 
-        const OptionCard = ({ option, isMandatory }) => {
-            if (!option) return null;
- 
-            return (
-                <TouchableOpacity
-                    style={[
-                        styles.optionCard,
-                        option.verified && styles.verifiedCard,
-                        // Only style as optional if it's actually optional AND not mandatory in combinations
-                        (option.isOptional && !isMandatory) && styles.optionalCard
-                    ]}
-                    onPress={option.onPress || (() => handleSelectOption(option.id))}
-                >
-                    <Image source={option.icon} style={styles.optionIcon} />
-                    <View style={styles.optionTextContainer}>
-                        <View style={styles.labelContainer}>
-                            <PoppinsTextMedium
-                                style={styles.optionText}
-                                content={option.label}
-                            />
-                            {isMandatory && (
-                                <PoppinsTextMedium
-                                    style={styles.mandatoryAsterisk}
-                                    content="*"
-                                />
-                            )}
-                            {/* Show optional text only if it's optional AND not part of mandatory combinations */}
-                            {option.isOptional && !isMandatory && (
-                                <PoppinsTextMedium
-                                    style={styles.optionalText}
-                                    content="(Optional)"
-                                />
-                            )}
-                        </View>
-                        {option.matchRules && (
-                            <PoppinsTextMedium
-                                style={styles.matchRuleText}
-                                content={option.verified ? option.matchRules.success : option.matchRules.error}
-                            />
-                        )}
-                    </View>
-                    <Image
-                        source={option.verified
-                            ? require('../../../assets/images/verifiedKyc.png')
-                            : require('../../../assets/images/notVerifiedKyc.png')}
-                        style={styles.statusIcon}
-                    />
-                </TouchableOpacity>
             );
         };
  
@@ -227,6 +179,7 @@ const KycOptionCards = ({
                                 key={option.id}
                                 option={option}
                                 isMandatory={false}
+                                onPress={handleSelectOption}
                             />
                         ))
                     }

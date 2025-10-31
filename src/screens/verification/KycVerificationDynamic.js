@@ -230,7 +230,7 @@ const KycVerificationDynamic = ({ navigation }) => {
                     // Pre-fill data for verified documents
                     if (userData.is_valid_aadhar && userData.aadhar_details) {
                         setAadhar(userData.aadhar || '');
-                        setVerifiedAadharDetails(userData.aadhar_details);
+                        setVerifiedAadharDetails({...userData?.aadhar_details, aadhaar:userData?.aadhar});
                     }
  
                     if (userData.is_valid_pan && userData.pan_details) {
