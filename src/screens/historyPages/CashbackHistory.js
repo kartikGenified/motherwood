@@ -48,6 +48,7 @@ const CashbackHistory = ({ navigation }) => {
   const [showKyc, setShowKyc] = useState(true);
   const [success, setSuccess] = useState(false);
   const [navigateTo, setNavigateTo] = useState();
+  const [refreshing, setRefreshing] = useState(false);
 
   const focused = useIsFocused();
 
@@ -209,14 +210,17 @@ const CashbackHistory = ({ navigation }) => {
     if (userPointData) {
       console.log("userPointData", userPointData);
       if (userPointData.success) {
-        setPointBalance(userPointData?.body?.point_balance);
+        setPointBalance('')
+        setTimeout(() => {
+          setPointBalance(userPointData?.body?.point_balance);
+          
+        }, 100);
       }
     } else if (userPointError) {
       console.log("userPointError", userPointError);
     }
   }, [userPointData, userPointError]);
-  useEffect(() => {
-    const getData = async () => {
+  const fetchCashback = async () => {
       const credentials = await Keychain.getGenericPassword();
       if (credentials) {
         console.log(
@@ -228,46 +232,49 @@ const CashbackHistory = ({ navigation }) => {
 
         const params = { token: token, appUserId: userData.id };
 
-        getRedemptionListFunc(cashparams);
-        fetchCashbackEnteriesFunc(params);
+        await getRedemptionListFunc(cashparams);
+        await fetchCashbackEnteriesFunc(params);
       }
     };
-    getData();
+  useEffect(() => {
+    fetchCashback();
   }, [focused]);
 
   useEffect(() => {
     if (getRedemptionListData) {
-      console.log(
-        "getRedemptionListData",
-        JSON.stringify(getRedemptionListData)
-      );
+      // console.log(
+      //   "getRedemptionListData",
+      //   JSON.stringify(getRedemptionListData)
+      // );
     } else if (getRedemptionListError) {
       console.log("getRedemptionListError", getRedemptionListError);
     }
   }, [getRedemptionListData, getRedemptionListError]);
 
-  useEffect(() => {
-    (async () => {
+  const fetchGifts = async () => {
       const credentials = await Keychain.getGenericPassword();
       const token = credentials.username;
       const userId = userData.id;
-      cashPerPointFunc(token);
-      getKycStatusFunc(token);
-      FetchGiftsRedemptionsOfUser({
+      await cashPerPointFunc(token);
+      await getKycStatusFunc(token);
+      await FetchGiftsRedemptionsOfUser({
         token: token,
         userId: userId,
         type: "1",
       });
-    })();
+    }
+
+  useEffect(() => {
+    fetchGifts();
   }, [focused]);
 
   useEffect(() => {
     if (fetchCashbackEnteriesData) {
       let cashback = 0;
-      console.log(
-        "fetchCashbackEnteriesData",
-        JSON.stringify(fetchCashbackEnteriesData)
-      );
+      // console.log(
+      //   "fetchCashbackEnteriesData",
+      //   JSON.stringify(fetchCashbackEnteriesData)
+      // );
       if (fetchCashbackEnteriesData.body) {
         for (var i = 0; i < fetchCashbackEnteriesData.body?.data?.length; i++) {
           if (fetchCashbackEnteriesData.body.data[i].approval_status === "1") {
@@ -293,8 +300,8 @@ const CashbackHistory = ({ navigation }) => {
       userId: userData.id,
       token: token,
     };
-    userPointFunc(params);
-    cashPerPointFunc(token);
+    await userPointFunc(params);
+    await cashPerPointFunc(token);
   };
 
   const modalClose = () => {
@@ -325,7 +332,7 @@ const CashbackHistory = ({ navigation }) => {
       });
     });
     setRedeemedListData(tempArr);
-    console.log("tempArr", JSON.stringify(tempArr));
+    // console.log("tempArr", JSON.stringify(tempArr));
   };
 
   const handleRedeemButtonPress = () => {
@@ -514,7 +521,7 @@ const CashbackHistory = ({ navigation }) => {
   };
   const CashbackListItem = (props) => {
     const amount = props.items.cash;
-    console.log("amount details", props);
+    // console.log("amount details", props);
     return (
       <TouchableOpacity
         onPress={() => {
@@ -539,7 +546,6 @@ const CashbackHistory = ({ navigation }) => {
             padding: 8,
           }}
         >
-          {console.log("item of item", props)}
           <PoppinsTextMedium
             style={{
               color:
@@ -727,6 +733,19 @@ const CashbackHistory = ({ navigation }) => {
     );
   };
 
+
+  const refreshCashback =async ()=>{
+    setRefreshing(true);
+    await fetchPoints();
+    await fetchCashback();
+    setRefreshing(false);
+  }
+  const refreshGifts = async () => {
+    setRefreshing(true);
+    await fetchPoints();
+    await fetchGifts();
+    setRefreshing(false);
+  }
   
   return (
     <View
@@ -905,6 +924,8 @@ const CashbackHistory = ({ navigation }) => {
 
       {displayData && fetchCashbackEnteriesData && (
         <FlatList
+          refreshing={refreshing}
+          onRefresh={refreshCashback}
           initialNumToRender={20}
           contentContainerStyle={{
             alignItems: "flex-start",
@@ -920,9 +941,12 @@ const CashbackHistory = ({ navigation }) => {
       )}
       {!displayData && fetchGiftsRedemptionsOfUserData && (
   <FlatList
+    refreshing={refreshing}
+    onRefresh={refreshGifts}
     data={fetchGiftsRedemptionsOfUserData?.body?.userPointsRedemptionList}
     maxToRenderPerBatch={10}
     initialNumToRender={10}
+    style={{ width: "100%" }}
     keyExtractor={(item, index) => index.toString()}
     renderItem={({ item, index }) => {
       const formattedDate = dayjs(item.created_at).format("DD MMM YYYY");
