@@ -312,6 +312,7 @@ const AddUser = ({ navigation }) => {
     console.log("removedValues", removedValues);
 
   };
+  
 
   const getLocationFromPinCode = async (pin) => {
     const credentials = await Keychain.getGenericPassword();
@@ -329,6 +330,8 @@ const AddUser = ({ navigation }) => {
 
     }
   }
+
+
   const handleFetchPincode = (data) => {
     console.log("pincode is", data)
     getLocationFromPinCode(data)
