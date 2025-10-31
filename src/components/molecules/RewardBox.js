@@ -7,7 +7,7 @@ import * as Keychain from 'react-native-keychain';
 import FastImage from 'react-native-fast-image';
 import { useTranslation } from 'react-i18next';
 
-const RewardBox = () => {
+const RewardBox = ({refresh}) => {
     const workflow = useSelector(state => state.appWorkflow.program)
     const id = useSelector(state => state.appusersdata.id);
     const userData = useSelector(state => state.appusersdata.userData)
@@ -25,6 +25,11 @@ const RewardBox = () => {
     useEffect(() => {
         fetchPoints()
     }, []);
+    useEffect(() => {
+        if(refresh){
+            fetchPoints()
+        }
+    }, [refresh]);
 
     const fetchPoints = async () => {
         const credentials = await Keychain.getGenericPassword();

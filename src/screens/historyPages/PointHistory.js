@@ -29,6 +29,7 @@ import { useGetOrderDetailsByTypeMutation } from "../../apiServices/order/orderA
 const PointHistory = ({ navigation }) => {
   const [displayList, setDisplayList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const points = 100;
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
@@ -95,21 +96,24 @@ const PointHistory = ({ navigation }) => {
     require("../../../assets/gif/noData.gif")
   ).uri;
   let startDate, endDate;
-  useEffect(() => {
-    (async () => {
+
+  const getOrderDetails = async () => {
+    try {
       const credentials = await Keychain.getGenericPassword();
       const token = credentials.username;
-      //   const startDate = dayjs(start).format(
-      //     "YYYY-MM-DD"
-      //   )
-      //   const endDate = dayjs(end).format("YYYY-MM-DD")
       const data = {
         token:token,
         type:"received_point"
       }
 
-      getOrderDetailsByTypeFunc(data);
-    })();
+      await getOrderDetailsByTypeFunc(data);
+      } catch (error) {
+      console.log('error', error);
+      
+    }
+    };
+  useEffect(() => {
+    getOrderDetails();
   }, []);
 
   useEffect(() => {
@@ -142,7 +146,7 @@ const PointHistory = ({ navigation }) => {
       userId: String(userId),
       token: token,
     };
-    userPointFunc(params);
+    await userPointFunc(params);
   };
   useEffect(() => {
     console.log("DisplayList", displayList);
@@ -621,11 +625,17 @@ const PointHistory = ({ navigation }) => {
     </TouchableOpacity>
     );
   };
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchPoints();
+    await getOrderDetails();
+    setRefreshing(false);
+  }
   return (
     <View
       style={{
         alignItems: "center",
-        justifyContent: "center",
+        // justifyContent: "center",
         backgroundColor: "white",
         width: "100%",
         height: "100%",
@@ -643,7 +653,7 @@ const PointHistory = ({ navigation }) => {
         }}
       >
         {getOrderDetailsByTypeData  &&<View style={{ margin: 10, flexDirection: "row" }}>
-          <Image source={require("../../../assets/images/coin.png")}></Image>
+          <Image source={require("@assets/images/coin.png")}></Image>
            <View style={{ marginLeft: 10 }}>
             <PoppinsTextLeftMedium
               style={{ fontSize: 18, color: "black", fontWeight: "800" }}
@@ -748,6 +758,8 @@ const PointHistory = ({ navigation }) => {
       )}
       {displayList && !isLoading && (
         <FlatList
+          refreshing={refreshing}
+          onRefresh={onRefresh}
           style={{ width: "100%", height: "60%" }}
           data={displayList}
           contentContainerStyle={{

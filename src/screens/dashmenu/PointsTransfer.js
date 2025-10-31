@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import TopHeader from "../../components/topBar/TopHeader";
 import RewardBox from "../../components/molecules/RewardBox";
@@ -33,6 +34,7 @@ const PointsTransfer = () => {
   const id = useSelector((state) => state.appusersdata.id);
   const [token, setToken] = useState();
   const { t } = useTranslation();
+  const [refreshing, setRefreshing] = useState(false);
   const {contacts, status, loading, error, refresh, requestPermission} = useContacts();
   useEffect(() => {
     console.log("contactsList", contacts);
@@ -57,21 +59,25 @@ const PointsTransfer = () => {
     },
   ] = useFetchUserPointsMutation();
 
-  useEffect(() => {
-    const getToken = async () => {
+
+  const getUserPoints = async () => {
+    try {
       const credentials = await Keychain.getGenericPassword();
       const token = credentials.username;
       setToken(token);
-
       const params = {
         userId: id,
         token: token,
       };
       console.log("jdkd", params);
-      userPointFunc(params);
+      await userPointFunc(params);
+      } catch (error) {
+        console.log("Error fetching user points:", error);
+      }
     };
 
-    getToken();
+  useEffect(() => {
+    getUserPoints();
   }, []);
 
   useEffect(() => {
@@ -106,11 +112,20 @@ const PointsTransfer = () => {
     setMobile(phoneNumber);
   };
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }
+
   return (
     <>
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} 
+    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+    >
       <TopHeader title={t("Points transfer")} />
-      <RewardBox />
+      <RewardBox refresh={refreshing} />
 
       {/* Red Strip */}
       {/* <View
