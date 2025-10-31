@@ -119,5 +119,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSContactsUsageDescription</key>
+	<string>This app needs access to your contacts to show nearby friends and let you invite people.</string>
 </dict>
 </plist>

@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import TopHeader from "../../components/topBar/TopHeader";
 import RewardBox from "../../components/molecules/RewardBox";
@@ -23,6 +24,8 @@ import * as Keychain from "react-native-keychain";
 import { useFetchUserPointsMutation } from "../../apiServices/workflow/rewards/GetPointsApi";
 import { useSelector } from "react-redux";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import { useTranslation } from "react-i18next";
+import useContacts from "@/hooks/customHooks/useContacts";
 
 // for userSearch
 const PointsTransfer = () => {
@@ -30,6 +33,12 @@ const PointsTransfer = () => {
   const [mobile, setMobile] = useState();
   const id = useSelector((state) => state.appusersdata.id);
   const [token, setToken] = useState();
+  const { t } = useTranslation();
+  const [refreshing, setRefreshing] = useState(false);
+  const {contacts, status, loading, error, refresh, requestPermission} = useContacts();
+  useEffect(() => {
+    console.log("contactsList", contacts);
+  }, [contacts]);
   const [
     getNameFunc,
     {
@@ -50,21 +59,25 @@ const PointsTransfer = () => {
     },
   ] = useFetchUserPointsMutation();
 
-  useEffect(() => {
-    const getToken = async () => {
+
+  const getUserPoints = async () => {
+    try {
       const credentials = await Keychain.getGenericPassword();
       const token = credentials.username;
       setToken(token);
-
       const params = {
         userId: id,
         token: token,
       };
       console.log("jdkd", params);
-      userPointFunc(params);
+      await userPointFunc(params);
+      } catch (error) {
+        console.log("Error fetching user points:", error);
+      }
     };
 
-    getToken();
+  useEffect(() => {
+    getUserPoints();
   }, []);
 
   useEffect(() => {
@@ -95,11 +108,24 @@ const PointsTransfer = () => {
     }
   }, [mobile]);
 
+  const onContactSelect = (phoneNumber) => {
+    setMobile(phoneNumber);
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }
+
   return (
     <>
-    <ScrollView style={styles.container}>
-      <TopHeader title={"Point Transfer"} />
-      <RewardBox />
+    <ScrollView style={styles.container} 
+    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+    >
+      <TopHeader title={t("Points transfer")} />
+      <RewardBox refresh={refreshing} />
 
       {/* Red Strip */}
       {/* <View
@@ -149,9 +175,10 @@ const PointsTransfer = () => {
             fontSize: 17,
             color: "black",
           }}
-          content={"Enter Mobile No (to transfer points)"}
+          content={t("Enter Mobile No (to transfer points)")}
         ></PoppinsTextLeftMedium>
         <TextInput
+          value={mobile}
           onChangeText={setMobile}
           placeholder="9999999999"
           placeholderTextColor={"#808080"}
@@ -168,17 +195,27 @@ const PointsTransfer = () => {
             paddingLeft: 20,
           }}
         ></TextInput>
-        <Image
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("SelectContact", {
+              onContactSelect:onContactSelect
+            });
+          }}
           style={{
-            height: 35,
-            width: 35,
-            resizeMode: "contain",
             position: "absolute",
             right: 30,
             top: 70,
           }}
-          source={require("../../../assets/images/mobile_icon.png")}
-        />
+        >
+          <Image
+            style={{
+              height: 35,
+              width: 35,
+              resizeMode: "contain",
+            }}
+            source={require("../../../assets/images/mobile_icon.png")}
+          />
+        </TouchableOpacity>
       </View>
 
       {/* Detail Box */}
@@ -197,7 +234,7 @@ const PointsTransfer = () => {
           <View style={{ flexDirection: "row" }}>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
-              content={"Name :"}
+              content={t("Name :")}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
@@ -207,7 +244,7 @@ const PointsTransfer = () => {
           <View style={{ flexDirection: "row" }}>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
-              content={"ID :"}
+              content={t("ID :")}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
@@ -218,7 +255,7 @@ const PointsTransfer = () => {
           <View style={{ flexDirection: "row" }}>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
-              content={"Type :"}
+              content={t("Type :")}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
@@ -229,7 +266,7 @@ const PointsTransfer = () => {
           <View style={{ flexDirection: "row" }}>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
-              content={"State :"}
+              content={t("State :")}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
@@ -240,7 +277,7 @@ const PointsTransfer = () => {
           <View style={{ flexDirection: "row" }}>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
-              content={"City :"}
+              content={t("City :")}
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontSize: 23 }}
@@ -286,7 +323,7 @@ const PointsTransfer = () => {
         >
           <PoppinsTextLeftMedium
             style={{ color: "white", fontSize: 23, fontWeight: "bold" }}
-            content="Next"
+            content={t("Next")}
           ></PoppinsTextLeftMedium>
         </TouchableOpacity>
       )}

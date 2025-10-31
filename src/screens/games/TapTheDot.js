@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import Sound from 'react-native-sound';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { incrementScore, resetScore } from '../../../redux/slices/tapGameSlice';
 import { useShowPointsApiMutation } from '../../apiServices/games/tapTheDotApi';
 import * as Keychain from 'react-native-keychain';
@@ -22,6 +23,7 @@ const DOT_SIZE = 60;
 const GAME_DURATION = 30;
 
 const TapTheDot = ({navigation}) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const score = useSelector((state) => state.tapGame.score);
 
@@ -276,7 +278,7 @@ const TapTheDot = ({navigation}) => {
           // }
           // callApi()
           
-      Alert.alert('Game Over', `Your Score: ${scoreRef.current}`); 
+      Alert.alert(t('Game Over'), `${t('Your Score')}: ${scoreRef.current}`); 
 
           return 0;
         }
@@ -346,13 +348,13 @@ const TapTheDot = ({navigation}) => {
       </View>
       <View style={{alignItems:"center",justifyContent:'center',width:'100%',flexDirection:'row',marginBottom:10}}>
       <Image style={{height:100,width:100,resizeMode:"contain",marginRight:10}} source={require('../../../assets/images/saathi.png')}></Image>
-      <Text style={styles.title}>Tap the Dot</Text>
+      <Text style={styles.title}>{t('Tap the Dot')}</Text>
       </View>
       
 
       <View style={styles.infoRow}>
-        <Text style={styles.infoText}>Time: {timeLeft}s</Text>
-        <Text style={styles.infoText}>Score: {score}</Text>
+        <Text style={styles.infoText}>{t('Time')}: {timeLeft}s</Text>
+        <Text style={styles.infoText}>{t('Score')}: {score}</Text>
       </View>
       {showCountdown && (
   <View style={styles.countdownOverlay}>
@@ -364,7 +366,7 @@ const TapTheDot = ({navigation}) => {
         },
       ]}
     >
-      {count === 1 ? 'Go!' : count}
+      {count === 1 ? t('Go!') : count}
     </Animated.Text>
   </View>
 )}
@@ -377,7 +379,7 @@ const TapTheDot = ({navigation}) => {
           { transform: [{ scale: pressed ? 0.95 : 1 }] },
         ]}
       >
-        <Text style={styles.startButtonText}>Start Game</Text>
+        <Text style={styles.startButtonText}>{t('Start Game')}</Text>
       </Pressable>
       )}
 

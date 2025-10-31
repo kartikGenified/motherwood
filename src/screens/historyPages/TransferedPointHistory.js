@@ -29,6 +29,7 @@ import { useGetOrderDetailsByTypeMutation } from "../../apiServices/order/orderA
 const TransferredPointHistory = ({ navigation }) => {
   const [displayList, setDisplayList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const points = 100;
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
@@ -95,21 +96,18 @@ const TransferredPointHistory = ({ navigation }) => {
     require("../../../assets/gif/noData.gif")
   ).uri;
   let startDate, endDate;
-  useEffect(() => {
-    (async () => {
+  const getOrderDetails = async () => {
       const credentials = await Keychain.getGenericPassword();
       const token = credentials.username;
-      //   const startDate = dayjs(start).format(
-      //     "YYYY-MM-DD"
-      //   )
-      //   const endDate = dayjs(end).format("YYYY-MM-DD")
       const data = {
         token:token,
         type:"transfer_point"
       }
 
-      getOrderDetailsByTypeFunc(data);
-    })();
+      await getOrderDetailsByTypeFunc(data);
+    }
+  useEffect(() => {
+    getOrderDetails();
   }, []);
 
   useEffect(() => {
@@ -143,7 +141,7 @@ const TransferredPointHistory = ({ navigation }) => {
       userId: String(userId),
       token: token,
     };
-    userPointFunc(params);
+    await userPointFunc(params);
   };
   useEffect(() => {
     console.log("DisplayList", displayList);
@@ -453,7 +451,7 @@ const TransferredPointHistory = ({ navigation }) => {
             }}
           >
             <PoppinsTextMedium
-              content="SUBMIT"
+              content={t("SUBMIT")}
               style={{ color: "white", fontSize: 20, borderRadius: 10 }}
             ></PoppinsTextMedium>
           </TouchableOpacity>
@@ -480,7 +478,7 @@ const TransferredPointHistory = ({ navigation }) => {
             left: 10,
             color: "black",
           }}
-          content="Transfers Overview"
+          content={t("Transfers Overview")}
         ></PoppinsTextMedium>
 
         <TouchableOpacity
@@ -599,7 +597,7 @@ const TransferredPointHistory = ({ navigation }) => {
         ></PoppinsTextMedium>
              <PoppinsTextMedium
           style={{ fontWeight: "400", fontSize: 12, color: "black" }}
-          content={`${t(" | Quantity")} : ${quantity}`}
+          content={` | ${t("Quantity")} : ${quantity}`}
         ></PoppinsTextMedium>
 
         </View>
@@ -620,17 +618,24 @@ const TransferredPointHistory = ({ navigation }) => {
     </TouchableOpacity>
     );
   };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchPoints();
+    await getOrderDetails();
+    setRefreshing(false);
+  }
   return (
     <View
       style={{
         alignItems: "center",
-        justifyContent: "center",
+        // justifyContent: "center",
         backgroundColor: "white",
         width: "100%",
         height: "100%",
       }}
     >
-      <TopHeader title={"Transferred Points Summary"} />
+      <TopHeader title={t("Transferred Points Summary")} />
 
       <View
         style={{
@@ -650,7 +655,7 @@ const TransferredPointHistory = ({ navigation }) => {
             ></PoppinsTextLeftMedium>
             <PoppinsTextLeftMedium
               style={{ color: "black", fontWeight: "700", fontSize: 14 }}
-              content={"Transferable Points"}
+              content={t("Transferable Points")}
             ></PoppinsTextLeftMedium>
           </View>
           {
@@ -661,7 +666,7 @@ const TransferredPointHistory = ({ navigation }) => {
           }}>
                        <Image style={{ height: 20, width: 20, resizeMode: "contain" }} source={require('../../../assets/images/gg.png')}></Image>
 
-              <PoppinsTextMedium style={{color:'white', fontSize:14, fontWeight:'600',marginLeft:8}} content={"Points Transfer"}></PoppinsTextMedium>
+              <PoppinsTextMedium style={{color:'white', fontSize:14, fontWeight:'600',marginLeft:8}} content={t("Points Transfer")}></PoppinsTextMedium>
           </TouchableOpacity>
           }
         
@@ -707,6 +712,8 @@ const TransferredPointHistory = ({ navigation }) => {
       )}
       {displayList && !isLoading && (
         <FlatList
+          refreshing={refreshing}
+          onRefresh={onRefresh}
           style={{ width: "100%", height: "60%" }}
           data={displayList}
           contentContainerStyle={{

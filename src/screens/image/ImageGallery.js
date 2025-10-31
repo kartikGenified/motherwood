@@ -138,7 +138,7 @@ setIndexImage(indexImage +1)
         height: '100%',
       }}>
 
-        <TopHeader title={"Photo Gallery"}></TopHeader>
+        <TopHeader title={t("Photo Gallery")}></TopHeader>
    
       <ScrollView style={{width:'100%',height:'90%'}}>
 

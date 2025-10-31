@@ -108,11 +108,11 @@ const PreviousTransactionHistory = ({navigation}) => {
               ></PoppinsTextMedium>
               <PoppinsTextMedium
                 style={{ fontWeight: "400", fontSize: 12, color: "black" }}
-                content={`Product Code : ${productCode}`}
+                content={`${t("Product Code")} : ${productCode}`}
               ></PoppinsTextMedium>
               <PoppinsTextMedium
                 style={{ fontWeight: "400", fontSize: 12, color: "black" }}
-                content={`Visible Code : ${visibleCode}`}
+                content={`${t("Visible Code")} : ${visibleCode}`}
               ></PoppinsTextMedium>
               <View
                 style={{

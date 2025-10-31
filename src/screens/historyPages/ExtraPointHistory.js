@@ -41,6 +41,7 @@ const ExtraPointHistory = ({ navigation }) => {
   const [navigateTo, setNavigateTo] = useState()
   const [message, setMessage] = useState('')
   const [success, setSuccess] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const points = 100;
   const focused = useIsFocused()
@@ -175,7 +176,7 @@ const ExtraPointHistory = ({ navigation }) => {
       userId: String(userId),
       token: token,
     };
-    userPointFunc(params);
+    await userPointFunc(params);
   };
   useEffect(() => {
     console.log("DisplayList", displayList);
@@ -268,7 +269,7 @@ const ExtraPointHistory = ({ navigation }) => {
       id: String(userData.id),
       cause: "exceptOrder",
     };
-    getPointSharingFunc(params);
+    await getPointSharingFunc(params);
   };
 
   const modalClose = () => {
@@ -503,7 +504,7 @@ const ExtraPointHistory = ({ navigation }) => {
             left: 10,
             color: "black",
           }}
-          content="Orders Overview"
+          content={t("Orders Overview")}
         ></PoppinsTextMedium>
 
         {/* <TouchableOpacity
@@ -670,17 +671,23 @@ const ExtraPointHistory = ({ navigation }) => {
     </TouchableOpacity>
     );
   };
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchPoints();
+    await getRegistrationPoints();
+    setRefreshing(false);
+  }
   return (
     <View
       style={{
         alignItems: "center",
-        justifyContent: "center",
+        // justifyContent: "center",
         backgroundColor: "white",
         width: "100%",
         height: "100%",
       }}
     >
-      <TopHeader title={"Bonus Point Summary"} />
+      <TopHeader title={t("Bonus Points Summary")} />
       {error && navigateTo && (
         <ErrorModal
           modalClose={modalClose}
@@ -783,6 +790,8 @@ const ExtraPointHistory = ({ navigation }) => {
       )}
       {displayList && !isLoading && (
         <FlatList
+          refreshing={refreshing}
+          onRefresh={onRefresh}
           style={{ width: "100%", height: "60%" }}
           data={displayList}
           contentContainerStyle={{

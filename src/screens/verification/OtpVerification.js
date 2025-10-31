@@ -587,7 +587,7 @@ const OtpVerification = ({ navigation, route }) => {
       </View>
       
       <TextInputRectangularWithPlaceholder
-        placeHolder="Mobile No"
+        placeHolder={t("Mobile No")}
         handleData={getMobile}
         maxLength={10}
         editable={false}
@@ -595,7 +595,7 @@ const OtpVerification = ({ navigation, route }) => {
       ></TextInputRectangularWithPlaceholder>
 
         <PoppinsTextMedium
-          content={t("Enter the 6-digit OTP received on your Registered Mobile Number "+userData.mobile)}
+          content={t("Enter the 6-digit OTP received on your Registered Mobile Number ", {mobile: userData.mobile})}
           style={{ color: "black", fontSize: 20, fontWeight: "600",width:'90%' }}
         ></PoppinsTextMedium>
 
@@ -653,7 +653,7 @@ const OtpVerification = ({ navigation, route }) => {
                   fontSize: 16,
                 }}
               >
-                Resend Code
+                {t("Resend Code")}
               </Text>
             )}
           </View>

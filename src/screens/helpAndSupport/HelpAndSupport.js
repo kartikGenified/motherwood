@@ -210,8 +210,8 @@ const HelpAndSupport = ({ navigation }) => {
       </TouchableOpacity>
 
       <View>
-        <PoppinsTextMedium style={{ color: "black", fontSize: 20, fontWeight: '800', marginHorizontal: 20, marginTop: 20 }} content={"Social Media"}></PoppinsTextMedium>
-        <PoppinsTextMedium style={{ color: "black", fontSize: 14, fontWeight: '600', marginHorizontal: 20, marginTop: 10 }} content={"For more updates, please follow us on"}></PoppinsTextMedium>
+        <PoppinsTextMedium style={{ color: "black", fontSize: 20, fontWeight: '800', marginHorizontal: 20, marginTop: 20 }} content={t("Social Media")}></PoppinsTextMedium>
+        <PoppinsTextMedium style={{ color: "black", fontSize: 14, fontWeight: '600', marginHorizontal: 20, marginTop: 10 }} content={t("For more updates, please follow us on")}></PoppinsTextMedium>
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
 
           <TouchableOpacity style={{ marginRight: 20, }} onPress={() => {Linking.openURL(socials?.facebook) }}>

@@ -1,63 +1,53 @@
-import React, { useEffect, useId, useState, useRef, useCallback, useMemo } from "react";
+import { useIsFocused } from "@react-navigation/native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
-    Image,
-    TextInput,
-    ScrollView,
-    KeyboardAvoidingView,
-    Platform,
-    Modal,
-    Text,
     ActivityIndicator,
+    Image,
+    Keyboard,
+    KeyboardAvoidingView,
+    Modal,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    TextInput,
+    TouchableOpacity,
     TouchableWithoutFeedback,
-    Keyboard
+    View
 } from "react-native";
-import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
-import { useSelector, useDispatch } from "react-redux";
-import Icon from "react-native-vector-icons/Entypo";
+import FastImage from "react-native-fast-image";
 import * as Keychain from "react-native-keychain";
-import ErrorModal from "../../components/modals/ErrorModal";
-import RectanglarUnderlinedTextInput from "../../components/atoms/input/RectanglarUnderlinedTextInput";
-import RectangularUnderlinedDropDown from "../../components/atoms/dropdown/RectangularUnderlinedDropDown";
-import { useVerifyPanMutation } from "../../apiServices/verification/PanVerificationApi";
+import Icon from "react-native-vector-icons/Entypo";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    setKycData
+} from "../../../redux/slices/userKycStatusSlice";
+import { useAddBankDetailsMutation } from "../../apiServices/bankAccount/AddBankAccount";
 import { useListAccountsMutation } from "../../apiServices/bankAccount/ListBankAccount";
 import {
-    useSendAadharOtpMutation,
-    useVerifyAadharMutation,
-} from "../../apiServices/verification/AadharVerificationApi";
-import { useVerifyGstMutation } from "../../apiServices/verification/GstinVerificationApi";
-import TextInputRectangularWithPlaceholder from "../../components/atoms/input/TextInputRectangularWithPlaceholder";
-import SuccessModal from "../../components/modals/SuccessModal";
-import MessageModal from "../../components/modals/MessageModal";
-import { useIsFocused } from "@react-navigation/native";
-import { useAddBankDetailsMutation } from "../../apiServices/bankAccount/AddBankAccount";
-import {
-    useGetkycDynamicMutation,
-    useUpdateKycDynamicMutation,
+    useGetkycDynamicMutation
 } from "../../apiServices/kyc/KycDynamicApi";
-import {
-    setKycCompleted,
-    setKycData,
-} from "../../../redux/slices/userKycStatusSlice";
-import FastImage from "react-native-fast-image";
-import { gifUri } from "../../utils/GifUrl";
-import { useTranslation } from "react-i18next";
+import { useVerifyGstMutation } from "../../apiServices/verification/GstinVerificationApi";
 import { useVerifyDocKycMutation } from "../../apiServices/verification/VerificationDocKycApi";
+import RectangularUnderlinedDropDown from "../../components/atoms/dropdown/RectangularUnderlinedDropDown";
+import RectanglarUnderlinedTextInput from "../../components/atoms/input/RectanglarUnderlinedTextInput";
+import TextInputRectangularWithPlaceholder from "../../components/atoms/input/TextInputRectangularWithPlaceholder";
+import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
+import ErrorModal from "../../components/modals/ErrorModal";
+import MessageModal from "../../components/modals/MessageModal";
+import { gifUri } from "../../utils/GifUrl";
+import KycOptionCards from "./KycOptionCards";
+import PanVerificationDialog from "./PanVerificationDialog";
+import GstVerificationDialog from "./GstVerificationDialog";
+import TopHeader from "../../components/topBar/TopHeader";
 // import { is } from "immer/dist/internal";
  
 const KycVerificationDynamic = ({ navigation }) => {
-    const [modalContent, setModalContent] = useState();
-    const [modal, setModal] = useState(false);
-    const [aadhaarModalVisible, setAadhaarModalVisible] = useState(false);
     const [panModalVisible, setPanModalVisible] = useState(false);
     const [gstModalVisible, setGstModalVisible] = useState(false);
-    const [kycArray, setKycArray] = useState([]);
     const [panVerified, setPanVerified] = useState(false);
     const [aadhaarVerified, setAadhaarVerified] = useState(false);
     const [gstVerified, setGstVerified] = useState(false);
-    const [verified, setVerified] = useState([]);
     const [pan, setPan] = useState("");
     const [name, setName] = useState("");
     const [businessName, setBusinessName] = useState("");
@@ -66,10 +56,7 @@ const KycVerificationDynamic = ({ navigation }) => {
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
     const [aadhar, setAadhar] = useState("");
-    const [otp, setOtp] = useState("");
-    const [aadhaarOtpSent, setAadhaarOtpSent] = useState(false);
     const [verifiedAadharDetails, setVerifiedAadharDetails] = useState(false);
-    const inpref = useRef(null);
     const [bankAccountVerified, setBankAccountVerified] = useState(false);
     const [upiVerified, setUpiVerified] = useState(false);
     const [verifiedArray, setVerifiedArray] = useState([]);
@@ -108,8 +95,6 @@ const KycVerificationDynamic = ({ navigation }) => {
     });
  
     const userData = useSelector((state) => state.appusersdata.userData);
-    console.log("sadbbsavhdghjgasyftyqwd", userData)
-    const kycData = useSelector((state) => state.kycDataSlice.kycData);
     const ternaryThemeColor = useSelector(
         (state) => state.apptheme.ternaryThemeColor
     ) ? useSelector((state) => state.apptheme.ternaryThemeColor) : "grey";
@@ -184,6 +169,19 @@ const KycVerificationDynamic = ({ navigation }) => {
         }
     }, [verifyDocKycIsLoading]);
  
+
+    const getKycDynamic = async () => {
+        try {
+            const credentials = await Keychain.getGenericPassword();
+            if (credentials) {
+                const token = credentials?.username;
+                console.log("token from dashboard getKycDynamic ", token);
+                getKycDynamicFunc(token);
+            }
+        } catch (error) {
+            console.log("Keychain couldn't be accessed!", error);
+        }
+    }
  
     useEffect(() => {
         const fetchOnPageActive = async () => {
@@ -232,7 +230,7 @@ const KycVerificationDynamic = ({ navigation }) => {
                     // Pre-fill data for verified documents
                     if (userData.is_valid_aadhar && userData.aadhar_details) {
                         setAadhar(userData.aadhar || '');
-                        setVerifiedAadharDetails(userData.aadhar_details);
+                        setVerifiedAadharDetails({...userData?.aadhar_details, aadhaar:userData?.aadhar});
                     }
  
                     if (userData.is_valid_pan && userData.pan_details) {
@@ -263,9 +261,7 @@ const KycVerificationDynamic = ({ navigation }) => {
  
     // Handle option selection
     const handleSelectOption = (option) => {
-        if (option === 'aadhaar') {
-            setAadhaarModalVisible(true);
-        } else if (option === 'pan') {
+        if (option === 'pan') {
             setPanModalVisible(true);
         } else if (option === 'gstin') {
             setGstModalVisible(true);
@@ -294,7 +290,7 @@ const KycVerificationDynamic = ({ navigation }) => {
             }
         };
         refetchData();
-    }, [focused, modal]);
+    }, [focused]);
  
     useEffect(() => {
         console.log("firstlistAccountData", JSON.stringify(listAccountData));
@@ -320,9 +316,6 @@ const KycVerificationDynamic = ({ navigation }) => {
     }, [upiVerified, bankAccountVerified]);
  
     // Modal close handlers
-    const closeAadhaarModal = () => {
-        setAadhaarModalVisible(false);
-    };
  
     const closePanModal = () => {
         setPanModalVisible(false);
@@ -494,1572 +487,7 @@ const KycVerificationDynamic = ({ navigation }) => {
         }
     }, [panModalVisible, panVerified]);
  
-    useEffect(() => {
-        if (!aadhaarModalVisible && aadhaarVerified) {
-            // Refresh KYC data when returning from Pan verification
-            const refreshKycData = async () => {
-                try {
-                    const credentials = await Keychain.getGenericPassword();
-                    if (credentials) {
-                        const token = credentials.username;
-                        getKycDynamicFunc(token);
-                    }
-                } catch (error) {
-                    console.log("Error refreshing KYC data:", error);
-                }
-            };
-            refreshKycData();
-        }
-    }, [aadhaarModalVisible, aadhaarVerified]);
- 
-    // AADHAAR Verification Dialog
-    const AadhaarVerificationDialog = React.memo(({ visible, onClose, refetchKycStatus, initialAadhar = '' }) => {
-        console.log('AadhaarVerificationDialog rendered with visible:', visible);
- 
-        const isPreVerified = preVerifiedDocs.aadhaar;
-        console.log('isPreVerified:', isPreVerified);
- 
-        const [actualAadhaar, setActualAadhaar] = useState(
-            isPreVerified && verifiedAadharDetails?.aadhaar_uid
-                ? verifiedAadharDetails.aadhaar_uid.replace(/\D/g, '')
-                : initialAadhar.replace(/\D/g, '')
-        );
-        console.log('actualAadhaar initialized:', actualAadhaar);
- 
-        const [displayAadhaar, setDisplayAadhaar] = useState('');
-        const [localOtp, setLocalOtp] = useState('');
-        const [aadhaarErrorMessage, setAadhaarErrorMessage] = useState(null);
-        const [otpErrorMessage, setOtpErrorMessage] = useState(null);
-        const [otpSent, setOtpSent] = useState(false);
-        const [isVerified, setIsVerified] = useState(false);
-        const [hasInitialized, setHasInitialized] = useState(false);
-        const [shouldMask, setShouldMask] = useState(false);
-        const [otpVerified, setOtpVerified] = useState(false);
-        const [showSuccessLoader, setShowSuccessLoader] = useState(false);
-        const [verificationStatus, setVerificationStatus] = useState(isPreVerified ? 'success' : 'idle');
-        const [hasSubmitted, setHasSubmitted] = useState(false);
-        const [isSubmitting, setIsSubmitting] = useState(false);
-        const [verifiedApiData, setVerifiedApiData] = useState(null);
- 
- 
-        console.log('State values:', {
-            displayAadhaar,
-            localOtp,
-            aadhaarErrorMessage,
-            otpErrorMessage,
-            otpSent,
-            isVerified,
-            hasInitialized,
-            shouldMask,
-            otpVerified,
-            showSuccessLoader,
-            verificationStatus,
-            hasSubmitted,
-            isSubmitting
-        });
- 
-        const [
-            sendAadharOtpFunc,
-            { data: sendAadharOtpData, error: sendAadharOtpError, isLoading: sendAadharOtpIsLoading }
-        ] = useSendAadharOtpMutation();
- 
-        const [
-            verifyAadharFunc,
-            { data: verifyAadharData, error: verifyAadharError, isLoading: verifyAadharIsLoading }
-        ] = useVerifyAadharMutation();
- 
-        // Log API responses
-        useEffect(() => {
-            if (sendAadharOtpData) {
-                console.log('sendAadharOtpData:', sendAadharOtpData);
-            }
-            if (sendAadharOtpError) {
-                console.log('sendAadharOtpError:', sendAadharOtpError);
-            }
-            if (verifyAadharData) {
-                console.log('verifyAadharData:', verifyAadharData);
-            }
-            if (verifyAadharError) {
-                console.log('verifyAadharError:', verifyAadharError);
-            }
-        }, [sendAadharOtpData, sendAadharOtpError, verifyAadharData, verifyAadharError]);
- 
-        // Masking function
-        const maskAadhaar = (aadhaar) => {
-            if (!aadhaar || aadhaar.length < 4) return aadhaar;
-            const lastFour = aadhaar.slice(-4);
-            return `XXXXXXXX${lastFour}`;
-        };
- 
-        // Only mask after API response, not during typing
-        useEffect(() => {
-            console.log('masking effect - actualAadhaar:', actualAadhaar, 'shouldMask:', shouldMask);
-            if (shouldMask) {
-                const masked = maskAadhaar(actualAadhaar);
-                console.log('Setting masked displayAadhaar:', masked);
-                setDisplayAadhaar(masked);
-            } else {
-                console.log('Setting unmasked displayAadhaar:', actualAadhaar);
-                setDisplayAadhaar(actualAadhaar);
-            }
-        }, [actualAadhaar, shouldMask]);
- 
-        // Auto-verify if pre-verified
-        useEffect(() => {
-            console.log('pre-verified effect - isPreVerified:', isPreVerified, 'hasInitialized:', hasInitialized);
-            if (isPreVerified && !hasInitialized) {
-                console.log('Setting isVerified to true due to pre-verified status');
-                setIsVerified(true);
-                setHasInitialized(true);
-                setHasSubmitted(true);
-            }
-        }, [isPreVerified, hasInitialized]);
- 
-        // Only reset state when FIRST opening the modal
-        useEffect(() => {
-            console.log('reset state effect - visible:', visible, 'hasInitialized:', hasInitialized);
-            if (visible && !hasInitialized) {
-                const initialAadhaarValue = isPreVerified && verifiedAadharDetails?.aadhaar_uid
-                    ? verifiedAadharDetails.aadhaar_uid.replace(/\D/g, '')
-                    : initialAadhar.replace(/\D/g, '');
- 
-                console.log('Initializing with aadhaar:', initialAadhaarValue);
- 
-                if (isPreVerified) {
-                    console.log('Setting masked display for pre-verified aadhaar');
-                    setDisplayAadhaar(maskAadhaar(initialAadhaarValue));
-                    setShouldMask(true);
-                    setHasSubmitted(true);
-                } else {
-                    console.log('Setting unmasked display for new aadhaar');
-                    setDisplayAadhaar(initialAadhaarValue);
-                    setShouldMask(false);
-                    setHasSubmitted(false);
-                }
- 
-                setLocalOtp('');
-                setAadhaarErrorMessage(null);
-                setOtpErrorMessage(null);
-                setOtpSent(false);
-                setOtpVerified(false);
-                setHasInitialized(true);
-                setIsSubmitting(false);
-            }
-        }, [visible, initialAadhar, hasInitialized, isPreVerified, verifiedAadharDetails]);
- 
-        // Handle manual verification success
-        useEffect(() => {
-            console.log('verifyAadharData effect:', verifyAadharData);
-            if (verifyAadharData?.success && !isPreVerified) {
-                console.log('Manual verification successful');
-                setIsVerified(true);
-                setOtpVerified(true);
-                setAadhaarErrorMessage(null);
-                setOtpErrorMessage(null);
- 
-                setVerifiedApiData(verifyAadharData);
- 
- 
-                if (verifyAadharData.body?.aadhaar_uid) {
-                    const apiAadhaar = verifyAadharData.body.aadhaar_uid.replace(/\D/g, '');
-                    console.log('Setting verified aadhaar from API:', apiAadhaar);
-                    setDisplayAadhaar(maskAadhaar(apiAadhaar));
-                    setShouldMask(true);
- 
-                    // Store the verified data
-                    const verifiedData = verifyAadharData.body?.data ? verifyAadharData.body.data : verifyAadharData.body;
-                    console.log('Storing verified Aadhaar details:', verifiedData);
-                    setVerifiedAadharDetails(verifiedData);
-                }
- 
-                // Show success loader for 1.5s before showing data box
-                console.log('Showing success loader');
-                setShowSuccessLoader(true);
-                setTimeout(() => {
-                    console.log('Hiding success loader');
-                    setShowSuccessLoader(false);
-                }, 1500);
-            }
-        }, [verifyAadharData, isPreVerified]);
- 
-        // Handle API errors with separate error states
-        useEffect(() => {
-            console.log('error handling effect');
-            if (sendAadharOtpError && !isPreVerified) {
-                const errorMsg = sendAadharOtpError.data?.message || sendAadharOtpError.message || 'Invalid Aadhaar number';
-                console.log('Setting Aadhaar error:', errorMsg);
-                setAadhaarErrorMessage(errorMsg);
-                setOtpErrorMessage(null);
-                setOtpSent(false);
-            }
-            if (verifyAadharError && !isPreVerified) {
-                const errorMsg = verifyAadharError.data?.message || verifyAadharError.message || 'Invalid OTP. Please try again.';
-                console.log('Setting OTP error:', errorMsg);
-                setOtpErrorMessage(errorMsg);
-                setAadhaarErrorMessage(null);
-                setOtpVerified(false);
-            }
-        }, [sendAadharOtpError, verifyAadharError, isPreVerified]);
- 
-        // Handle successful OTP send
-        useEffect(() => {
-            console.log('OTP send effect:', sendAadharOtpData);
-            if (sendAadharOtpData?.success) {
-                console.log('OTP sent successfully');
-                if (sendAadharOtpData.body?.data?.aadhaar_uid) {
-                    const apiAadhaar = sendAadharOtpData.body.data.aadhaar_uid.replace(/\D/g, '');
-                    console.log('Setting aadhaar from OTP response:', apiAadhaar);
-                    setShouldMask(true);
-                }
- 
-                setOtpSent(true);
-                setAadhaarErrorMessage(null);
-                setOtpErrorMessage(null);
-            }
-        }, [sendAadharOtpData]);
- 
-        const handleAadhaarChange = useCallback((text) => {
-            console.log('Aadhaar changed:', text);
-            if (isPreVerified) {
-                console.log('Aadhaar is pre-verified, ignoring change');
-                return;
-            }
- 
-            const numericText = text.replace(/[^0-9]/g, '');
-            console.log('Numeric only aadhaar:', numericText);
- 
-            setActualAadhaar(numericText);
-            setShouldMask(false);
-            setAadhaarErrorMessage(null);
-            setOtpErrorMessage(null);
-            setOtpVerified(false);
-            setOtpSent(false);
-            setLocalOtp('');
-            setIsVerified(false);
-            setVerifiedApiData(null);
-        }, [isPreVerified]);
- 
-        const handleOtpChange = useCallback((text) => {
-            console.log('OTP changed:', text);
-            if (isPreVerified) {
-                console.log('Aadhaar is pre-verified, ignoring OTP change');
-                return;
-            }
- 
-            const numericText = text.replace(/[^0-9]/g, '');
-            console.log('Numeric only OTP:', numericText);
-            setLocalOtp(numericText);
- 
-            // Clear OTP error when user starts typing again
-            if (numericText.length > 0) {
-                console.log('Clearing OTP error');
-                setOtpErrorMessage(null);
-            }
-        }, [isPreVerified]);
- 
-        const handleSendOtp = useCallback(() => {
-            console.log('Sending OTP for aadhaar:', actualAadhaar);
-            if (isPreVerified) {
-                console.log('Aadhaar is pre-verified, skipping OTP send');
-                return;
-            }
- 
-            if (actualAadhaar.length !== 12) {
-                console.log('Invalid Aadhaar length:', actualAadhaar.length);
-                setAadhaarErrorMessage('Please enter a valid 12-digit Aadhaar number');
-                return;
-            }
- 
-            // Clear previous errors before making new API call
-            console.log('Clearing previous errors');
-            setAadhaarErrorMessage(null);
- 
-            const data = { aadhaar_number: actualAadhaar };
-            console.log('Calling sendAadharOtpFunc with data:', data);
-            sendAadharOtpFunc(data);
-        }, [actualAadhaar, isPreVerified, sendAadharOtpFunc]);
- 
-        const handleVerifyOtp = useCallback(() => {
-            console.log('Verifying OTP:', localOtp);
-            if (isPreVerified) {
-                console.log('Aadhaar is pre-verified, skipping OTP verification');
-                return;
-            }
- 
-            if (localOtp.length !== 6) {
-                console.log('Invalid OTP length:', localOtp.length);
-                setOtpErrorMessage('Please enter a valid 6-digit OTP');
-                return;
-            }
- 
-            const refId = sendAadharOtpData?.body?.data?.ref_id || sendAadharOtpData?.body?.ref_id;
-            console.log('Using refId for OTP verification:', refId);
- 
-            if (!refId) {
-                console.log('No refId found for OTP verification');
-                setOtpErrorMessage('Please send OTP first');
-                return;
-            }
- 
-            // Clear previous errors before making new API call
-            console.log('Clearing previous errors');
-            setOtpErrorMessage(null);
- 
-            const data = {
-                ref_id: refId,
-                otp: localOtp,
-            };
-            console.log('Calling verifyAadharFunc with data:', data);
-            verifyAadharFunc(data);
-        }, [sendAadharOtpData, localOtp, isPreVerified, verifyAadharFunc]);
- 
-        const handleStateUpdateAadhar = useCallback(() => {
-            console.log('handleStateUpdateAadhar called');
- 
-            if (!verifiedApiData || hasSubmitted || verificationCalledRef.current.aadhaar) {
-                console.log('Aadhaar already submitted or no verification data');
-                return;
-            }
- 
-            console.log('Submitting Aadhaar verification data...');
-            setIsSubmitting(true);
- 
-            const verifiedAadhaar = actualAadhaar;
-            console.log('Using verified aadhaar:', verifiedAadhaar);
-            // Use the correct verified data - check if we have new verification data first
- 
-            const responseBody = verifiedApiData.body || {};
-            const responseData = responseBody.data || responseBody;
- 
- 
-            console.log('Using verified data:', responseData);
- 
-            // Defer updates and API submission
-            setTimeout(() => {
-                const dataToSend = {
-                    ...responseData,
-                    aadhaar_uid: verifiedAadhaar,
-                    aadhaar_number: verifiedAadhaar,
-                    aadhar: verifiedAadhaar
-                };
-                console.log('Data to send:', dataToSend);
- 
-                // verificationCalledRef.current.aadhaar = true;
-                console.log('Setting verification called flag');
- 
-                setAadhar(verifiedAadhaar);
-                setAadhaarVerified(true);
-                const temp = { type: "aadhaar", value: verifiedAadhaar };
-                setVerified(prev => [...prev.filter(item => item.type !== "aadhaar"), temp]);
- 
-                // persist verified data to parent so it shows on reopen
-                console.log('Persisting verified data to parent');
- 
-                verificationGlobalData.current.aadhaar = verifiedAadhaar;
-                verificationGlobalData.current.aadhar_details = dataToSend;
- 
-                setCallSubmitAadhaar(true);
- 
-                onClose();
-            }, 0);
-        }, [verificationStatus, isPreVerified, actualAadhaar, verifiedApiData, verifyAadharData, handleVerifyDocKyc, refetchKycStatus, setAadhar, setAadhaarVerified, setVerified, onClose]);
- 
- 
-        const handleClose = useCallback(() => {
-            console.log('Dialog close requested');
-            onClose();
-        }, [onClose]);
- 
-        // Determine button text and behavior
-        const getButtonText = useCallback(() => {
-            if (isSubmitting) return "Submitting...";
-            if (hasSubmitted) return "Done";
-            if (isVerified || isPreVerified) return "Submit Verification";
-            if (verifyAadharIsLoading) return "Verifying...";
-            if (sendAadharOtpIsLoading) return "Sending OTP...";
-            if (otpSent) return "Verify OTP";
-            return "Send OTP";
-        }, [isSubmitting, hasSubmitted, isVerified, isPreVerified, verifyAadharIsLoading, sendAadharOtpIsLoading, otpSent]);
- 
-        const handleMainButtonPress = useCallback(() => {
-            if (isSubmitting) return;
- 
-            if (hasSubmitted) {
-                onClose();
-                return;
-            }
- 
-            if (isVerified || isPreVerified && !hasSubmitted) {
-                handleStateUpdateAadhar();
-                return;
-            }
- 
-            if (otpSent) {
-                handleVerifyOtp();
-                return;
-            }
- 
-            handleSendOtp();
-        }, [isSubmitting, hasSubmitted, isVerified, isPreVerified, otpSent, handleStateUpdateAadhar, onClose, handleVerifyOtp, handleSendOtp]);
- 
- 
-        console.log('Rendering AadhaarVerificationDialog with final state:', {
-            displayAadhaar,
-            isVerified,
-            isPreVerified,
-            otpSent,
-            otpVerified,
-            hasSubmitted
-        });
- 
-        return (
-            <Modal
-                visible={visible}
-                animationType="slide"
-                transparent={true}
-                onRequestClose={handleClose}
-                onDismiss={handleClose}
-                hardwareAccelerated={true}
-                statusBarTranslucent={true}
-            >
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === "ios" ? "padding" : "height"}
-                    style={styles.modalContainer}
-                >
-                    <View style={styles.modalContent}>
-                        <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
-                            <Icon name="cross" size={24} color="#000" />
-                        </TouchableOpacity>
- 
-                        {/* <View style={styles.headerRow}> */}
-                            <PoppinsTextMedium
-                                style={styles.modalTitle}
-                                content={isPreVerified ? "Your Aadhaar Details" : "Kindly Enter Your Aadhaar Details"}
-                            />
-                        {/* </View> */}
- 
-                        <Image
-                            style={styles.documentImage}
-                            source={require("../../../assets/images/addharColor.png")}
-                        />
- 
-                        {isPreVerified ? (
-                            <View style={styles.preVerifiedContainer}>
-                                {verifiedAadharDetails && (
-                                    <AadharDataBox
-                                        aadhaar={displayAadhaar}
-                                        dob={verifiedAadharDetails.dob}
-                                        name={verifiedAadharDetails.name}
-                                        gender={verifiedAadharDetails.gender}
-                                        address={verifiedAadharDetails.address}
-                                    />
-                                )}
- 
-                                <PoppinsTextMedium
-                                    style={styles.preVerifiedText}
-                                    content="Your Aadhaar has been verified and cannot be edited"
-                                />
-                            </View>
-                        ) : (
-                            <>
-                                <View style={styles.inputContainer}>
-                                    <PoppinsTextMedium style={styles.inputLabel} content="Enter Aadhaar Number" />
-                                    <View style={styles.inputWrapper}>
-                                        <TextInput
-                                            maxLength={12}
-                                            value={displayAadhaar}
-                                            onChangeText={handleAadhaarChange}
-                                            style={[styles.inputField, (isVerified) && styles.disabledInput]}
-                                            placeholder="Enter Aadhaar Number"
-                                            placeholderTextColor="#999"
-                                            keyboardType="numeric"
-                                            autoCorrect={false}
-                                            autoCapitalize="none"
-                                            blurOnSubmit={false}
-                                            importantForAutofill="no"
-                                            autoComplete="off"
-                                            editable={!isVerified}
-                                        />
-                                        {isVerified ? (
-                                            <Image
-                                                style={styles.verifiedIcon}
-                                                source={require("../../../assets/images/tickBlue.png")}
-                                            />
-                                        ) : sendAadharOtpIsLoading ? (
-                                            <FastImage
-                                                style={styles.loadingIcon}
-                                                source={{ uri: gifUri }}
-                                                resizeMode={FastImage.resizeMode.contain}
-                                            />
-                                        ) : null}
-                                    </View>
-                                    {/* Aadhaar-specific error message */}
-                                    {aadhaarErrorMessage && (
-                                        <PoppinsTextMedium
-                                            style={styles.errorText}
-                                            content={aadhaarErrorMessage}
-                                        />
-                                    )}
-                                </View>
- 
-                                {otpSent && (
-                                    <PoppinsTextMedium
-                                        style={styles.maskedAadhaarText}
-                                        content={`Aadhaar: ${displayAadhaar}`}
-                                    />
-                                )}
- 
-                                {otpSent && !otpVerified && (
-                                    <>
-                                        <PoppinsTextMedium
-                                            style={[styles.otpSentText, { color: ternaryThemeColor }]}
-                                            content="OTP Sent Successfully"
-                                        />
- 
-                                        <View style={styles.inputContainer}>
-                                            <PoppinsTextMedium
-                                                style={styles.inputLabel}
-                                                content="Enter OTP"
-                                            />
-                                            <View style={styles.inputWrapper}>
-                                                <TextInput
-                                                    textContentType="oneTimeCode"
-                                                    value={localOtp}
-                                                    onChangeText={handleOtpChange}
-                                                    style={styles.inputField}
-                                                    placeholder="Enter OTP"
-                                                    placeholderTextColor="#999"
-                                                    keyboardType="numeric"
-                                                    autoCorrect={false}
-                                                    autoComplete="off"
-                                                    blurOnSubmit={false}
-                                                    maxLength={6}
-                                                />
-                                            </View>
-                                            {otpErrorMessage && (
-                                                <PoppinsTextMedium
-                                                    style={styles.errorText}
-                                                    content={otpErrorMessage}
-                                                />
-                                            )}
-                                        </View>
-                                    </>
-                                )}
- 
-                                {showSuccessLoader ? (
-                                    <FastImage
-                                        style={{ width: 60, height: 60, alignSelf: 'center', marginVertical: 20 }}
-                                        source={{ uri: gifUri }}
-                                        resizeMode={FastImage.resizeMode.contain}
-                                    />
-                                ) : (
-                                    verifyAadharData?.success && (
-                                        <AadharDataBox
-                                            aadhaar={displayAadhaar}
-                                            dob={verifyAadharData.body?.dob}
-                                            name={verifyAadharData.body?.name}
-                                            gender={verifyAadharData.body?.gender}
-                                            address={verifyAadharData.body?.address}
-                                        />
-                                    )
-                                )}
-                            </>
-                        )}
- 
-                        {/* Status Message */}
-                        {hasSubmitted && (
-                            <View style={styles.statusContainer}>
-                                <PoppinsTextMedium
-                                    style={[styles.statusText, { color: 'green' }]}
-                                    content="✓ Aadhaar verified and submitted successfully"
-                                />
-                            </View>
-                        )}
- 
-                        <TouchableOpacity
-                            style={[
-                                styles.submitButton,
-                                {
-                                    backgroundColor: ternaryThemeColor,
-                                    opacity: (sendAadharOtpIsLoading || verifyAadharIsLoading || isSubmitting) ? 0.7 : 1
-                                }
-                            ]}
-                            onPress={handleMainButtonPress}
-                            disabled={sendAadharOtpIsLoading || verifyAadharIsLoading || isSubmitting}
-                        >
-                            {isSubmitting ? (
-                                <FastImage
-                                    style={styles.buttonLoadingIcon}
-                                    source={{ uri: gifUri }}
-                                    resizeMode={FastImage.resizeMode.contain}
-                                />
-                            ) : (
-                                <PoppinsTextMedium
-                                    style={styles.submitButtonText}
-                                    content={getButtonText()}
-                                />
-                            )}
-                        </TouchableOpacity>
-                    </View>
-                </KeyboardAvoidingView>
-            </Modal>
-        );
-    });
- 
-    const AadharDataBox = ({ aadhaar, dob, name, gender, address }) => {
-        return (
-            <View style={styles.dataBox}>
-                <View style={{ flexDirection: "row", width: "90%" }}>
-                    <PoppinsTextMedium
-                        content="Aadhaar No :"
-                        style={styles.dataLabel}
-                    />
-                    <PoppinsTextMedium
-                        content={aadhaar}
-                        style={styles.dataValue}
-                    />
-                </View>
-                <View style={{ flexDirection: "row", width: "90%", marginTop: 10 }}>
-                    <PoppinsTextMedium
-                        content="Name :"
-                        style={styles.dataLabel}
-                    />
-                    <PoppinsTextMedium
-                        content={name}
-                        style={styles.dataValue}
-                    />
-                </View>
-                <View style={{ flexDirection: "row", width: "90%", marginTop: 10 }}>
-                    <PoppinsTextMedium
-                        content="DOB :"
-                        style={styles.dataLabel}
-                    />
-                    <PoppinsTextMedium
-                        content={dob}
-                        style={styles.dataValue}
-                    />
-                </View>
-                <View style={{ flexDirection: "row", width: "90%", marginTop: 10 }}>
-                    <PoppinsTextMedium
-                        content="Gender :"
-                        style={styles.dataLabel}
-                    />
-                    <PoppinsTextMedium
-                        content={gender}
-                        style={styles.dataValue}
-                    />
-                </View>
-                <View style={{ flexDirection: "row", width: "90%", marginTop: 10 }}>
-                    <PoppinsTextMedium
-                        content="Address:"
-                        style={styles.dataLabel}
-                    />
-                    <PoppinsTextMedium
-                        content={address}
-                        style={styles.dataValue}
-                    />
-                </View>
-            </View>
-        );
-    };
- 
-    // NEW PAN Verification Dialog
-    const PanVerificationDialog = React.memo(({ visible, onClose, refetchKycStatus }) => {
-        const isPreVerified = preVerifiedDocs.pan;
-        const [localPan, setLocalPan] = useState(pan ? pan : '');
-        const [localName, setLocalName] = useState(name ? name : '');
-        const [isVerified, setIsVerified] = useState(isPreVerified);
-        const [errorMessage, setErrorMessage] = useState(null);
-        const [verifiedApiData, setVerifiedApiData] = useState(null);
-        const [hasSubmitted, setHasSubmitted] = useState(false);
-        const [isSubmitting, setIsSubmitting] = useState(false);
- 
- 
-        // Reset states when dialog opens
-        useEffect(() => {
-            if (visible) {
-                console.log('PAN Dialog opened');
-                verificationCalledRef.current.pan = false;
-                setHasSubmitted(false);
-                setIsSubmitting(false);
- 
-                // For pre-verified cases, set hasSubmitted to true
-                if (isPreVerified) {
-                    setHasSubmitted(true);
-                }
-            }
-        }, [visible, isPreVerified]);
- 
-        const [
-            verifyPanFunc,
-            { data: verifyPanData, error: verifyPanError, isLoading: verifyPanIsLoading }
-        ] = useVerifyPanMutation();
- 
-        // Handle PAN verification response
-        useEffect(() => {
-            if (verifyPanData) {
-                console.log('PAN verification response received:', JSON.stringify(verifyPanData, null, 2));
- 
-                if (verifyPanData.success) {
-                    console.log('PAN verification successful!');
-                    setVerifiedApiData(verifyPanData);
- 
-                    // Extract data from the API response
-                    const responseBody = verifyPanData.body || {};
-                    const responseData = responseBody.body?.data || responseBody.body || responseBody;
-                    const verifiedPan = responseData.pan || responseData.PAN;
-                    const verifiedName = responseData.registered_name || responseData.full_name || responseData.name;
- 
-                    if (verifiedPan) {
-                        setLocalPan(verifiedPan);
-                        setLocalName(verifiedName || '');
-                        setIsVerified(true);
-                        setErrorMessage(null);
-                    }
-                }
-            }
- 
-            if (verifyPanError) {
-                console.log('PAN verification failed:', JSON.stringify(verifyPanError, null, 2));
-                const errorMsg = verifyPanError.data?.message || verifyPanError.message || 'Failed to verify PAN';
-                setErrorMessage(errorMsg);
-                setIsVerified(false);
-            }
-        }, [verifyPanData, verifyPanError, setPanVerified, setPan, setName]);
- 
-        // Function to handle PAN verification submission
-        const handleSubmitVerification = useCallback(() => {
-            if (!verifiedApiData || hasSubmitted || verificationCalledRef.current.pan) {
-                console.log('PAN already submitted or no verification data');
-                return;
-            }
- 
-            console.log('Submitting PAN verification data...');
-            setIsSubmitting(true);
- 
-            const responseBody = verifiedApiData.body || {};
-            const responseData = responseBody.data || responseBody;
- 
-            const effectivePan = responseData.pan || responseData.PAN || localPan;
-            const effectiveName = responseData.registered_name ||
-                responseData.full_name ||
-                responseData.name ||
-                localName;
- 
-            // Prepare complete payload with ALL available data from API response
-            const panVerificationData = {
-                // Basic identification
-                pan: effectivePan,
-                name: effectiveName,
- 
-                // Include ALL data from the API response
-                ...responseData,
- 
-                // Additional metadata
-                verification_source: 'pan_api',
-                verified_at: new Date().toISOString(),
-                verification_status: 'verified'
-            };
- 
-            console.log('Submitting to verifyDocKyc:', JSON.stringify(panVerificationData, null, 2));
- 
-            // Mark as submitted
-            // verificationCalledRef.current.pan = true;
- 
-            verificationGlobalData.current.pan = effectivePan;
-            verificationGlobalData.current.pan_details = panVerificationData;
- 
-            setCallSubmitPan(true);
-            onClose();
-        }, [verifiedApiData, localPan, localName, handleVerifyDocKyc, refetchKycStatus, hasSubmitted, setPanVerified]);
- 
- 
-        const handlePanChange = useCallback(
-            (text) => {
-                if (isPreVerified || isVerified) return;
- 
-                const upperText = text.toUpperCase().replace(/[^A-Z0-9]/g, '');
-                setLocalPan(upperText);
-                setErrorMessage(null);
-                setVerifiedApiData(null);
-                setHasSubmitted(false);
- 
-                if (upperText.length === 10) {
-                    console.log('PAN input reached 10 chars, verifying:', upperText);
-                    verifyPanFunc({ pan: upperText })
-                        .unwrap()
-                        .then(res => {
-                            console.log('PAN verify API success:', JSON.stringify(res));
-                        })
-                        .catch((error) => {
-                            console.log('PAN verify API error:', JSON.stringify(error));
-                            setErrorMessage(error.data?.message || error.message || 'Failed to verify PAN');
-                            setIsVerified(false);
-                        });
-                }
-            },
-            [isVerified, isPreVerified, verifyPanFunc]
-        );
- 
-        const handleNameChange = useCallback(
-            (text) => {
-                if (isPreVerified) return;
-                setLocalName(text);
-            },
-            [isPreVerified]
-        );
- 
-          const handleMainButtonPress = useCallback(() => {
-            if (isVerified && !hasSubmitted) {
-                handleSubmitVerification();
-            } else if (isPreVerified && !hasSubmitted) {
-                // Handle pre-verified case that hasn't been submitted
-                handleSubmitVerification();
-            } else {
-                onClose();
-            }
-        }, [isVerified, hasSubmitted, isPreVerified, handleSubmitVerification, onClose]);
- 
-        const handleClose = useCallback(() => {
-            console.log('Dialog close requested');
-            onClose();
-        }, [onClose]);
- 
-        // Determine button text
-        const getButtonText = useCallback(() => {
-            if (verifyPanIsLoading) return "Verifying...";
-            if (isSubmitting) return "Submitting...";
-            if (hasSubmitted) return "Done";
-            if (isVerified) return "Submit Verification";
-            if (isPreVerified) return "Done";
-            return "Verify PAN";
-        }, [verifyPanIsLoading, isSubmitting, hasSubmitted, isVerified, isPreVerified]);
- 
-        return (
-            <Modal
-                visible={visible}
-                animationType="slide"
-                transparent={true}
-                onRequestClose={handleClose}
-                hardwareAccelerated={true}
-                statusBarTranslucent={true}
-            >
-                <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                    <KeyboardAvoidingView
-                        behavior={Platform.OS === "ios" ? "padding" : "height"}
-                        style={styles.modalContainer}
-                        keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
-                    >
-                        <View style={styles.modalContent}>
-                            {/* Close Button */}
-                            <TouchableOpacity
-                                style={styles.closeButton}
-                                onPress={handleClose}
-                                hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-                            >
-                                <Icon name="cross" size={24} color="#000" />
-                            </TouchableOpacity>
- 
-                            {/* Title */}
-                            <PoppinsTextMedium
-                                style={styles.modalTitle}
-                                content={isPreVerified ? "PAN Already Verified" : "Kindly Enter Your PAN Details"}
-                            />
- 
-                        <Image
-                            style={styles.documentImage}
-                            source={require("../../../assets/images/panColor.png")}
-                        />
- 
- 
-                            {/* PAN Input */}
-                            <View style={styles.inputContainer}>
-                                <PoppinsTextMedium style={styles.inputLabel} content="Enter PAN" />
-                                <View style={styles.inputWrapper}>
-                                    <TextInput
-                                        maxLength={10}
-                                        value={localPan}
-                                        onChangeText={handlePanChange}
-                                        style={[styles.inputField, (isPreVerified || isVerified) && styles.disabledInput]}
-                                        placeholder="ABCDE1234F"
-                                        placeholderTextColor="#999"
-                                        autoCapitalize="characters"
-                                        autoCorrect={false}
-                                        blurOnSubmit={false}
-                                        autoComplete="off"
-                                        editable={!isPreVerified && !isVerified}
-                                        selectTextOnFocus={!isPreVerified && !isVerified}
-                                    />
-                                    {verifyPanIsLoading ? (
-                                        <FastImage
-                                            style={styles.loadingIcon}
-                                            source={{ uri: gifUri }}
-                                            resizeMode={FastImage.resizeMode.contain}
-                                        />
-                                    ) : (isVerified || isPreVerified) && (
-                                        <Image style={styles.verifiedIcon} source={require("../../../assets/images/tickBlue.png")} />
-                                    )}
-                                </View>
-                                {errorMessage && <PoppinsTextMedium style={styles.errorText} content={errorMessage} />}
-                            </View>
- 
-                            {/* Name */}
-                            <View style={styles.inputContainer}>
-                                <PoppinsTextMedium style={styles.inputLabel} content="Name" />
-                                <View style={styles.inputWrapper}>
-                                    <TextInput
-                                        value={localName}
-                                        onChangeText={handleNameChange}
-                                        style={[styles.inputField, (isPreVerified || isVerified) && styles.disabledInput]}
-                                        placeholder="Enter Name"
-                                        placeholderTextColor="#999"
-                                        editable={!isPreVerified && !isVerified}
-                                    />
-                                </View>
-                            </View>
- 
- 
- 
-                            {/* Verified Data Box */}
-                            {(isVerified || isPreVerified) && (
-                                <View style={[styles.dataBox, { marginBottom: 20 }]}>
-                                    <View style={{ flexDirection: "row", width: "100%" }}>
-                                        <PoppinsTextMedium content="PAN: " style={styles.dataLabel} />
-                                        <PoppinsTextMedium content={localPan} style={styles.dataValue} />
-                                    </View>
-                                    <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
-                                        <PoppinsTextMedium content="Name: " style={styles.dataLabel} />
-                                        <PoppinsTextMedium
-                                            content={localName}
-                                            style={[styles.dataValue, { flex: 1, flexWrap: 'wrap' }]}
-                                        />
-                                    </View>
-                                    {isPreVerified && (
-                                        <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
-                                            <PoppinsTextMedium content="Status:" style={styles.dataLabel} />
-                                            <PoppinsTextMedium content="Verified ✓" style={[styles.dataValue, { color: 'green' }]} />
-                                        </View>
-                                    )}
-                                    {hasSubmitted && (
-                                        <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
-                                            <PoppinsTextMedium content="Submission:" style={styles.dataLabel} />
-                                            <PoppinsTextMedium content="Submitted ✓" style={[styles.dataValue, { color: 'green' }]} />
-                                        </View>
-                                    )}
-                                </View>
-                            )}
-                            {/* Status Message */}
-                            {hasSubmitted && (
-                                <View style={styles.statusContainer}>
-                                    <PoppinsTextMedium
-                                        style={[styles.statusText, { color: 'green' }]}
-                                        content="✓ PAN verified and submitted successfully"
-                                    />
-                                </View>
-                            )}
-                               <TouchableOpacity
-                                style={[
-                                    styles.submitButton,
-                                    {
-                                        backgroundColor: ternaryThemeColor,
-                                        opacity: (verifyPanIsLoading || isSubmitting) ? 0.7 : 1
-                                    }
-                                ]}
-                                onPress={handleMainButtonPress}
-                                disabled={verifyPanIsLoading || isSubmitting}
-                            >
-                                {isSubmitting ? (
-                                    <FastImage
-                                        style={styles.buttonLoadingIcon}
-                                        source={{ uri: gifUri }}
-                                        resizeMode={FastImage.resizeMode.contain}
-                                    />
-                                ) : (
-                                    <PoppinsTextMedium
-                                        style={styles.submitButtonText}
-                                        content={getButtonText()}
-                                    />
-                                )}
-                            </TouchableOpacity>
-                        </View>
-                    </KeyboardAvoidingView>
-                </TouchableWithoutFeedback>
-            </Modal>
-        );
-    });
- 
-    // NEW GST Verification Dialog
-    const GstVerificationDialog = React.memo(({ visible, onClose, refetchKycStatus }) => {
-        // const isPreVerified = preVerifiedDocs.gstin || gstVerified; 
-        const isPreVerified = preVerifiedDocs.gstin; 
-        const [localGstin, setLocalGstin] = useState(gstin ? gstin : '');
-        const [localBusinessName, setLocalBusinessName] = useState(businessName ? businessName : '');
-        const [isVerified, setIsVerified] = useState(isPreVerified);
-        const [errorMessage, setErrorMessage] = useState(null);
-        const [verifiedApiData, setVerifiedApiData] = useState(null);
-        const [hasSubmitted, setHasSubmitted] = useState(false);
-        const [isSubmitting, setIsSubmitting] = useState(false);
- 
-        // Reset states when dialog opens
-        useEffect(() => {
-            if (visible) {
-                console.log('GSTIN Dialog opened');
-                // setLocalGstin("07AAACK0251C2Z");
-                verificationCalledRef.current.gstin = false;
-                setHasSubmitted(false);
-                setIsSubmitting(false);
- 
-                // For pre-verified cases, set hasSubmitted to true
-                if (isPreVerified) {
-                    setHasSubmitted(true);
-                }
-            }
-        }, [visible]);
- 
-        const [
-            verifyGstFunc,
-            { data: verifyGstData, error: verifyGstError, isLoading: verifyGstIsLoading }
-        ] = useVerifyGstMutation();
- 
-        // const logGstinState = () => {
-        useEffect(() => {
-            console.log('Current GSTIN states:', {
-                "preVerifiedDocs.gstin": preVerifiedDocs.gstin,
-                "isVerified": isVerified,
-                "isPreVerified": isPreVerified,
-                "hasSubmitted": hasSubmitted,
-                "isSubmitting": isSubmitting,
-                "localGstin": localGstin,
-                "gstVerified": gstVerified,
-                "gstin": gstin,
-            })
-        }, [preVerifiedDocs.gstin, isVerified, isPreVerified, hasSubmitted, isSubmitting, localGstin, gstVerified, gstin]);
-        // Handle GST verification response
-        useEffect(() => {
-            if (verifyGstData) {
-                console.log('GST verification response received:', JSON.stringify(verifyGstData, null, 2));
- 
-                if (verifyGstData.success) {
-                    console.log('GST verification successful!');
-                    // setVerifiedGstinApiData(verifyGstData);
-                    setVerifiedApiData(verifyGstData);
- 
-                    // Extract data from the API response
-                    const responseBody = verifyGstData.body || {};
-                    const responseData = responseBody.data || responseBody;
- 
-                    const verifiedGstin = responseData.gstin || responseData.GST;
-                    const verifiedBusinessName = responseData.trade_name_of_business || responseData.legal_name_of_business || 
-                                               responseData.business_name ||
-                                               responseData.trade_name ||
-                                               responseData.legalName;
-                    if (verifiedGstin) {
-                        setLocalGstin(verifiedGstin);
-                        setLocalBusinessName(verifiedBusinessName || '');
-                        setIsVerified(true);
-                        setErrorMessage(null);
-                    }
-                }
-            }
- 
-            if (verifyGstError) {
-                // console.log('GST verification failed:', JSON.stringify(verifyGstError, null, 2));
-                const errorMsg = verifyGstError.data?.message || verifyGstError.message || 'Failed to verify GSTIN';
-                setErrorMessage(errorMsg);
-                setIsVerified(false);
-            }
-        }, [verifyGstData, verifyGstError, setGstVerified, setGstin, setBusinessName]);
- 
-        // Function to handle GSTIN verification submission
-        const handleSubmitVerification = useCallback(() => {
-            if (!verifiedApiData || hasSubmitted || verificationCalledRef.current.gstin) {
-                console.log('GSTIN already submitted or no verification data');
-                return;
-            }
- 
-            console.log('Submitting GSTIN verification data...');
-            setIsSubmitting(true);
- 
-            const responseBody = verifiedApiData.body || {};
-            const responseData = responseBody.data || responseBody;
- 
-            const effectiveGstin = responseData.gstin || responseData.GST || localGstin;
-            const effectiveBusinessName = responseData.legal_name_of_business || 
-                                        responseData.business_name || 
-                                        responseData.trade_name ||
-                                        responseData.legalName ||
-                                        localBusinessName;
- 
-            // Prepare complete payload with ALL available data from API response
-            const gstinVerificationData = {
-                // Basic identification
-                gstin: effectiveGstin,
-                business_name: effectiveBusinessName,
- 
-                // Include ALL data from the API response
-                ...responseData,
- 
-                // Additional metadata
-                verification_source: 'gstin_api',
-                verified_at: new Date().toISOString(),
-                verification_status: 'verified'
-            };
- 
-            // console.log('Submitting to verifyDocKyc:', JSON.stringify(gstinVerificationData, null, 2));
- 
-            // Mark as submitted
-            // verificationCalledRef.current.gstin = true;
-            verificationGlobalData.current.gstin = effectiveGstin;
-            verificationGlobalData.current.gstin_details = gstinVerificationData;
- 
-            setCallSubmitGstin(true);
-            onClose();
-            // Submit to backend API
-            // handleVerifyDocKyc(gstinVerificationData, 'gstin')
-            //     .then(() => {
-            //         console.log('GSTIN verifyDocKyc API call successful');
-            //         setHasSubmitted(true);
-            //         setIsSubmitting(false);
-            //         refetchKycStatus?.();
-            //     })
-            //     .catch(error => {
-            //         console.error('Failed to send GST data to verifyDocKyc:', error);
-            //         // Reset submission state on failure
-            //         verificationCalledRef.current.gstin = false;
-            //         setIsSubmitting(false);
-            //         setGstVerified(false);
-            //     });
-        }, [verifiedApiData, localGstin, localBusinessName, handleVerifyDocKyc, refetchKycStatus, hasSubmitted, setGstVerified]);
- 
-        const handleGstinChange = useCallback(
-            (text) => {
-                if (isPreVerified || isVerified) return;
- 
-                const upperText = text.toUpperCase().replace(/[^A-Z0-9]/g, '');
-                setLocalGstin(upperText);
-                setErrorMessage(null);
-                setVerifiedApiData(null);
-                setHasSubmitted(false);
- 
-                if (upperText.length === 15) {
-                    // console.log('GSTIN input reached 15 chars, verifying:', upperText);
-                    verifyGstFunc({ gstin: upperText })
-                        .unwrap()
-                        .then(res => {
-                            // console.log('GSTIN verify API success:', JSON.stringify(res));
-                        })
-                        .catch((error) => {
-                            // console.log('GSTIN verify API error:', JSON.stringify(error));
-                            setErrorMessage(error.data?.message || error.message || 'Failed to verify GSTIN');
-                            setIsVerified(false);
-                        });
-                }
-            },
-            [isVerified, isPreVerified, verifyGstFunc]
-        );
- 
-        const handleBusinessNameChange = useCallback(
-            (text) => {
-                if (isPreVerified) return;
-                setLocalBusinessName(text);
-            },
-            [isPreVerified]
-        );
-        const handleMainButtonPress = useCallback(() => {
-            if (isVerified && !hasSubmitted) {
-                handleSubmitVerification();
-            } else if (isPreVerified && !hasSubmitted) {
-                // Handle pre-verified case that hasn't been submitted
-                handleSubmitVerification();
-            } else {
-                onClose();
-            }
-        }, [isVerified, hasSubmitted, isPreVerified, handleSubmitVerification, onClose]);
- 
-        const handleClose = useCallback(() => {
-            console.log('Dialog close requested');
-            onClose();
-        }, [onClose]);
- 
-        // Determine button text
-        const getButtonText = useCallback(() => {
-            if (verifyGstIsLoading) return "Verifying...";
-            if (isSubmitting) return "Submitting...";
-            if (hasSubmitted) return "Done";
-            if (isVerified) return "Submit Verification";
-            if (isPreVerified) return "Done";
-            return "Verify GSTIN";
-        }, [verifyGstIsLoading, isSubmitting, hasSubmitted, isVerified, isPreVerified]);
- 
-        return (
-            <Modal
-                visible={visible}
-                animationType="slide"
-                transparent={true}
-                onRequestClose={handleClose}
-                hardwareAccelerated={true}
-                statusBarTranslucent={true}
-            >
-                <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                    <KeyboardAvoidingView
-                        behavior={Platform.OS === "ios" ? "padding" : "height"}
-                        style={styles.modalContainer}
-                        keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
-                    >
-                        <View style={styles.modalContent}>
-                            {/* Close Button */}
-                            <TouchableOpacity
-                                style={styles.closeButton}
-                                onPress={handleClose}
-                                hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-                            >
-                                <Icon name="cross" size={24} color="#000" />
-                            </TouchableOpacity>
- 
-                            {/* Title */}
-                            <PoppinsTextMedium
-                                style={styles.modalTitle}
-                                content={isPreVerified ? "GSTIN Already Verified" : "Kindly Enter Your GSTIN Details"}
-                            />
- 
-                            <Image style={styles.documentImage} source={require("../../../assets/images/gstindummy.jpeg")} />
- 
-                            {/* GSTIN Input */}
-                            <View style={styles.inputContainer}>
-                                <PoppinsTextMedium style={styles.inputLabel} content="Enter GSTIN" />
-                                <View style={styles.inputWrapper}>
-                                    <TextInput
-                                        maxLength={15}
-                                        value={localGstin}
-                                        onChangeText={handleGstinChange}
-                                        style={[styles.inputField, (isPreVerified || isVerified) && styles.disabledInput]}
-                                        placeholder="22AAAAA0000A1Z5"
-                                        placeholderTextColor="#999"
-                                        autoCapitalize="characters"
-                                        autoCorrect={false}
-                                        blurOnSubmit={false}
-                                        autoComplete="off"
-                                        editable={!isPreVerified && !isVerified}
-                                        selectTextOnFocus={!isPreVerified && !isVerified}
-                                    />
-                                    {verifyGstIsLoading ? (
-                                        <FastImage
-                                            style={styles.loadingIcon}
-                                            source={{ uri: gifUri }}
-                                            resizeMode={FastImage.resizeMode.contain}
-                                        />
-                                    ) : (isVerified || isPreVerified) && (
-                                        <Image style={styles.verifiedIcon} source={require("../../../assets/images/tickBlue.png")} />
-                                    )}
-                                </View>
-                                {errorMessage && <PoppinsTextMedium style={styles.errorText} content={errorMessage} />}
-                            </View>
- 
-                            {/* Business Name */}
-                            <View style={styles.inputContainer}>
-                                <PoppinsTextMedium style={styles.inputLabel} content="Business Name" />
-                                <View style={styles.inputWrapper}>
-                                    <TextInput
-                                        value={localBusinessName}
-                                        onChangeText={handleBusinessNameChange}
-                                        style={[styles.inputField, (isPreVerified || isVerified) && styles.disabledInput]}
-                                        placeholder="Enter Business Name"
-                                        placeholderTextColor="#999"
-                                        editable={!isPreVerified && !isVerified}
-                                    />
-                                </View>
-                            </View>
- 
- 
-                            {/* Verified Data Box */}
-                            {(isVerified || isPreVerified) && (
-                                <View style={[styles.dataBox, { marginBottom: 20 }]}>
-                                    <View style={{ flexDirection: "row", width: "100%" }}>
-                                        <PoppinsTextMedium content="GSTIN:" style={styles.dataLabel} />
-                                        <PoppinsTextMedium content={localGstin} style={styles.dataValue} />
-                                    </View>
-                                    <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
-                                        <PoppinsTextMedium content="Business Name:" style={styles.dataLabel} />
-                                        <PoppinsTextMedium 
-                                            content={localBusinessName} 
-                                            style={[styles.dataValue, { flex: 1, flexWrap: 'wrap' }]} 
-                                        />
-                                    </View>
-                                    {isPreVerified && (
-                                        <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
-                                            <PoppinsTextMedium content="Status:" style={styles.dataLabel} />
-                                            <PoppinsTextMedium content="Verified ✓" style={[styles.dataValue, { color: 'green' }]} />
-                                        </View>
-                                    )}
-                                    {hasSubmitted && (
-                                        <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
-                                            <PoppinsTextMedium content="Submission:" style={styles.dataLabel} />
-                                            <PoppinsTextMedium content="Submitted ✓" style={[styles.dataValue, { color: 'green' }]} />
-                                        </View>
-                                    )}
-                                </View>
-                            )}
- 
-                             {/* Status Message */}
-                             {hasSubmitted && (
-                                <View style={styles.statusContainer}>
-                                    <PoppinsTextMedium
-                                        style={[styles.statusText, { color: 'green' }]}
-                                        content="✓ GSTIN verified and submitted successfully"
-                                    />
-                                </View>
-                            )}
- 
- 
-                            <TouchableOpacity
-                                style={[
-                                    styles.submitButton,
-                                    {
-                                        backgroundColor: ternaryThemeColor,
-                                        opacity: (verifyGstIsLoading || isSubmitting) ? 0.7 : 1
-                                    }
-                                ]}
-                                onPress={handleMainButtonPress}
-                                disabled={verifyGstIsLoading || isSubmitting}
-                            >
-                                {isSubmitting ? (
-                                    <FastImage
-                                        style={styles.buttonLoadingIcon}
-                                        source={{ uri: gifUri }}
-                                        resizeMode={FastImage.resizeMode.contain}
-                                    />
-                                ) : (
-                                    <PoppinsTextMedium
-                                        style={styles.submitButtonText}
-                                        content={getButtonText()}
-                                    />
-                                )}
-                            </TouchableOpacity>
-                        </View>
-                    </KeyboardAvoidingView>
-                </TouchableWithoutFeedback>
-            </Modal>
-        );
-    });
- 
-    const KycOptionCards = () => {
-        const kycConfig = useSelector((state) => state.kycDataSlice.kycData);
-        console.log("kycConfig in cards", kycConfig);
-        if (!kycConfig) {
-            return (
-                <View style={styles.errorContainer}>
-                    <PoppinsTextMedium
-                        content="Failed to load KYC options"
-                        style={styles.errorText}
-                    />
-                </View>
-            );
-        }
- 
-        const {
-            enabled_options = {},
-            valid_combinations = [],
-            api_details = {},
-            match_rules = {},
-            optional = [] // Keep this for display purposes
-        } = kycConfig;
- 
-        // All possible KYC options with their configurations
-        const allOptions = [
-            {
-                id: 'aadhaar',
-                label: 'Aadhaar KYC',
-                icon: require('../../../assets/images/aadhaarkyc.png'),
-                verified: aadhaarVerified || preVerifiedDocs.aadhaar,
-                enabled: enabled_options.aadhaar,
-                apiDetails: api_details.aadhaar,
-                matchRules: match_rules.aadhaar,
-                isOptional: optional.includes('aadhaar') // For display only
-            },
-            {
-                id: 'pan',
-                label: 'PAN Card KYC',
-                icon: require('../../../assets/images/pankyc.png'),
-                verified: panVerified || preVerifiedDocs.pan,
-                enabled: enabled_options.pan,
-                apiDetails: api_details.pan,
-                isOptional: optional.includes('pan') // For display only
-            },
-            {
-                id: 'gstin',
-                label: 'GSTIN',
-                icon: require('../../../assets/images/gstinkyc.png'),
-                verified: gstVerified || preVerifiedDocs.gstin,
-                enabled: enabled_options.gstin,
-                apiDetails: api_details.gstin,
-                isOptional: optional.includes('gstin') // For display only
-            },
-            {
-                id: 'bank',
-                label: 'Bank Account',
-                icon: require('../../../assets/images/bankColor.png'),
-                verified: bankVerified,
-                enabled: enabled_options.bank,
-                isOptional: optional.includes('bank'), // Use from config
-                onPress: () => setBankModalVisible(true)
-            },
-            {
-                id: 'upi',
-                label: 'UPI ID',
-                icon: require('../../../assets/images/upi.png'),
-                verified: upiVerified,
-                enabled: enabled_options.upi,
-                isOptional: optional.includes('upi'), // Use from config
-                onPress: () => setUpiModalVisible(true)
-            }
- 
- 
-        ].filter(opt => opt.enabled);
- 
-        const renderCombinationOptions = () => {
-            if (!valid_combinations || valid_combinations.length === 0) {
-                return null;
-            }
 
- 
-            return (
-                <>
-                    {valid_combinations.map((combo, comboIndex) => {
-                        console.log("pre check berore the ",combo, allOptions)
-
-                        const elements = combo.split('-');
-                        const isSingleMandatory = elements.length === 1;
-                        console.log('Rendering combination:', combo, 'Elements:', elements, 'IsSingleMandatory:', isSingleMandatory);   
-                        return (
-                            <React.Fragment key={`combo-${comboIndex}`}>
-                                {comboIndex > 0 && (
-                                    <View style={styles.orSeparator}>
-                                        <View style={styles.orLine} />
-                                        <View style={styles.orLine} />
-                                    </View>
-                                )}
- 
-                                {isSingleMandatory ? (
-                                    <OptionCard
-                                        option={allOptions.find(opt => opt.id === combo)}
-                                        isMandatory={true}
-                                    />
-                                    
-                                ) : (
-                                    <View style={styles.combinationContainer}>
-                                        {elements.map((element, elementIndex) => {
-                                            const option = allOptions.find(opt => opt.id === element);
-                                            if (!option) return null;
- 
-                                            return (
-                                                <React.Fragment key={`element-${elementIndex}`}>
-                                                    <OptionCard
-                                                        option={option}
-                                                        isMandatory={true}
-                                                    />
-                                                    {elementIndex < elements.length - 1 && (
-                                                        <View style={styles.orSeparator}>
-                                                            <View style={styles.orLine} />
-                                                            <PoppinsTextMedium style={styles.orText} content="OR" />
-                                                            <View style={styles.orLine} />
-                                                        </View>
-                                                    )}
-                                                </React.Fragment>
-                                            );
-                                        })}
-                                    </View>
-                                )}
-                            </React.Fragment>
-                        );
-                    })}
-                </>
-            );
-        };
- 
-        const OptionCard = ({ option, isMandatory }) => {
-            console.log('Rendering OptionCard:', option);
-            if (!option) return null;
- 
-            return (
-                <TouchableOpacity
-                    style={[
-                        styles.optionCard,
-                        option.verified && styles.verifiedCard,
-                        // Only style as optional if it's actually optional AND not mandatory in combinations
-                        (option.isOptional && !isMandatory) && styles.optionalCard
-                    ]}
-                    onPress={option.onPress || (() => handleSelectOption(option.id))}
-                >
-                    <Image source={option.icon} style={styles.optionIcon} />
-                    <View style={styles.optionTextContainer}>
-                        <View style={styles.labelContainer}>
-                            <PoppinsTextMedium
-                                style={styles.optionText}
-                                content={option.label}
-                            />
-                            {isMandatory && (
-                                <PoppinsTextMedium
-                                    style={styles.mandatoryAsterisk}
-                                    content="*"
-                                />
-                            )}
-                            {/* Show optional text only if it's optional AND not part of mandatory combinations */}
-                            {option.isOptional && !isMandatory && (
-                                <PoppinsTextMedium
-                                    style={styles.optionalText}
-                                    content="(Optional)"
-                                />
-                            )}
-                        </View>
-                        {option.matchRules && (
-                            <PoppinsTextMedium
-                                style={styles.matchRuleText}
-                                content={option.verified ? option.matchRules.success : option.matchRules.error}
-                            />
-                        )}
-                    </View>
-                    <Image
-                        source={option.verified
-                            ? require('../../../assets/images/verifiedKyc.png')
-                            : require('../../../assets/images/notVerifiedKyc.png')}
-                        style={styles.statusIcon}
-                    />
-                </TouchableOpacity>
-               
-            );
-        };
- 
-        return (
-            <View style={styles.kycOptionsContainer}>
-                <View style={{width:'100%'}}>
-                    <PoppinsTextMedium
-                        style={styles.kycTitle}
-                        content="Complete Your KYC"
-                    />
- 
-                    <PoppinsTextMedium
-                        style={styles.kycSubtitle}
-                        content="Complete verification details"
-                    />
- 
-                    {renderCombinationOptions()}
- 
-                    {/* Render optional items that are not in valid_combinations */}
-                    {allOptions
-                        .filter(opt => opt.isOptional && !valid_combinations.some(combo => combo.includes(opt.id)))
-                        .map(option => (
-                            <OptionCard
-                                key={option.id}
-                                option={option}
-                                isMandatory={false}
-                            />
-                        ))
-                    }
-                </View>
-            </View>
-        );
-    };
- 
     // Bank Account Modal
     const BankAccountModal = ({ visible, onClose }) => {
         // Check if we have existing bank account data
@@ -2594,52 +1022,67 @@ const KycVerificationDynamic = ({ navigation }) => {
                     behavior={Platform.OS === "ios" ? "padding" : "height"}
                     style={styles.keyboardAvoidingView}
                 >
-                    <View style={styles.header}>
-                        <TouchableOpacity onPress={() => navigation.goBack()}>
-                            <Image
-                                style={styles.backIcon}
-                                source={require("../../../assets/images/backIcon.png")}
-                            />
-                        </TouchableOpacity>
-                        <PoppinsTextMedium
-                            content="Verify your KYC"
-                            style={styles.headerTitle}
-                        />
-                    </View>
- 
+                    <TopHeader title={t('Verify your KYC')} transparent />
                     <ScrollView style={styles.scrollView}>
                         <View style={styles.contentContainer}>
                             <Image
                                 style={styles.kycLogo}
                                 source={require("../../../assets/images/kyclogo.png")}
                             />
-                            <KycOptionCards />
+                            <KycOptionCards
+                                verifiedAadharDetails={verifiedAadharDetails}
+                                preVerifiedDocs={preVerifiedDocs}
+                                getKycDynamic={getKycDynamic}
+                                panVerified={panVerified}
+                                gstVerified={gstVerified}
+                                bankVerified={bankVerified}
+                                upiVerified={upiVerified}
+                                aadhaarVerified={aadhaarVerified}
+                                setBankModalVisible={setBankModalVisible}
+                                setUpiModalVisible={setUpiModalVisible}
+                                handleSelectOption={handleSelectOption}
+                            />
                         </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
             )}
             {/* Modals */}
-            <AadhaarVerificationDialog
-                visible={aadhaarModalVisible}
-                onClose={closeAadhaarModal}
-                refetchKycStatus={getKycDynamicFunc}
-            />
+          
+
             <PanVerificationDialog
+    
                 visible={panModalVisible}
                 onClose={closePanModal}
                 refetchKycStatus={getKycDynamicFunc}
- 
+                preVerifiedDocs={preVerifiedDocs}
+                pan={pan}
+                name={name}
+                setPanVerified={setPanVerified}
+                setPan={setPan}
+                setName={setName}
+                verificationCalledRef={verificationCalledRef}
+                verificationGlobalData={verificationGlobalData}
+                setCallSubmitPan={setCallSubmitPan}
+                handleVerifyDocKyc={handleVerifyDocKyc}
+                gifUri={gifUri}
             />
- 
-            {/* <GstVerificationDialog
-                visible={gstModalVisible}
-                onClose={closeGstModal}
-            /> */}
- 
+
             <GstVerificationDialog
                 visible={gstModalVisible}
                 onClose={closeGstModal}
                 refetchKycStatus={getKycDynamicFunc}
+                preVerifiedDocs={preVerifiedDocs}
+                gstin={gstin}
+                businessName={businessName}
+                gstVerified={gstVerified}
+                setGstVerified={setGstVerified}
+                setGstin={setGstin}
+                setBusinessName={setBusinessName}
+                verificationCalledRef={verificationCalledRef}
+                verificationGlobalData={verificationGlobalData}
+                setCallSubmitGstin={setCallSubmitGstin}
+                handleVerifyDocKyc={handleVerifyDocKyc}
+                gifUri={gifUri}
             />
  
             <BankAccountModal
@@ -2713,20 +1156,18 @@ const styles = StyleSheet.create({
         width: '100%',
         resizeMode: "contain",
     },
-    proceedButton: {
-        height: 50,
-        width: 200,
-        borderRadius: 4,
-        marginTop: 20,
-        alignItems: "center",
-        justifyContent: "center",
+    fullScreenLoader: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
     },
-    proceedButtonText: {
-        fontWeight: "bold",
-        fontSize: 20,
-        color: "white",
+    loaderText: {
+        marginTop: 16,
+        color: '#666',
+        fontSize: 16,
+        textAlign: 'center',
     },
- 
     // Modal styles
     modalContainer: {
         flex: 1,
@@ -2740,20 +1181,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 20,
         maxHeight: '90%',
-    },
-    inputField: {
-        flex: 1,
-        height: 40,
-        fontSize: 14,
-        color: 'black',
-        paddingVertical: 0, // Important for Android
-    },
-    submitButton: {
-        height: 50,
-        borderRadius: 5,
-        marginTop: 20,
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     closeButton: {
         alignSelf: 'flex-end',
@@ -2789,6 +1216,21 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingHorizontal: 10,
     },
+    inputField: {
+        flex: 1,
+        height: 40,
+        fontSize: 14,
+        color: 'black',
+        paddingVertical: 0, // Important for Android
+    },
+    disabledInput: {
+        backgroundColor: '#f5f5f5',
+        color: '#888',
+    },
+    disabledInput: {
+        backgroundColor: '#f5f5f5',
+        color: '#888',
+    },
     verifiedIcon: {
         height: 22,
         width: 22,
@@ -2800,16 +1242,10 @@ const styles = StyleSheet.create({
         height: 20,
         marginLeft: 10,
     },
-    otpSentText: {
-        fontWeight: "700",
-        fontSize: 16,
-        marginTop: 10,
-        textAlign: 'center',
-    },
-    submitButtonText: {
-        fontWeight: 'bold',
-        fontSize: 18,
-        color: 'white',
+    errorText: {
+        color: 'red',
+        fontSize: 12,
+        marginTop: 4,
     },
     dataBox: {
         width: "90%",
@@ -2833,165 +1269,31 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginLeft: 10,
     },
-    // KYC Options styles
-    kycOptionsContainer: {
-        padding: 10,
-        paddingTop: 0,
-        width:'90%'
-    },
-    kycTitle: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        color: '#333',
-        marginBottom: 8,
-        textAlign: 'center',
-    },
-    kycSubtitle: {
-        fontSize: 16,
-        color: '#666',
-        marginBottom: 20,
-        textAlign: 'center',
-    },
-    optionCard: {
-        flexDirection: 'row',
+    statusContainer: {
         alignItems: 'center',
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        padding: 16,
-        marginBottom: 8,
-        borderWidth: 1,
-        borderColor: '#e0e0e0',
-    },
-    verifiedCard: {
-        borderColor: '#4CAF50',
-        backgroundColor: '#F1F8E9',
-    },
-    optionalCard: {
-        justifyContent: 'space-between',
-        borderColor: '#e0e0e0',
-    },
-    optionTextContainer: {
-        flex: 1,
-    },
-    optionText: {
-        fontSize: 16,
-        color: '#333',
-    },
-    optionIcon: {
-        width: 38,
-        height: 38,
-        padding: 4,
-        resizeMode: 'contain',
-        marginRight: 12,
-    },
-    statusIcon: {
-        width: 24,
-        height: 24,
-        resizeMode: 'contain',
-    },
-    orSeparator: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 8,
-    },
-    orLine: {
-        flex: 1,
-        height: 1,
-        backgroundColor: '#e0e0e0',
-    },
-    orText: {
-        marginHorizontal: 10,
-        color: '#999',
-        fontSize: 14,
-    },
-    optionalSection: {
-        marginTop: 16,
-        borderTopWidth: 1,
-        borderTopColor: '#f0f0f0',
-        paddingTop: 16,
-    },
-    optionalTitle: {
-        fontSize: 14,
-        color: '#666',
-        marginBottom: 16,
-        fontStyle: 'italic',
-    },
-    matchRuleText: {
-        fontSize: 12,
-        color: '#666',
-        marginTop: 4,
-    },
-    errorText: {
-        color: 'red',
-        fontSize: 12,
-        marginTop: 4,
-    },
-    combinationContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-    },
-    inlineOrSeparator: {
-        marginHorizontal: 8,
-    },
-    inlineOrText: {
-        color: '#666',
-    },
-    labelContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    mandatoryAsterisk: {
-        color: 'red',
-        fontSize: 16,
-        marginLeft: 2,
-    },
-    fullScreenLoader: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white',
-    },
-    loaderText: {
-        marginTop: 16,
-        color: '#666',
-        fontSize: 16,
-        textAlign: 'center',
-    },
-    preVerifiedContainer: {
-        width: '100%',
-        marginBottom: 20,
-    },
-    detailRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 15,
-        padding: 12,
-        backgroundColor: '#f8f9fa',
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: '#e9ecef',
-    },
-    detailLabel: {
-        fontSize: 14,
-        color: '#6c757d',
-        flex: 1,
-    },
-    detailValue: {
-        fontSize: 14,
-        color: '#212529',
-        flex: 2,
-        textAlign: 'right',
-        marginRight: 10,
-    },
-    preVerifiedText: {
-        fontSize: 12,
-        color: '#6c757d',
-        textAlign: 'center',
-        fontStyle: 'italic',
         marginTop: 10,
     },
+    statusText: {
+        fontSize: 14,
+        textAlign: 'center',
+    },
+    submitButton: {
+        height: 50,
+        borderRadius: 5,
+        marginTop: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    submitButtonText: {
+        fontWeight: 'bold',
+        fontSize: 18,
+        color: 'white',
+    },
+    buttonLoadingIcon: {
+        width: 30,
+        height: 30,
+    },
+    // Bank form styles
     bankFormContainer: {
         width: '100%',
         alignItems: 'center',
@@ -3013,82 +1315,33 @@ const styles = StyleSheet.create({
     scrollContent: {
         paddingBottom: 20,
     },
-    optionalText: {
-        color: '#666',
-        fontSize: 12,
-        marginLeft: 4,
-        fontStyle: 'italic',
-    },
-    disabledCard: {
-        opacity: 0.6,
-    },
-    disabledIcon: {
-        opacity: 0.5,
-    },
-    disabledText: {
-        color: '#999',
-        fontSize: 12,
-        marginLeft: 4,
-        fontStyle: 'italic',
-    },
-    modalContainerBottom: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modalContentBottom: {
-        backgroundColor: 'white',
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        padding: 20,
-        maxHeight: '90%',
-    },
-    sendOtpButton: {
-        padding: 12,
-        borderRadius: 8,
+    // UPI form styles
+    upiFormContainer: {
+        width: '100%',
         alignItems: 'center',
-        marginTop: 10,
     },
-    sendOtpButtonText: {
-        color: 'white',
-        fontSize: 16,
+    verificationContainer: {
+        width: '100%',
+        alignItems: 'center',
+        marginTop: 20,
     },
-    loadingIconSmall: {
-        width: 20,
-        height: 20,
-    },
-    headerRow: {
+    verifiedInfo: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        textAlign:'center',
-        marginBottom: 15,
+        marginBottom: 20,
+        width: '100%',
     },
- 
-    maskedAadhaarText: {
-        fontSize: 16,
-        textAlign: 'center',
-        marginBottom: 15,
-        color: '#666',
-    },
-    verifyButton: {
-        paddingVertical: 12,
-        paddingHorizontal: 20,
-        borderRadius: 8,
-        alignItems: 'center',
+    initialsCircle: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: '#4CAF50',
         justifyContent: 'center',
-        marginTop: 10,
-        minHeight: 50,
+        alignItems: 'center',
+        marginRight: 15,
     },
-    verifyButtonText: {
-        color: '#FFFFFF',
-        fontSize: 16,
-        fontWeight: '600',
-    },
- 
-    buttonLoadingIcon: {
-        width: 30,
-        height: 30,
+    verifiedDetails: {
+        flex: 1,
     },
 });
  

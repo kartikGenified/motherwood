@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -9,32 +9,20 @@ import {
   ScrollView,
   Text,
 } from "react-native";
-import PoppinsText from "../../components/electrons/customFonts/PoppinsText";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import { useDispatch, useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/Entypo";
 import Plus from "react-native-vector-icons/Entypo";
 import { theme } from "../../utils/HandleClientSetup";
 import Minus from "react-native-vector-icons/Entypo";
-import Check from "react-native-vector-icons/FontAwesome";
 import LinearGradient from "react-native-linear-gradient";
-import {
-  useFetchGiftCatalogueByUserTypeAndCatalogueTypeMutation,
-  useFetchGiftCatalogueforRedeemGiftMutation,
-} from "../../apiServices/gifts/GiftApi";
+import { useFetchGiftCatalogueforRedeemGiftMutation } from "../../apiServices/gifts/GiftApi";
 import { useFetchUserPointsMutation } from "../../apiServices/workflow/rewards/GetPointsApi";
 import * as Keychain from "react-native-keychain";
 import ErrorModal from "../../components/modals/ErrorModal";
-import SuccessModal from "../../components/modals/SuccessModal";
 import MessageModal from "../../components/modals/MessageModal";
-import PointHistory from "../historyPages/PointHistory";
 import { useTranslation } from "react-i18next";
-import { use } from "i18next";
-import { check } from "react-native-permissions";
 import CheckIcon from "react-native-vector-icons/AntDesign";
-import { scrollTo } from "react-native-reanimated";
-import { useFetchGiftsRedemptionsOfUserMutation } from "../../apiServices/workflow/RedemptionApi";
-import DropDownRegistration from "../../components/atoms/dropdown/DropDownRegistration";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 
 const RedeemGifts = ({ navigation, route }) => {
@@ -82,7 +70,7 @@ const RedeemGifts = ({ navigation, route }) => {
     (state) => state.dreamgift?.navigatingFromDreamGift
   );
 
-  console.log("sekecdmmdmkmdd", selectedGift);
+  // console.log("selectedGift", selectedGift);
 
   let tempPoints = 0;
   const [
@@ -104,9 +92,7 @@ const RedeemGifts = ({ navigation, route }) => {
     const getData = async () => {
       const credentials = await Keychain.getGenericPassword();
       if (credentials) {
-        console.log(
-          "Credentials successfully loaded for user " + credentials.username
-        );
+        // console.log("Credentials successfully loaded for user " + credentials.username);
         const token = credentials.username;
         const params = { userId: userId, token: token };
         userPointFunc(params);
@@ -153,10 +139,10 @@ const RedeemGifts = ({ navigation, route }) => {
 
   useEffect(() => {
     if (giftCatalogueData) {
-      console.log("giftCatalogueData", JSON.stringify(giftCatalogueData));
+      // console.log("giftCatalogueData", JSON.stringify(giftCatalogueData));
 
       const reconstructedData = transformData(giftCatalogueData.body);
-      console.log("reconstructedData", JSON.stringify(reconstructedData));
+      // console.log("reconstructedData", JSON.stringify(reconstructedData));
       setRange(Object.keys(reconstructedData))
       setDisplayContent(reconstructedData);
     } else if (giftCatalogueError) {
@@ -174,7 +160,7 @@ const RedeemGifts = ({ navigation, route }) => {
 
   useEffect(() => {
     if (userPointData) {
-      console.log("userPointData", userPointData);
+      // console.log("userPointData", userPointData);
       if (userPointData.success) {
         setPointBalance(userPointData.body.point_balance);
       }
@@ -199,13 +185,13 @@ const RedeemGifts = ({ navigation, route }) => {
     }
   }, [navigatingFromDreamGift, scrollToID]);
 
-  useEffect(() => {
-    console.log("cart ready to go", cart);
-  }, [cart]);
+  // useEffect(() => {
+  //   console.log("cart ready to go", cart);
+  // }, [cart]);
 
   // Filtering function
   const filterDataByRange = (data, selectedRange) => {
-    console.log("Selected Range:", selectedRange);
+    // console.log("Selected Range:", selectedRange);
 
     if (!selectedRange || selectedRange === "all" || selectedRange === "All") {
       return { ...data, body: data.body }; // Return all data if "All" is selected
@@ -213,14 +199,14 @@ const RedeemGifts = ({ navigation, route }) => {
 
     // Split the range string and parse min and max values directly
     const [min, max] = selectedRange.split(" - ").map(Number);
-    console.log("Parsed Range:", { min, max });
+    // console.log("Parsed Range:", { min, max });
 
     // Filter data based on points within the selected range
     const filteredBody = data.body.filter(
       (item) => item.points >= min && item.points <= max
     );
 
-    console.log("Filtered Data:", filteredBody); // Log the filtered result
+    // console.log("Filtered Data:", filteredBody); // Log the filtered result
 
     return { ...data, body: filteredBody }; // Return the filtered data
   };
@@ -255,7 +241,7 @@ const RedeemGifts = ({ navigation, route }) => {
 
 
   const transformData = (data) => {
-    console.log("transformed data", data);
+    // console.log("transformed data", data);
     // Create an empty object to hold the transformed data
     const transformed = {};
 
@@ -272,11 +258,11 @@ const RedeemGifts = ({ navigation, route }) => {
       // Add the current item to the array for the corresponding points
       transformed[points].push(item);
     });
-    console.log("transforming data", JSON.stringify(transformed));
+    // console.log("transforming data", JSON.stringify(transformed));
 
     return transformed;
   };
-  console.log("sahdhghjasjdjabs", ternaryThemeColor);
+  // console.log("ternaryThemeColor", ternaryThemeColor);
  
  
 
@@ -292,44 +278,27 @@ const RedeemGifts = ({ navigation, route }) => {
           // setDisplayContent(filteredData);
           setCart(null);
         }}
-        style={{
-          marginLeft: 30,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+        style={styles.categoryItem}
       >
         <View
-          style={{
-            height: 40,
-            width: 40,
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 35,
-            marginLeft: 0,
-            backgroundColor: secondaryThemeColor,
-          }}
+          style={[styles.categoryItemIcon, { backgroundColor: secondaryThemeColor }]}
         >
           <Image
-            style={{ height: 30, width: 30, resizeMode: "contain" }}
+            style={styles.categoryItemImage}
             source={image}
-          ></Image>
+          />
         </View>
         <PoppinsTextMedium
-          style={{
-            color: "black",
-            fontSize: 14,
-            fontWeight: "600",
-            marginTop: 2,
-          }}
+          style={styles.categoryText}
           content={data}
-        ></PoppinsTextMedium>
+        />
       </TouchableOpacity>
     );
   };
   const addItemToCart = (data, operation, count) => {
     let tempCount = 0;
     let temp = cart;
-    console.log("data", data);
+    // console.log("data", data);
     if (cart.length <= 1) {
       if (operation === "plus") {
         temp.push(data);
@@ -337,7 +306,7 @@ const RedeemGifts = ({ navigation, route }) => {
       } else {
         // setPointBalance(pointBalance+Number(data.points))
         const tempcart = [...cart];
-        console.log("Deleted the data from cart", tempcart);
+        // console.log("Deleted the data from cart", tempcart);
         for (var i = 0; i < tempcart.length; i++) {
           if (tempcart[i].id === data.id) {
             tempCount++;
@@ -346,7 +315,7 @@ const RedeemGifts = ({ navigation, route }) => {
             }
           }
         }
-        console.log("tempCart11", tempcart);
+        // console.log("tempCart after deletion", tempcart);
 
         setCart(tempcart);
       }
@@ -354,13 +323,11 @@ const RedeemGifts = ({ navigation, route }) => {
       alert("You can redeem one gift at a time");
     }
 
-    console.log("cart issahdashdghashgd", cart);
-
-    console.log(temp);
+    // console.log("cart updated", cart);
   };
 
   const handleAddToCart = (gift) => {
-    console.log("GiftCart", gift);
+    // console.log("GiftCart", gift);
     if (cart && cart.id === gift.id) {
       // If the same item is being unchecked, remove it from the cart
       setCart(null);
@@ -401,7 +368,7 @@ const RedeemGifts = ({ navigation, route }) => {
     console.log("asdhjghwwhjqncvmnnmasc", data);
 
     useEffect(() => {
-      console.log("selecteddddd", selected);
+      // console.log("selected state", selected);
       setChecked(selected);
     }, [selected]);
 
@@ -411,9 +378,9 @@ const RedeemGifts = ({ navigation, route }) => {
     };
 
     const changeCounter = (operation) => {
-      console.log(pointBalance, "tempPoints", tempPoints, data.points);
+      // console.log(pointBalance, "tempPoints", tempPoints, data.points);
       if (operation === "plus") {
-        console.log(Number(pointBalance), Number(data.points));
+        // console.log(Number(pointBalance), Number(data.points));
         if (tempPoints + Number(data.points) <= pointBalance) {
           if (Number(pointBalance) >= Number(data.points)) {
             if (count == 0 && cart.length == 0) {
@@ -450,97 +417,37 @@ const RedeemGifts = ({ navigation, route }) => {
     // console.log("display content", displayContent);
 
     return (
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          backgroundColor: "#fff",
-          marginTop: 20,
-        }}
-      >
+      <View style={styles.rewardBox}>
         {theme == "1" ? (
           <TouchableOpacity
             onPress={() => {
-              console.log("Pressed");
+              // console.log("Pressed");
             }}
-            style={{
-              height: 120,
-              width: "90%",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              borderWidth: 0.6,
-              borderColor: "#EEEEEE",
-              backgroundColor: "#FFFFFF",
-              margin: 10,
-              marginLeft: 20,
-              elevation: 8,
-            }}
+            style={styles.rewardBoxTheme1}
           >
             <View
-              style={{
-                height: "40%",
-                width: "100%",
-                backgroundColor: secondaryThemeColor,
-                alignItems: "center",
-                justifyContent: "flex-start",
-                flexDirection: "row",
-              }}
+              style={[styles.theme1Header, { backgroundColor: secondaryThemeColor }]}
             >
-              <View
-                style={{
-                  height: 50,
-                  width: 50,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderWidth: 0.4,
-                  borderColor: "#DDDDDD",
-                  backgroundColor: "white",
-                  marginLeft: 20,
-                  top: 14,
-                }}
-              >
+              <View style={styles.theme1ImageContainer}>
                 <Image
-                  style={{ height: 40, width: 40, resizeMode: "contain" }}
+                  style={styles.theme1Image}
                   source={{ uri: image }}
-                ></Image>
+                />
               </View>
               <LinearGradient
-                style={{
-                  height: 30,
-                  padding: 4,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexDirection: "row",
-                  borderRadius: 4,
-                  position: "absolute",
-                  right: 80,
-                }}
+                style={styles.theme1PointsBadge}
                 colors={["#FF9100", "#E4C52B"]}
               >
                 <Image
-                  style={{ height: 20, width: 20, resizeMode: "contain" }}
+                  style={styles.theme1CoinIcon}
                   source={require("../../../assets/images/coin.png")}
-                ></Image>
+                />
                 <PoppinsTextMedium
-                  style={{
-                    fontSize: 12,
-                    color: "white",
-                    fontWeight: "700",
-                    marginLeft: 10,
-                  }}
+                  style={styles.theme1PointsText}
                   content={`Points : ${points}`}
-                ></PoppinsTextMedium>
+                />
               </LinearGradient>
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexDirection: "row",
-                  position: "absolute",
-                  right: 10,
-                }}
-              >
+              <View style={styles.theme1Controls}>
                 <TouchableOpacity
                   onPress={() => {
                     if (count > 0) {
@@ -548,138 +455,65 @@ const RedeemGifts = ({ navigation, route }) => {
                     }
                   }}
                 >
-                  <Minus name="minus" color="black" size={24}></Minus>
+                  <Minus name="minus" color="black" size={24} />
                 </TouchableOpacity>
 
-                <View
-                  style={{
-                    height: 24,
-                    width: 20,
-                    backgroundColor: "white",
-
-                    borderRadius: 4,
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
+                <View style={styles.theme1Counter}>
                   <PoppinsTextMedium
-                    style={{ color: "black", fontSize: 14, fontWeight: "700" }}
+                    style={styles.theme1CounterText}
                     content={count}
-                  ></PoppinsTextMedium>
+                  />
                 </View>
                 <TouchableOpacity
                   onPress={() => {
                     changeCounter("plus");
                   }}
                 >
-                  <Plus name="plus" color="black" size={20}></Plus>
+                  <Plus name="plus" color="black" size={20} />
                 </TouchableOpacity>
               </View>
             </View>
-            <View
-              style={{
-                height: "60%",
-                alignItems: "flex-start",
-                justifyContent: "center",
-                marginTop: 4,
-                width: "90%",
-              }}
-            >
+            <View style={styles.theme1Details}>
               <PoppinsTextMedium
-                style={{
-                  color: "black",
-                  fontSize: 13,
-                  width: "90%",
-                  marginLeft: 4,
-                }}
+                style={styles.theme1ProductName}
                 content={product}
-              ></PoppinsTextMedium>
+              />
 
               <PoppinsTextMedium
-                style={{ color: "#919191", fontSize: 13, width: "90%" }}
+                style={styles.theme1Category}
                 content={category}
-              ></PoppinsTextMedium>
+              />
             </View>
           </TouchableOpacity>
         ) : (
-          <View
-            style={{
-              width: "80%",
-              height: 240,
-              borderRadius: 20,
-              borderWidth: 2,
-              borderColor: "#DDDDDD",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              padding: 10,
-            }}
-          >
+          <View style={styles.rewardBoxTheme2}>
             {checked && (
               <TouchableOpacity
                 onPress={() => {}}
-                style={{
-                  zIndex: 1,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  // backgroundColor:ternaryThemeColor,
-                  position: "absolute",
-                  right: 8,
-                  top: 8,
-                }}
+                style={styles.checkIcon}
               >
                 <CheckIcon
                   name="checkcircle"
                   color="#6eef6c"
                   size={24}
-                ></CheckIcon>
+                />
               </TouchableOpacity>
             )}
 
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "flex-start",
-                width: "100%",
-                height: "80%",
-                marginBottom: 4,
-              }}
-            >
+            <View style={styles.rewardImageContainer}>
               <Image
-                style={{
-                  height: "64%",
-                  width: "100%",
-                  resizeMode: "contain",
-                  zIndex: 0,
-                }}
+                style={styles.rewardImage}
                 source={{ uri: image }}
-              ></Image>
-              <View
-                style={{
-                  height: "26%",
-                  width: "100%",
-                  alignItems: "center",
-                  justifyContent: "flex-start",
-                }}
-              >
+              />
+              <View style={styles.rewardDetailsContainer}>
                 <PoppinsTextMedium
-                  style={{
-                    color: "#494949",
-                    fontSize: 11,
-                    fontWeight: "700",
-                    textAlign: "center",
-                    marginTop: 4,
-                  }}
+                  style={styles.productName}
                   content={product}
-                ></PoppinsTextMedium>
+                />
                 <PoppinsTextMedium
-                  style={{
-                    color: ternaryThemeColor,
-                    fontSize: 11,
-                    fontWeight: "bold",
-                    textAlign: "center",
-                  }}
+                  style={[styles.brandName, { color: ternaryThemeColor }]}
                   content={`Brand : ${data.brand}`}
-                ></PoppinsTextMedium>
+                />
                 {/* <View style={{ flexDirection: "row" }}>
                   <PoppinsTextMedium
                     style={{
@@ -708,33 +542,17 @@ const RedeemGifts = ({ navigation, route }) => {
               </View>
             </View>
 
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                height: "20%",
-                width: "100%",
-              }}
-            >
+            <View style={styles.addButtonContainer}>
               <TouchableOpacity
                 onPress={() => {
                   handlePress();
                 }}
-                style={{
-                  height: 40,
-                  width: "80%",
-                  backgroundColor: "black",
-                  borderRadius: 20,
-                  marginTop: 10,
-                  marginBottom: 10,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
+                style={styles.addButton}
               >
                 <PoppinsTextMedium
                   content="ADD"
-                  style={{ color: "white", fontSize: 16, fontWeight: "700" }}
-                ></PoppinsTextMedium>
+                  style={styles.addButtonText}
+                />
               </TouchableOpacity>
             </View>
           </View>
@@ -752,7 +570,7 @@ const RedeemGifts = ({ navigation, route }) => {
       let newOuptut= {
         body: searchOutput
       }
-      console.log("search Output is", searchOutput)
+      // console.log("search Output is", searchOutput)
       setDisplayContent(newOuptut);
     } else {
       // const searchOutput = giftCatalogueData.body.filter((item, index) => {
@@ -771,7 +589,7 @@ const RedeemGifts = ({ navigation, route }) => {
       // Transform the filtered data (group by points or price range)
       const tempData = transformData(searchOutput);
 
-      console.log("Search Results:", tempData);
+      // console.log("Search Results:", tempData);
 
       // Update the display content with the transformed search output
       setDisplayContent(tempData);
@@ -780,23 +598,17 @@ const RedeemGifts = ({ navigation, route }) => {
 
   
   const getRangeData=(data)=>{
-    console.log("range data", data,displayContent)
+    // console.log("range data", data, displayContent)
     const obj = {}
     obj[data] = transformData(giftCatalogueData.body)[data]
-    console.log("filtered object in getRange data", obj)
+    // console.log("filtered object in getRange data", obj)
     setDisplayContent(obj)
   }
   
 
   return (
     <View
-      style={{
-        alignItems: "center",
-        justifyContent: "flex-start",
-        width: "100%",
-        backgroundColor: secondaryThemeColor,
-        height: "100%",
-      }}
+      style={[styles.mainContainer, { backgroundColor: secondaryThemeColor }]}
     >
       {/* <ScrollView 
       contentContainerStyle={{alignItems: "center",
@@ -818,210 +630,90 @@ const RedeemGifts = ({ navigation, route }) => {
           openModal={success}
         ></MessageModal>
       )}
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "flex-start",
-          flexDirection: "row",
-          width: "100%",
-          marginTop: 10,
-          height: "10%",
-          marginLeft: 20,
-        }}
-      >
+      <View style={styles.headerContainer}>
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
           }}
         >
           <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: "contain",
-              marginLeft: 10,
-            }}
+            style={styles.backButton}
             source={require("../../../assets/images/blackBack.png")}
-          ></Image>
+          />
         </TouchableOpacity>
-        <View style={{}}>
+        <View>
           <PoppinsTextMedium
             content={t("Rewards")}
-            style={{
-              marginLeft: 10,
-              fontSize: 16,
-              position: "absolute",
-              left: 0,
-              top: -13,
-              fontWeight: "700",
-              color: "black",
-            }}
-          ></PoppinsTextMedium>
-
-         
+            style={styles.headerTitle}
+          />
         </View>
-        <View style={{alignItems:"center", justifyContent:'center',position: "absolute",
-              right:20,
-              top: 20,}}>
-                <PoppinsTextMedium
+        <View style={styles.walletContainer}>
+          <PoppinsTextMedium
             content={"Your Wallet Points"}
-            style={{
-              marginLeft: 10,
-              
-              fontSize: 13,
-              fontWeight: "700",
-              color: "black",
-            }}
-          ></PoppinsTextMedium>
-          <View style={{alignItems:'center', justifyContent:'center',flexDirection:'row'}}>
-            <Image style={{height:20,width:20,resizeMode:'contain'}} source={require('../../../assets/images/coin.png')}></Image>
+            style={styles.walletTitle}
+          />
+          <View style={styles.walletPointsRow}>
+            <Image style={styles.coinIcon} source={require('../../../assets/images/coin.png')} />
             <PoppinsTextMedium
-            content={`${Math.floor(
-              Number(pointBalance)
-            )} `}
-            style={{
-              marginLeft: 10,
-              
-              fontSize: 17,
-              fontWeight: "700",
-              color: "black",
-            }}
-          ></PoppinsTextMedium>
+              content={`${Math.floor(Number(pointBalance))} `}
+              style={styles.walletPoints}
+            />
           </View>
-        
         </View>
         
       </View>
-      <View
-        style={{
-          height: "80%",
-          width: "100%",
-          // borderTopRightRadius: 40,
-          // borderTopLeftRadius: 40,
-          alignItems: "center",
-          justifyContent: "flexx-start",
-        }}
-      >
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "row",
-            backgroundColor: "white",
-            width: "100%",
-            borderTopRightRadius: 40,
-            borderTopLeftRadius: 40,
-            paddingBottom: 20,
-          }}
-        >
+      <View style={styles.contentContainer}>
+        <View style={styles.searchFilterContainer}>
           {giftCatalogueData && (
-            <View
-              style={{
-                width: "100%",
-                alignItems: "center",
-                justifyContent: "flex-start",
-                flexDirection: "row",
-                marginTop: 20,
-              }}
-            >
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexDirection: "row",
-                  height: 40,
-                  width: "60%",
-                  backgroundColor: "white",
-                  borderRadius: 20,
-                  marginLeft: 20,
-                  borderWidth:0.4,
-                  borderColor:"#DDDDDD"
-                }}
-              >
+            <View style={styles.searchRow}>
+              <View style={styles.searchContainer}>
                 <Icon
-                  style={{ position: "absolute", left: 10 }}
+                  style={styles.searchIcon}
                   name="magnifying-glass"
                   size={30}
                   color={ternaryThemeColor}
-                ></Icon>
+                />
                 <TextInput
-                  style={{ marginLeft: 20, width: "70%", color: "black" }}
+                  style={styles.searchInput}
                   placeholder="Type Product Name"
                   value={search}
                   onChangeText={(text) => {
                     handleSearch(text);
                   }}
-                ></TextInput>
+                />
               </View>
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginLeft: 20,
-                  bottom: 4,
-                }}
-              >
+              <View style={styles.filterContainer}>
                 <PoppinsTextMedium
                   content={t("Filter By Points")}
-                  style={{
-                    fontSize: 11,
-                    fontWeight: "700",
-                    color: "black",
-                  }}
-                ></PoppinsTextMedium>
+                  style={styles.filterLabel}
+                />
                 <TouchableOpacity
-                  style={{
-                    backgroundColor: "#EEEEEE",
-                    height: 34,
-                    width: 100,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderRadius: 20,
-                    borderWidth: 1,
-                    borderColor: "#00000029",
-                    flexDirection: "row",
-                  }}
+                  style={styles.filterButton}
                   onPress={() => {
                     setShowCategoriesOptions(!showCategoriesOption);
                   }}
                 >
                   <PoppinsTextMedium
                     content={`${t(initailRange)}`}
-                    style={{
-                      fontSize: 11,
-                      fontWeight: "600",
-                      color: "black",
-                    }}
-                  ></PoppinsTextMedium>
+                    style={styles.filterButtonText}
+                  />
                 </TouchableOpacity>
                 {showCategoriesOption && (
-                  <View
-                    style={{ alignItems: "center", justifyContent: "center",marginTop:8 }}
-                  >
+                  <View style={styles.filterDropdown}>
                     {range.map((item, index) => {
                       return (
                         <TouchableOpacity
+                          key={index}
                           onPress={()=>{
                             setShowCategoriesOptions(false)
                             getRangeData(item)
                           }}
-                          style={{
-                            alignItems: "center",
-                            justifyContent: "center",
-                            height:30,width:80, backgroundColor:'#EEEEEE',
-                            borderBottomWidth:1,
-                            borderColor:'#00000029'
-                            
-                          }}
+                          style={styles.filterDropdownItem}
                         >
                           <PoppinsTextMedium
                             content={`${t(item)}`}
-                            style={{
-                              fontSize: 11,
-                              fontWeight: "600",
-                              color: "black",
-                            }}
-                          ></PoppinsTextMedium>
+                            style={styles.filterButtonText}
+                          />
                         </TouchableOpacity>
                       );
                     })}
@@ -1045,40 +737,22 @@ const RedeemGifts = ({ navigation, route }) => {
         </View>
 
         {theme == "1" && (
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              width: "100%",
-              flexDirection: "row",
-              marginTop: 10,
-            }}
-          >
+          <View style={styles.categoriesContainer}>
             <TouchableOpacity
               onPress={() => {
                 setDisplayContent(giftCatalogueData.body);
                 setCart(null);
               }}
-              style={{
-                height: 70,
-                width: 70,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+              style={styles.categoryButton}
             >
               <Image
-                style={{ height: 40, width: 40, resizeMode: "contain" }}
+                style={styles.categoryIcon}
                 source={require("../../../assets/images/categories.png")}
-              ></Image>
+              />
               <PoppinsTextMedium
-                style={{
-                  color: "black",
-                  fontSize: 14,
-                  fontWeight: "600",
-                  marginTop: 2,
-                }}
+                style={styles.categoryText}
                 content="All"
-              ></PoppinsTextMedium>
+              />
             </TouchableOpacity>
             <ScrollView
               showsHorizontalScrollIndicator={false}
@@ -1091,49 +765,22 @@ const RedeemGifts = ({ navigation, route }) => {
                       key={index}
                       data={item}
                       image={require("../../../assets/images/box.png")}
-                    ></Categories>
+                    />
                   );
                 })}
             </ScrollView>
           </View>
         )}
-        <View
-          style={{
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "center",
-            paddingBottom: theme == "1" ? 300 : 0,
-          }}
-        >
+        <View style={[styles.rewardsContainer, { paddingBottom: theme == "1" ? 300 : 0 }]}>
           {theme == "1" && (
             <PoppinsTextMedium
-              style={{
-                color: "#171717",
-                fontSize: 14,
-                fontWeight: "700",
-                marginTop: 10,
-                marginBottom: 10,
-              }}
+              style={styles.rewardsTitle}
               content={t("Rewards")}
-            ></PoppinsTextMedium>
+            />
           )}
 
           {theme !== "1" && displayContent && (
-            <View style={{ width: "100%", marginTop: 0 }}>
-              <View
-                style={{
-                  // opacity: 0.8,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  // borderWidth: 1,
-                  // borderColor: ternaryThemeColor,
-                  // backgroundColor: "#FFF5EC",
-                  width: "90%",
-                  alignSelf: "center",
-
-                  // padding: 6,
-                }}
-              ></View>
+            <View style={styles.flatListContainer}>
 
               {displayContent && (
                 <FlatList
@@ -1141,43 +788,26 @@ const RedeemGifts = ({ navigation, route }) => {
                   style={{ width: "100%",height:'90%'}}
                   contentContainerStyle={{ width: "100%", paddingBottom:0 }}
                   renderItem={({ item, index }) => {
-                    console.log("pointasdasdqweqw", displayContent);
+                    // console.log("displayContent points", displayContent);
                     return (
                       <View key={index} style={styles.categoryContainer}>
                         <View
-                          style={{
-                            opacity: 1,
-                            alignItems: "center",
-                            justifyContent: "center",
-                            borderWidth: 1,
-                            borderColor: "black",
-                            borderRadius: 10,
-                            backgroundColor: ((userData?.user_type).toLowerCase() == "carpenter" || (userData?.user_type).toLowerCase() == "oem" || (userData?.user_type).toLowerCase() == "directoem" || (userData?.user_type).toLowerCase() == "contractor")  ? "#00A79D" : "#B6202D",
-                            width: "94%",
-                            padding: 6,
-                            marginBottom: 20,
-                          }}
+                          style={[
+                            styles.categoryHeader,
+                            {
+                              backgroundColor: ((userData?.user_type).toLowerCase() == "carpenter" || (userData?.user_type).toLowerCase() == "oem" || (userData?.user_type).toLowerCase() == "directoem" || (userData?.user_type).toLowerCase() == "contractor")  ? "#00A79D" : "#B6202D",
+                            }
+                          ]}
                         >
                           <Text style={styles.header}> {"Points "+ item}</Text>
                         </View>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            flexWrap: "wrap",
-                            alignItems: "flex-start", // Align items at the start of each row
-                            justifyContent: "center", // Distribute space evenly between items
-                            width: "100%",
-                          }}
-                        >
+                        <View style={styles.giftsRow}>
                           {displayContent[item].map((gift, index) => {
-                            console.log("gift displayed", gift);
+                            // console.log("gift displayed", gift);
                             return (
                               <View
-                                style={{
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  width: "50%",
-                                }}
+                                key={gift.id}
+                                style={styles.giftItemContainer}
                               >
                                 <RewardsBox
                                   ind={index}
@@ -1185,7 +815,6 @@ const RedeemGifts = ({ navigation, route }) => {
                                   category={gift.catalogue_name}
                                   points={gift.points}
                                   image={gift.images[0]}
-                                  key={gift.id}
                                   data={gift}
                                   handleSelect={handleAddToCart}
                                   selected={cart && cart.id === gift.id}
@@ -1206,26 +835,13 @@ const RedeemGifts = ({ navigation, route }) => {
         </View>
       </View>
       {cart && (
-                <View style={{alignItems:'center' ,justifyContent:'center', width:'100%',height:'10%'}}>
+                <View style={styles.processButtonContainer}>
                 <TouchableOpacity
                   onPress={onContinueClick}
-                  style={{
-                    alignItems: "center",
-                    borderRadius: 30,
-                    justifyContent: "center",
-                    height: 50,
-                    width: "60%",
-                    
-                    
-                    backgroundColor: "black",
-                  }}
+                  style={styles.processButton}
                 >
                   <PoppinsTextMedium
-                    style={{
-                      color: "white",
-                      fontSize: 18,
-                      fontWeight: "700",
-                    }}
+                    style={styles.processButtonText}
                     content={t("Process")}
                   />
                 </TouchableOpacity>
@@ -1238,11 +854,208 @@ const RedeemGifts = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
+  mainContainer: {
+    alignItems: "center",
+    justifyContent: "flex-start",
+    width: "100%",
+    height: "100%",
+  },
+  headerContainer: {
+    alignItems: "center",
+    justifyContent: "flex-start",
+    flexDirection: "row",
+    width: "100%",
+    marginTop: 10,
+    height: "10%",
+    marginLeft: 20,
+  },
+  backButton: {
+    height: 24,
+    width: 24,
+    resizeMode: "contain",
+    marginLeft: 10,
+  },
+  headerTitle: {
+    marginLeft: 10,
+    fontSize: 16,
+    position: "absolute",
+    left: 0,
+    top: -13,
+    fontWeight: "700",
+    color: "black",
+  },
+  walletContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    right: 20,
+    top: 20,
+  },
+  walletTitle: {
+    marginLeft: 10,
+    fontSize: 13,
+    fontWeight: "700",
+    color: "black",
+  },
+  walletPointsRow: {
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  coinIcon: {
+    height: 20,
+    width: 20,
+    resizeMode: "contain",
+  },
+  walletPoints: {
+    marginLeft: 10,
+    fontSize: 17,
+    fontWeight: "700",
+    color: "black",
+  },
+  contentContainer: {
+    height: "80%",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  searchFilterContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    backgroundColor: "white",
+    width: "100%",
+    borderTopRightRadius: 40,
+    borderTopLeftRadius: 40,
+    paddingBottom: 20,
+  },
+  searchRow: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    flexDirection: "row",
+    marginTop: 20,
+  },
+  searchContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    height: 40,
+    width: "60%",
+    backgroundColor: "white",
+    borderRadius: 20,
+    marginLeft: 20,
+    borderWidth: 0.4,
+    borderColor: "#DDDDDD",
+  },
+  searchIcon: {
+    position: "absolute",
+    left: 10,
+  },
+  searchInput: {
+    marginLeft: 20,
+    width: "70%",
+    color: "black",
+  },
+  filterContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 20,
+    bottom: 4,
+  },
+  filterLabel: {
+    fontSize: 11,
+    fontWeight: "700",
+    color: "black",
+  },
+  filterButton: {
+    backgroundColor: "#EEEEEE",
+    height: 34,
+    width: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#00000029",
+    flexDirection: "row",
+  },
+  filterButtonText: {
+    fontSize: 11,
+    fontWeight: "600",
+    color: "black",
+  },
+  filterDropdown: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 8,
+  },
+  filterDropdownItem: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: 30,
+    width: 80,
+    backgroundColor: "#EEEEEE",
+    borderBottomWidth: 1,
+    borderColor: "#00000029",
+  },
+  categoriesContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    flexDirection: "row",
+    marginTop: 10,
+  },
+  categoryButton: {
+    height: 70,
+    width: 70,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  categoryIcon: {
+    height: 40,
+    width: 40,
+    resizeMode: "contain",
+  },
+  categoryText: {
+    color: "black",
+    fontSize: 14,
+    fontWeight: "600",
+    marginTop: 2,
+  },
+  categoryItem: {
+    marginLeft: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  categoryItemIcon: {
+    height: 40,
+    width: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 35,
+    marginLeft: 0,
+  },
+  categoryItemImage: {
+    height: 30,
+    width: 30,
+    resizeMode: "contain",
+  },
+  rewardsContainer: {
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "green",
+    paddingBottom: 0,
+  },
+  rewardsTitle: {
+    color: "#171717",
+    fontSize: 14,
+    fontWeight: "700",
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  flatListContainer: {
+    width: "100%",
+    marginTop: 0,
   },
   categoryContainer: {
     marginBottom: 20,
@@ -1250,18 +1063,224 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  categoryHeader: {
+    opacity: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "black",
+    borderRadius: 10,
+    width: "94%",
+    padding: 6,
+    marginBottom: 20,
+  },
   header: {
     fontSize: 20,
     fontWeight: "bold",
     color: "white",
   },
-  row: {
+  giftsRow: {
     flexDirection: "row",
     flexWrap: "wrap",
-    alignItems: "center",
-    width: "100%",
+    alignItems: "flex-start",
     justifyContent: "center",
-    backgroundColor: "red",
+    width: "100%",
+  },
+  giftItemContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "50%",
+  },
+  rewardBox: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    backgroundColor: "#fff",
+    marginTop: 20,
+  },
+  rewardBoxTheme1: {
+    height: 120,
+    width: "90%",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    borderWidth: 0.6,
+    borderColor: "#EEEEEE",
+    backgroundColor: "#FFFFFF",
+    margin: 10,
+    marginLeft: 20,
+    elevation: 8,
+  },
+  rewardBoxTheme2: {
+    width: "80%",
+    height: 240,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: "#DDDDDD",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    padding: 10,
+  },
+  checkIcon: {
+    zIndex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    right: 8,
+    top: 8,
+  },
+  rewardImageContainer: {
+    alignItems: "center",
+    justifyContent: "flex-start",
+    width: "100%",
+    height: "80%",
+    marginBottom: 4,
+  },
+  rewardImage: {
+    height: "64%",
+    width: "100%",
+    resizeMode: "contain",
+    zIndex: 0,
+  },
+  rewardDetailsContainer: {
+    height: "26%",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  productName: {
+    color: "#494949",
+    fontSize: 11,
+    fontWeight: "700",
+    textAlign: "center",
+    marginTop: 4,
+  },
+  brandName: {
+    fontSize: 11,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  addButtonContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: "20%",
+    width: "100%",
+  },
+  addButton: {
+    height: 40,
+    width: "80%",
+    backgroundColor: "black",
+    borderRadius: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  addButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  processButtonContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "10%",
+  },
+  processButton: {
+    alignItems: "center",
+    borderRadius: 30,
+    justifyContent: "center",
+    height: 50,
+    width: "60%",
+    backgroundColor: "black",
+  },
+  processButtonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "700",
+  },
+  // Theme 1 specific styles
+  theme1Header: {
+    height: "40%",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    flexDirection: "row",
+  },
+  theme1ImageContainer: {
+    height: 50,
+    width: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 0.4,
+    borderColor: "#DDDDDD",
+    backgroundColor: "white",
+    marginLeft: 20,
+    top: 14,
+  },
+  theme1Image: {
+    height: 40,
+    width: 40,
+    resizeMode: "contain",
+  },
+  theme1PointsBadge: {
+    height: 30,
+    padding: 4,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    borderRadius: 4,
+    position: "absolute",
+    right: 80,
+  },
+  theme1CoinIcon: {
+    height: 20,
+    width: 20,
+    resizeMode: "contain",
+  },
+  theme1PointsText: {
+    fontSize: 12,
+    color: "white",
+    fontWeight: "700",
+    marginLeft: 10,
+  },
+  theme1Controls: {
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    position: "absolute",
+    right: 10,
+  },
+  theme1Counter: {
+    height: 24,
+    width: 20,
+    backgroundColor: "white",
+    borderRadius: 4,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  theme1CounterText: {
+    color: "black",
+    fontSize: 14,
+    fontWeight: "700",
+  },
+  theme1Details: {
+    height: "60%",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    marginTop: 4,
+    width: "90%",
+  },
+  theme1ProductName: {
+    color: "black",
+    fontSize: 13,
+    width: "90%",
+    marginLeft: 4,
+  },
+  theme1Category: {
+    color: "#919191",
+    fontSize: 13,
+    width: "90%",
   },
 });
 

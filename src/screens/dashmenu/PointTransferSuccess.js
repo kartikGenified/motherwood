@@ -10,6 +10,7 @@ import ErrorModal from "../../components/modals/ErrorModal";
 import MessageModal from "../../components/modals/MessageModal";
 import moment from "moment";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import { useTranslation } from "react-i18next";
 
 // create a component
 const PointsTransferSuccess = (params) => {
@@ -17,6 +18,7 @@ const PointsTransferSuccess = (params) => {
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState();
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const data = params?.route?.params?.getPointTransferData?.body;
   console.log("praaaaa", JSON.stringify(data));
   const orderNo = params?.route?.params?.item?.id;
@@ -106,7 +108,7 @@ const PointsTransferSuccess = (params) => {
               source={require("../../../assets/images/greenTick.png")}
             ></Image>
             <Text style={{ fontSize: 18, marginLeft: 4, color: "black" }}>
-              Status :{" "}
+              {t("Status :")} {" "}
             </Text>
             <Text
               style={{
@@ -117,17 +119,17 @@ const PointsTransferSuccess = (params) => {
               }}
             >
               {data.orderDetail?.status == 1
-                ? "Success"
+                ? t("Success")
                 : data.orderDetail?.status == 0
-                ? "Pending"
+                ? t("Pending")
                 : data.orderDetail?.status == 2
-                ? "Rejected"
+                ? t("Rejected")
                 : ""}
             </Text>
           </View>
           <View style={{ flexDirection: "row", marginTop: 10 }}>
             <Text style={{ fontSize: 22, marginTop: 7, color: "black",fontWeight:'600' }}>
-              Transfer Points :{" "}
+              {t("Transfer Points :")} {" "}
             </Text>
 
             {data && (
@@ -228,7 +230,7 @@ const PointsTransferSuccess = (params) => {
                 fontWeight: "400",
               }}
             >
-              Channel/ Partner ID :
+              {t("Channel/ Partner ID :")}
             </Text>
             <Text
               style={{
@@ -258,7 +260,7 @@ const PointsTransferSuccess = (params) => {
                 fontWeight: "400",
               }}
             >
-              Channel/ Partner ID :
+              {t("Channel/ Partner Name :")}
             </Text>
             <Text
               style={{
@@ -288,7 +290,7 @@ const PointsTransferSuccess = (params) => {
                 fontWeight: "400",
               }}
             >
-              Reference :
+              {t("Reference :")}
             </Text>
             <Text
               style={{
@@ -318,7 +320,7 @@ const PointsTransferSuccess = (params) => {
                 fontWeight: "400",
               }}
             >
-              Total SKU :
+              {t("Total SKU :")}
             </Text>
             <Text
               style={{
@@ -348,7 +350,7 @@ const PointsTransferSuccess = (params) => {
                 fontWeight: "400",
               }}
             >
-              Quantity :
+              {t("Quantity :")}
             </Text>
             <Text
               style={{
@@ -396,7 +398,7 @@ const PointsTransferSuccess = (params) => {
               }}
             >
               <Text style={{ color: "white", fontWeight: "600" }}>
-                Product Name
+                {t("Product Name")}
               </Text>
             </View>
 
@@ -412,7 +414,7 @@ const PointsTransferSuccess = (params) => {
               }}
             >
               <Text style={{ color: "white", fontWeight: "600" }}>
-                Thickness
+                {t("Thickness")}
               </Text>
             </View>
 
@@ -427,7 +429,7 @@ const PointsTransferSuccess = (params) => {
                 borderColor: "white",
               }}
             >
-              <Text style={{ color: "white", fontWeight: "600" }}>QTY</Text>
+              <Text style={{ color: "white", fontWeight: "600" }}>{t("QTY")}</Text>
             </View>
 
             <View
@@ -441,7 +443,7 @@ const PointsTransferSuccess = (params) => {
                 borderColor: "white",
               }}
             >
-              <Text style={{ color: "white", fontWeight: "600" }}>Pts</Text>
+              <Text style={{ color: "white", fontWeight: "600" }}>{t("Pts")}</Text>
             </View>
           </View>
 
@@ -533,8 +535,8 @@ const PointsTransferSuccess = (params) => {
             );
           })}
         </ScrollView>
-        <TouchableOpacity style={{alignSelf:'center',width:120, backgroundColor:'black',alignItems:'center',height:40,justifyContent:'center', borderRadius:20,marginBottom:30}} onPress={()=>{navigation.replace("Dashboard")}}>
-        <Text style={{color:'white',width:160, textAlign:'center'}}>Done</Text>
+        <TouchableOpacity style={{alignSelf:'center',width:120, backgroundColor:'black',alignItems:'center',height:40,justifyContent:'center', borderRadius:20,marginBottom:30}} onPress={()=>{navigation.replace("PointsTransfer")}}>
+        <Text style={{color:'white',width:160, textAlign:'center'}}>{t("Done")}</Text>
       </TouchableOpacity>
       </ScrollView>
       {error && (

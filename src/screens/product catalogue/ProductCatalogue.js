@@ -173,7 +173,7 @@ const ProductCatalogue = ({ navigation }) => {
         height: "100%",
       }}
     >
-      <TopHeader title={"E-Catalogue"}></TopHeader>
+      <TopHeader title={t("E-Catalogues")}></TopHeader>
 
       <ScrollView style={{ width: "100%", height: "90%" }}>
         <View

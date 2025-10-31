@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import ErrorModal from '../../components/modals/ErrorModal';
 import MessageModal from '../../components/modals/MessageModal';
 import useKycValidation from '../../utils/checkKycStatus';
+import dayjs from 'dayjs';
 
 // create a component
 const RewardMenu = ({navigation}) => {
@@ -240,9 +241,9 @@ const { isValid, refresh } = useKycValidation();
       }
     return (
         <View style={styles.container}>
-            <TopHeader title={"Redeem"}></TopHeader>
+            <TopHeader title={t("Redeem")}></TopHeader>
             <Image style={{marginTop:40, width:200,height:100 ,resizeMode:'contain',}} source={require("../../../assets/images/gift1.png")}></Image>
-            <PoppinsTextMedium style={{width:300, marginTop:25, fontSize:18, color:'black', }} content={"Unlock the magic of your points and redeem them for exciting rewards!"}></PoppinsTextMedium>
+            <PoppinsTextMedium style={{width:300, marginTop:25, fontSize:18, color:'black', }} content={t("Redeem_MSG")}></PoppinsTextMedium>
 
             <View style={{alignItems:'center',marginTop:30,width:'100%'}}>
                 <TouchableOpacity disabled={!enableRedemption} style={{alignItems:'center',width:'100%'}} onPress={()=>{handleRedeemButtonPress('gift')}}> 
@@ -256,25 +257,24 @@ const { isValid, refresh } = useKycValidation();
             </View>
             {
                 !enableRedemption && getUserStatusData?.body.status && 
-            <PoppinsTextMedium style={{width:300, marginTop:10, fontSize:18, color:'#ad0638', }} content={`You cannot redeem as your current approval status is :  ${getUserStatusData?.body.status}`}></PoppinsTextMedium>
+            <PoppinsTextMedium style={{width:300, marginTop:10, fontSize:18, color:'#ad0638', }} content={`${t("You cannot redeem as your current approval status is")} :  ${t(getUserStatusData?.body.status)}`}></PoppinsTextMedium>
 
             }
             {
                 getUserStatusError && 
-                <PoppinsTextMedium style={{width:300, marginTop:10, fontSize:18, color:'#ad0638', }} content={`Unable to fetch your approval status`}></PoppinsTextMedium>
+                <PoppinsTextMedium style={{width:300, marginTop:10, fontSize:18, color:'#ad0638', }} content={t("Unable to fetch your approval status")}></PoppinsTextMedium>
             }
             <SocialBottomBar/>
             {error && (
         <ErrorModal
           modalClose={modalClose}
           message={message}
-          openModal={error}
         ></ErrorModal>
       )}
       {success && (
         <MessageModal
           modalClose={modalClose}
-          title={"Thanks"}
+          title={t("Thanks")}
           message={message}
           openModal={success}
           navigateTo="ListAddress"

@@ -151,7 +151,7 @@ const BirthdayScreen = ({navigation}) => {
               width: "60%",
               marginLeft: 20,
             }}
-            content={`Name - ${name}`}
+            content={`${t("Name")} - ${name}`}
           ></PoppinsTextLeftMedium>
           {/* <TouchableOpacity style={{alignItems:'center', justifyContent:'center', height:24,width:100,borderRadius:20, backgroundColor:'white'}}>
             <PoppinsTextLeftMedium style={{ color: 'black', fontWeight: '600' }} content={"View Details"}></PoppinsTextLeftMedium>
@@ -168,19 +168,19 @@ const BirthdayScreen = ({navigation}) => {
         >
           <PoppinsTextLeftMedium
             style={{ color: "black", fontWeight: "700", fontSize: 14,marginTop:10 }}
-            content={`Email - ${email}`}
+            content={`${t("Email")} - ${email}`}
           ></PoppinsTextLeftMedium>
           <PoppinsTextLeftMedium
             style={{ color: "black", fontWeight: "700", fontSize: 14,marginTop:4 }}
-            content={`Mobile - ${mobile}`}
+            content={`${t("Mobile")} - ${mobile}`}
           ></PoppinsTextLeftMedium>
           <PoppinsTextLeftMedium
             style={{ color: "black", fontWeight: "700", fontSize: 14,marginTop:4 }}
-            content={`User Type - ${userType}`}
+            content={`${t("User Type")} - ${userType}`}
           ></PoppinsTextLeftMedium>
            <PoppinsTextLeftMedium
             style={{ color: "black", fontWeight: "700", fontSize: 14,marginTop:4 }}
-            content={`User Approval Status - ${status ? "Approved" : "Pending/Rejected"}`}
+            content={`${t("User Approval Status")} - ${status ? t("Approved") : t("Pending/Rejected")}`}
           ></PoppinsTextLeftMedium>
         </View>
         
@@ -253,7 +253,7 @@ const BirthdayScreen = ({navigation}) => {
           }}
         >
           <PoppinsTextLeftMedium
-            content="Yesterday"
+            content={t("Yesterday")}
             style={{ color: "black", fontSize: 16, fontWeight: "600" }}
           ></PoppinsTextLeftMedium>
         </TouchableOpacity>
@@ -273,7 +273,7 @@ const BirthdayScreen = ({navigation}) => {
           }}
         >
           <PoppinsTextLeftMedium
-            content="Today"
+            content={t("Today")}
             style={{ color: "black", fontSize: 16, fontWeight: "600" }}
           ></PoppinsTextLeftMedium>
         </TouchableOpacity>
@@ -293,7 +293,7 @@ const BirthdayScreen = ({navigation}) => {
           }}
         >
           <PoppinsTextLeftMedium
-            content="Tomorrow"
+            content={t("Tomorrow")}
             style={{ color: "black", fontSize: 16, fontWeight: "600" }}
           ></PoppinsTextLeftMedium>
         </TouchableOpacity>

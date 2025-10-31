@@ -1,6 +1,6 @@
 //import liraries
-import React, { Component, useState , useEffect} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image,ScrollView } from 'react-native';
+import React, { Component, useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import { useSelector } from 'react-redux';
@@ -14,22 +14,22 @@ import { useTranslation } from 'react-i18next';
 
 // create a component
 const FAQ = ({ navigation }) => {
-    
-    const[faqData, setFAQData] = useState(null);
-    const[error,setError] = useState(false);
+
+    const [faqData, setFAQData] = useState(null);
+    const [error, setError] = useState(false);
 
     const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loaderNew.gif')).uri;
-    const {t} = useTranslation()
+    const { t } = useTranslation()
 
     const [fetchFAQ, {
-        data:fetchFAQData, 
-        error:FAQError,
-        isLoading:FAQIsLoading,
-        isError:FAQIsError
-      }] = useFetchAllfaqsMutation()
-  
+        data: fetchFAQData,
+        error: FAQError,
+        isLoading: FAQIsLoading,
+        isError: FAQIsError
+    }] = useFetchAllfaqsMutation()
 
-   
+
+
 
     const ternaryThemeColor = useSelector(
         state => state.apptheme.ternaryThemeColor,
@@ -37,42 +37,54 @@ const FAQ = ({ navigation }) => {
         ? useSelector(state => state.apptheme.ternaryThemeColor)
         : 'grey';
 
-    
-    
-    useEffect(()=>{
-        
-                fetchFAQ()
-         
-    },[])
-
-    useEffect(()=>{
-       if(fetchFAQData){
-        console.log("fetchFAQData",fetchFAQData)
-        setFAQData(fetchFAQData.body.faqList)
-        
-       }
-       else if(FAQError){
-        console.log("FAQError",FAQError)
-        setError(true)
-        setFAQData([]);
-       }
-    },[fetchFAQData, FAQError])
 
 
+    useEffect(() => {
+        const getToken = async () => {
+            const credentials = await Keychain.getGenericPassword();
+            if (credentials) {
+                console.log(
+                    'Credentials successfully loaded for user ' + credentials.username
+                );
+                const token = credentials.username
+                let params = {
+                    token: token
+                }
+                fetchFAQ(params)
+            }
+        }
+        getToken()
 
-        
+    }, [])
+
+    useEffect(() => {
+        if (fetchFAQData) {
+            console.log("fetchFAQData", JSON.stringify(fetchFAQData))
+            setFAQData(fetchFAQData.body.faqList)
+
+        }
+        else if (FAQError) {
+            console.log("FAQError", FAQError)
+            setError(true)
+            setFAQData([]);
+        }
+    }, [fetchFAQData, FAQError])
+
+
+
+
 
     const FaqComp = (props) => {
         const item = props.item
         console.log("FAQ item", item)
         const [queVisible, setQueVisible] = useState(false);
         return (
-            <View style={{ marginHorizontal: 20, borderWidth: 1, marginTop: 20, padding: 10, borderRadius: 5, borderColor:"#80808040" }}>
+            <View style={{ marginHorizontal: 20, borderWidth: 1, marginTop: 20, padding: 10, borderRadius: 5, borderColor: "#80808040" }}>
                 <TouchableOpacity onPress={() => {
                     setQueVisible(!queVisible)
                 }} style={{ flexDirection: 'row' }}>
                     <Image style={{ height: 14, width: 14, resizeMode: "contain", position: "absolute", right: 10, top: 10 }} source={require('../../../assets/images/arrowDown.png')}></Image>
-                    <View style={{width:'90%'}}>
+                    <View style={{ width: '90%' }}>
                         <PoppinsTextLeftMedium style={{ fontSize: 16, color: '#000000', fontWeight: '800' }} content={item?.question}></PoppinsTextLeftMedium>
                     </View>
                 </TouchableOpacity>
@@ -104,7 +116,7 @@ const FAQ = ({ navigation }) => {
                         navigation.goBack();
                     }}>
                     <Image
-                        style={{ height: 20, width: 20, resizeMode: 'contain', marginTop:5 }}
+                        style={{ height: 20, width: 20, resizeMode: 'contain', marginTop: 5 }}
                         source={require('../../../assets/images/blackBack.png')}></Image>
                 </TouchableOpacity>
 
@@ -114,30 +126,30 @@ const FAQ = ({ navigation }) => {
             </View>
 
             {FAQIsLoading &&
-              <FastImage
-                   style={{ width: 50, height: "10%", marginTop:'70%', marginLeft:'40%' }}
-                   source={{
-                       uri: gifUri, // Update the path to your GIF
-                       priority: FastImage.priority.normal,
-                   }}
-                   resizeMode={FastImage.resizeMode.contain}
-               />
-          }
-
-          <ScrollView contentContainerStyle={{paddingBottom:20}} style={{width:'100%'}}>
-            {
-                faqData?.length > 0 && faqData.map((item) => {
-                    return (
-                        <View key={item.id}>
-                            <FaqComp item = {item}></FaqComp>
-                        </View>
-                    )
-
-                })
+                <FastImage
+                    style={{ width: 50, height: "10%", marginTop: '70%', marginLeft: '40%' }}
+                    source={{
+                        uri: gifUri, // Update the path to your GIF
+                        priority: FastImage.priority.normal,
+                    }}
+                    resizeMode={FastImage.resizeMode.contain}
+                />
             }
+
+            <ScrollView contentContainerStyle={{ paddingBottom: 20 }} style={{ width: '100%' }}>
+                {
+                    faqData?.length > 0 && faqData.map((item) => {
+                        return (
+                            <View key={item.id}>
+                                <FaqComp item={item}></FaqComp>
+                            </View>
+                        )
+
+                    })
+                }
             </ScrollView>
 
-          
+
         </View>
     );
 };

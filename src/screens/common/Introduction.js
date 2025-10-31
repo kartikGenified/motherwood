@@ -3,12 +3,14 @@ import {View, StyleSheet, Text,Image, TouchableOpacity, ImageBackground} from 'r
 import DotHorizontalList from '../../components/molecules/DotHorizontalList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { descriptionImages } from '../../utils/HandleClientSetup';
+import { useTranslation } from 'react-i18next';
 
 
 
 const Introduction = ({navigation}) => {
     const [imageIndex, setImageIndex] = useState(0)
     const [skipEnabled, setSkipEnabled] = useState(false)
+    const { t } = useTranslation();
     // const [isAlreadyIntroduced, setIsAlreadyIntroduced] = useState(null)
 
 
@@ -76,10 +78,10 @@ const Introduction = ({navigation}) => {
             
             <View style={{width:"100%",height:'100%',marginTop:20}}>
                 {skipEnabled && <TouchableOpacity disabled={!skipEnabled} style={{position:"absolute",left:40,bottom:20}} onPress={()=>{handleSkip()}}>
-                <Text style={{fontSize:18,color:"#0087A2",fontWeight:'600'}}>Skip</Text>
+                <Text style={{fontSize:18,color:"#0087A2",fontWeight:'600'}}>{t("Skip")}</Text>
 
                 </TouchableOpacity>}
-                <Text onPress={()=>{handleNext()}} style={{fontSize:18,color:"#0087A2",position:"absolute",right:40,bottom:20,fontWeight:'600'}}>Next</Text>
+                <Text onPress={()=>{handleNext()}} style={{fontSize:18,color:"#0087A2",position:"absolute",right:40,bottom:20,fontWeight:'600'}}>{t("Next")}</Text>
             </View>
             </View>
         </ImageBackground>

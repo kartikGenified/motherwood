@@ -417,7 +417,7 @@ useEffect(()=>{
     } else if (getFormError) {
       console.log("getFormError", getFormError);
       setError(true);
-      setMessage("Can't fetch forms for warranty.");
+      setMessage(t("Can't fetch forms for warranty."));
     }
   }, [getFormData, getFormError]);
 
@@ -431,7 +431,7 @@ useEffect(()=>{
     } else if (getWorkflowError) {
       console.log("getWorkflowError", getWorkflowError);
       setError(true);
-      setMessage("Oops something went wrong");
+      setMessage(t("Oops something went wrong"));
     }
   }, [getWorkflowData, getWorkflowError]);
 
@@ -444,7 +444,7 @@ useEffect(()=>{
       parsedJsonValue && getBannerFunc(parsedJsonValue?.token);
     } else if (getDashboardError) {
       setError(true);
-      setMessage("Can't get dashboard data, kindly retry.");
+      setMessage(t("Can't get dashboard data, kindly retry."));
       console.log("getDashboardError", getDashboardError);
     }
   }, [getDashboardData, getDashboardError]);
@@ -493,7 +493,7 @@ useEffect(()=>{
         });
     } else if (getBannerError) {
       setError(true);
-      setMessage("Unable to fetch app banners");
+      setMessage(t("Unable to fetch app banners"));
       console.log("getBannerError", getBannerError);
     }
   }, [getBannerError, getBannerData]);
@@ -514,13 +514,13 @@ useEffect(()=>{
         saveUserDetails(verifyOtpData?.body);
         verifyOtpData?.body?.token &&
           getDashboardFunc(verifyOtpData?.body?.token);
-        setMessage("Successfully Logged In");
+        setMessage(t("Successfully Logged In"));
         setSuccess(true);
       }
     } else if (verifyOtpError) {
       console.log("verifyOtpError", verifyOtpError);
       setError(true);
-      setMessage("Login Failed");
+      setMessage(t("Login Failed"));
       console.log(verifyOtpError);
     }
   }, [verifyOtpData, verifyOtpError]);
@@ -588,7 +588,7 @@ useEffect(()=>{
               marginLeft: 5,
               marginTop: 5,
             }}
-            content={"Success ! !"}
+            content={t("Success ! !")}
           ></PoppinsTextMedium>
 
           <ActivityIndicator
@@ -666,7 +666,7 @@ useEffect(()=>{
       }
       else{
         setError(true)
-        setMessage("Kindly Enter the correct OTP")
+        setMessage(t("Kindly Enter the correct OTP"))
       }
     }
     // else{
@@ -701,7 +701,7 @@ useEffect(()=>{
     }
     else{
       setError(true)
-      setMessage("Kindly Enter the correct OTP")
+      setMessage(t("Kindly Enter the correct OTP"))
     }
 
   }
@@ -840,7 +840,7 @@ useEffect(()=>{
         
           <View style={{ alignItems: "center", justifyContent: "center",flexDirection:'row' }}>
             <Text style={{ color: "black", marginTop: 10 ,fontSize:14}}>
-              didn't recieve any OTP?  
+              {t("didn't recieve any OTP?")}  
             </Text>
 
             <Text
@@ -854,7 +854,7 @@ useEffect(()=>{
                 fontSize: 14,
               }}
             >
-              Resend Code
+              {t("Resend Code")}
             </Text>
           </View>
 
@@ -882,7 +882,7 @@ useEffect(()=>{
         </View>
         <TouchableOpacity onPress={()=>{handleVerifyButton()}} style={{alignItems:"center", justifyContent:'center',width:'90%',backgroundColor:'black',height:60,borderRadius:6}}>
         <Text style={{ color: "white", fontSize:22, fontWeight:'700'}}>
-        Verify OTP
+        {t("Verify OTP")}
             </Text>
         </TouchableOpacity>
 

@@ -69,7 +69,7 @@ const CouponDetails = ({navigation,route}) => {
             source={require('../../../assets/images/blackBack.png')}></Image>
         </TouchableOpacity>
         <PoppinsTextMedium
-          content="Coupon Details"
+          content={t("Coupon Details")}
           style={{
             marginLeft: 10,
             fontSize: 16,
@@ -116,7 +116,7 @@ const CouponDetails = ({navigation,route}) => {
               fontWeight: '700',
               marginTop: 10,
             }}
-            content="Brand Name"></PoppinsTextMedium>
+            content={t("Brand Name")}></PoppinsTextMedium>
           <View
             style={{
               flexDirection: 'row',
@@ -131,7 +131,7 @@ const CouponDetails = ({navigation,route}) => {
             <TouchableOpacity onPress={()=>{
                 copyToClipboard()
             }} style={{height:60,width:'35%',backgroundColor:ternaryThemeColor,alignItems:"center",justifyContent:"center"}}>
-                <PoppinsTextMedium style={{color:'white',fontSize:20,fontWeight:'700'}} content ="Copy"></PoppinsTextMedium>
+                <PoppinsTextMedium style={{color:'white',fontSize:20,fontWeight:'700'}} content ={t("Copy")}></PoppinsTextMedium>
             </TouchableOpacity>
           </View>
         </View>

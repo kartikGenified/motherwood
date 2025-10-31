@@ -241,7 +241,7 @@ const Feedback = ({ navigation }) => {
             handleOpenImageGallery()
           }} style={{backgroundColor:'#FFF8E7',height:100, marginHorizontal:30, borderRadius:10, borderWidth:1, borderColor:ternaryThemeColor, borderStyle:'dotted',alignItems:'center',justifyContent:'center',width:'90%',marginTop:20}}>
             <Image style={{height:40,width:60,resizeMode:'contain'}} source={require("../../../assets/images/camera_red.png")}></Image>
-            <PoppinsTextMedium style={{marginTop:10, color:'black'}} content={"Upload Image"}></PoppinsTextMedium>
+            <PoppinsTextMedium style={{marginTop:10, color:'black'}} content={t("Upload Image")}></PoppinsTextMedium>
           </TouchableOpacity>
           </View>
           <View>
@@ -256,7 +256,7 @@ const Feedback = ({ navigation }) => {
                     fontWeight:'600',
                     marginTop: 20,
                   }}
-                  content={t(`How would you rate ${clientOfficialName} App`)}
+                  content={t("how would you rate {{appName}} App", { appName: clientOfficialName })}
                 ></PoppinsTextMedium>
               </View>
 
@@ -293,7 +293,7 @@ const Feedback = ({ navigation }) => {
 
           <View style={{ marginHorizontal: "5%" }}>
             <ButtonWithPlane
-              title={t("submit")}
+              title={t("SUBMIT")}
               navigate=""
               plane={false}
               type={"feedback"}

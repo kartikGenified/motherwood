@@ -31,6 +31,7 @@ import { useNavigation } from "@react-navigation/native";
 import { usePointTransferMutation } from "../../apiServices/pointsTransfer/pointTransfer";
 import Geolocation from "@react-native-community/geolocation";
 import ErrorModal from "../../components/modals/ErrorModal";
+import { useTranslation } from "react-i18next";
 
 const PointsTransferNext = (params) => {
   const [token, setToken] = useState();
@@ -44,6 +45,7 @@ const PointsTransferNext = (params) => {
   const [thicknessOptions, setThicknessOptions] = useState([])
 
   const userDetails = params.route.params.userDetails;
+  const { t } = useTranslation();
   console.log("userDetails", userDetails);
   const [productRows, setProductRows] = useState([
     { category: null, thickness: null, qty: 1, points: 0 },
@@ -332,13 +334,13 @@ const PointsTransferNext = (params) => {
         <View>
           <PoppinsTextLeftMedium
             style={{ color: "black", fontWeight: "bold" }}
-            content={"Product/ SKU"}
+            content={t("Product/ SKU")}
           />
           <View style={{ width: 170, marginRight: 14 }}>
             <DropDownWithSearch
               handleSearchData={handleSearch}
               handleData={onCategoryChange}
-              placeholder={"Select Product"}
+              placeholder={t("Select Product")}
               data={data}
               value={row.category}
             />
@@ -357,13 +359,13 @@ const PointsTransferNext = (params) => {
           >
             <PoppinsTextLeftMedium
               style={{ color: "black", fontWeight: "bold" }}
-              content={"Thickness"}
+              content={t("Thickness")}
             />
             <View style={{ width: 80 }}>
               <DropDownWithSearch
                 handleSearchData={handleThicknessSearch}
                 handleData={onThicknessChange}
-                placeholder={"select"}
+                placeholder={t("select")}
                 data={thicknessOptions}
                 value={row.thickness}
               />
@@ -375,7 +377,7 @@ const PointsTransferNext = (params) => {
         <View style={{ marginLeft: 4 }}>
           <PoppinsTextMedium
             style={{ color: "black", fontWeight: "bold" }}
-            content={"Qty"}
+            content={t("Qty")}
           />
           <TextInput
             value={localQty}
@@ -409,7 +411,7 @@ const PointsTransferNext = (params) => {
   return (
     <View style={styles.container}>
       
-      <TopHeader title={"Points Transfer"} />
+      <TopHeader title={t("Points Transfer")} />
       <ScrollView style={{minHeight:'60%'}}>
       {error && (
         <ErrorModal
@@ -455,7 +457,7 @@ const PointsTransferNext = (params) => {
         }}
         onPress={handleAddRow}
       >
-        <Text style={{ color: "white", fontSize: 18 }}>+ Add Product</Text>
+        <Text style={{ color: "white", fontSize: 18 }}>{t("+ Add Product")}</Text>
       </TouchableOpacity>
       
       </ScrollView>
@@ -471,7 +473,7 @@ const PointsTransferNext = (params) => {
         <View
           style={{ flexDirection: "row", alignItems: "center", marginLeft: 20 }}
         >
-          <Text style={{ color: "white", fontSize: 16 }}>Total Qty : </Text>
+          <Text style={{ color: "white", fontSize: 16 }}>{t("Total Qty : ")}</Text>
           <Text style={{ color: "white", fontSize: 16 }}>{totalQty}</Text>
         </View>
 
@@ -482,7 +484,7 @@ const PointsTransferNext = (params) => {
             marginRight: 20,
           }}
         >
-          <Text style={{ color: "white", fontSize: 16 }}>Total Points : </Text>
+          <Text style={{ color: "white", fontSize: 16 }}>{t("Total Points : ")}</Text>
           <Image
             style={{ height: 20, width: 20, marginHorizontal: 5 }}
             source={require("../../../assets/images/coin.png")}
@@ -494,10 +496,10 @@ const PointsTransferNext = (params) => {
       <ConfirmationModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        title="Are You Sure You Want To Tranfer These Points?"
+        title={t("Are You Sure You Want To Transfer These Points?")}
         imageSource={require("../../../assets/images/alertIcon.png")}
-        leftButtonText="Don't Do it!"
-        rightButtonText="Yes, I am sure!"
+        leftButtonText={t("Don't Do it!")}
+        rightButtonText={t("Yes, I am sure!")}
         onLeftPress={() => {
           console.log("Yes Pressed");
           setModalVisible(false);
@@ -520,7 +522,7 @@ const PointsTransferNext = (params) => {
               if(item.category == null)
               {
                 setError(true)
-                setMessage("Please add products to proceed")
+                setMessage(t("Please add products to proceed"))
               }
               else
               {
@@ -531,7 +533,7 @@ const PointsTransferNext = (params) => {
           else
           {
             setError(true)
-            setMessage("Please add products to proceed")
+            setMessage(t("Please add products to proceed"))
           }
         }}
         style={{
@@ -548,7 +550,7 @@ const PointsTransferNext = (params) => {
       >
         <PoppinsTextLeftMedium
           style={{ color: "white", fontSize: 23, fontWeight: "bold" }}
-          content="Next"
+          content={t("Next")}
         ></PoppinsTextLeftMedium>
       </TouchableOpacity>
       <SocialBottomBar showRelative={true} />

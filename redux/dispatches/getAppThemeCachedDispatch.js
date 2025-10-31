@@ -1,3 +1,4 @@
+import { setLanguage } from "../slices/appLanguageSlice";
 import { setApiCallStatus } from "../slices/splashApiCallsSlice";
 
 const { setLocationSetup, setManualApproval, setAutoApproval, setRegistrationRequired } = require("../slices/appUserSlice");
@@ -56,7 +57,7 @@ export const getAppThemeCachedDispatch=async(dispatch, getAppThemeData)=>{
       );
       await dispatch(setColorShades(getAppThemeData?.body?.theme.color_shades));
       await dispatch(setKycOptions(getAppThemeData?.body?.kyc_options_before_login));
-      // dispatch(setLanguage(getAppThemeData?.body?.language))
+      await dispatch(setLanguage(getAppThemeData?.body?.language))
       await dispatch(setPointSharing(getAppThemeData?.body?.points_sharing));
       await dispatch(setSocials(getAppThemeData?.body?.socials));
       await dispatch(setWebsite(getAppThemeData?.body?.website));

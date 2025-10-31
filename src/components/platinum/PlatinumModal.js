@@ -15,6 +15,7 @@ import PoppinsText from "../electrons/customFonts/PoppinsText";
 import { ScrollView } from "react-native";
 import { useSelector } from "react-redux";
 import capitalizeFirstChar from "../../utils/capitalizeFirstChar";
+import { useTranslation } from "react-i18next";
 
 // create a component
 const PlatinumModal = ({memberShip, isVisible, onClose, getActiveMembershipData }) => {
@@ -22,6 +23,7 @@ const PlatinumModal = ({memberShip, isVisible, onClose, getActiveMembershipData 
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );
+  const { t } = useTranslation();
   // const ItemList = ({ items }) => {
   //     return (
   //       <FlatList
@@ -70,7 +72,7 @@ const PlatinumModal = ({memberShip, isVisible, onClose, getActiveMembershipData 
                 fontSize: 24,
                 fontWeight: "700",
               }}
-              content="Earn Badge"
+              content={t("Earn Badge")}
             ></PoppinsTextMedium>
 
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
@@ -103,7 +105,7 @@ const PlatinumModal = ({memberShip, isVisible, onClose, getActiveMembershipData 
                   fontSize: 14,
                   fontWeight: "600",
                 }}
-                content="Club"
+                content={t("Club")}
               ></PoppinsTextMedium>
             </View>
             <View
@@ -123,7 +125,7 @@ const PlatinumModal = ({memberShip, isVisible, onClose, getActiveMembershipData 
                   fontSize: 14,
                   fontWeight: "600",
                 }}
-                content="Milestone"
+                content={t("Milestone")}
               ></PoppinsTextMedium>
             </View>
             <View
@@ -143,7 +145,7 @@ const PlatinumModal = ({memberShip, isVisible, onClose, getActiveMembershipData 
                   fontSize: 14,
                   fontWeight: "600",
                 }}
-                content="Bonus Points"
+                content={t("Bonus Points")}
               ></PoppinsTextMedium>
             </View>
           </View>
@@ -180,7 +182,7 @@ const PlatinumModal = ({memberShip, isVisible, onClose, getActiveMembershipData 
                         fontWeight: "600",
                         left: 10,
                       }}
-                      content={item?.tier?.name}
+                      content={t(item?.tier?.name)}
                     ></PoppinsTextMedium>
                   </View>
                   <View

@@ -4,12 +4,14 @@ import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const height = Dimensions.get('window').height
 
 // create a component
 const GenunityDetails = ({ navigation, route }) => {
     const productData = route.params?.productData
+    const { t } = useTranslation();
 
     console.log("product data gdetails", productData);    
 
@@ -83,7 +85,7 @@ const GenunityDetails = ({ navigation, route }) => {
                         source={require('../../../assets/images/blackBack.png')}></Image>
                 </TouchableOpacity>
                 <PoppinsTextMedium
-                    content="Genuinity Details"
+                    content={t("Genuinity Details")}
                     style={{
                         marginLeft: 10,
                         fontSize: 16,
@@ -147,8 +149,8 @@ const GenunityDetails = ({ navigation, route }) => {
 
                             {/* Product Details */}
                             <View style={{ marginTop: 20, marginLeft: 16 }}>
-                                <PoppinsTextLeftMedium style={{ color: 'black', fontSize: 15, fontWeight: '800', }} content={`Product Name : ${productData.products?.[0]?.name}`}></PoppinsTextLeftMedium>
-                                <PoppinsTextLeftMedium style={{ color: '#353535', fontSize: 14, fontWeight: '600', marginTop: 5 }} content={`Code : ${productData.products?.[0]?.product_code}`}></PoppinsTextLeftMedium>
+                                <PoppinsTextLeftMedium style={{ color: 'black', fontSize: 15, fontWeight: '800', }} content={`${t("Product Name :")} ${productData.products?.[0]?.name}`}></PoppinsTextLeftMedium>
+                                <PoppinsTextLeftMedium style={{ color: '#353535', fontSize: 14, fontWeight: '600', marginTop: 5 }} content={`${t("Code :")} ${productData.products?.[0]?.product_code}`}></PoppinsTextLeftMedium>
                                 <PoppinsTextLeftMedium style={{ color: '#353535', fontSize: 12, fontWeight: '600', marginTop: 10 }} content={`${productData.products?.[0]?.description}`}></PoppinsTextLeftMedium>
 
                             </View>
@@ -182,7 +184,7 @@ const GenunityDetails = ({ navigation, route }) => {
                                         style={styles.middleLogo}
                                     />
                                     
-                                    <PoppinsTextMedium style={{ color: '#353535', fontSize: 14, fontWeight: '800', marginTop: 5,  }} content={`PRODUCT VIDEO`}></PoppinsTextMedium>
+                                    <PoppinsTextMedium style={{ color: '#353535', fontSize: 14, fontWeight: '800', marginTop: 5,  }} content={t("PRODUCT VIDEO")}></PoppinsTextMedium>
 
                                 </TouchableOpacity>}
 
@@ -193,7 +195,7 @@ const GenunityDetails = ({ navigation, route }) => {
                                         source={require('../../../assets/images/website.png')} // Replace with your image source
                                         style={styles.middleLogo}
                                     />
-                                    <PoppinsTextMedium style={{ color: '#000000', fontSize: 14, fontWeight: '800', marginTop: 5 }} content={`WEBSITE`}></PoppinsTextMedium>
+                                    <PoppinsTextMedium style={{ color: '#000000', fontSize: 14, fontWeight: '800', marginTop: 5 }} content={t("WEBSITE")}></PoppinsTextMedium>
 
                                 </TouchableOpacity>
 

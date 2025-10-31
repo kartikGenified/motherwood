@@ -179,7 +179,7 @@ const AssignUser = ({ navigation, route }) => {
                   textAlign: "left",
                   marginLeft: 10,
                 }}
-                content="Search user by mobile number"
+                content={t("Search user by mobile number")}
               ></PoppinsTextLeftMedium>
             </View>
             <View
@@ -195,7 +195,7 @@ const AssignUser = ({ navigation, route }) => {
             >
               <TextInput
               placeholderTextColor={"black"}
-                placeholder="Mobile Number"
+                placeholder={t("Mobile Number")}
                 keyboardType="numeric"
                 value={mobileNumber}
                 onChangeText={(val) => {
@@ -238,7 +238,7 @@ const AssignUser = ({ navigation, route }) => {
             >
               <PoppinsTextLeftMedium
                 style={{ color: "white", textAlign: "center", fontSize: 17 }}
-                content="Search"
+                content={t("Search")}
               ></PoppinsTextLeftMedium>
             </TouchableOpacity>
           </View>
@@ -277,7 +277,7 @@ const AssignUser = ({ navigation, route }) => {
                         fontWeight: "700",
                         fontSize: 16,
                       }}
-                      content={"Name : "}
+                      content={t("Name : ")}
                     ></PoppinsTextMedium>
                     <PoppinsTextMedium
                       style={{
@@ -303,7 +303,7 @@ const AssignUser = ({ navigation, route }) => {
                         fontWeight: "700",
                         fontSize: 16,
                       }}
-                      content={"User Type : "}
+                      content={t("User Type : ")}
                     ></PoppinsTextMedium>
                     <PoppinsTextMedium
                       style={{
@@ -331,7 +331,7 @@ const AssignUser = ({ navigation, route }) => {
                       color: ternaryThemeColor,
                       fontWeight: "700",
                     }}
-                    content="User Not found"
+                    content={t("User Not found")}
                   ></PoppinsTextLeftMedium>
                 </View>
               )}
@@ -358,7 +358,7 @@ const AssignUser = ({ navigation, route }) => {
         )} */}
 
         {userFound && <TouchableOpacity  style={{alignItems:'center',backgroundColor:ternaryThemeColor , height:60, width:200, justifyContent:'center', borderRadius:8}} onPress={()=>{handleAddQr()}}>
-          <PoppinsTextLeftMedium style={{textAlign:'center', color:'white', fontSize:20}} content={"Proceed"}></PoppinsTextLeftMedium>
+                    <PoppinsTextLeftMedium style={{textAlign:'center', color:'white', fontSize:20}} content={t("OK")}></PoppinsTextLeftMedium>
         </TouchableOpacity>}
       </View>
     </View>

@@ -1,29 +1,106 @@
-//import liraries
-import React, { Component, useEffect, useState } from "react";
-import { Image, ScrollView } from "react-native";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useOrderHistoryDetailsMutation } from "../../apiServices/workflow/rewards/GetPointsApi";
 import * as Keychain from "react-native-keychain";
 import ErrorModal from "../../components/modals/ErrorModal";
 import MessageModal from "../../components/modals/MessageModal";
-import Date from "react-native-vector-icons/MaterialIcons";
-import Time from "react-native-vector-icons/Entypo";
+import DateIcon from "react-native-vector-icons/MaterialIcons";
+import TimeIcon from "react-native-vector-icons/Entypo";
 import moment from "moment";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import TopHeader from "../../components/topBar/TopHeader";
+import { useTranslation } from "react-i18next";
 
-// create a component
-const OrderDetails = (params) => {
-  const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [message, setMessage] = useState();
-  const navigation = useNavigation();
-  console.log("praaaaa", params?.route?.params?.item?.id);
-  const orderNo = params?.route?.params?.item?.id;
-  const item = params?.route?.params?.item;
-  const routeData = params?.route?.params?.routeData;
-  console.log("item params and route data", item,routeData);
+
+
+// Date and time display component
+const DateTimeDisplay = ({ date }) => (
+  <View style={styles.dateTimeContainer}>
+    <View style={styles.dateTimeItem}>
+      <DateIcon name="date-range" size={22} color="grey" />
+      <Text style={styles.dateTimeText}>
+        {moment(date).format("DD-MMM-YYYY")}
+      </Text>
+    </View>
+    <View style={styles.dateDivider} />
+    <View style={styles.dateTimeItem}>
+      <TimeIcon name="back-in-time" size={22} color="grey" />
+      <Text style={styles.dateTimeText}>
+        {moment(date).format("hh:mm a")}
+      </Text>
+    </View>
+  </View>
+);
+
+// Reference information component
+
+
+// Table row component
+const TableRow = ({ item }) => (
+  <View style={styles.tableRow}>
+    <View style={styles.productNameCell}>
+      <Text style={[styles.tableCellText, { fontSize: 12 }]}>
+        {item.product_name}
+      </Text>
+    </View>
+    <View style={styles.thicknessCell}>
+      <Text style={styles.tableCellText}>{item.classification}</Text>
+    </View>
+    <View style={styles.quantityCell}>
+      <Text style={styles.tableCellText}>{item.qty}</Text>
+    </View>
+    <View style={styles.pointsCell}>
+      <Text style={[styles.tableCellText, { marginLeft: 20 }]}>
+        {item.points}
+      </Text>
+    </View>
+  </View>
+);
+
+// Main component
+const OrderDetails = ({ route }) => {
+  const [modalState, setModalState] = useState({
+    error: false,
+    success: false,
+    message: ""
+  });
+
+  const { t } = useTranslation();
+
+  const ReferenceInfo = ({ item, routeData }) => (
+  <View style={styles.referenceContainer}>
+    <View style={styles.referenceRow}>
+      <Text style={styles.referenceLabel}>{t("Reference Number")} :</Text>
+      <Text style={styles.referenceValue}>{item?.order_no}</Text>
+    </View>
+    {routeData?.firm_name && (
+      <View style={styles.referenceRow}>
+        <Text style={styles.referenceLabel}>{t("Firm Name")} :</Text>
+        <Text style={styles.referenceValue}>{routeData.firm_name}</Text>
+      </View>
+    )}
+    <View style={styles.skuQuantityRow}>
+      <View style={styles.skuQuantityItem}>
+        <Text style={styles.referenceLabel}>{t("Total SKU")} :</Text>
+        <Text style={styles.referenceValue}>{item?.total_sku}</Text>
+      </View>
+      <View style={styles.verticalDivider} />
+      <View style={styles.skuQuantityItem}>
+        <Text style={styles.referenceLabel}>{t("Quantity")} :</Text>
+        <Text style={styles.referenceValue}>{item?.qty}</Text>
+      </View>
+    </View>
+  </View>
+);
+
+  // Memoized route parameters
+  const { item, routeData } = useMemo(() => ({
+    item: route?.params?.item,
+    routeData: route?.params?.routeData
+  }), [route?.params]);
+
+  const orderNo = item?.id;
   const [
     fetchOrderDetails,
     {
@@ -34,537 +111,136 @@ const OrderDetails = (params) => {
     },
   ] = useOrderHistoryDetailsMutation();
 
+  // Fetch order details effect
   useEffect(() => {
-    (async () => {
-      const credentials = await Keychain.getGenericPassword();
-      const token = credentials.username;
-      const data = {
-        id: orderNo,
-        token: token,
-      };
-      fetchOrderDetails(data);
-    })();
-  }, []);
+    if (!orderNo) return;
 
+    const fetchData = async () => {
+      try {
+        const credentials = await Keychain.getGenericPassword();
+        const token = credentials.username;
+        fetchOrderDetails({ id: orderNo, token });
+      } catch (error) {
+        console.error("Error fetching credentials:", error);
+        setModalState({
+          error: true,
+          success: false,
+          message: "Unable to fetch credentials"
+        });
+      }
+    };
+
+    fetchData();
+  }, [orderNo, fetchOrderDetails]);
+
+  // Handle API response
   useEffect(() => {
     if (fetchOrderDetailsData) {
-      console.log(
-        "fetchOrderDetailsData",
-        JSON.stringify(fetchOrderDetailsData)
-      );
+      console.log("fetchOrderDetailsData", JSON.stringify(fetchOrderDetailsData));
     } else if (fetchOrderDetailsError) {
-      console.log("fetchOrderDetailsError", fetchOrderDetailsError);
-      setError(true);
-      setMessage("Unable to fetch order history details");
+      console.error("fetchOrderDetailsError", fetchOrderDetailsError);
+      setModalState({
+        error: true,
+        success: false,
+        message: "Unable to fetch order history details"
+      });
     }
   }, [fetchOrderDetailsData, fetchOrderDetailsError]);
 
-  const modalClose = () => {
-    setError(false);
-    setSuccess(false);
-  };
+  const modalClose = useCallback(() => {
+    setModalState({
+      error: false,
+      success: false,
+      message: ""
+    });
+  }, []);
 
-  const demodata = [
-    {
-      pname: "akr",
-      qty: 2,
-      pts: 10,
-      amount: 100,
-    },
-    {
-      pname: "ded",
-      qty: 2,
-      pts: 10,
-      amount: 100,
-    },
-  ];
+  // Memoized order lines for table
+  const orderLines = useMemo(() =>
+    fetchOrderDetailsData?.body?.orderLine || [],
+    [fetchOrderDetailsData]
+  );
+  if (fetchOrderDetailsIsLoading) {
+    return (
+      <View style={styles.container}>
+        <TopHeader title={t("Order Details")} />
+        <View style={styles.loadingContainer}>
+          <Text style={styles.loadingText}>Loading order details...</Text>
+        </View>
+        <SocialBottomBar />
+      </View>
+    );
+  }
+
+  const TableHeader = () => (
+  <View style={styles.tableHeader}>
+    <View style={[styles.tableHeaderCell, { paddingHorizontal: 40 }]}>
+      <Text style={styles.tableHeaderText}>{t("Product Name")}</Text>
+    </View>
+    <View style={[styles.tableHeaderCell, { paddingHorizontal: 40 }]}>
+      <Text style={styles.tableHeaderText}>{t("Thickness(MM)")}</Text>
+    </View>
+    <View style={[styles.tableHeaderCell, { paddingHorizontal: 40 }]}>
+      <Text style={styles.tableHeaderText}>{t("QTY")}</Text>
+    </View>
+    <View style={[styles.tableHeaderCell, { paddingHorizontal: 40 }]}>
+      <Text style={styles.tableHeaderText}>{t("PTS")}</Text>
+    </View>
+  </View>
+);
+
+
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "flex-start",
-          flexDirection: "row",
-          width: "100%",
-          height: 60,
-          backgroundColor: "#FFF8E7",
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: "contain",
-              marginLeft: 10,
-            }}
-            source={require("../../../assets/images/blackBack.png")}
-          ></Image>
-        </TouchableOpacity>
-        {/* <PoppinsTextMedium content="Points History" style={{ marginLeft: 10, fontSize: 16, fontWeight: '600', color: '#171717' }}></PoppinsTextMedium> */}
-        <PoppinsTextMedium
-          content={"Order Details"}
-          style={{
-            marginLeft: 10,
-            fontSize: 18,
-            fontWeight: "500",
-            color: "#171717",
-          }}
-        ></PoppinsTextMedium>
-      </View>
+      <TopHeader title={t("Order Details")} />
 
-      <ScrollView>
-
-        <View style={{ alignItems: "center", width: "100%" }}>
-          {/* <View
-            style={{
-              height: 60,
-              width: 240,
-              // backgroundColor:'red'
-              borderWidth: 1,
-              borderColor: "#85BFF1",
-              borderStyle: "dotted",
-              flexDirection: "row",
-              alignItems: "center",
-              paddingHorizontal: 30,
-              backgroundColor: "#EBF3FA",
-              marginTop: 20,
-              borderRadius: 10,
-            }}
-          >
-            <Image
-              style={{ height: 30, width: 30 }}
-              source={require("../../../assets/images/greenTick.png")}
-            ></Image>
-            <Text style={{ fontSize: 18, marginLeft: 4, color: "black" }}>
-              Status :{" "}
-            </Text>
-            <Text style={{ fontSize: 18, marginLeft: 4, color: "black",fontWeight:'500' }}>
-              {item.status == "1" ? "Success" : item.status == "0" ? "Pending" :item.status == "2" ? "Rejected" : ""}
-            </Text>
-          </View> */}
-          <View style={{ flexDirection: "row", marginTop: 20 }}>
-            <Text style={{ fontSize: 22, marginTop: 7, color: "black" }}>
-              Points :{" "}
-            </Text>
-
-            {params?.route?.params?.item && (
-              <View
-                style={{
-                  backgroundColor: "#B6202D",
-                  borderRadius: 20,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  minWidth:70,
-                  paddingLeft:4,
-                  paddingRight:4
-
-                }}
-              >
-                <Text
-                  style={{
-                    color: "white",
-                    fontWeight: "bold",
-                    fontSize: 20,
-                  }}
-                >
-                  {(params?.route?.params?.item?.points)}
-                </Text>
-              </View>
-            )}
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.mainContent}>
+          {/* Points Display */}
+          <View style={styles.pointsContainer}>
+            <Text style={styles.pointsLabel}>{t("Points")} :</Text>
+            {item && <View style={styles.statusBadge}>
+              <Text style={styles.statusBadgeText}>{item.points}</Text>
+            </View>}
           </View>
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "row",
-              marginTop: 10,
-            }}
-          >
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                flexDirection: "row",
-              }}
-            >
-              <Date name="date-range" size={22} color={"grey"}></Date>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: "black",
-                  fontWeight: "600",
-                  marginLeft: 4,
-                }}
-              >
-                {moment(params?.route?.params?.item?.voucher_date).format(
-                  "DD-MMM-YYYY"
-                )}
-              </Text>
-            </View>
 
-            <View
-              style={{
-                height: "70%",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 2,
-                backgroundColor: "black",
-                marginLeft: 4,
-              }}
-            ></View>
-
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                flexDirection: "row",
-                marginLeft: 4,
-              }}
-            >
-              <Time name="back-in-time" size={22} color={"grey"}></Time>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: "black",
-                  fontWeight: "600",
-                  marginLeft: 4,
-                }}
-              >
-                {moment(params?.route?.params?.item?.voucher_date).format(
-                  "hh:mm a"
-                )}
-              </Text>
-            </View>
-          </View>
-          {/* <View
-            style={{
-              borderTopWidth: 1,
-              width: "90%",
-              marginTop: 30,
-              borderColor: "#dddddd",
-            }}
-          >
-            <View style={{ flexDirection: "row", marginTop: 10 }}>
-              <Image
-                source={require("../../../assets/images/Date.png")}
-                style={{ height: 20, width: 20, marginTop: 2 }}
-              ></Image>
-              <Text style={{ fontSize: 16, marginLeft: 10, color: "black" ,fontWeight:'600' }}>
-                Order Date :
-              </Text>
-              <Text style={{ fontSize: 16, marginLeft: 7, color: "black", }}>
-              </Text>
-            </View>
-            <View style={{ flexDirection: "row", marginTop: 10 }}>
-              <Image
-                source={require("../../../assets/images/Date.png")}
-                style={{ height: 20, width: 20, marginTop: 2 }}
-              ></Image>
-              <Text style={{ fontSize: 16, marginLeft: 10, color: "black" ,fontWeight:'600'}}>
-                Sync Date :
-              </Text>
-              <Text style={{ fontSize: 16, marginLeft: 7, color: "black" }}>
-         
-              </Text>
-            </View>
-            <View style={{ flexDirection: "row", marginTop: 10 }}>
-              <Image
-                source={require("../../../assets/images/Date.png")}
-                style={{ height: 20, width: 20, marginTop: 2 }}
-              ></Image>
-              <Text style={{ fontSize: 16, marginLeft: 10, color: "black",fontWeight:'600' }}>
-                Edit Date :
-              </Text>
-              <Text style={{ fontSize: 16, marginLeft: 7, color: "black" }}>
-      
-              </Text>
-            </View>
-          </View> */}
-        </View>
-        <View
-          style={{
-            width: "100%",
-            backgroundColor: "#F7F7F7",
-            padding: 10,
-            marginTop: 20,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              marginTop: 10,
-              width: "100%",
-              flexWrap: "wrap",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 13,
-                marginLeft: 10,
-                color: "black",
-                fontWeight: "600",
-              }}
-            >
-              Reference Number :
-            </Text>
-            <Text
-              style={{
-                fontSize: 13,
-                marginLeft: 7,
-                color: "black",
-                fontWeight: "600",
-              }}
-            >
-              {item?.order_no}
-            </Text>
-          </View>
-           {routeData?.firm_name!=null &&<View
-            style={{
-              flexDirection: "row",
-              marginTop: 10,
-              width: "100%",
-              flexWrap: "wrap",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 13,
-                marginLeft: 10,
-                color: "black",
-                fontWeight: "600",
-              }}
-            >
-              Firm Name :
-            </Text>
-            <Text
-              style={{
-                fontSize: 13,
-                marginLeft: 7,
-                color: "black",
-                fontWeight: "600",
-              }}
-            >
-              {routeData?.firm_name}
-            </Text>
-          </View>}
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "flex-start",
-              width: "100%",
-              flexDirection: "row",
-              marginTop: 10,
-            }}
-          >
-            <View
-              style={{ flexDirection: "row", flexWrap: "wrap", marginLeft: 8 }}
-            >
-              <Text style={{ fontSize: 13, color: "black", fontWeight: "600" }}>
-                Total SKU :
-              </Text>
-              <Text style={{ fontSize: 13, color: "black", fontWeight: "600" }}>
-                {item?.total_sku}
-              </Text>
-            </View>
-            <View
-              style={{
-                height: "80%",
-                width: 2,
-                backgroundColor: "grey",
-                alignItems: "center",
-                justifyContent: "center",
-                marginLeft: 4,
-                marginRight: 8,
-              }}
-            ></View>
-            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-              <Text style={{ fontSize: 14, color: "black", fontWeight: "600" }}>
-                Quantity :
-              </Text>
-              <Text style={{ fontSize: 14, color: "black", fontWeight: "600" }}>
-                {item?.qty}
-              </Text>
-            </View>
-          </View>
+          {/* Date and Time Display */}
+          {item?.voucher_date && <DateTimeDisplay date={item.voucher_date} />}
         </View>
 
+        {/* Reference Information */}
+        <ReferenceInfo item={item} routeData={routeData} />
+
+        {/* Order Details Table */}
         <ScrollView
-          horizontal={true}
+          horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ flexDirection: "column", paddingBottom: 40 }}
-          style={{
-            marginTop: 30,
-            width: "98%",
-
-            alignSelf: "center",
-          }}
+          contentContainerStyle={styles.tableContentContainer}
+          style={styles.tableScrollView}
         >
-          <View
-            style={{
-              height: 70,
-              backgroundColor: "#B6202D",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <View
-              style={{
-                height: 70,
-                alignItems: "center",
-                justifyContent: "center",
-                paddingHorizontal: 40,
-                borderRightWidth: 1,
-                borderColor: "white",
-              }}
-            >
-              <Text style={{ color: "white", fontWeight: "600" }}>
-                Product Name
-              </Text>
-            </View>
-
-            <View
-              style={{
-                height: 70,
-                alignItems: "center",
-                justifyContent: "center",
-                paddingHorizontal: 40,
-                borderRightWidth: 1,
-                borderColor: "white",
-              }}
-            >
-              <Text style={{ color: "white", fontWeight: "600" }}>
-                Thickness(MM)
-              </Text>
-            </View>
-
-            <View
-              style={{
-                height: 70,
-                alignItems: "center",
-                justifyContent: "center",
-                paddingHorizontal: 40,
-                borderRightWidth: 1,
-                borderColor: "white",
-              }}
-            >
-              <Text style={{ color: "white", fontWeight: "600" }}>QTY</Text>
-            </View>
-
-            <View
-              style={{
-                height: 70,
-                alignItems: "center",
-                justifyContent: "center",
-                paddingHorizontal: 40,
-                borderRightWidth: 1,
-                borderColor: "white",
-              }}
-            >
-              <Text style={{ color: "white", fontWeight: "600" }}>PTS</Text>
-            </View>
-          </View>
-
-          {fetchOrderDetailsData?.body.orderLine?.map((item, index) => {
-            return (
-              <View
-                style={{ backgroundColor: "#EDEDED", flexDirection: "row" }}
-              >
-                <View
-                  style={{
-                    alignItems: "center",
-                    width: 175,
-                    height: 40,
-                    justifyContent: "center",
-                    marginLeft: 0,
-                    
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "#000000",
-                      fontWeight: item["rank"] > 1 ? "800" : "600",
-                      fontSize:12
-                    }}
-                  >
-                    {item.product_name}
-                  </Text>
-                </View>
-
-                <View
-                  style={{
-                    alignItems: "center",
-                    width: 104,
-                    height: 40,
-                    justifyContent: "center",
-                    left:40,
-                    
-                  }}
-                >
-                  <Text style={{ color: "#000000", fontWeight: "600" }}>
-                    {item.classification}
-                  </Text>
-                </View>
-
-                <View
-                  style={{
-                    alignItems: "center",
-                    width: 109,
-                    height: 40,
-                    justifyContent: "center",
-                    left:70
-                  }}
-                >
-                  <Text style={{ color: "#000000", fontWeight: "600" }}>
-                    {item.qty}
-                  </Text>
-                </View>
-
-                <View
-                  style={{
-                    alignItems: "center",
-                    width: 109,
-                    height: 40,
-                    justifyContent: "center",
-                    left:60
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "#000000",
-                      fontWeight: "600",
-                      textAlign: "right",
-                      marginLeft: 20,
-                    }}
-                  >
-                    {(item.points)}
-                  </Text>
-                </View>
-              </View>
-            );
-          })}
+          <TableHeader />
+          {orderLines.map((orderItem, index) => (
+            <TableRow key={`${orderItem.product_name}-${index}`} item={orderItem} />
+          ))}
         </ScrollView>
       </ScrollView>
-      <SocialBottomBar></SocialBottomBar>
-      {error && (
+
+      <SocialBottomBar />
+
+      {/* Modals */}
+      {modalState.error && (
         <ErrorModal
           modalClose={modalClose}
-          message={message}
-          openModal={error}
-        ></ErrorModal>
+          message={modalState.message}
+          openModal={modalState.error}
+        />
       )}
-      {success && (
+      {modalState.success && (
         <MessageModal
           modalClose={modalClose}
-          message={message}
-          openModal={success}
-        ></MessageModal>
+          message={modalState.message}
+          openModal={modalState.success}
+        />
       )}
     </View>
   );
@@ -574,7 +250,175 @@ const OrderDetails = (params) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    fontSize: 16,
+    color: "#000000",
+  },
+  scrollView: {
+    flex: 1,
+  },
+  mainContent: {
+    alignItems: "center",
+    width: "100%",
+  },
+  pointsContainer: {
+    flexDirection: "row",
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  pointsLabel: {
+    fontSize: 22,
+    marginTop: 7,
+    color: "#000000",
+    marginRight: 8,
+  },
+  statusBadge: {
+    backgroundColor: "#B6202D",
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    minWidth: 70,
+    paddingHorizontal: 4,
+    paddingVertical: 4,
+  },
+  statusBadgeText: {
+    color: "#FFFFFF",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  dateTimeContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    marginTop: 10,
+  },
+  dateTimeItem: {
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  dateTimeText: {
+    fontSize: 14,
+    color: "#000000",
+    fontWeight: "600",
+    marginLeft: 4,
+  },
+  dateDivider: {
+    height: "70%",
+    width: 2,
+    backgroundColor: "#000000",
+    marginHorizontal: 4,
+  },
+  referenceContainer: {
+    width: "100%",
+    backgroundColor: "#F7F7F7",
+    padding: 10,
+    marginTop: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  referenceRow: {
+    flexDirection: "row",
+    marginTop: 10,
+    width: "100%",
+    flexWrap: "wrap",
+  },
+  referenceLabel: {
+    fontSize: 13,
+    marginLeft: 10,
+    color: "#000000",
+    fontWeight: "600",
+  },
+  referenceValue: {
+    fontSize: 13,
+    marginLeft: 7,
+    color: "#000000",
+    fontWeight: "600",
+  },
+  skuQuantityRow: {
+    alignItems: "center",
+    justifyContent: "flex-start",
+    width: "100%",
+    flexDirection: "row",
+    marginTop: 10,
+  },
+  skuQuantityItem: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  verticalDivider: {
+    height: "80%",
+    width: 2,
+    backgroundColor: "grey",
+    marginHorizontal: 8,
+  },
+  tableScrollView: {
+    marginTop: 30,
+    width: "98%",
+    alignSelf: "center",
+  },
+  tableContentContainer: {
+    flexDirection: "column",
+    paddingBottom: 40,
+  },
+  tableHeader: {
+    height: 70,
+    backgroundColor: "#B6202D",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  tableHeaderCell: {
+    height: 70,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRightWidth: 1,
+    borderColor: "#FFFFFF",
+  },
+  tableHeaderText: {
+    color: "#FFFFFF",
+    fontWeight: "600",
+  },
+  tableRow: {
+    backgroundColor: "#EDEDED",
+    flexDirection: "row",
+  },
+  productNameCell: {
+    alignItems: "center",
+    width: 175,
+    height: 40,
+    justifyContent: "center",
+  },
+  thicknessCell: {
+    alignItems: "center",
+    width: 104,
+    height: 40,
+    justifyContent: "center",
+    left: 40,
+  },
+  quantityCell: {
+    alignItems: "center",
+    width: 109,
+    height: 40,
+    justifyContent: "center",
+    left: 70,
+  },
+  pointsCell: {
+    alignItems: "center",
+    width: 109,
+    height: 40,
+    justifyContent: "center",
+    left: 60,
+  },
+  tableCellText: {
+    color: "#000000",
+    fontWeight: "600",
   },
 });
 

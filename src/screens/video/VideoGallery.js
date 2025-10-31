@@ -116,7 +116,7 @@ const VideoGallery = ({ navigation }) => {
         backgroundColor: "white",
         height: '100%',
       }}>
-      <TopHeader title={"Video Gallery"}></TopHeader>
+      <TopHeader title={t("Video Gallery")}></TopHeader>
       <ScrollView contentContainerStyle={{}} style={{ width: '100%',minHeight:'80%'}}>
         <View
           style={{

@@ -135,7 +135,7 @@ const DashboardMenuBox = (props) => {
 
     } 
     else if (data.toLowerCase() === "playzone") {
-      navigation.navigate("TapTheDot");
+      navigation.navigate("GamesMenu");
 
     } 
     else if (data.toLowerCase() === "training") {
@@ -206,7 +206,7 @@ const DashboardMenuBox = (props) => {
         {/* <MenuItems handlePress={handleMenuItemPress} key={data.length+3} image={`https://picsum.photos/200/200`} content={"Training"}></MenuItems> */}
 
         {/* <TouchableOpacity onPress={()=>{
-          navigation.navigate("TapTheDot")
+          navigation.navigate("GamesMenu")
         }} style={{height:30,width:30,backgroundColor:'red'}}></TouchableOpacity> */}
       </View>
     </View>
