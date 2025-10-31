@@ -105,6 +105,10 @@ const AadharVerify = (props) => {
 
     if (aadharKycGenerateError) {
       console.log("Error generating Aadhar KYC:", aadharKycGenerateError);
+      Toast.show({
+        type: "error",
+        text1: aadharKycGenerateError?.data?.message || "Error generating Aadhaar KYC, please try again.",
+      });
     }
   }, [aadharKycGenerateData, aadharKycGenerateError]);
   useEffect(() => {
