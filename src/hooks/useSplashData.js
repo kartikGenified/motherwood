@@ -3,6 +3,11 @@ import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import VersionCheck from "react-native-version-check";
 import messaging from "@react-native-firebase/messaging";
+import { Alert, BackHandler, Linking } from "react-native";
+import { useTranslation } from "react-i18next";
+import { useNavigation } from "@react-navigation/native";
+import { useInternetSpeedContext } from "@/Contexts/useInternetSpeedContext";
+import usePermissions from "./usePermissions";
 
 // API imports
 import { useGetAppThemeDataMutation } from "../apiServices/appTheme/AppThemeApi";
@@ -83,6 +88,10 @@ import { getUsersDataCachedDispatch } from "../../redux/dispatches/getUsersDataC
 
 const useSplashData = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  const { responseTime } = useInternetSpeedContext();
+  const { initializeAllPermissions } = usePermissions();
   
   // State
   const [sessionData, setSessionData] = useState(null);
@@ -91,6 +100,7 @@ const useSplashData = () => {
   const [minVersionSupport, setMinVersionSupport] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isSlowInternet, setIsSlowInternet] = useState(false);
 
   // API hooks
   const [getAppTheme, {
@@ -238,6 +248,72 @@ const useSplashData = () => {
       }
     } catch (error) {
       console.error("Error fetching FCM token:", error);
+    }
+  };
+
+  // Handle back press
+  const setupBackHandler = () => {
+    if (!navigation) return null;
+
+    const backAction = () => {
+      Alert.alert(t("Exit App"), t("Are you sure you want to exit?"), [
+        {
+          text: t("Cancel"),
+          onPress: () => null,
+          style: "cancel",
+        },
+        { text: t("Exit"), onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  };
+
+  // Handle version support alerts
+  const handleVersionSupport = (minVersionData) => {
+    if (!minVersionData) return;
+
+    console.log("getMinVersionSupportData", minVersionData);
+    if (minVersionData.success) {
+      if (!minVersionData?.body?.data) {
+        Alert.alert(
+          t("Kindly update the app to the latest version"),
+          t("Your version of app is not supported anymore, kindly update"),
+          [
+            {
+              text: t("Update"),
+              onPress: () =>
+                Linking.openURL(
+                  "https://play.google.com/store/apps/details?id=com.genefied.motherwood"
+                ),
+            },
+          ]
+        );
+      }
+    } else {
+      if (Object.keys(minVersionData?.body)?.length === 0) {
+        Alert.alert(
+          t("Kindly update the app to the latest version"),
+          t("Your version of app is not supported anymore, kindly update"),
+          [
+            {
+              text: "Update",
+              onPress: () =>
+                Linking.openURL(
+                  "https://play.google.com/store/apps/details?id=com.genefied.motherwood"
+                ),
+            },
+          ]
+        );
+      }
     }
   };
 
@@ -510,11 +586,42 @@ const useSplashData = () => {
       initializeAppVersion();
       await initializeMpinData();
       await initializeFcmToken();
+      
+      // Initialize all permissions using the custom hook
+      const permissionResults = await initializeAllPermissions();
+      // console.log("Permission results:", permissionResults);
+      
+      dispatch({ type: "NETWORK_REQUEST" });
       setIsLoading(false);
     };
 
     initialize();
   }, []);
+
+  // Setup back handler
+  useEffect(() => {
+    const cleanup = setupBackHandler();
+    return cleanup;
+  }, [navigation]);
+
+  // Handle response time for slow internet detection
+  useEffect(() => {
+    if (responseTime) {
+      console.log("responseTime", responseTime);
+      if (responseTime > 4000) {
+        setIsSlowInternet(true);
+      } else if (responseTime < 4000) {
+        setIsSlowInternet(false);
+      }
+    }
+  }, [responseTime]);
+
+  // Handle version support
+  useEffect(() => {
+    if (getMinVersionSupportData) {
+      handleVersionSupport(getMinVersionSupportData);
+    }
+  }, [getMinVersionSupportData]);
 
   // Call APIs based on current app version
   useEffect(() => {
@@ -556,6 +663,7 @@ const useSplashData = () => {
     minVersionSupport,
     isLoading: isApiLoading,
     error,
+    isSlowInternet,
     
     // Data
     appThemeData: getAppThemeData,
