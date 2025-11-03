@@ -190,7 +190,7 @@ const Notification = ({ navigation }) => {
       };
 
     return (
-       <View style={{width:'100%',alignItems:'flex-start',justifyContent:'center',backgroundColor: buttonThemeColor,height:'100%' }}>
+       <View style={{width:'100%',alignItems:'flex-start',backgroundColor: buttonThemeColor,height:'100%' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10,height:'10%',paddingTop:10 }}>
                 <TouchableOpacity onPress={() => {
                     navigation.goBack()
