@@ -44,7 +44,9 @@ const DashboardMenuBox = (props) => {
           });
     } else if (data.toLowerCase() === "passbook") {
       navigation.navigate("Passbook");
-    } else if (data.toLowerCase() === "return goods") {
+    } else if (data.toLowerCase() === "training") {
+      navigation.navigate("Training");
+    }else if (data.toLowerCase() === "return goods") {
       Platform.OS == "android"
         ? navigation.navigate("EnableCameraScreen", {
             navigateTo: "ScanReturn",
@@ -201,7 +203,7 @@ const DashboardMenuBox = (props) => {
         })}
         {/* <MenuItems handlePress={handleMenuItemPress} index ={data.length+1} key={data.length+1} image={"https://picsum.photos/200/300"} content={"Return Goods"}></MenuItems>
                     <MenuItems handlePress={handleMenuItemPress} index ={data.length+2} key={data.length+2} image={"https://picsum.photos/300/300"} content={"Return List"}></MenuItems> */}
-        {/* <MenuItems handlePress={handleMenuItemPress} key={data.length+3} image={`https://picsum.photos/200/200`} content={"Birthday Screen"}></MenuItems> */}
+        {/* <MenuItems handlePress={handleMenuItemPress} key={data.length+3} image={`https://picsum.photos/200/200`} content={"Training"}></MenuItems> */}
 
         {/* <TouchableOpacity onPress={()=>{
           navigation.navigate("GamesMenu")

@@ -31,7 +31,7 @@ const Training = ({ navigation }) => {
     error: getCatMediaError,
     isError: catMediaIsError,
     isLoading: catMediaIsLoading
-}] = useGetAllMediaMutation()
+}] = useGetAppVideoMutation()
 
 
   
@@ -41,6 +41,7 @@ const Training = ({ navigation }) => {
 }, [])
 
   const fetchCategoryMedia = async (item) => {
+    console.log("fetchCategoryMedia", item)
     const credentials = await Keychain.getGenericPassword();
     let obj = {
         token: credentials.username,
@@ -53,8 +54,7 @@ const Training = ({ navigation }) => {
 
   useEffect(() => {
     if (getCatMediaData) {
-        console.log("getCatMediaData", getCatMediaData);
-        alert(getCatMediaData)
+        console.log("getCatMediaData", getCatMediaData.body);
         if(getCatMediaData.success && getCatMediaData.body.length!==0)
         {
             setVideoData(getCatMediaData.body)
@@ -72,7 +72,7 @@ const Training = ({ navigation }) => {
 }, [getCatMediaData, getCatMediaError])
 
 
-  
+  console.log("videoData", videoData)
 
   const VideoComp = (props) => {
     const video = props.video
@@ -94,7 +94,7 @@ const Training = ({ navigation }) => {
 
       
     return (
-      <TouchableOpacity onPress={() => { Linking.openURL(video) }} style={{ height: 400, width: '90%', borderRadius: 10, backgroundColor: 'white',  marginTop:20}}>
+      <TouchableOpacity disabled={!video} onPress={() => { Linking.openURL(video) }} style={{ height: 400, width: '90%', borderRadius: 10, backgroundColor: 'white',  marginTop:20}}>
         <View style={{ width: '100%', backgroundColor: "white", alignItems: "center", justifyContent: 'center', height: '50%' }}>
 
         <Image style={{position:'absolute', height:80,width:80,zIndex:1}} source={require('../../../assets/images/playButton.png')}></Image>

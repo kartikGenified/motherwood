@@ -486,7 +486,6 @@ const KycVerificationDynamic = ({ navigation }) => {
             refreshKycData();
         }
     }, [panModalVisible, panVerified]);
-    // NEW PAN Verification Dialog
  
 
     // Bank Account Modal

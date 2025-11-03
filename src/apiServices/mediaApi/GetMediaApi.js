@@ -19,7 +19,7 @@ export const GetMediaApi = baseApi.injectEndpoints({
       
           getAllMedia: builder.mutation({
             query: (params) => {
-              console.log("params", params)
+              console.log("paramsgetAllMediagetAllMedia ", params)
               return {
                 method: "POST",
                 url: `/api/app/media${params.isAll ? "" : `?type=${params.type}` }`,
