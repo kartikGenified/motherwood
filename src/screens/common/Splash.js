@@ -160,7 +160,8 @@ const Splash = ({ navigation }) => {
           paddingBottom: 10,
         }}
       >
-        <View style={{ position: "absolute", bottom: 60, height: 40 }}>
+      </View>
+        <View style={{ position: "absolute", bottom: 130, height: 40, justifyContent: "center", width:'100%' }}>
           <ActivityIndicator
             size={"medium"}
             animating={true}
@@ -176,7 +177,6 @@ const Splash = ({ navigation }) => {
             content="Please Wait"
           />
         </View>
-      </View>
     </ImageBackground>
   );
 };

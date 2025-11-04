@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import VersionCheck from "react-native-version-check";
 import messaging from "@react-native-firebase/messaging";
-import { Alert, BackHandler, Linking } from "react-native";
+import { Alert, BackHandler, Linking, Platform } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import { useInternetSpeedContext } from "@/Contexts/useInternetSpeedContext";
@@ -546,6 +546,9 @@ const useSplashData = () => {
     }
   }, [getMinVersionSupportData, getMinVersionSupportError]);
 
+
+
+  // TODO: remaining update for ios
   useEffect(()=>{
     if(minVersionSupport===false){
     Alert.alert(
@@ -554,10 +557,13 @@ const useSplashData = () => {
           [
             {
               text: "Update",
-              onPress: () =>
-                Linking.openURL(
-                  "https://play.google.com/store/apps/details?id=com.genefied.motherwood"
-                ),
+              onPress: () =>{
+                if(Platform.OS === 'android'){
+                  Linking.openURL(
+                    "https://play.google.com/store/apps/details?id=com.genefied.motherwood"
+                  );
+                }
+              }
             },
           ]
         );
