@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 import { useMarkNotificationAsReadApiMutation } from "../../apiServices/pushNotification/notificationsApi";
 import * as Keychain from 'react-native-keychain';
 import { useIsFocused } from "@react-navigation/native";
+import TopHeader from "@/components/topBar/TopHeader";
 
 const Notification = ({ navigation }) => {
     const [notificationData, setNotificationData] = useState()
@@ -190,18 +191,11 @@ const Notification = ({ navigation }) => {
       };
 
     return (
-       <View style={{width:'100%',alignItems:'flex-start',backgroundColor: buttonThemeColor,height:'100%' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10,height:'10%',paddingTop:10 }}>
-                <TouchableOpacity onPress={() => {
-                    navigation.goBack()
-                }}>
-                    <Image style={{ height: 30, width: 30, resizeMode: 'contain', marginRight: 8 }} source={require('../../../assets/images/blackBack.png')}></Image>
-                </TouchableOpacity>
-                <Text style={{ color: 'white', marginLeft: 10, fontWeight: '500' }}>{t("Notification")}</Text>
-            </View>
-            {notificationData &&<ScrollView style={{  backgroundColor: buttonThemeColor, width:'100%' }}>
+       <View style={{width:'100%',alignItems:'flex-start',height:'100%' }}>
+            <TopHeader title={t("Notification")} />
+            {notificationData &&<ScrollView style={{ width:'100%' }}>
             
-             <View style={{ paddingBottom: 120,  backgroundColor: 'white', width: '100%', borderTopLeftRadius: 30, borderTopRightRadius: 30, marginTop: 20 }}>
+             <View style={{ paddingBottom: 120,  backgroundColor: 'white', width: '100%', borderTopLeftRadius: 30, borderTopRightRadius: 30 }}>
                 {
                     notificationData.map((item, index) => {
                         console.log("notificationData",item)
