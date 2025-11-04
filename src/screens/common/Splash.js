@@ -78,10 +78,12 @@ const Splash = ({ navigation }) => {
     if (sessionData) {
       const allApisComplete = areAllApisComplete(apiCallStatus, allApiArray);
   
-      if (allApisComplete) {
-        setTimeout(() => {
-          navigation.reset({ index: 0, routes: [{ name: "Dashboard" }] });
-        }, 2000);
+      if (allApisComplete ) {
+        if(minVersionSupport){
+          setTimeout(() => {
+            navigation.reset({ index: 0, routes: [{ name: "Dashboard" }] });
+          }, 2000);
+        }
       } else {
         fallbackTimer = setTimeout(() => {
           const missingApis = allApiArray.filter(api => !apiCallStatus?.includes(api));

@@ -97,7 +97,7 @@ const useSplashData = () => {
   const [sessionData, setSessionData] = useState(null);
   const [currentAppVersion, setCurrentAppVersion] = useState(null);
   const [mpinData, setMpinData] = useState(null);
-  const [minVersionSupport, setMinVersionSupport] = useState(false);
+  const [minVersionSupport, setMinVersionSupport] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isSlowInternet, setIsSlowInternet] = useState(false);
@@ -222,6 +222,8 @@ const useSplashData = () => {
   // Initialize app version
   const initializeAppVersion = () => {
     const currentVersion = VersionCheck.getCurrentVersion();
+    console.log("currentVersion", currentVersion);
+    
     setCurrentAppVersion(currentVersion);
     console.log("current version check", currentVersion);
     dispatch(setAppVersion(currentVersion));
@@ -277,45 +279,6 @@ const useSplashData = () => {
     };
   };
 
-  // Handle version support alerts
-  const handleVersionSupport = (minVersionData) => {
-    if (!minVersionData) return;
-
-    console.log("getMinVersionSupportData", minVersionData);
-    if (minVersionData.success) {
-      if (!minVersionData?.body?.data) {
-        Alert.alert(
-          t("Kindly update the app to the latest version"),
-          t("Your version of app is not supported anymore, kindly update"),
-          [
-            {
-              text: t("Update"),
-              onPress: () =>
-                Linking.openURL(
-                  "https://play.google.com/store/apps/details?id=com.genefied.motherwood"
-                ),
-            },
-          ]
-        );
-      }
-    } else {
-      if (Object.keys(minVersionData?.body)?.length === 0) {
-        Alert.alert(
-          t("Kindly update the app to the latest version"),
-          t("Your version of app is not supported anymore, kindly update"),
-          [
-            {
-              text: "Update",
-              onPress: () =>
-                Linking.openURL(
-                  "https://play.google.com/store/apps/details?id=com.genefied.motherwood"
-                ),
-            },
-          ]
-        );
-      }
-    }
-  };
 
   // Call open APIs (non-authenticated)
   const callOpenApis = async () => {
@@ -330,7 +293,8 @@ const useSplashData = () => {
       } else {
         getAppTheme(clientName);
       }
-
+      console.log('current version', currentAppVersion);
+      
       // Min version support API
       getMinVersionSupportFunc(String(currentAppVersion));
 
@@ -567,16 +531,38 @@ const useSplashData = () => {
   }, [getUsersData, getUsersError]);
 
   useEffect(() => {
+    console.log("getMinVersionSupportData", getMinVersionSupportData);
     if (getMinVersionSupportData) {
-      console.log("getMinVersionSupportData", getMinVersionSupportData);
-      if (getMinVersionSupportData.success) {
-        setMinVersionSupport(getMinVersionSupportData?.body?.data);
-      }
+      setMinVersionSupport(!!(getMinVersionSupportData?.success && getMinVersionSupportData?.body?.data))
     } else if (getMinVersionSupportError) {
       console.log("getMinVersionSupportError", getMinVersionSupportError);
-      setError("An error occurred while fetching minimum version support.");
+      // setError("An error occurred while fetching minimum version support.");
+      Alert.alert(
+              t("Error"),
+              t("An error occurred while fetching minimum version support."),
+              [{ text: "Exit", onPress: () => BackHandler.exitApp() }],
+              { cancelable: false }
+            );
     }
   }, [getMinVersionSupportData, getMinVersionSupportError]);
+
+  useEffect(()=>{
+    if(minVersionSupport===false){
+    Alert.alert(
+          t("Kindly update the app to the latest version"),
+          t("Your version of app is not supported anymore, kindly update"),
+          [
+            {
+              text: "Update",
+              onPress: () =>
+                Linking.openURL(
+                  "https://play.google.com/store/apps/details?id=com.genefied.motherwood"
+                ),
+            },
+          ]
+        );
+    }
+  },[minVersionSupport])
 
   // Initialize hook
   useEffect(() => {
@@ -617,11 +603,7 @@ const useSplashData = () => {
   }, [responseTime]);
 
   // Handle version support
-  useEffect(() => {
-    if (getMinVersionSupportData) {
-      handleVersionSupport(getMinVersionSupportData);
-    }
-  }, [getMinVersionSupportData]);
+
 
   // Call APIs based on current app version
   useEffect(() => {
