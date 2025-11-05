@@ -1,3 +1,4 @@
+import Flappy from './Flappy';
 import GamesMenu from './GamesMenu';
 import TapTheDot from './TapTheDot';
 
@@ -14,7 +15,7 @@ const gameModule = [
   },
   {
     name:'Flappy',
-    component: TapTheDot,
+    component: Flappy,
     options: { headerShown: false },
   }
 ]
