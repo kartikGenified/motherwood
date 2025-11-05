@@ -115,12 +115,10 @@ import PointsDistribution from "../screens/pointsDistribution/PointsDistribution
 import Training from "../screens/training/Training";
 import KycViewOtherUsers from "../screens/verification/KycViewOtherUsers";
 import SearchInfluencer from "../screens/searchInfluencer/SearchInfluencer";
-import TapTheDot from "../screens/games/TapTheDot";
 import BirthdayScreen from "../screens/birthday/BirthdayScreen";
 import KycVerificationDynamic from "../screens/verification/KycVerificationDynamic";
-import Flappy from "../screens/games/Flappy";
-import GamesMenu from "../screens/games/GamesMenu";
 import SelectContact from "@/screens/common/SelectContact";
+import navigations from "./stack-navigations";
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
@@ -599,27 +597,6 @@ const StackNavigator = () => {
           options={{
             headerShown: false,
           }}
-          name="GamesMenu"
-          component={GamesMenu}
-        ></Stack.Screen>
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="TapTheDot"
-          component={TapTheDot}
-        ></Stack.Screen>
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="Flappy"
-          component={Flappy}
-        ></Stack.Screen>
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
           name="AssignUser"
           component={AssignUser}
         ></Stack.Screen>
@@ -988,6 +965,14 @@ const StackNavigator = () => {
           name="SelectContact"
           component={SelectContact}
         ></Stack.Screen>
+        {navigations.map((nav) => (
+          <Stack.Screen
+            key={nav.name}
+            name={nav.name}
+            component={nav.component}
+            options={nav.options}
+          />
+        ))}
       </Stack.Navigator>
     </NavigationContainer>
   );

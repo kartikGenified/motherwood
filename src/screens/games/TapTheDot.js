@@ -15,8 +15,8 @@ import {
 import Sound from 'react-native-sound';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { incrementScore, resetScore } from '../../../redux/slices/tapGameSlice';
-import { useShowPointsApiMutation } from '../../apiServices/games/tapTheDotApi';
+import { incrementScore, resetScore } from '@redux/slices/tapGameSlice';
+import { useShowPointsApiMutation } from './api';
 import * as Keychain from 'react-native-keychain';
 
 const DOT_SIZE = 60;
