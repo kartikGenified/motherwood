@@ -116,7 +116,6 @@ import Training from "../screens/training/Training";
 import KycViewOtherUsers from "../screens/verification/KycViewOtherUsers";
 import SearchInfluencer from "../screens/searchInfluencer/SearchInfluencer";
 import BirthdayScreen from "../screens/birthday/BirthdayScreen";
-import KycVerificationDynamic from "../screens/verification/KycVerificationDynamic";
 import SelectContact from "@/screens/common/SelectContact";
 import navigations from "./stack-navigations";
 const Stack = createNativeStackNavigator();
@@ -139,13 +138,6 @@ const StackNavigator = () => {
           }}
           name="MediaGallery"
           component={MediaGallery}
-        ></Stack.Screen>
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="KycVerificationDynamic"
-          component={KycVerificationDynamic}
         ></Stack.Screen>
         <Stack.Screen
           options={{

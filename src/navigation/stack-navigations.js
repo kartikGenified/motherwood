@@ -1,8 +1,10 @@
-import gameModule from "@/screens/games";
+import KycModule from "@/modules/kyc";
+import gameModule from "@/modules/games";
 
 
 const navigations = [
-  ...gameModule
+  ...gameModule,
+  ...KycModule
 ]
 
 export default navigations;
