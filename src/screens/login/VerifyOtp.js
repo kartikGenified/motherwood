@@ -85,6 +85,7 @@ const VerifyOtp = ({ navigation, route }) => {
   const [success, setSuccess] = useState(false);
   const [timer, setTimer] = useState(60);
   const [openModalWithBorder, setModalWithBorder] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const timeOutCallback = useCallback(
     () => setTimer((currTimer) => currTimer - 1),
@@ -442,10 +443,12 @@ useEffect(()=>{
       storeData("getDashboardData", getDashboardData);
         dispatch(setDashboardData(getDashboardData?.body?.app_dashboard));
       parsedJsonValue && getBannerFunc(parsedJsonValue?.token);
+      setLoading(false);
     } else if (getDashboardError) {
       setError(true);
       setMessage(t("Can't get dashboard data, kindly retry."));
       console.log("getDashboardError", getDashboardError);
+      setLoading(false);
     }
   }, [getDashboardData, getDashboardError]);
 
@@ -521,6 +524,7 @@ useEffect(()=>{
       console.log("verifyOtpError", verifyOtpError);
       setError(true);
       setMessage(t("Login Failed"));
+      setLoading(false);
       console.log(verifyOtpError);
     }
   }, [verifyOtpData, verifyOtpError]);
@@ -552,6 +556,7 @@ useEffect(()=>{
       console.log("verifyLoginOtpError", verifyLoginOtpError);
       setError(true);
       setMessage(verifyLoginOtpError?.data?.message);
+      setLoading(false);
     }
   }, [verifyLoginOtpData, verifyLoginOtpError]);
 
@@ -725,7 +730,7 @@ useEffect(()=>{
       is_approved_needed,
       app_version
     );
-    
+    setLoading(true);
       verifyLoginOtpFunc({
         mobile,
         name,
@@ -881,9 +886,9 @@ useEffect(()=>{
           </View>
         </View>
         <TouchableOpacity onPress={()=>{handleVerifyButton()}} style={{alignItems:"center", justifyContent:'center',width:'90%',backgroundColor:'black',height:60,borderRadius:6}}>
-        <Text style={{ color: "white", fontSize:22, fontWeight:'700'}}>
-        {t("Verify OTP")}
-            </Text>
+        {(loading)?<ActivityIndicator size={"small"} color={"white"}/>: (<Text style={{ color: "white", fontSize:22, fontWeight:'700'}}>
+         {t("Verify OTP")}
+            </Text>)}
         </TouchableOpacity>
 
     </ScrollView>

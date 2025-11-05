@@ -472,6 +472,9 @@ PODS:
   - react-native-compressor (1.10.3):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
+  - react-native-contacts (8.0.7):
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
   - react-native-date-picker (4.4.2):
     - React-Core
   - react-native-geolocation (3.4.0):
@@ -747,6 +750,7 @@ DEPENDENCIES:
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-compressor (from `../node_modules/react-native-compressor`)
+  - react-native-contacts (from `../node_modules/react-native-contacts`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
@@ -871,6 +875,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-camera"
   react-native-compressor:
     :path: "../node_modules/react-native-compressor"
+  react-native-contacts:
+    :path: "../node_modules/react-native-contacts"
   react-native-date-picker:
     :path: "../node_modules/react-native-date-picker"
   react-native-geolocation:
@@ -1008,6 +1014,7 @@ SPEC CHECKSUMS:
   react-native-blob-util: 39a20f2ef11556d958dc4beb0aa07d1ef2690745
   react-native-camera: 3eae183c1d111103963f3dd913b65d01aef8110f
   react-native-compressor: b2009ba82a35d463267c4d4ba3c22d8c16134a9e
+  react-native-contacts: b3a8667717dd022993530b18f0d9442e66f3f228
   react-native-date-picker: 312c387d2ff873c66c5e4cf78ff6827fa91644e2
   react-native-geolocation: 99e88dbb98e0bc11cadac135a92c67076eee495a
   react-native-image-picker: 60f4246eb5bb7187fc15638a8c1f13abd3820695
