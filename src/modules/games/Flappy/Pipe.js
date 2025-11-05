@@ -1,9 +1,6 @@
-import Matter from 'matter-js';
-import React, { useEffect } from 'react';
-import { Dimensions, Image, View } from 'react-native';
+import React from 'react';
+import {Image, View } from 'react-native';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const Pipe = ({ body }) => {
     const width = body.bounds.max.x - body.bounds.min.x;
