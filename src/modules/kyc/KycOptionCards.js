@@ -61,7 +61,7 @@ const KycOptionCards = ({
             {
                 id: 'pan',
                 label: t('PAN Card KYC'),
-                icon: require('../../../assets/images/pankyc.png'),
+                icon: require('./assets/images/pankyc.png'),
                 verified: panVerified || preVerifiedDocs.pan,
                 enabled: enabled_options.pan,
                 apiDetails: api_details.pan,
@@ -70,7 +70,7 @@ const KycOptionCards = ({
             {
                 id: 'gstin',
                 label: 'GSTIN',
-                icon: require('../../../assets/images/gstinkyc.png'),
+                icon: require('./assets/images/gstinkyc.png'),
                 verified: gstVerified || preVerifiedDocs.gstin,
                 enabled: enabled_options.gstin,
                 apiDetails: api_details.gstin,
@@ -79,7 +79,7 @@ const KycOptionCards = ({
             {
                 id: 'bank',
                 label: 'Bank Account',
-                icon: require('../../../assets/images/bankColor.png'),
+                icon: require('./assets/images/bankColor.png'),
                 verified: bankVerified,
                 enabled: enabled_options.bank,
                 isOptional: optional.includes('bank'), // Use from config
@@ -88,7 +88,7 @@ const KycOptionCards = ({
             {
                 id: 'upi',
                 label: 'UPI ID',
-                icon: require('../../../assets/images/upi.png'),
+                icon: require('./assets/images/upi.png'),
                 verified: upiVerified,
                 enabled: enabled_options.upi,
                 isOptional: optional.includes('upi'), // Use from config
@@ -190,7 +190,7 @@ const KycOptionCards = ({
                     optionCard={{
                         id: 'aadhaar',
                         label: t('Aadhaar KYC'),
-                        icon: require('../../../assets/images/aadhaarkyc.png'),
+                        icon: require('./assets/images/aadhaarkyc.png'),
                         verified: aadhaarVerified || preVerifiedDocs.aadhaar,
                         // verified: aadhaarVerified,
                         enabled: enabled_options.aadhaar,

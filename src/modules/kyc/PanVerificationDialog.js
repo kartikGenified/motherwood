@@ -253,7 +253,7 @@ const PanVerificationDialog = ({
 							}
 						/>
 
-						<Image style={styles.documentImage} source={require("@assets/images/panColor.png")} />
+						<Image style={styles.documentImage} source={require("./assets/images/panColor.png")} />
 
 						{/* PAN Input */}
 						<View style={styles.inputContainer}>
@@ -283,7 +283,7 @@ const PanVerificationDialog = ({
 									(isVerified || isPreVerified) && (
 										<Image
 											style={styles.verifiedIcon}
-											source={require("@assets/images/tickBlue.png")}
+											source={require("./assets/images/tickBlue.png")}
 										/>
 									)
 								)}

@@ -231,7 +231,7 @@ const AadharVerify = (props) => {
                 <>
                 <Image
                 style={styles.documentImage}
-                source={require("../../../assets/images/addharColor.png")}
+                source={require("./assets/images/addharColor.png")}
               />
 
               <View style={styles.preVerifiedContainer}>
@@ -328,7 +328,7 @@ const AadharVerify = (props) => {
                 resizeMode: "contain",
                 margin: 20,
               }}
-              source={require("../../../assets/images/blackBack.png")}
+              source={require("./assets/images/blackBack.png")}
             ></Image>
           </TouchableOpacity>
           <WebView

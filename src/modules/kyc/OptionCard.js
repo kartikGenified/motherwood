@@ -35,8 +35,8 @@ const OptionCard = ({ option, isMandatory, onPress }) => {
 			<Image
 				source={
 					option.verified
-						? require("@assets/images/verifiedKyc.png")
-						: require("@assets/images/notVerifiedKyc.png")
+						? require("./assets/images/verifiedKyc.png")
+						: require("./assets/images/notVerifiedKyc.png")
 				}
 				style={styles.statusIcon}
 			/>

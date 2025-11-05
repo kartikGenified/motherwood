@@ -304,7 +304,7 @@ const GstVerificationDialog = React.memo(
 
 							<Image
 								style={styles.documentImage}
-								source={require("../../../assets/images/gstindummy.jpeg")}
+								source={require("./assets/images/gstindummy.jpeg")}
 							/>
 
 							{/* GSTIN Input */}
@@ -338,7 +338,7 @@ const GstVerificationDialog = React.memo(
 										(isVerified || isPreVerified) && (
 											<Image
 												style={styles.verifiedIcon}
-												source={require("../../../assets/images/tickBlue.png")}
+												source={require("./assets/images/tickBlue.png")}
 											/>
 										)
 									)}

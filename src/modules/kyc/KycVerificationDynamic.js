@@ -1016,7 +1016,7 @@ const KycVerificationDynamic = ({ navigation }) => {
 					<TopHeader title={t("Verify your KYC")} transparent />
 					<ScrollView style={styles.scrollView}>
 						<View style={styles.contentContainer}>
-							<Image style={styles.kycLogo} source={require("@assets/images/kyclogo.png")} />
+							<Image style={styles.kycLogo} source={require("./assets/images/kyclogo.png")} />
 							<KycOptionCards
 								verifiedAadharDetails={verifiedAadharDetails}
 								preVerifiedDocs={preVerifiedDocs}
