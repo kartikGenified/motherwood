@@ -21,6 +21,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { addAddress } from "../../../redux/slices/redemptionAddressSlice";
 import { useTranslation } from "react-i18next";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import TopHeader from "@/components/topBar/TopHeader";
 const ListAddress = ({ navigation, route }) => {
   const [selectedIndex, setSelectedIndex] = useState();
   const [selectedAddress, setSelectedAddress] = useState();
@@ -459,43 +460,7 @@ const ListAddress = ({ navigation, route }) => {
         flex: 1,
       }}
     >
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "flex-start",
-          flexDirection: "row",
-          width: "100%",
-          backgroundColor:'#FFF8E7',
-          marginTop: 0,
-          height: "10%",
-          marginLeft: 20,
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: "contain",
-              marginLeft: 10,
-            }}
-            source={require("../../../assets/images/blackBack.png")}
-          ></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content={t("Added Address")}
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: "700",
-            color: "black",
-          }}
-        ></PoppinsTextMedium>
-      </View>
+      <TopHeader title={t("Added Address")} />
       <View
         style={{
           height: "70%",

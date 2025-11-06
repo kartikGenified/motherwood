@@ -33,6 +33,7 @@ import ErrorModal from "../../components/modals/ErrorModal";
 import { useFetchGiftsRedemptionsOfUserMutation } from "../../apiServices/workflow/RedemptionApi";
 import { useGetkycStatusMutation } from "../../apiServices/kyc/KycStatusApi";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import TopHeader from "@/components/topBar/TopHeader";
 
 const CashbackHistory = ({ navigation }) => {
   const [showNoDataFound, setShowNoDataFound] = useState(false);
@@ -755,45 +756,7 @@ const CashbackHistory = ({ navigation }) => {
         height: "100%",
       }}
     >
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "flex-start",
-          flexDirection: "row",
-          width: "100%",
-          
-          height: "6%",
-          backgroundColor:'#FFF8E7'
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Passbook");
-          }}
-        >
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: "contain",
-              marginLeft: 10,
-            }}
-            source={require("../../../assets/images/blackBack.png")}
-          ></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content={t("Redemption Summary")}
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: "800",
-            color: "black",
-          }}
-        ></PoppinsTextMedium>
-        {/* <TouchableOpacity style={{ marginLeft: 160 }}>
-                    <Image style={{ height: 30, width: 30, resizeMode: 'contain' }} source={require('../../../assets/images/notificationOn.png')}></Image>
-                </TouchableOpacity> */}
-      </View>
+      <TopHeader title={t("Redemption Summary")} onBackPress={()=>navigation.navigate("Passbook")}/>
       <View
         style={{
           padding: 14,

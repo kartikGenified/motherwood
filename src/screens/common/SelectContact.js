@@ -130,21 +130,6 @@ const SelectContact = ({ navigation, route }) => {
     return (
       <View style={styles.container}>
         <TopHeader title={t('Select Contact')} />
-
-        {/* <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image
-              style={styles.backIcon}
-              source={require('../../../assets/images/blackBack.png')}
-            />
-          </TouchableOpacity>
-          <PoppinsTextMedium
-            content={t('Select Contact')}
-            style={styles.headerTitle}
-          />
-        </View> */}
-
-        
         <View style={styles.permissionContainer}>
           <PoppinsTextMedium
             style={styles.permissionText}

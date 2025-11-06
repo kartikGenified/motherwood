@@ -20,6 +20,7 @@ import { useListAssignApiMutation } from "../../apiServices/assignTo/ListAssigne
 import * as Keychain from "react-native-keychain";
 import TopBar from "../../components/topBar/TopBar";
 import Icon from "react-native-vector-icons/Entypo";
+import TopHeader from "@/components/topBar/TopHeader";
 
 
 const AssignedByList = ({ navigation }) => {
@@ -152,10 +153,7 @@ const AssignedByList = ({ navigation }) => {
         ></PoppinsTextMedium>
 
       </View> */}
-      <TopBar
-        fontStyle={{ fontSize: 20, marginTop: 5 }}
-        title="My assigned Products"
-      ></TopBar>
+      <TopHeader title={t("Assigned User List")} />
       {/* <View style={{alignItems:'center',justifyContent:'space-evenly', flexDirection:'row',width:'100%',height:50,borderBottomWidth:1,borderColor:'#DDDDDD',margin:4,padding:6}}>
       <PoppinsTextMedium
           style={{ fontSize: 16, color: "black", marginLeft: 0,fontWeight:'700' }}

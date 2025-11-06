@@ -25,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import { neededHistory } from "../../utils/HandleClientSetup";
 import PointsCard from "../../components/passbook/PointsCard";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import TopHeader from "@/components/topBar/TopHeader";
 
 const Passbook = ({ navigation }) => {
   const [warrantyOptionEnabled, setWarrantyOptionEnabled] = useState(false);
@@ -437,38 +438,8 @@ const Passbook = ({ navigation }) => {
           getActiveMembershipData={getMemberShipData}
         />
         {/* coloured header */}
+          <TopHeader title={t("Passbook")} onBackPress={() => navigation.navigate("Dashboard")} />
         <View style={{ width: "100%", backgroundColor: secondaryThemeColor }}>
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "flex-start",
-              flexDirection: "row",
-              width: "100%",
-              marginTop: 10,
-              height: 40,
-              marginLeft: 20,
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("Dashboard");
-              }}
-            >
-              <Image
-                style={{ height: 30, width: 30, resizeMode: "contain" }}
-                source={require("../../../assets/images/blackBack.png")}
-              ></Image>
-            </TouchableOpacity>
-            <PoppinsTextMedium
-              content={t("Passbook")}
-              style={{
-                marginLeft: 10,
-                fontSize: 18,
-                fontWeight: "700",
-                color: "black",
-              }}
-            ></PoppinsTextMedium>
-          </View>
          {isTertiary!=undefined &&  <View style={{ width: "100%", marginTop: 20 }}>
             <PointsCard
               memberShip={getActiveMembershipData?.body?.tier?.name}

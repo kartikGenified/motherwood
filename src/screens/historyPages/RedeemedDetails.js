@@ -18,6 +18,7 @@ import * as Keychain from 'react-native-keychain';
 import TrackDeliveryModal from "../../components/redeemDetails/TrackDeliveryModal";
 import { useTranslation } from "react-i18next";
 import ShakeViewAnimations from "../../components/animations/ShakeViewAnimations";
+import TopHeader from "@/components/topBar/TopHeader";
 
 const RedeemedDetails = ({ navigation, route }) => {
   const [status, setStatus] = useState("")
@@ -142,48 +143,7 @@ const RedeemedDetails = ({ navigation, route }) => {
         width: "100%",
       }}
     >
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "flex-start",
-          flexDirection: "row",
-          width: "100%",
-          marginTop: 10,
-          height: 40,
-          marginLeft: 20,
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: "contain",
-              marginLeft: 10,
-            }}
-            source={require("../../../assets/images/blackBack.png")}
-          ></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content={t("Redeemed Details")}
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: "800",
-            color: "#171717",
-          }}
-        ></PoppinsTextMedium>
-        {/* <TouchableOpacity style={{ marginLeft: 160 }}>
-          <Image
-            style={{ height: 30, width: 30, resizeMode: "contain" }}
-            source={require("../../../assets/images/notificationOn.png")}
-          ></Image>
-        </TouchableOpacity> */}
-      </View>
+      <TopHeader title={t("Redeemed Details")} />
       <ScrollView style={{ width: "100%", height: "100%" }}>
         <View
           style={{

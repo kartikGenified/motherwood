@@ -19,6 +19,7 @@ import * as Keychain from "react-native-keychain";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
+import TopHeader from "@/components/topBar/TopHeader";
 
 const HelpAndSupport = ({ navigation }) => {
   const ternaryThemeColor = useSelector(
@@ -52,41 +53,7 @@ const HelpAndSupport = ({ navigation }) => {
       style={{ flex: 1, backgroundColor: "white" }}
       showsVerticalScrollIndicator={false}
     >
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "flex-start",
-          flexDirection: "row",
-          width: "100%",
-          backgroundColor: secondaryThemeColor,
-          height: 60,
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: "contain",
-              marginLeft: 10,
-            }}
-            source={require("../../../assets/images/blackBack.png")}
-          ></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content={t("Customer Support")}
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: "700",
-            color: "black",
-          }}
-        ></PoppinsTextMedium>
-      </View>
+      <TopHeader title={t("Customer Support")} />
       <View style={{ alignItems: "center", width: "100%" }}>
         <PoppinsTextMedium
           content={t("Get In Touch")}
