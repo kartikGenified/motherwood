@@ -19,6 +19,7 @@ import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import { removeCachingLogic } from "../../utils/removeCachingLogic";
 import i18n from "../common/i18n";
 import { useTranslation } from "react-i18next";
+import TopHeader from "@/components/topBar/TopHeader";
 
 
 const languageMap = {
@@ -102,74 +103,39 @@ const Setting = ({ navigation }) => {
 
   return (
     <View style={{ height: '100%', width: '100%', backgroundColor: '#FFF8E7', alignItems: 'center', justifyContent: 'flex-start' }}>
-      <View
+      <TopHeader title={t("Settings")} />
+
+      {showDeleteModal && (
+        <DeleteModal
+          hideModal={hideModal}
+          modalVisible={showDeleteModal}
+        ></DeleteModal>
+      )}
+
+      <TouchableOpacity
+        onPress={() => {
+          deleteID();
+        }}
         style={{
-          alignItems: "center",
-          justifyContent: "flex-start",
-          flexDirection: "row",
-          width: "100%",
-          marginTop: 10,
           height: 30,
-          marginLeft: 20,
+          width: 30,
+          borderRadius: 15,
+          backgroundColor: "white",
+          borderWidth: 1,
+          borderColor: ternaryThemeColor,
+          alignItems: "center",
+          justifyContent: "center",
+          position: 'absolute',
+          top: 70,
+          right: 30,
         }}
       >
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: "contain",
-              marginLeft: 10,
-            }}
-            source={require("../../../assets/images/blackBack.png")}
-          ></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content={t("Settings")}
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: "700",
-            color: "black",
-          }}
-        ></PoppinsTextMedium>
-
-        {showDeleteModal && (
-          <DeleteModal
-            hideModal={hideModal}
-            modalVisible={showDeleteModal}
-          ></DeleteModal>
-        )}
-
-        <TouchableOpacity
-          onPress={() => {
-            deleteID();
-          }}
-          style={{
-            height: 30,
-            width: 30,
-            borderRadius: 15,
-            backgroundColor: "white",
-            borderWidth: 1,
-            borderColor: ternaryThemeColor,
-            alignItems: "center",
-            justifyContent: "center",
-            position: 'absolute',
-            right: 30,
-
-          }}
-        >
-          <Delete
-            name="delete"
-            size={18}
-            color={ternaryThemeColor}
-          ></Delete>
-        </TouchableOpacity>
-      </View>
+        <Delete
+          name="delete"
+          size={18}
+          color={ternaryThemeColor}
+        ></Delete>
+      </TouchableOpacity>
 
       <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%', marginTop: 20}}>
         <LanguageBar/>

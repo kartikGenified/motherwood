@@ -11,6 +11,8 @@ import PoppinsTextLeftMedium from '../../components/electrons/customFonts/Poppin
 import Plus from 'react-native-vector-icons/AntDesign';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import { useIsFocused } from '@react-navigation/native';
+import TopHeader from '@/components/topBar/TopHeader';
+import { useTranslation } from 'react-i18next';
 // create a component
 const QueryList = ({ navigation }) => {
     const ternaryThemeColor = useSelector(
@@ -20,6 +22,7 @@ const QueryList = ({ navigation }) => {
         : 'grey';
     const focused = useIsFocused()
     const userData = useSelector(state => state.appusersdata.userData)
+    const { t } = useTranslation();
     console.log("Userdata", userData)
 
     const [getQueryfunc, {
@@ -132,31 +135,7 @@ const QueryList = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            {/* Navigator */}
-            <View
-                style={{
-                    height: 60,
-                    width: '100%',
-                    backgroundColor: ternaryThemeColor,
-                    alignItems: 'flex-start',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    // marginTop: 10,
-                }}>
-                <TouchableOpacity
-                    style={{ height: 20, width: 20, position: 'absolute', left: 20, marginTop: "4%" }}
-                    onPress={() => {
-                        navigation.goBack();
-                    }}>
-                    <Image
-                        style={{ height: 20, width: 20, resizeMode: 'contain' }}
-                        source={require('../../../assets/images/blackBack.png')}></Image>
-                </TouchableOpacity>
-
-                <PoppinsTextMedium style={{ fontSize: 20, fontWeight:'bold', color: '#ffffff', marginTop: "3%", position: 'absolute', left: 50 }} content={"Query List"}></PoppinsTextMedium>
-
-
-            </View>
+            <TopHeader title={t("Query List")} />
             {/* navigator */}
 
             <View>

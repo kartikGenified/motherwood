@@ -6,6 +6,8 @@ import WheelCard from '../../components/wheel/WheelCard';
 import { useGetAllWheelHistoryMutation } from '../../apiServices/workflow/rewards/GetWheelApi';
 import * as Keychain from 'react-native-keychain';
 import { useSelector } from 'react-redux';
+import TopHeader from "@/components/topBar/TopHeader";
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -19,6 +21,8 @@ const WheelList = ({ navigation }) => {
         isError: getAllWheelHistoryIsError
     }] = useGetAllWheelHistoryMutation()
 
+    const { t } = useTranslation();
+    
     const ternaryThemeColor = useSelector(
         state => state.apptheme.ternaryThemeColor,
     )
@@ -111,33 +115,7 @@ const WheelList = ({ navigation }) => {
     return (
         <View style={[styles.container, {backgroundColor:ternaryThemeColor}]}>
    
-            {/* Navigator */}
-            <View
-                style={{
-                    height: 50,
-                    width: '100%',
-                    backgroundColor: 'transparent',
-                    alignItems: 'flex-start',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    marginTop: 10,
-                }}>
-                <TouchableOpacity
-                    style={{ height: 20, width: 20, position: 'absolute', left: 20, marginTop: 10 }}
-                    onPress={() => {
-                        navigation.goBack();
-                    }}>
-                    <Image
-                        style={{ height: 20, width: 20, resizeMode: 'contain' }}
-                        source={require('../../../assets/images/blackBack.png')}></Image>
-                </TouchableOpacity>
-
-                <PoppinsTextMedium style={{ fontSize: 20, color: '#ffffff', marginTop: 5, position: 'absolute', left: 60 }} content={"Wheel"}></PoppinsTextMedium>
-                <PoppinsTextMedium style={{ fontSize: 20, color: '#ffffff', marginTop: 5, position: 'absolute', left: 60 }} content={"FeedBack"}></PoppinsTextMedium>
-
-
-            </View>
-            {/* navigator */}
+            <TopHeader title={t("Wheel") +" " + t("FeedBack")} />
 
             {/* content */}
             <View style={styles.viewContent}>

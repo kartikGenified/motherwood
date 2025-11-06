@@ -24,6 +24,7 @@ import { useCheckBeforeRedeemMutation, useGetWalletBalanceMutation } from '../..
 import { setWalletBalance } from '../../../redux/slices/pointWalletSlice';
 import { useTranslation } from 'react-i18next';
 import SocialBottomBar from '../../components/socialBar/SocialBottomBar';
+import TopHeader from '@/components/topBar/TopHeader';
 
 const RedeemCashback = ({navigation,route}) => {
   const [message, setMessage] = useState();
@@ -419,42 +420,7 @@ const [checkBeforeRedeem, {
             message={message}
             openModal={success}></MessageModal>)
       }
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          width: '100%',
-          backgroundColor:'#FFF8E7',
-          height: '10%',
-          position: 'absolute',
-          top: 0,
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-            setCashConversion(0)
-          }}>
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-              marginLeft: 10,
-            }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
-          <PoppinsTextMedium
-            content={t("Bank/UPI Transfers")}
-            style={{
-              marginLeft: 10,
-              fontSize: 16,
-              fontWeight: '700',
-              color: 'black',
-            }}></PoppinsTextMedium>
-        </View>
-      </View>
+      <TopHeader title={t("Bank/UPI Transfers")} onBackPress={() => { navigation.goBack(); setCashConversion(0); }} />
         <View style={{alignItems:"center",justifyContent:'center',width:'100%',marginTop:40}}>
       <View
         style={{alignItems: 'center', justifyContent: 'center', marginTop:40}}>

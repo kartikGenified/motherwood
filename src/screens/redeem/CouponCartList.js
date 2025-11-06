@@ -23,6 +23,7 @@ import { useDispatch } from 'react-redux';
 import { additem } from '../../../redux/slices/rewardCartSlice';
 import { t } from 'i18next';
 import { useTranslation } from 'react-i18next';
+import TopHeader from '@/components/topBar/TopHeader';
 
 const CouponCartList = ({ navigation, route }) => {
   const [cart, setCart] = useState(route.params.cart);
@@ -463,43 +464,7 @@ const CouponCartList = ({ navigation, route }) => {
           
         ></MessageModal>
       )}
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          width: '100%',
-
-          height: '10%',
-          marginLeft: 20,
-
-
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-            setCart([])
-          }}>
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-              marginLeft: 10,
-            }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <PoppinsTextMedium
-            content={t("Redeem Points")}
-            style={{
-              marginLeft: 10,
-              fontSize: 16,
-              fontWeight: '700',
-              color: 'white',
-            }}></PoppinsTextMedium>
-        </View>
-      </View>
+      <TopHeader title={t("Redeem Points")} onBackPress={() => { navigation.goBack(); setCart([]); }} />
 
       <View
         style={{

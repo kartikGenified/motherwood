@@ -18,6 +18,7 @@ import { useFetchUserPointsMutation } from '../../apiServices/workflow/rewards/G
 import PlatinumModal from '../../components/platinum/PlatinumModal';
 import { useGetActiveMembershipMutation, useGetMembershipMutation } from '../../apiServices/membership/AppMembershipApi';
 import { t } from 'i18next';
+import TopHeader from '@/components/topBar/TopHeader';
 
 const RedeemRewardHistory = ({navigation}) => {
     const [showCoupons, setShowCoupons] = useState(false)
@@ -375,15 +376,7 @@ const RedeemRewardHistory = ({navigation}) => {
         <View style={{backgroundColor:"white"}}>
              <View style={{height:200,width:'100%',backgroundColor:ternaryThemeColor,alignItems:"flex-start",justifyContent:'flex-start'}}>
             
-            <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:10,height:40,marginLeft:20}}>
-                <TouchableOpacity onPress={()=>{navigation.goBack()}}>
-            <Image style={{height:30,width:30,resizeMode:'contain'}} source={require('../../../assets/images/blackBack.png')}></Image>
-                </TouchableOpacity>
-            <PoppinsTextMedium content ={t("Redeem rewards")} style={{marginLeft:10,fontSize:18,fontWeight:'700',color:'white'}}></PoppinsTextMedium>
-            {/* <TouchableOpacity style={{marginLeft:'50%'}}>
-            <Image style={{height:30,width:30,resizeMode:'contain'}} source={require('../../../assets/images/notificationOn.png')}></Image>
-            </TouchableOpacity> */}
-            </View>
+            <TopHeader title={t("Redeem rewards")} />
                 {/* name and membership */}
             {/* --------------------------- */}
             <View style={{flexDirection:"row",height:50,width:'100%',alignItems:"center",justifyContent:"flex-start"}}>

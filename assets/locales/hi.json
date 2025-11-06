@@ -85,7 +85,6 @@
   "Share Your Referral": "अपना रेफरल साझा करें",
   "Unable to refer": "रेफर करने में असमर्थ",
   "Your approval from sales end is pending": "सेल्स से आपकी स्वीकृति लंबित है",
-  "OK": "ठीक है",
   "Refer & Earn": "रेफर करें और कमाएं",
   "Invitation Rules": "निमंत्रण नियम",
   "Reward of": "पुरस्कार",
@@ -834,5 +833,13 @@
   "No contacts found": "कोई संपर्क नहीं मिला",
   "No contacts available": "कोई संपर्क उपलब्ध नहीं",
   "Contact permission is required to select contacts": "संपर्क चुनने के लिए संपर्क अनुमति आवश्यक है",
-  "Grant Permission": "अनुमति दें"
+  "Grant Permission": "अनुमति दें",
+  "Wheel": "चक्र",
+  "Warranty Claim Details": "वारंटी दावा विवरण",
+  "Forgot MPIN": "MPIN भूल गए",
+  "Video": "वीडियो",
+  "Query List": "प्रश्न सूची",
+  "Add to Cart": "कार्ट में जोड़ें",
+  "Bank/UPI Transfers": "बैंक/UPI ट्रांसफर",
+  "User Management": "उपयोगकर्ता प्रबंधन"
 }

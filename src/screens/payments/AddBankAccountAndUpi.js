@@ -7,6 +7,7 @@ import { useFetchGiftsRedemptionsOfUserMutation } from '../../apiServices/workfl
 import * as Keychain from 'react-native-keychain';
 import { useFetchUserPointsMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
 import { useTranslation } from 'react-i18next';
+import TopHeader from "@/components/topBar/TopHeader";
 
 const AddBankAccountAndUpi = ({navigation}) => {
     const ternaryThemeColor = useSelector(
@@ -18,16 +19,7 @@ const AddBankAccountAndUpi = ({navigation}) => {
         const {t} = useTranslation()
     return (
         <View style={{alignItems:"center",justifyContent:"flex-start",width:'100%',backgroundColor:"#FFF8E7",height:'100%'}}>
-            <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:10,height:'10%',marginLeft:20}}>
-                <TouchableOpacity onPress={()=>{
-                    navigation.goBack()
-                }}>
-            <Image style={{height:24,width:24,resizeMode:'contain',marginLeft:10}} source={require('../../../assets/images/blackBack.png')}></Image>
-
-                </TouchableOpacity>
-            <PoppinsTextMedium content ={t("Add Bank & UPI")} style={{marginLeft:10,fontSize:16,fontWeight:'700',color:'black'}}></PoppinsTextMedium>
-            
-            </View>
+            <TopHeader title={t("Add Bank & UPI")} />
             <View style={{height:'90%',width:'100%',borderTopRightRadius:40,borderTopLeftRadius:40,alignItems:"center",justifyContent:"flexx-start",backgroundColor:"white"}}>
             
             <View style={{borderBottomWidth:1,borderColor:'#DDDDDD',width: '80%',paddingBottom:10}}>

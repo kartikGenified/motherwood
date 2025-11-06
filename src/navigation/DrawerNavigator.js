@@ -1109,6 +1109,9 @@ const CustomDrawer = (props) => {
               </View>
             );
           })}
+
+          <PoppinsTextMedium content={`Designed & Developed by`} style={{ marginTop: 10 }}/>
+          <PoppinsTextMedium style={{ fontWeight: 'bold' }} content={`Genified.ai`}/>
           {/* <DrawerItems
           // key={index}
           title={"Events"}
