@@ -108,6 +108,25 @@ const KycOptionCards = ({
                     {valid_combinations.map((combo, comboIndex) => {
                         const elements = combo.split('-');
                         const isSingleMandatory = elements.length === 1;
+                        if(combo ==="aadhaar") {
+                            return (
+                                <AadharVerify 
+                                    verifiedAadharDetails={verifiedAadharDetails}
+                                    preVerifiedDocs={preVerifiedDocs}
+                                    getKycDynamicFunc={getKycDynamic}
+                                    optionCard={{
+                            id: 'aadhaar',
+                            label: t('Aadhaar KYC'),
+                            icon: require('./assets/images/aadhaarkyc.png'),
+                            verified: aadhaarVerified || preVerifiedDocs.aadhaar,
+                            // verified: aadhaarVerified,
+                            enabled: enabled_options.aadhaar,
+                            apiDetails: api_details.aadhaar,
+                            matchRules: match_rules.aadhaar,
+                            isOptional: optional.includes('aadhaar'), // For display only
+                        }} />
+                        );
+                        }
  
                         return (
                             <React.Fragment key={`combo-${comboIndex}`}>
@@ -183,21 +202,6 @@ const KycOptionCards = ({
                             />
                         ))
                     }
-                    <AadharVerify 
-                    verifiedAadharDetails={verifiedAadharDetails}
-                    preVerifiedDocs={preVerifiedDocs}
-                    getKycDynamicFunc={getKycDynamic}
-                    optionCard={{
-                        id: 'aadhaar',
-                        label: t('Aadhaar KYC'),
-                        icon: require('./assets/images/aadhaarkyc.png'),
-                        verified: aadhaarVerified || preVerifiedDocs.aadhaar,
-                        // verified: aadhaarVerified,
-                        enabled: enabled_options.aadhaar,
-                        apiDetails: api_details.aadhaar,
-                        matchRules: match_rules.aadhaar,
-                        isOptional: optional.includes('aadhaar'), // For display only
-                    }} />
                 </View>
             </View>
         );
