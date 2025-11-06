@@ -18,6 +18,7 @@ import moment from "moment";
 import DatePicker from "react-native-date-picker";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
 import { useFetchUserPointsMutation } from "../../apiServices/workflow/rewards/GetPointsApi";
+import TopHeader from "@/components/topBar/TopHeader";
 export default function Scheme({ navigation }) {
   const [scheme, setScheme] = useState([]);
   const [getAllScheme, setGetAllScheme] = useState([])
@@ -938,43 +939,7 @@ export default function Scheme({ navigation }) {
         height: "100%",
       }}
     >
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "flex-start",
-          flexDirection: "row",
-          width: "100%",
-          marginTop: 10,
-          height: 30,
-          marginLeft: 20,
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: "contain",
-              marginLeft: 10,
-            }}
-            source={require("../../../assets/images/blackBack.png")}
-          ></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content="Scheme"
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: "700",
-            color: "white",
-          }}
-        ></PoppinsTextMedium>
-      </View>
-
+      <TopHeader title={t("scheme")} />
       <View
         style={{
           borderTopRightRadius: 30,

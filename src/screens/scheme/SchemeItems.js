@@ -13,6 +13,7 @@ import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTex
 import {useCheckActiveSchemeMutation} from '../../apiServices/scheme/GetSchemeApi';
 import * as Keychain from 'react-native-keychain';
 import Logo from 'react-native-vector-icons/AntDesign';
+import TopHeader from '@/components/topBar/TopHeader';
 export default function SchemeItems({navigation}) {
     const [scheme, setScheme] = useState([])
     const [gifts, setGifts] = useState([])
@@ -183,38 +184,7 @@ useEffect(()=>{
         backgroundColor: ternaryThemeColor,
         height: '100%',
       }}>
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          width: '100%',
-          marginTop: 10,
-          height: '10%',
-          marginLeft: 20,
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-              marginLeft: 10,
-            }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content="Scheme"
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: '700',
-            color: 'white',
-          }}></PoppinsTextMedium>
-      </View>
+      <TopHeader title={t("scheme")} />
 
       <View
         style={{
