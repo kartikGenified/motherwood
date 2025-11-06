@@ -1,7 +1,17 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import { useSelector } from 'react-redux';
+import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
+import { useTranslation } from 'react-i18next';
+import TopHeader from '@/components/topBar/TopHeader';
 
 const ReportIssue = ({navigation}) => {
+    const ternaryThemeColor = useSelector(
+        state => state.apptheme.ternaryThemeColor,
+    ) ? useSelector(state => state.apptheme.ternaryThemeColor) : 'grey';
+    
+    const { t } = useTranslation();
+    
     return (
         <View
       style={{
@@ -11,38 +21,7 @@ const ReportIssue = ({navigation}) => {
         backgroundColor: ternaryThemeColor,
         height: '100%',
       }}>
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          width: '100%',
-          marginTop: 10,
-          height: '10%',
-          marginLeft: 20,
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-              marginLeft: 10,
-            }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-           content={t("Report And Issue")}
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: '700',
-            color: 'white',
-          }}></PoppinsTextMedium>
-      </View>
+      <TopHeader title={t("Report And Issue")} />
       <View
           style={{
             borderTopRightRadius: 30,

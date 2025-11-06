@@ -17,6 +17,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Keychain from 'react-native-keychain';
 import {useSelector} from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import TopHeader from '@/components/topBar/TopHeader';
 
 const MyBonus = ({navigation}) => {
   const ternaryThemeColor = useSelector(
@@ -25,6 +27,7 @@ const MyBonus = ({navigation}) => {
     ? useSelector(state => state.apptheme.ternaryThemeColor)
     : 'grey';
   const referalPoints = 400;
+  const { t } = useTranslation();
 
   const BonusItems = props => {
     const number = props.number;
@@ -106,38 +109,7 @@ const MyBonus = ({navigation}) => {
         backgroundColor: ternaryThemeColor,
         height: '100%',
       }}>
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          width: '100%',
-          marginTop: 10,
-          height: '10%',
-          marginLeft: 20,
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-              marginLeft: 10,
-            }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content="My Bonus"
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: '700',
-            color: 'white',
-          }}></PoppinsTextMedium>
-      </View>
+      <TopHeader title={t("My Bonus")} />
       <ScrollView style={{width: '100%'}}>
         <View
           style={{

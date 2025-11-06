@@ -24,6 +24,7 @@ import { useRequestAppointmentMutation } from "../../apiServices/requestAppointm
 import ErrorModal from "../../components/modals/ErrorModal";
 import MessageModal from "../../components/modals/MessageModal";
 import { useTranslation } from "react-i18next";
+import TopHeader from "@/components/topBar/TopHeader";
 
 // create a component
 const RequestAppointment = ({ navigation, route }) => {
@@ -172,47 +173,7 @@ const RequestAppointment = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      {/* Navigator */}
-      <View
-        style={{
-          height: 50,
-          width: "100%",
-          backgroundColor: ternaryThemeColor,
-          alignItems: "flex-start",
-          justifyContent: "center",
-          flexDirection: "row",
-          // marginTop: 10,
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            height: 20,
-            width: 20,
-            position: "absolute",
-            left: "4%",
-            marginTop: "4%",
-          }}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Image
-            style={{ height: 20, width: 20, resizeMode: "contain" }}
-            source={require("../../../assets/images/blackBack.png")}
-          ></Image>
-        </TouchableOpacity>
-
-        <PoppinsTextMedium
-          style={{
-            fontSize: 20,
-            color: "#ffffff",
-            marginTop: "3%",
-            position: "absolute",
-            left: 50,
-          }}
-          content={t("Request inquiry")}
-        ></PoppinsTextMedium>
-      </View>
+      <TopHeader title={t("Request inquiry")} />
       {/* navigator */}
 
       <View style={{ marginTop: "20%", alignItems: "center" }}>

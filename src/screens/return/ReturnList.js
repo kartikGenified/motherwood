@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { useReturnInfoMutation, useReturnListMutation } from "../../apiServices/return/returnApi";
 import * as Keychain from "react-native-keychain";
 import { setError } from "../../../redux/slices/errorSlice";
+import TopHeader from "@/components/topBar/TopHeader";
 
 const ReturnList = ({navigation}) => {
   const [data, setData] = useState();
@@ -270,42 +271,7 @@ const ReturnList = ({navigation}) => {
         height: "100%",
       }}
     >
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "flex-start",
-          flexDirection: "row",
-          width: "100%",
-          marginTop: 10,
-          height: "10%",
-          marginLeft: 20,
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: "contain",
-              marginLeft: 10,
-            }}
-            source={require("../../../assets/images/blackBack.png")}
-          ></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content={t("Return List")}
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: "700",
-            color: "white",
-          }}
-        ></PoppinsTextMedium>
-      </View>
+      <TopHeader title={t("Return List")} />
       <View
         style={{
           height: "90%",

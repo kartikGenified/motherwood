@@ -23,6 +23,7 @@ import ErrorModal from "../../components/modals/ErrorModal";
 import MessageModal from "../../components/modals/MessageModal";
 import Close from "react-native-vector-icons/Ionicons";
 import dayjs from "dayjs";
+import TopHeader from "@/components/topBar/TopHeader";
 
 // create a component
 const UserManagementDetails = (params) => {
@@ -286,39 +287,7 @@ const UserManagementDetails = (params) => {
         )}
 
         {/* coloured header */}
-        <View style={{ width: "100%", backgroundColor: secondaryThemeColor }}>
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "flex-start",
-              flexDirection: "row",
-              width: "100%",
-              marginTop: 10,
-              height: 50,
-              marginLeft: 20,
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}
-            >
-              <Image
-                style={{ height: 30, width: 30, resizeMode: "contain" }}
-                source={require("../../../assets/images/blackBack.png")}
-              ></Image>
-            </TouchableOpacity>
-            <PoppinsTextMedium
-              content={t("View Profile")}
-              style={{
-                marginLeft: 10,
-                fontSize: 18,
-                fontWeight: "700",
-                color: "black",
-              }}
-            ></PoppinsTextMedium>
-          </View>
-        </View>
+        <TopHeader title={t("View Profile")} />
 
         <SingleComponent title={"Customer ID"} value={route?.id} />
         <SingleComponent title={"User Type"} value={route?.user_type} />
