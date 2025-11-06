@@ -1013,7 +1013,7 @@ const KycVerificationDynamic = ({ navigation }) => {
 					behavior={Platform.OS === "ios" ? "padding" : "height"}
 					style={styles.keyboardAvoidingView}
 				>
-					<TopHeader title={t("Verify your KYC")} transparent />
+					<TopHeader title={t("Verify your KYC")} />
 					<ScrollView style={styles.scrollView}>
 						<View style={styles.contentContainer}>
 							<Image style={styles.kycLogo} source={require("./assets/images/kyclogo.png")} />
@@ -1131,7 +1131,7 @@ const styles = StyleSheet.create({
 	},
 	contentContainer: {
 		alignItems: "center",
-		paddingBottom: 20,
+		paddingVertical: 20,
 	},
 	kycLogo: {
 		height: 100,

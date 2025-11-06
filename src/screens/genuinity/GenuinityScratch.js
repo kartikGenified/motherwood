@@ -17,6 +17,7 @@ import axios from 'axios';
 import {useClaimGenuinityMutation,useCheckGenuinityMutation } from '../../apiServices/workflow/genuinity/GetGenuinityApi';
 import * as Keychain from'react-native-keychain'
 import { useTranslation } from 'react-i18next';
+import TopHeader from '@/components/topBar/TopHeader';
 const GenuinityScratch = ({navigation,route}) => {
   const [message, setMessage] = useState();
   const [error, setError] = useState(false);
@@ -257,34 +258,7 @@ const GenuinityScratch = ({navigation,route}) => {
           message={message}
           openModal={error}></ErrorModal>
       )}
-     <View
-        style={{
-          height: '10%',
-          width: '100%',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'absolute',
-          top: 0,
-        }}>
-        <TouchableOpacity
-          style={{height: 20, width: 20, position: 'absolute', left: 10}}
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Image
-            style={{height: 20, width: 20, resizeMode: 'contain'}}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          style={{
-            fontSize: 16,
-            fontWeight: '700',
-            color: '#353535',
-            position: 'absolute',
-            left: 60,
-          }}
-          content={t("Genuine Product")}></PoppinsTextMedium>
-      </View>
+      <TopHeader title={t("Genuine Product")} />
       <View
         style={{
           height: '90%',

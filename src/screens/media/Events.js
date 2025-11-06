@@ -21,6 +21,7 @@ import DataNotFound from "../data not found/DataNotFound";
 import { useTranslation } from "react-i18next";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import EventModal from "./EventModal";
+import TopHeader from "@/components/topBar/TopHeader";
 
 // create a component
 const Events = ({navigation}) => {
@@ -140,46 +141,7 @@ const fetchMediaData = async () => {
 
   return (
     <View style={{width:'100%',height:'100%'}}>
-      <View
-        style={{
-          height: '10%',
-          width: "100%",
-          backgroundColor: secondaryThemeColor,
-          alignItems: "flex-start",
-          justifyContent: "center",
-          flexDirection: "row",
-          // marginTop: 10,
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            height: 20,
-            width: 20,
-            position: "absolute",
-            left: 20,
-            marginTop: 20,
-          }}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Image
-            style={{ height: 20, width: 20, resizeMode: "contain" }}
-            source={require("../../../assets/images/blackBack.png")}
-          ></Image>
-        </TouchableOpacity>
-
-        <PoppinsTextMedium
-          style={{
-            fontSize: 20,
-            color: "black",
-            marginTop: 15,
-            position: "absolute",
-            left: 60,
-          }}
-          content={t("Events")}
-        ></PoppinsTextMedium>
-      </View>
+      <TopHeader title={t("Events")} />
       <View style={{width:'100%',alignItems:'center', justifyContent:'center',flexDirection:"row",height:'10%'}}>
           <TouchableOpacity onPress={()=>{
             setSelected("current")

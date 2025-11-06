@@ -27,6 +27,7 @@ import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import { useUploadSingleFileMutation } from "../../apiServices/imageApi/imageApi";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { Image as RNCompressor } from "react-native-compressor"; // Import for compression
+import TopHeader from "@/components/topBar/TopHeader";
 const Feedback = ({ navigation }) => {
   //states
   const [starCount, setStarCount] = useState(0);
@@ -179,46 +180,8 @@ const Feedback = ({ navigation }) => {
   return (
     <View style={[styles.container, { backgroundColor: 'white' }]}>
       {/* Navigator */}
-      <View
-        style={{
-          height: 70,
-          width: "100%",
-          backgroundColor: secondaryThemeColor,
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "row",
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            height: 20,
-            width: 20,
-            position: "absolute",
-            left: 20,
-            marginTop: 10,
-          }}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Image
-            style={{ height: 20, width: 20, resizeMode: "contain" }}
-            source={require("../../../assets/images/blackBack.png")}
-          ></Image>
-        </TouchableOpacity>
-
-        <PoppinsTextMedium
-          style={{
-            fontSize: 20,
-            color: "#000",
-            marginTop: 5,
-            position: "absolute",
-            left: 60,
-            fontWeight: "bold",
-          }}
-          content={t("Feedback For App")}
-        ></PoppinsTextMedium>
-      </View>
+      
+      <TopHeader title={t("Feedback For App")} />
       {/* navigator */}
 
       <ScrollView contentContainerStyle={{ width: "100%" }}>

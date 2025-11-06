@@ -6,6 +6,7 @@ import LinearGradient from "react-native-linear-gradient";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import FastImage from "react-native-fast-image";
 import FlipAnimation from "../../components/animations/FlipAnimation";
+import TopHeader from "@/components/topBar/TopHeader";
 const ComingSoonScreen = ({ navigation }) => {
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
@@ -18,34 +19,7 @@ const ComingSoonScreen = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#ffffff20" }}>
-      {/* Header */}
-      <View
-        style={{
-          height: 60,
-          width: "100%",
-          backgroundColor: "#FFF8E7",
-          alignItems: "flex-start",
-          justifyContent: "center",
-          flexDirection: "row",
-        }}
-      >
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Image
-            style={styles.backIcon}
-            source={require("../../../assets/images/blackBack.png")}
-          />
-        </TouchableOpacity>
-
-        <PoppinsTextMedium
-          style={styles.headerText}
-          content={t("Coming Soon")}
-        />
-      </View>
+      <TopHeader title={t("Coming Soon")} />
 
       {/* Main Content */}
       <View style={styles.content}>

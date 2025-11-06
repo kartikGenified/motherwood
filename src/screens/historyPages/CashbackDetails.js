@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import ButtonNavigate from '../../components/atoms/buttons/ButtonNavigate';
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next';
+import TopHeader from '@/components/topBar/TopHeader';
 
 const CashbackDetails = ({navigation,route}) => {
     
@@ -28,18 +29,7 @@ const CashbackDetails = ({navigation,route}) => {
     console.log("Transaction data is :",data)
     return (
         <View style={{alignItems:"center",justifyContent:"flex-start",height:'100%'}}>
-            <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:10,height:40,marginLeft:20}}>
-            <TouchableOpacity onPress={()=>{
-                navigation.goBack()
-            }}>
-            <Image style={{height:24,width:24,resizeMode:'contain',marginLeft:10}} source={require('../../../assets/images/blackBack.png')}></Image>
-
-            </TouchableOpacity>
-            <PoppinsTextMedium content ={t("Cashback Details")} style={{marginLeft:10,fontSize:16,fontWeight:'600',color:'#171717', fontWeight:'bold'}}></PoppinsTextMedium>
-            {/* <TouchableOpacity style={{marginLeft:160}}>
-            <Image style={{height:30,width:30,resizeMode:'contain'}} source={require('../../../assets/images/notificationOn.png')}></Image>
-            </TouchableOpacity> */}
-            </View>
+            <TopHeader title={t("Cashback Details")} />
             
             <View style={{alignItems:"center",justifyContent:"center",marginTop:40}}>
                 <Image style={{height:80,width:80,resizeMode:"contain"}} source={require('../../../assets/images/greenRupee.png')}></Image>

@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import SocialBottomBar from '../../components/socialBar/SocialBottomBar';
+import TopHeader from '@/components/topBar/TopHeader';
 
 // create a component
 const FeedbackOptions = () => {
@@ -19,27 +20,7 @@ const FeedbackOptions = () => {
     const navigation =  useNavigation()
     return (
         <View style={styles.container}>
-              <View
-                style={{
-                    height: 70,
-                    backgroundColor:secondaryThemeColor,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-
-                }}>
-                <TouchableOpacity
-                    style={{ height: 20, width: 20, position: 'absolute', left: 20, marginTop: 10 }}
-                    onPress={() => {
-                        navigation.goBack();
-                    }}>
-                    <Image
-                        style={{ height: 20, width: 20, resizeMode: 'contain' }}
-                        source={require('../../../assets/images/blackBack.png')}></Image>
-                </TouchableOpacity>
-                <PoppinsTextMedium style={{ fontSize: 20, color: 'black', marginTop: 5, position: 'absolute', left: 60, fontWeight:'bold'}} content={t("Rating/Feedback")}></PoppinsTextMedium>
-            </View>
-
+        <TopHeader title={t("Rating/Feedback")} />
         <View style={{marginTop:'20%',alignItems:'center'}}>
                     <TouchableOpacity onPress={()=>{
                         navigation.navigate("Feedback")

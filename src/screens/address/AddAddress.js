@@ -15,6 +15,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { getCurrentLocation } from "../../utils/getCurrentLocation"; 
 import { GoogleMapsKey } from "@env";
 import { useTranslation } from "react-i18next";
+import TopHeader from "@/components/topBar/TopHeader";
 
 const AddAddress = ({ navigation }) => {
   const [message, setMessage] = useState();
@@ -222,37 +223,7 @@ const AddAddress = ({ navigation }) => {
       }}
     >
       
-      {/* Navigator */}
-      <View
-        style={{
-          height: "10%",
-          width: "100%",
-          backgroundColor: "#FFF8E7",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          flexDirection: "row",
-
-          // marginTop: 10,
-        }}
-      >
-        <TouchableOpacity
-          style={{ height: 20, width: 20, marginLeft: 10 }}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Image
-            style={{ height: 20, width: 20, resizeMode: "contain" }}
-            source={require("../../../assets/images/blackBack.png")}
-          ></Image>
-        </TouchableOpacity>
-
-        <PoppinsTextMedium
-          style={{ fontSize: 20, color: "black", marginLeft: 10 }}
-          content={t("Add Address")}
-        ></PoppinsTextMedium>
-      </View>
-      {/* navigator */}
+      <TopHeader title={t("Add Address")}></TopHeader>
       
       {
         <View style={{ marginTop: 20, alignItems: "center" }}>

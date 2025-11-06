@@ -23,6 +23,7 @@ import { useCreateUserMappingMutation } from '../../apiServices/userMapping/user
 import { useGetFormAccordingToAppUserTypeFormIdMutation } from '../../apiServices/workflow/GetForms';
 import ListUsers from './ListUsers';
 import { useTranslation } from 'react-i18next';
+import TopHeader from '@/components/topBar/TopHeader';
 
 const AddUser = ({ navigation }) => {
   const [addUserForm, setAddUserForm] = useState()
@@ -482,16 +483,7 @@ const AddUser = ({ navigation }) => {
           navigateTo="Dashboard"
         ></MessageModal>
       )}
-      <View style={{ alignItems: "center", justifyContent: "flex-start", flexDirection: "row", width: '100%', marginTop: 20, height: '10%', marginLeft: 20, }}>
-        <TouchableOpacity onPress={() => {
-          navigation.goBack()
-        }}>
-          <Image style={{ height: 24, width: 24, resizeMode: 'contain', marginLeft: 10 }} source={require('../../../assets/images/blackBack.png')}></Image>
-
-        </TouchableOpacity>
-        <PoppinsTextMedium content={t("Add User")} style={{ marginLeft: 10, fontSize: 16, fontWeight: '600', color: 'white' }}></PoppinsTextMedium>
-
-      </View>
+      <TopHeader title={t("Add User")} />
       <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%', backgroundColor: 'white', height: '90%', borderTopRightRadius: 30, borderTopLeftRadius: 30, paddingTop: 40 }}>
         {/* <KeyboardAvoidingView style={{width:"100%"}}> */}
         <ScrollView style={{ width: '100%' }} contentContainerStyle={{ alignItems: "center", justifyContent: "center", }}>

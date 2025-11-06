@@ -9,6 +9,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import TopHeader from '@/components/topBar/TopHeader';
 
 
 
@@ -77,32 +78,7 @@ const TierDetails = ({navigation}) => {
 
     return (
         <>
-            {/* Navigator */}
-            <View
-                style={{
-                    height: '10%',
-                    width: '100%',
-                    backgroundColor: ternaryThemeColor,
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
-                    flexDirection: 'row',
-                    // marginTop: 10,
-                }}>
-                <TouchableOpacity
-                    style={{ height: 20, width: 20,marginLeft:10}}
-                    onPress={() => {
-                        navigation.goBack();
-                    }}>
-                    <Image
-                        style={{ height: 20, width: 20, resizeMode: 'contain' }}
-                        source={require('../../../assets/images/blackBack.png')}></Image>
-                </TouchableOpacity>
-
-                <PoppinsTextMedium style={{ fontSize: 20, color: '#ffffff',marginLeft:10 }} content={t("Tier Details")}></PoppinsTextMedium>
-
-
-            </View>
-            {/* navigator */}
+            <TopHeader title={t("Tier Details")} />
             <ScrollView horizontal={true} style={styles.container}>
 
                 {getMembershipData?.body.map((itm,index) => {

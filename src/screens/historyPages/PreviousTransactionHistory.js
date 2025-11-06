@@ -7,6 +7,7 @@ import * as Keychain from 'react-native-keychain';
 import DataNotFound from '../data not found/DataNotFound';
 import { dispatchCommand } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
+import TopHeader from '@/components/topBar/TopHeader';
 
 const PreviousTransactionHistory = ({navigation}) => {
     const [displayList, setDisplayList] = useState()
@@ -163,45 +164,7 @@ const PreviousTransactionHistory = ({navigation}) => {
       };
     return (
         <View style={{height:'100%',width:'100%',alignItems:'center',justifyContent:'center'}}>
-            <View
-            style={{
-              alignItems: "center",
-              justifyContent: "flex-start",
-              flexDirection: "row",
-              width: "100%",
-              marginTop: 10,
-              height: 40,
-              marginLeft: 20,
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}
-            >
-              <Image
-                style={{
-                  height: 24,
-                  width: 24,
-                  resizeMode: "contain",
-                  marginLeft: 10,
-                }}
-                source={require("../../../assets/images/blackBack.png")}
-              ></Image>
-            </TouchableOpacity>
-            <PoppinsTextMedium
-              content={t("Previous Transaction History")}
-              style={{
-                marginLeft: 10,
-                fontSize: 16,
-                fontWeight: "800",
-                color: "#171717",
-              }}
-            ></PoppinsTextMedium>
-            <TouchableOpacity style={{ marginLeft: 160 }}>
-              {/* <Image style={{ height: 30, width: 30, resizeMode: 'contain' }} source={require('../../../assets/images/notificationOn.png')}></Image> */}
-            </TouchableOpacity>
-          </View>
+          <TopHeader title={t("Previous Transaction History")} />
           <FlatList
             style={{width:'100%',height:'100%'}}
                 data={displayList}

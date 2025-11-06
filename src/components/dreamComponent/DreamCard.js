@@ -240,9 +240,10 @@ const DreamCard = () => {
                 <View style={{ width: "50%", justifyContent: "center" }}>
                   <Image
                     style={{
-                      height: 100,
-                      width: 140,
+                      height: 130,
+                      width: 200,
                       resizeMode: "contain",
+                      zIndex:-1
                     }}
                     source={{ uri: dreamGift.images[0] }}
                   />

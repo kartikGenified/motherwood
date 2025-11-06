@@ -24,6 +24,7 @@ import { useGetQueriesTypeMutation, useSubmitQueriesMutation } from '../../apiSe
 import PrefilledTextInput from '../../components/atoms/input/PrefilledTextInput';
 import FeedbackTextArea from '../../components/modals/feedback/FeedbackTextArea';
 import { useTranslation } from 'react-i18next';
+import TopHeader from '@/components/topBar/TopHeader';
 
 const SupportQueries = ({ navigation }) => {
   const [error, setError] = useState(false)
@@ -189,43 +190,7 @@ const SupportQueries = ({ navigation }) => {
           navigateTo={"Dashboard"}
         ></MessageModal>
       )}
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100%',
-          height: '10%',
-        }}>
-        <TouchableOpacity
-          style={{
-            height: 24, width: 24,
-            position: 'absolute',
-            top: 20,
-            left: 10
-          }}
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-              marginLeft: 10,
-            }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <View style={{ alignItems: 'center', justifyContent: 'center', position: "absolute", top: 20, left: 50 }}>
-          <PoppinsTextMedium
-            content={t("Support Queries")}
-            style={{
-              marginLeft: 10,
-              fontSize: 16,
-              fontWeight: '700',
-              color: 'white',
-            }}></PoppinsTextMedium>
-        </View>
-      </View>
+      <TopHeader title={t("Support Queries")} />
       <View style={{ backgroundColor: 'white', height: '90%', width: '100%', alignItems: 'center', borderTopLeftRadius: 20, borderTopRightRadius: 20, marginTop: 20 }}>
 
         <View style={{ marginTop: 20, width: '100%', alignItems: 'center' }}>

@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 
 // create a component
-const TopHeader = ({title, transparent}) => {
+const TopHeader = ({title, transparent, onBackPress}) => {
 
     const ternaryThemeColor = useSelector(
         (state) => state.apptheme.ternaryThemeColor
@@ -26,7 +26,7 @@ const TopHeader = ({title, transparent}) => {
     return (
         <View
         style={{
-          height: 70,
+          height: 60,
           width: "100%",
           backgroundColor: transparent ? "transparent" : secondaryThemeColor,
           alignItems: "center",
@@ -43,7 +43,7 @@ const TopHeader = ({title, transparent}) => {
             marginTop: 10,
           }}
           onPress={() => {
-            navigation.goBack();
+            onBackPress ? onBackPress() : navigation.goBack();
           }}
         >
           <Image

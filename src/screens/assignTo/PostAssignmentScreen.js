@@ -21,6 +21,7 @@ import * as Keychain from "react-native-keychain";
 import MessageModal from "../../components/modals/MessageModal";
 import ErrorModal from "../../components/modals/ErrorModal";
 import TopBar from "../../components/topBar/TopBar";
+import TopHeader from "@/components/topBar/TopHeader";
 
 const PostAssignmentScreen = ({ navigation, route }) => {
   const [qrList, setQrList] = useState([]);
@@ -151,7 +152,7 @@ const PostAssignmentScreen = ({ navigation, route }) => {
             buttonText="Close"
           ></MessageModal>
         )}
-      <TopBar title="Assigned Items"></TopBar>
+      <TopHeader title={t("Assigned Items")} />
       <PoppinsTextMedium
         style={{
           color: "black",

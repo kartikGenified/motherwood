@@ -39,6 +39,7 @@ import {
   useGetProductsByCategoryMutation,
 } from "../../apiServices/product/getProducts";
 import DropDownWithSearch from "../../components/atoms/dropdown/DropDownWithSearch";
+import TopHeader from "@/components/topBar/TopHeader";
 
 
 
@@ -327,7 +328,6 @@ const FeedbackProducts = ({ navigation }) => {
 
   return (
     <View style={[styles.container, { backgroundColor: "white" }]}>
-      {/* Navigator */}
       <BottomModal
         modalClose={modalClose}
         message={message}
@@ -336,47 +336,7 @@ const FeedbackProducts = ({ navigation }) => {
         // comp={Comp}
         // handleCompResp={handleCompResp}
       ></BottomModal>
-      <View
-        style={{
-          height: 70,
-          width: "100%",
-          backgroundColor: secondaryThemeColor,
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "row",
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            height: 20,
-            width: 20,
-            position: "absolute",
-            left: 20,
-            marginTop: 10,
-          }}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Image
-            style={{ height: 20, width: 20, resizeMode: "contain" }}
-            source={require("../../../assets/images/blackBack.png")}
-          ></Image>
-        </TouchableOpacity>
-
-        <PoppinsTextMedium
-          style={{
-            fontSize: 20,
-            color: "#000",
-            marginTop: 5,
-            position: "absolute",
-            left: 60,
-            fontWeight: "bold",
-          }}
-          content={t("Feedback For Product")}
-        ></PoppinsTextMedium>
-      </View>
-      {/* navigator */}
+      <TopHeader title={t("Feedback For Product")} />
 
       <ScrollView
         contentContainerStyle={{

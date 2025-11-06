@@ -163,27 +163,57 @@ const PanVerificationDialog = ({
 		(text) => {
 			if (isPreVerified || isVerified) return;
 
+			// PAN format: 5 letters + 4 digits + 1 letter (e.g., EFSPB8817R)
 			const upperText = text.toUpperCase().replace(/[^A-Z0-9]/g, "");
-			setLocalPan(upperText);
+			
+			// Validate PAN format as user types
+			let formattedPan = '';
+			for (let i = 0; i < upperText.length && i < 10; i++) {
+				const char = upperText[i];
+				if (i < 5) {
+					// First 5 positions should be letters
+					if (/[A-Z]/.test(char)) {
+						formattedPan += char;
+					}
+				} else if (i < 9) {
+					// Positions 6-9 should be digits
+					if (/[0-9]/.test(char)) {
+						formattedPan += char;
+					}
+				} else {
+					// Last position should be a letter
+					if (/[A-Z]/.test(char)) {
+						formattedPan += char;
+					}
+				}
+			}
+			
+			setLocalPan(formattedPan);
 			setErrorMessage(null);
 			setVerifiedApiData(null);
 			setHasSubmitted(false);
 
-			if (upperText.length === 10) {
-				console.log("PAN input reached 10 chars, verifying:", upperText);
-				verifyPanFunc({ pan: upperText })
-					.unwrap()
-					.then((res) => {
-						console.log("PAN verify API success:", JSON.stringify(res));
-					})
-					.catch((error) => {
-						console.log("PAN verify API error:", JSON.stringify(error));
-						setErrorMessage(error.data?.message || error.message || t("Failed to verify PAN"));
-						setIsVerified(false);
-					});
+			// Validate complete PAN format before API call
+			if (formattedPan.length === 10) {
+				const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+				if (panRegex.test(formattedPan)) {
+					console.log("PAN input reached 10 chars with valid format, verifying:", formattedPan);
+					verifyPanFunc({ pan: formattedPan })
+						.unwrap()
+						.then((res) => {
+							console.log("PAN verify API success:", JSON.stringify(res));
+						})
+						.catch((error) => {
+							console.log("PAN verify API error:", JSON.stringify(error));
+							setErrorMessage(error.data?.message || error.message || t("Failed to verify PAN"));
+							setIsVerified(false);
+						});
+				} else {
+					setErrorMessage(t("Invalid PAN format. Format should be: 5 letters + 4 digits + 1 letter"));
+				}
 			}
 		},
-		[isVerified, isPreVerified, verifyPanFunc]
+		[isVerified, isPreVerified, verifyPanFunc, t]
 	);
 
 	const handleNameChange = useCallback(
