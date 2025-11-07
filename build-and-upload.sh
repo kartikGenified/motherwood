@@ -12,6 +12,14 @@ RED='\033[0;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
+# Ask user for environment: production or staging
+read -p "Is this a production build? (y/n): " IS_PRODUCTION
+if [[ "$IS_PRODUCTION" =~ ^[Yy]$ ]]; then
+    ENV_SUFFIX="production"
+else
+    ENV_SUFFIX="staging"
+fi
+
 echo -e "${GREEN}========================================${NC}"
 echo -e "${GREEN}Building Android APK${NC}"
 echo -e "${GREEN}========================================${NC}"
@@ -30,13 +38,18 @@ fi
 
 echo -e "${GREEN}APK built successfully: $APK_PATH${NC}"
 
-# Get APK filename
-APK_FILENAME=$(basename "$APK_PATH")
+
+
+
+# Get APK filename and append environment
+APK_FILENAME_ORIG=$(basename "$APK_PATH")
+APK_FILENAME="${APK_FILENAME_ORIG%.apk}-$ENV_SUFFIX.apk"
 
 echo -e "${YELLOW}APK will be uploaded as: $APK_FILENAME${NC}"
 
-# Set the upload path to the original APK
-APK_UPLOAD_PATH="$APK_PATH"
+# Copy APK to new filename with environment suffix
+APK_UPLOAD_PATH="app/build/outputs/apk/release/$APK_FILENAME"
+cp "$APK_PATH" "$APK_UPLOAD_PATH"
 
 # Return to project root
 cd ..
@@ -82,10 +95,10 @@ if command -v gdrive &> /dev/null; then
         
         # Generate the shareable URL
         SHARE_LINK="https://drive.google.com/file/d/$FILE_ID/view?usp=sharing"
-        echo -e "${GREEN}========================================${NC}"
-        echo -e "${GREEN}Shareable Link:${NC}"
-        echo -e "${YELLOW}$SHARE_LINK${NC}"
-        echo -e "${GREEN}========================================${NC}"
+    echo -e "${GREEN}========================================${NC}"
+    echo -e "${GREEN}Shareable Link (${ENV_SUFFIX}):${NC}"
+    echo -e "${YELLOW}$SHARE_LINK${NC}"
+    echo -e "${GREEN}========================================${NC}"
     else
         echo -e "${YELLOW}Upload completed but couldn't extract file ID for sharing${NC}"
     fi
