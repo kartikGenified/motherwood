@@ -92,9 +92,22 @@ if command -v gdrive &> /dev/null; then
     
 else
     echo -e "${RED}Error: gdrive CLI tool not found!${NC}"
-    echo -e "${YELLOW}Please install gdrive:${NC}"
+    echo -e "${YELLOW}Please install gdrive for your operating system:${NC}"
     echo ""
-    echo "   brew install gdrive"
+    
+    # Detect OS and show appropriate instructions
+    if [[ "$(uname)" == "Darwin" ]]; then
+        echo "macOS (using Homebrew):"
+        echo "   brew install gdrive"
+    elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
+        echo "Ubuntu/Debian (Linux):"
+        echo "   1. Download the binary from the gdrive GitHub releases page."
+        echo "   2. Make it executable: chmod +x gdrive_linux-x64"
+        echo "   3. Move it to your path: sudo mv gdrive_linux-x64 /usr/local/bin/gdrive"
+    else
+        echo "Could not detect OS. Please install gdrive manually."
+    fi
+    
     echo ""
     echo -e "${GREEN}APK is ready at: android/$APK_PATH${NC}"
     exit 1
