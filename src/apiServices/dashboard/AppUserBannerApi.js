@@ -1,6 +1,5 @@
-import { baseApi } from "../baseApi";
-import { slug } from "../../utils/Slug";
-export const AppUserBannerApi = baseApi.injectEndpoints({
+import { baseAuthApi } from "../baseApi";
+export const AppUserBannerApi = baseAuthApi.injectEndpoints({
     endpoints:(builder) =>({
         getAppUserBannerData : builder.mutation({
             query(token){
@@ -8,13 +7,6 @@ export const AppUserBannerApi = baseApi.injectEndpoints({
                 return {
                     url:`api/tenant/appBanner`,
                     method:'get',
-                    headers:{
-                        "Content-Type": "application/json",
-                        "slug":slug,
-                        "Authorization": `Bearer ${token}`,
-                    },
-                    
-                   
                 }
             }
         })

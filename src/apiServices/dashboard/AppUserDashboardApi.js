@@ -1,24 +1,13 @@
-import { baseApi } from "../baseApi";
-import { slug } from "../../utils/Slug";
+import { baseAuthApi } from "../baseApi";
 
 
-
-
-
-export const AppUserDashboardApi = baseApi.injectEndpoints({
+export const AppUserDashboardApi = baseAuthApi.injectEndpoints({
     endpoints: (builder) =>({
         getAppDashboardData : builder.mutation({
-            query(token){
-                
-                console.log("token is",token)
+            query(){
                 return {
                     url:`/api/app/appUserDashboard/`,
                     method:'get',
-                    headers:{
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`,
-                        "slug":slug
-                    }, 
                 }
             }
         })

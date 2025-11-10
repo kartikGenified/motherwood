@@ -1,35 +1,22 @@
-import { baseApi } from "@/apiServices/baseApi";
-import { slug } from "@/utils/Slug";
+import { baseAuthApi } from "@/apiServices/baseApi";
 
-export const DigilockerApi = baseApi.injectEndpoints({
+export const DigilockerApi = baseAuthApi.injectEndpoints({
   endpoints: (builder) => ({
     aadharKycGenerate: builder.mutation({
       query: (body) => {
-        console.log("aadharKycGenerate body", body.data);
         return {
           method: "POST",
           url: `/api/app/digilocker-aadhaar/generate`,
-          headers: {
-            Authorization: "Bearer " + body.token,
-            slug: slug,
-          },
-          body: body.data,
+          body: body,
         };
       },
     }),
     aadharKycStatus: builder.mutation({
       query: (body) => {
-        console.log("boddyyyy", body.data);
-        
-
         return {
           method: "POST",
           url: `/api/app/digilocker-aadhaar/verify`,
-          headers: {
-            Authorization: "Bearer " + body.token,
-            slug: slug,
-          },
-          body: body.data,
+          body: body,
         };
       },
     }),

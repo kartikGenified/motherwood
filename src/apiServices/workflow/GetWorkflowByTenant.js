@@ -1,6 +1,6 @@
-import { baseApi } from "../baseApi";
+import { baseAuthApi } from "../baseApi";
 import { slug } from "../../utils/Slug";
-export const GetWorkflowByTenant = baseApi.injectEndpoints({
+export const GetWorkflowByTenant = baseAuthApi.injectEndpoints({
     endpoints:(builder) =>({
         getWorkflow : builder.mutation({
             query({userId,token}){
@@ -8,13 +8,6 @@ export const GetWorkflowByTenant = baseApi.injectEndpoints({
                 return {
                     method: 'GET',
                     url: `api/admin/workflow?tenant_id=${slug}&user_type_id=${userId}`,
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: "Bearer " + token,
-                        slug:slug
-                    },
-                    
-                   
                 }
             }
         })

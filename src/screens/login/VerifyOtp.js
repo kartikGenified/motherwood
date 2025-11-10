@@ -353,6 +353,7 @@ useEffect(()=>{
 
   useEffect(() => {
     if (getAppMenuData) {
+      setLoading(false);
       // console.log("usertype", userData.user_type)
       console.log("getAppMenuData", JSON.stringify(getAppMenuData));
       getAppmenuCachedDispatch(navigationParams, dispatch, getAppMenuData);
@@ -363,6 +364,7 @@ useEffect(()=>{
       }, 2000);
 
     } else if (getAppMenuError) {
+      setLoading(false);
       console.log("getAppMenuError", getAppMenuError);
     }
   }, [getAppMenuData, getAppMenuError]);
@@ -417,6 +419,7 @@ useEffect(()=>{
       fetchMenu();
     } else if (getFormError) {
       console.log("getFormError", getFormError);
+      setLoading(false);
       setError(true);
       setMessage(t("Can't fetch forms for warranty."));
     }
@@ -432,6 +435,7 @@ useEffect(()=>{
     } else if (getWorkflowError) {
       console.log("getWorkflowError", getWorkflowError);
       setError(true);
+      setLoading(false);
       setMessage(t("Oops something went wrong"));
     }
   }, [getWorkflowData, getWorkflowError]);
@@ -441,9 +445,8 @@ useEffect(()=>{
       console.log("getDashboardData", getDashboardData, parsedJsonValue.token);
       getDashboardCachedDispatch(dispatch, getDashboardData);
       storeData("getDashboardData", getDashboardData);
-        dispatch(setDashboardData(getDashboardData?.body?.app_dashboard));
+      dispatch(setDashboardData(getDashboardData?.body?.app_dashboard));
       parsedJsonValue && getBannerFunc(parsedJsonValue?.token);
-      setLoading(false);
     } else if (getDashboardError) {
       setError(true);
       setMessage(t("Can't get dashboard data, kindly retry."));
@@ -495,6 +498,7 @@ useEffect(()=>{
           token: parsedJsonValue?.token,
         });
     } else if (getBannerError) {
+      setLoading(false);
       setError(true);
       setMessage(t("Unable to fetch app banners"));
       console.log("getBannerError", getBannerError);

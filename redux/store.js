@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { baseApi,supplyBeamApi } from '../src/apiServices/baseApi';
+import { baseApi,supplyBeamApi , baseAuthApi} from '../src/apiServices/baseApi';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import internetMiddleware from './middleware/internetMiddleware';
 import appUserSlice from './slices/appUserSlice';
@@ -36,6 +36,7 @@ import tapGameSlice from './slices/tapGameSlice';
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
+    [baseAuthApi.reducerPath]: baseAuthApi.reducer,
     [supplyBeamApi.reducerPath]: supplyBeamApi.reducer,
     appusers: appUserSlice,
     apptheme: appThemeSlice,
@@ -68,7 +69,7 @@ export const store = configureStore({
     birthday:birthdayModalSlice
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(baseApi.middleware, supplyBeamApi.middleware, internetMiddleware), // Include networkMiddleware
+    getDefaultMiddleware().concat(baseApi.middleware, supplyBeamApi.middleware, baseAuthApi.middleware, internetMiddleware), // Include networkMiddleware
 });
 
 setupListeners(store.dispatch);

@@ -76,22 +76,13 @@ const AadharVerify = (props) => {
     );
   };
 
-  const verifyAadhaar = async (aadhaar) => {
+  const verifyAadhaar = (aadhaar) => {
     setInputAadhaar(aadhaar);
-    try {
-        const credentials = await Keychain.getGenericPassword();
-        if (!credentials) throw new Error('No authentication credentials found');
-        const body = {
-            data: {
-                "aadhaar": aadhaar
-            },
-            token: credentials.username
-          }
-        aadharKycGenerateFunc(body);
-    } catch (error) {
-        console.error("Error handling Aadhar KYC:", error);
-    }
-  };
+    const body = {
+        "aadhaar": aadhaar
+    };
+    aadharKycGenerateFunc(body);
+};
   useEffect(() => {
     if (aadharKycGenerateData) {
       if (aadharKycGenerateData?.success) {
@@ -155,22 +146,11 @@ const AadharVerify = (props) => {
       
     }
   }, [aadharKycStatusData, aadharKycStatusError]);
-  const getAadharStatus = async () => {
-    try {
-      const credentials = await Keychain.getGenericPassword();
-      if (credentials) {
-        const body = {
-          data: {
-              "aadhaar": inputAadhaar
-          },
-          token: credentials?.username
-        }
-
-        aadharKycStatusFunc(body);
-      } 
-    } catch (error) {
-      console.log("Keychain couldn't be accessed!", error);
+  const getAadharStatus = () => {
+    const body = {
+      "aadhaar": inputAadhaar
     }
+    aadharKycStatusFunc(body);
   };
 
   const AadhaarVerificationDialog = (
