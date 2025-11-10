@@ -330,8 +330,8 @@ const TapTheDot = ({navigation}) => {
         >
           <Image
             style={{
-              height: 24,
-              width: 24,
+              height: 20,
+              width: 20,
               resizeMode: "contain",
               marginLeft: 10,
             }}
