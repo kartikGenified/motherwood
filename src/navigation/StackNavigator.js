@@ -14,7 +14,6 @@ import CongratulateOnScan from "../screens/Rewards/CongratulateOnScan";
 import ActivateWarranty from "../screens/waranty/ActivateWarranty";
 import Genuinity from "../screens/genuinity/Genuinity";
 import GenuineProduct from "../screens/genuinity/GenuineProduct";
-import Notification from "../screens/notification/Notification";
 import GenuinityScratch from "../screens/genuinity/GenuinityScratch";
 import Profile from "../screens/profile/Profile";
 import EditProfile from "../screens/profile/EditProfile";
@@ -809,14 +808,6 @@ const StackNavigator = () => {
           }}
           name="ActivateWarranty"
           component={ActivateWarranty}
-        ></Stack.Screen>
-
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="Notification"
-          component={Notification}
         ></Stack.Screen>
         <Stack.Screen
           options={{

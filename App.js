@@ -12,11 +12,11 @@ import { PaperProvider } from 'react-native-paper';
 import { InternetSpeedProvider } from './src/Contexts/useInternetSpeedContext';
 import GlobalErrorHandler from './src/utils/GlobalErrorHandler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import NotificationModal from './src/components/modals/NotificationModal';
 import notifee from '@notifee/react-native';
 import { navigate } from './src/utils/notifications/navigationService';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
+import { NotificationModal } from '@/modules/notification';
 const App = () => {
   const [notifModal, setNotifModal] = useState(false)
   const [notifData, setNotifData] = useState(null)
@@ -24,40 +24,6 @@ const App = () => {
 
   const { t } = useTranslation();
   console.log("Version check",JSON.stringify(VersionCheck.getPlayStoreUrl({ packageName: 'com.genefied.motherwood' })))
-  useEffect(() => {
-    console.log("inside onmessage use effect")
-      const unsubscribe = messaging().onMessage(async remoteMessage => {
-       setNotifModal(true)
-        setNotifData(remoteMessage?.notification)
-        setNotificationBody(remoteMessage)
-        await notifee.displayNotification({
-          title: remoteMessage.data?.title ?? 'No title',
-          body: remoteMessage.data?.body ?? 'No body',
-          ios: { sound: 'default' },
-        });
-    console.log("remote message",remoteMessage)
-      });
-      
-      return unsubscribe;
-    }, []);
-    useEffect(() => {
-      const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
-        console.log('Notification caused app to open from background state:', remoteMessage);
-        navigate('Notification')
-      });
-    
-      messaging()
-        .getInitialNotification()
-        .then(remoteMessage => {
-          if (remoteMessage) {
-            console.log('Notification caused app to open from quit state:', remoteMessage);
-            navigate('Notification')
-          }
-        });
-    
-      return unsubscribe;
-    }, []);
-     
     
 
       useEffect(() => {
@@ -139,15 +105,9 @@ const App = () => {
             <InternetSpeedProvider>
              
         <SafeAreaView style={{flex:1}}>
-        <NotificationModal
-  visible={notifModal}
-  onClose={() => setNotifModal(false)}
-  title={notifData?.title}
-  message={notifData?.body}
-  notificationBody = {notificationBody}
-  imageUrl={Platform.OS=='android'? notifData?.android?.imageUrl : notifData?.ios?.imageUrl} 
-  type="info"
-/>
+  <NotificationModal  
+    imageUrl={Platform.OS=='android'? notifData?.android?.imageUrl : notifData?.ios?.imageUrl} 
+  />
             <StackNavigator>
             <GlobalErrorHandler>
             

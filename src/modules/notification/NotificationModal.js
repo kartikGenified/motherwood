@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   Animated,
   Dimensions,
@@ -11,36 +11,36 @@ import {
   Modal,
   ScrollView,
 } from 'react-native';
-import { useMarkNotificationAsReadApiMutation } from '../../apiServices/pushNotification/notificationsApi';
-import * as Keychain from 'react-native-keychain';
+import useNotification from './useNotification';
+
 
 const { width } = Dimensions.get('window');
 
 const NotificationModal = ({
-  visible,
-  onClose,
-  title = 'Notification',
-  message,
-  type = 'info',
   duration = 4000,
   imageUrl,
-  notificationBody
 }) => {
   const slideAnim = useRef(new Animated.Value(-80)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const hasClosed = useRef(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const {newNotification} = useNotification();
 
   const [detailVisible, setDetailVisible] = useState(false);
 
-  const defaultImage = require('../../../assets/images/noti-small.png');
+  const defaultImage = require('./images/noti-small.png');
 
 
-  console.log("details modal vissible", visible)
+
+  useEffect(() => {
+    if (newNotification)
+    setModalVisible(true);
+  }, [newNotification]);
 
  
 
   useEffect(() => {
-    if (visible) {
+    if (modalVisible) {
       hasClosed.current = false;
 
       Animated.parallel([
@@ -62,7 +62,7 @@ const NotificationModal = ({
 
       return () => clearTimeout(timer);
     }
-  }, [visible]);
+  }, [modalVisible]);
 
   const handleClose = () => {
     if (hasClosed.current) return;
@@ -84,7 +84,7 @@ const NotificationModal = ({
       }),
     ]).start(() => {
       setDetailVisible(false)
-      onClose?.();
+      setModalVisible(false);
     });
   };
 
@@ -104,10 +104,10 @@ const NotificationModal = ({
 
   const handleDetailClose = () => {
     setDetailVisible(false);
-    onClose?.()
+    setModalVisible(false);
   };
 
-  if (!visible) return null;
+  if (!modalVisible) return null;
 
   return (
     <>
@@ -127,9 +127,9 @@ const NotificationModal = ({
             style={styles.image}
           />
           <View style={styles.textContainer}>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title}>{newNotification?.notification?.title || 'Notification'}</Text>
             <Text numberOfLines={2} style={styles.message}>
-              {message}
+              {newNotification?.notification?.body || ''}
             </Text>
           </View>
           <Pressable onPress={handleClose}>
@@ -151,8 +151,8 @@ const NotificationModal = ({
           source={isHttpUrl(imageUrl) ? { uri: imageUrl } : defaultImage}
           style={styles.detailImageLight}
         />
-        <Text style={styles.detailTitleLight}>{title}</Text>
-        <Text style={styles.detailMessageLight}>{message}</Text>
+        <Text style={styles.detailTitleLight}>{newNotification?.notification?.title || 'Notification'}</Text>
+        <Text style={styles.detailMessageLight}>{newNotification?.notification?.body || ''}</Text>
         <Pressable style={styles.dismissButtonLight} onPress={handleDetailClose}>
           <Text style={styles.dismissTextLight}>Close</Text>
         </Pressable>
