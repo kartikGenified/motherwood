@@ -195,7 +195,6 @@ const { isValid, refresh } = useKycValidation();
       }
 
       const handleRedeemButtonPress = (params) => {
-      
         if (Number(userPointData?.body?.point_balance) <= 0 ) {
           setError(true)
           setMessage(t("Sorry you don't have enough points."))
@@ -265,10 +264,11 @@ const { isValid, refresh } = useKycValidation();
                 <PoppinsTextMedium style={{width:300, marginTop:10, fontSize:18, color:'#ad0638', }} content={t("Unable to fetch your approval status")}></PoppinsTextMedium>
             }
             <SocialBottomBar/>
-            {error && (
-        <ErrorModal
+    
+        {error && ( <ErrorModal
           modalClose={modalClose}
           message={message}
+          openModal={error}
         ></ErrorModal>
       )}
       {success && (

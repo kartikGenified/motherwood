@@ -30,6 +30,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useGetUserStatusApiMutation } from '../../apiServices/userStatus/getUserStatus';
 import { useTranslation } from 'react-i18next';
 import TopHeader from '@/components/topBar/TopHeader';
+import SocialBottomBar from '@/components/socialBar/SocialBottomBar';
 
 const ReferAndEarn = ({ navigation }) => {
   const [openBottomInvitationModal, setOpenBottomInvitationModal] = useState(false)
@@ -384,6 +385,7 @@ const ReferAndEarn = ({ navigation }) => {
 
           </View>
         </View>
+      <SocialBottomBar showRelative={true} />
       </ScrollView>
     </View>
 

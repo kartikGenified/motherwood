@@ -385,12 +385,12 @@ const PointsTransferNext = (params) => {
             onBlur={handleQtyBlur}
             style={{
               backgroundColor: "#F1F1F1",
-              marginTop: 10,
+              marginTop: 15,
               textAlign: "center",
               paddingHorizontal: 10,
               borderRadius: 8,
               color: "black",
-            padding:Platform.OS=='ios' ? 14 : 6
+            padding:Platform.OS=='ios' ? 14 : 6,
               
             }}
             keyboardType="numeric"
