@@ -573,7 +573,7 @@ const UiList = ({
           onChangeText={onQtyChange}
           style={{
             backgroundColor: "#F1F1F1",
-            marginTop: 10,
+            marginTop: 15,
             textAlign: "center",
             paddingHorizontal: 10,
             borderRadius: 8,

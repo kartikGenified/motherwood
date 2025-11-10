@@ -125,7 +125,16 @@ android {
        pickFirst 'lib/arm64v8a/libc++_shared.so'
        pickFirst 'lib/x86_4/libc++_shared.so'
        pickFirst 'lib/armabi-v7a/libc++_shared.so'
-     }}
+     }
+
+    applicationVariants.configureEach { variant ->
+        variant.outputs.configureEach {
+            def appId = variant.applicationId.replace("com.genefied.", "")
+            def versionName = variant.versionName
+            outputFileName = "${appId}-${versionName}.apk"
+        }
+    }
+}
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin

@@ -195,14 +195,14 @@ const DreamGift = () => {
             style={{
               color: "black",
               fontWeight: "600",
-              fontSize: 15,
+              fontSize: 14,
               justifyContent: "center",
               textAlign: "center",
             }}
           >
-            {gift.name.length > 30
-              ? `${gift.name.substring(0, 30)}...`
-              : `${gift.name.substring(0, 30)}`}
+            {gift.name.length > 28
+              ? `${gift.name.substring(0, 28)}...`
+              : `${gift.name.substring(0, 28)}`}
           </Text>
           <Text
             style={{
@@ -320,8 +320,9 @@ const DreamGift = () => {
         <Image
           style={{
             marginLeft: 10,
-            height: 30,
-            width: 30,
+            marginTop: 5,
+            height: 20,
+            width: 20,
             resizeMode: "contain",
           }}
           source={require("../../../assets/images/whiteBack2x.png")}

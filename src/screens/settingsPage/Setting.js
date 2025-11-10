@@ -102,7 +102,7 @@ const Setting = ({ navigation }) => {
   }
 
   return (
-    <View style={{ height: '100%', width: '100%', backgroundColor: '#FFF8E7', alignItems: 'center', justifyContent: 'flex-start' }}>
+    <View style={{ height: '100%', width: '100%', backgroundColor: 'white', alignItems: 'center', justifyContent: 'flex-start' }}>
       <TopHeader title={t("Settings")} />
 
       {showDeleteModal && (
