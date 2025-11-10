@@ -11,6 +11,7 @@ import {
   Text,
   TouchableWithoutFeedback,
   Alert,
+  KeyboardAvoidingView,
 } from "react-native";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import { useSelector, useDispatch } from "react-redux";
@@ -72,6 +73,7 @@ import { useValidateRefferalApiMutation } from "../../apiServices/refferal/reffe
 import { useGetCityApiMutation } from "../../apiServices/location/getCity";
 import DropDownWithSearchForms from "../../components/atoms/dropdown/DropDownWithSearchForms";
 import { useGetCityFromStateApiMutation, useGetStateApiMutation } from "../../apiServices/location/getState";
+import TopHeader from "@/components/topBar/TopHeader";
 
 const BasicInfo = ({ navigation, route }) => {
   const [userName, setUserName] = useState();
@@ -823,7 +825,7 @@ const BasicInfo = ({ navigation, route }) => {
       setMappedUserType(data.value);
     }
     if ((data?.name).toLowerCase() === "name") {
-      setUserName(data?.value);
+      setUserName(data?.value?.trim?.());
     }
     if ((data?.name).toLowerCase() === "referral") {
       setRefferalCode(data?.value);
@@ -1051,7 +1053,11 @@ const BasicInfo = ({ navigation, route }) => {
       const field = registrationForm[i];
       console.log("Field", field);
       if (field.required) {
-        const value = responseMap.get(field.name);
+        let value = responseMap.get(field.name);
+        if (typeof value === "string") {
+          value = value?.trim?.();
+        }
+
         console.log("didnt get value for", value, field.name);
         if (!value) {
           isFormValid = false;
@@ -1297,6 +1303,7 @@ const BasicInfo = ({ navigation, route }) => {
   };
 
   return (
+    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
     <View
       style={{
         alignItems: "center",
@@ -1362,62 +1369,14 @@ const BasicInfo = ({ navigation, route }) => {
           }}
         ></MessageModal>
       )}
-
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          height: "12%",
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            height: 24,
-            width: 24,
-            position: "absolute",
-            top: 20,
-            left: 10,
-          }}
-          onPress={() => {
+      <TopHeader title={t("registration")} onBackPress={() => {
             navigation.navigate("OtpLogin", {
               needsApproval: navigationParams?.needsApproval,
               userType: navigationParams?.user_type,
               userId: navigationParams?.user_type_id,
               registrationRequired: navigationParams?.registrationRequired,
             });
-          }}
-        >
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: "contain",
-              marginLeft: 10,
-            }}
-            source={require("../../../assets/images/blackBack.png")}
-          ></Image>
-        </TouchableOpacity>
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            position: "absolute",
-            top: 20,
-            left: 50,
-          }}
-        >
-          <PoppinsTextMedium
-            content={t("registration")}
-            style={{
-              marginLeft: 10,
-              fontSize: 16,
-              fontWeight: "700",
-              color: "black",
-            }}
-          ></PoppinsTextMedium>
-        </View>
-      </View>
+          }} />
       {/* <View style={{ marginTop: 0, width: "100%", marginBottom: 20 }}>
         <ProgressMeter currentStage={formStage - 1}></ProgressMeter>
       </View> */}
@@ -1429,6 +1388,7 @@ const BasicInfo = ({ navigation, route }) => {
             alignItems: "center",
             justifyContent: "flex-start",
             paddingTop: 20,
+            paddingBottom: 40,
           }}
         >
           {formFound ? (
@@ -2064,6 +2024,7 @@ const BasicInfo = ({ navigation, route }) => {
         </View>
       </ScrollView>
     </View>
+    </KeyboardAvoidingView>
   );
 };
 
