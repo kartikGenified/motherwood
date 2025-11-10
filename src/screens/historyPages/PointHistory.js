@@ -722,23 +722,6 @@ const PointHistory = ({ navigation }) => {
 
       <Header></Header>
 
-      {displayList.length == 0 && !isLoading && (
-        <View style={{ justifyContent:'center',marginTop:'40%'}}>
-          <FastImage
-            style={{ width: 180, height: 180, }}
-            source={{
-              uri: noData, // Update the path to your GIF
-              priority: FastImage.priority.normal,
-            }}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-          <PoppinsTextMedium
-            style={{ color: "#808080", marginTop: -20, fontWeight: "bold" }}
-            content="NO DATA"
-          ></PoppinsTextMedium>
-        </View>
-      )}
-
       {isLoading && (
         <View style={{ backgroundColor: "white" }}>
           <FastImage
@@ -756,7 +739,7 @@ const PointHistory = ({ navigation }) => {
           />
         </View>
       )}
-      {displayList && !isLoading && (
+      {!isLoading && (
         <FlatList
           refreshing={refreshing}
           onRefresh={onRefresh}
@@ -784,6 +767,22 @@ const PointHistory = ({ navigation }) => {
             );
           }}
           keyExtractor={(item, index) => index}
+          ListEmptyComponent={()=>(
+        <View style={{ justifyContent:'center',marginTop:'40%'}}>
+          <FastImage
+            style={{ width: 180, height: 180, }}
+            source={{
+              uri: noData, // Update the path to your GIF
+              priority: FastImage.priority.normal,
+            }}
+            resizeMode={FastImage.resizeMode.contain}
+          />
+          <PoppinsTextMedium
+            style={{ color: "#808080", marginTop: -20, fontWeight: "bold" }}
+            content="NO DATA"
+          ></PoppinsTextMedium>
+        </View>
+      )}
         />
       )}
     </View>

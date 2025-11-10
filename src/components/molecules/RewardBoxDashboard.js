@@ -107,8 +107,10 @@ const RewardBoxDashboard = ({ refreshing }) => {
     }, [checkWalkThroughStatus]);
 
     useEffect(() => {
-        fetchPoints();
-    }, []);
+        if (focused) {
+            fetchPoints();
+        }
+    }, [focused, fetchPoints]);
 
     useEffect(() => {
         if (refreshing) {
