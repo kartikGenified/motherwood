@@ -86,8 +86,8 @@ const VideoGallery = ({ navigation }) => {
 
       
     return (
-      <TouchableOpacity onPress={() => { Linking.openURL(video) }} style={{ height: 400, width: '90%', borderRadius: 10, backgroundColor: 'white',  marginTop:20}}>
-        <View style={{ width: '100%', backgroundColor: "white", alignItems: "center", justifyContent: 'center', height: '50%' }}>
+      <TouchableOpacity onPress={() => { Linking.openURL(video) }} style={{ width: '90%', borderRadius: 10, backgroundColor: 'white',  marginTop:20}}>
+        <View style={{ width: '100%', backgroundColor: "white", alignItems: "center", justifyContent: 'center', height: 180 }}>
 
         <Image style={{position:'absolute', height:80,width:80,zIndex:1}} source={require('../../../assets/images/playButton.png')}></Image>
 

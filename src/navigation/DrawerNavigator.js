@@ -909,7 +909,7 @@ const CustomDrawer = (props) => {
               }}
             >
               <Image
-                style={{ height: 30, width: 30, resizeMode: "contain" }}
+                style={{ height: 20, width: 20, resizeMode: "contain" }}
                 source={require("../../assets/images/blackBack.png")}
               ></Image>
             </TouchableOpacity>
