@@ -1303,7 +1303,6 @@ const BasicInfo = ({ navigation, route }) => {
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
     <View
       style={{
         alignItems: "center",
@@ -2024,7 +2023,6 @@ const BasicInfo = ({ navigation, route }) => {
         </View>
       </ScrollView>
     </View>
-    </KeyboardAvoidingView>
   );
 };
 
