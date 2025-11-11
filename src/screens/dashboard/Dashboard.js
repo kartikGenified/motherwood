@@ -121,6 +121,7 @@ const Dashboard = ({ navigation }) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    fetchPoints();
     setTimeout(() => {
       setRefreshing(false);
     }, 1000);
@@ -295,7 +296,7 @@ const Dashboard = ({ navigation }) => {
       }
     };
     fetchData();
-  }, [focused]);
+  }, []);
 
   useEffect(() => {
     if (fetchProfileData) {
@@ -344,6 +345,11 @@ const Dashboard = ({ navigation }) => {
     }
   }, [locationSetup]);
 
+  useEffect(()=>{
+    fetchPoints();
+  },[])
+
+
   useEffect(() => {
     const handleBackPress = () => {
       // Navigate back when back button is pressed
@@ -353,7 +359,6 @@ const Dashboard = ({ navigation }) => {
       "hardwareBackPress",
       handleBackPress
     );
-    fetchPoints();
     dispatch(setQrIdList([]));
     dispatch({ type: "NETWORK_REQUEST" });
     return () => {
