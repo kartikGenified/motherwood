@@ -4,17 +4,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  Animated,
-  Dimensions,
   Text,
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
-import Bell from "react-native-vector-icons/FontAwesome";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation, DrawerActions } from "@react-navigation/core";
-import { BaseUrl } from "../../utils/BaseUrl";
-import RotateViewAnimation from "../animations/RotateViewAnimation";
-import FadeInOutAnimations from "../animations/FadeInOutAnimations";
 import Tooltip from "react-native-walkthrough-tooltip";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
@@ -22,8 +16,8 @@ import {
   setStepId,
 } from "../../../redux/slices/walkThroughSlice";
 import { useIsFocused } from "@react-navigation/native";
-import PoppinsTextMedium from "../electrons/customFonts/PoppinsTextMedium";
 import { useTranslation } from "react-i18next";
+import {NotificationBell} from "@/modules/notification";
 
 const DrawerHeader = (props) => {
   const { t } = useTranslation();
@@ -33,19 +27,17 @@ const DrawerHeader = (props) => {
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );
-  const count = props.count
   const icon = useSelector((state) => state.apptheme.icon);
   const stepId = useSelector((state) => state.walkThrough.stepId);
-  
+
   const isAlreadyWalkedThrough = useSelector((state) => state.walkThrough.isAlreadyWalkedThrough);
   let walkThrough = !isAlreadyWalkedThrough;
-  
+
 
   console.log(
     "isAlreadyWalkedThroughasdjkasjdhj count ",
     walkThrough,
-    stepId, 
-    count
+    stepId,
   );
   //asynch storage data saving
   const storeData = async () => {
@@ -56,18 +48,17 @@ const DrawerHeader = (props) => {
       console.log("error", e);
     }
   };
-  
+
   useEffect(() => {
     const checkWalkThroughStatus = async () => {
       const value = await AsyncStorage.getItem("isAlreadyWalkedThrough");
       const isWalkThroughDone = value === "true";
-      if(isWalkThroughDone)
-      {
+      if (isWalkThroughDone) {
         dispatch(setAlreadyWalkedThrough(true))
       }
-     
+
     };
-  
+
     if (focused) {
       checkWalkThroughStatus();
     }
@@ -79,7 +70,7 @@ const DrawerHeader = (props) => {
     console.log("STEP ID:", stepId);
   }, [focused, walkThrough, stepId]);
 
-  
+
 
 
   const handleNextStep = () => {
@@ -92,20 +83,6 @@ const DrawerHeader = (props) => {
     storeData();
   };
 
-  console.log("step ID changes", stepId);
-
-  const BellComponent = () => {
-    return (
-      <TouchableOpacity
-        style={{ height: 30, width: 30 }}
-        onPress={() => {
-          navigation.navigate("Notification");
-        }}
-      >
-        <Bell name="bell" size={30} color={ternaryThemeColor}></Bell>
-      </TouchableOpacity>
-    );
-  };
   return (
     <View
       style={{
@@ -184,7 +161,7 @@ const DrawerHeader = (props) => {
         style={{ height: 50, width: 80, resizeMode: "cover", marginLeft: 10 }}
         source={{ uri: icon }}
       ></Image>
-      <View style={{ position: "absolute", right: 10,top:20 }}>
+      <View style={{ position: "absolute", right: 10, top: 20 }}>
         <Tooltip
           isVisible={walkThrough && stepId === 2}
           content={
@@ -241,17 +218,9 @@ const DrawerHeader = (props) => {
             borderRadius: 10,
             borderColor: ternaryThemeColor,
           }}
-        >
-           <RotateViewAnimation outputRange={["0deg","30deg", "-30deg","0deg"]} inputRange={[0,1,2,3]} comp={BellComponent} style={{height:30,width:30}}>
-                    
-                    </RotateViewAnimation>
-                    {count!=0 && <View style={{backgroundColor:"orange",height:20,width:20,borderRadius:10,position:'absolute',right:0,top:-6}}>
-    
-                    <PoppinsTextMedium style={{color:'white',fontSize:14,fontWeight:'bold'}} content={count}></PoppinsTextMedium>
-    
-                    </View>}
-        </Tooltip>
-       
+        />
+        
+      <NotificationBell/>
       </View>
       {/* <FadeInOutAnimations comp = {BellComponent}></FadeInOutAnimations> */}
       {/* <BellComponent></BellComponent> */}

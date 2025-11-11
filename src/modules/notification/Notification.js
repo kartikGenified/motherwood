@@ -15,6 +15,7 @@ import DataNotFound from "@/screens/data not found/DataNotFound";
 import { useTranslation } from "react-i18next";
 import { useMarkNotificationAsReadApiMutation, useFetchNotificationListMutation } from "./apis/notificationsApi";
 import TopHeader from "@/components/topBar/TopHeader";
+import Bell from "react-native-vector-icons/FontAwesome";
 
 const Notification = ({ navigation }) => {
   const [notificationData, setNotificationData] = useState()
@@ -67,14 +68,6 @@ const Notification = ({ navigation }) => {
     getNotiFunc(data);
   };
 
-  const buttonThemeColor = useSelector(
-    state => state.apptheme.ternaryThemeColor,
-  )
-    ? useSelector(state => state.apptheme.ternaryThemeColor)
-    : '#ef6110';
-  const height = Dimensions.get('window').height
-  const width = Dimensions.get('window').width;
-
   const Notificationbar = (props) => {
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -94,14 +87,10 @@ const Notification = ({ navigation }) => {
       }
     }, [markNotificationReadData, markNotificationReadError])
 
-    function isHttpUrl(string) {
-      console.log("string baskjbjbasjhbcjbas", string)
-      try {
-        if (string.includes('http'))
-          return true
-      } catch (err) {
-        return false;
-      }
+    function isHttpUrl(str) {
+      if (typeof str !== 'string') return false;
+      const s = str.trim();
+      return s.startsWith('http://') || s.startsWith('https://');
     }
 
 
@@ -125,13 +114,14 @@ const Notification = ({ navigation }) => {
 
             <View style={styles.iconWrapper}>
 
-              <Image
-                style={styles.icon}
-                source={
-                  isHttpUrl(props?.imageUrl) ? { uri: props?.imageUrl }
-                    : require('../../../assets/images/noti-small.png')
-                }
-              />
+              {isHttpUrl(props?.imageUrl) ? (
+                <Image
+                  style={styles.icon}
+                  source={{ uri: props?.imageUrl }}
+                />
+              ) : (
+                <Bell name="bell" size={20} color="#333" />
+              )}
             </View>
 
             <View style={styles.textWrapper}>
@@ -151,13 +141,14 @@ const Notification = ({ navigation }) => {
           <View style={styles.backdrop}>
             <View style={styles.modalContent}>
               <ScrollView contentContainerStyle={styles.scrollContent}>
-                <Image
-                  source={
-                    isHttpUrl(props?.imageUrl) ? { uri: props?.imageUrl }
-                      : require('../../../assets/images/noti-small.png')
-                  }
-                  style={styles.modalImage}
-                />
+                {isHttpUrl(props?.imageUrl) ? (
+                  <Image
+                    source={{ uri: props?.imageUrl }}
+                    style={styles.modalImage}
+                  />
+                ) : (
+                  <Bell name="bell" size={100} color="#999" />
+                )}
                 <Text style={styles.modalTitle}>{props.notification}</Text>
                 <Text style={styles.modalBody}>{props.body}</Text>
                 <Pressable onPress={handleClose} style={styles.closeButton}>

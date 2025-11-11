@@ -13,17 +13,11 @@ import {
   Text,
   RefreshControl,
 } from "react-native";
-import MenuItems from "../../components/atoms/MenuItems";
-import { BaseUrl } from "../../utils/BaseUrl";
 import * as Keychain from "react-native-keychain";
 import DashboardMenuBox from "../../components/organisms/DashboardMenuBox";
 import Banner from "../../components/organisms/Banner";
 import DrawerHeader from "../../components/headers/DrawerHeader";
-import DashboardDataBox from "../../components/molecules/DashboardDataBox";
-import KYCVerificationComponent from "../../components/organisms/KYCVerificationComponent";
 import DashboardSupportBox from "../../components/molecules/DashboardSupportBox";
-import { useGetWorkflowMutation } from "../../apiServices/workflow/GetWorkflowByTenant";
-import { useGetFormMutation } from "../../apiServices/workflow/GetForms";
 import { useSelector, useDispatch } from "react-redux";
 import { useGetkycStatusMutation } from "../../apiServices/kyc/KycStatusApi";
 import { setKycData } from "../../../redux/slices/userKycStatusSlice";
@@ -32,8 +26,6 @@ import {
   setPercentagePoints,
   setShouldSharePoints,
 } from "../../../redux/slices/pointSharingSlice";
-import { useExtraPointEnteriesMutation } from "../../apiServices/pointSharing/pointSharingApi";
-import PoppinsText from "../../components/electrons/customFonts/PoppinsText";
 import {
   useFetchUserPointsHistoryMutation,
   useFetchUserPointsMutation,
@@ -43,37 +35,22 @@ import PoppinsTextLeftMedium from "../../components/electrons/customFonts/Poppin
 import { setQrIdList } from "../../../redux/slices/qrCodeDataSlice";
 import CampaignVideoModal from "../../components/modals/CampaignVideoModal";
 import {
-  useGetActiveMembershipMutation,
   useGetMembershipMutation,
 } from "../../apiServices/membership/AppMembershipApi";
-import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import PlatinumModal from "../../components/platinum/PlatinumModal";
-import { useFetchAllQrScanedListMutation } from "../../apiServices/qrScan/AddQrApi";
 import FastImage from "react-native-fast-image";
 import ScannedDetailsBox from "../../components/organisms/ScannedDetailsBox";
 import dayjs from "dayjs";
-import AnimatedDots from "../../components/animations/AnimatedDots";
-import analytics from "@react-native-firebase/analytics";
-import messaging from "@react-native-firebase/messaging";
-import Close from "react-native-vector-icons/Ionicons";
-import ModalWithBorder from "../../components/modals/ModalWithBorder";
 import ErrorModal from "../../components/modals/ErrorModal";
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  needCaimpaign,
-  needRandomRedeemPoint,
-} from "../../utils/HandleClientSetup";
 import { useGetAppCampaignMutation } from "../../apiServices/campaign/CampaignApi";
-import Tooltip from "react-native-walkthrough-tooltip";
 import {
   setStepId,
   setAlreadyWalkedThrough,
 } from "../../../redux/slices/walkThroughSlice";
 
-import PointBox from "../../components/organisms/PointBox";
 import { useCurrentDateTime } from "../../hooks/customHooks/useDate";
-import RewardBox from "../../components/molecules/RewardBox";
 import RewardBoxDashboard from "../../components/molecules/RewardBoxDashboard";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import DreamCard from "../../components/dreamComponent/DreamCard";
@@ -88,7 +65,6 @@ import moment from "moment";
 import BirthdayModal from "../../components/modals/BirthdayModal";
 import { setBirthdayModal } from "../../../redux/slices/birthdayModalSlice";
 import { useSelectedDreamGiftMutation } from "../../apiServices/dreamGift/DreamGiftApi";
-import { useGetNotificationCountApiMutation } from "../../apiServices/notifications/getNotificationCount";
 
 
 const Dashboard = ({ navigation }) => {
@@ -101,8 +77,6 @@ const Dashboard = ({ navigation }) => {
   const [membershipModal, setMemberShipModal] = useState(false);
   const [membership, setMembership] = useState();
   const [scanningDetails, seScanningDetails] = useState();
-  const [notifModal, setNotifModal] = useState(false);
-  const [notifData, setNotifData] = useState(null);
   const [message, setMessage] = useState();
   const [dreamGift, setDreamGift] = useState()
   const [success, setSuccess] = useState(false);
@@ -267,16 +241,6 @@ const Dashboard = ({ navigation }) => {
   ] = useSalesPointsDashboardMutation();
 
   const [
-    getNotificationCountFunc,
-    {
-      data: getNotificationCountData,
-      error: getNotificationCountError,
-      isLoading: getNotificationCountIsLoading,
-      isError: getNotificationCountIsError,
-    },
-  ] = useGetNotificationCountApiMutation();
-
-  const [
     selectedDreamFunc,
     {
       data: selectedDreamData,
@@ -317,33 +281,6 @@ const Dashboard = ({ navigation }) => {
     selectedDreamFunc(params)
 
   };
-
-
-  useEffect(() => {
-    const getToken = async () => {
-      const credentials = await Keychain.getGenericPassword();
-      if (credentials) {
-        console.log(
-          'Credentials successfully loaded for user ' + credentials.username
-        );
-        const token = credentials.username
-        const params = {
-          token: token
-        }
-        getNotificationCountFunc(params)
-      }
-    }
-    getToken()
-  }, [focused,notifModal,messaging,notifData])
-
-
-  useEffect(() => {
-    if (getNotificationCountData) {
-      console.log("getNotificationCountData", getNotificationCountData)
-    } else if (getNotificationCountError) {
-      console.log("getNotificationCountError", getNotificationCountError)
-    }
-  }, [getNotificationCountData, getNotificationCountError]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -429,14 +366,7 @@ const Dashboard = ({ navigation }) => {
     };
   }, [focused, dispatch, navigation]);
 
-  useEffect(() => {
-    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-      setNotifModal(true);
-      setNotifData(remoteMessage?.notification);
-    });
 
-    return unsubscribe;
-  }, []);
 
   useEffect(() => {
     const getToken = async () => {
@@ -705,52 +635,6 @@ const Dashboard = ({ navigation }) => {
     setShowCampaign(status);
   };
 
-  const notifModalFunc = () => {
-    return (
-      <View style={{ width: "100%" }}>
-        <View style={{ width: "100%", alignItems: "center", marginTop: 20 }}>
-
-          <PoppinsTextLeftMedium
-            content={notifData?.title ? notifData?.title : ""}
-            style={{
-              color: ternaryThemeColor,
-              fontWeight: "800",
-              fontSize: 20,
-              marginTop: 8,
-            }}
-          ></PoppinsTextLeftMedium>
-
-          <PoppinsTextLeftMedium
-            content={notifData?.body ? notifData?.body : ""}
-            style={{
-              color: "#000000",
-              marginTop: 10,
-              padding: 10,
-              fontSize: 15,
-              fontWeight: "600",
-            }}
-          ></PoppinsTextLeftMedium>
-        </View>
-
-        <TouchableOpacity
-          style={[
-            {
-              backgroundColor: ternaryThemeColor,
-              padding: 6,
-              borderRadius: 5,
-              position: "absolute",
-              top: -10,
-              right: -10,
-            },
-          ]}
-          onPress={() => setNotifModal(false)}
-        >
-          <Close name="close" size={17} color="#ffffff" />
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
 
   return (
     <View
@@ -771,7 +655,7 @@ const Dashboard = ({ navigation }) => {
           openModal={error}
         ></ErrorModal>
       )}
-      <DrawerHeader count={getNotificationCountData?.body?.notification_count}></DrawerHeader>
+      <DrawerHeader />
 
       <ScrollView
         style={{

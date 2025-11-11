@@ -12,13 +12,13 @@ import {
   ScrollView,
 } from 'react-native';
 import useNotification from './useNotification';
+import Bell from "react-native-vector-icons/FontAwesome";
 
 
 const { width } = Dimensions.get('window');
 
 const NotificationModal = ({
   duration = 4000,
-  imageUrl,
 }) => {
   const slideAnim = useRef(new Animated.Value(-80)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -28,13 +28,33 @@ const NotificationModal = ({
 
   const [detailVisible, setDetailVisible] = useState(false);
 
-  const defaultImage = require('./images/noti-small.png');
+  // Using a vector icon as the default/fallback instead of a local image
 
-
+  // Compute image URL from the incoming message; avoid keeping a separate state to prevent race conditions
+  const getImageUrlFromNotification = (msg) => {
+    if (!msg) return null;
+    // RN Firebase RemoteMessage shape:
+    // msg.notification?.android?.imageUrl or msg.notification?.ios?.imageUrl or msg.notification?.imageUrl
+    // Some providers send in data payload: msg.data?.image or msg.data?.imageUrl
+    return (
+      msg?.notification?.android?.imageUrl ||
+      msg?.notification?.ios?.imageUrl ||
+      msg?.notification?.imageUrl ||
+      msg?.data?.image ||
+      msg?.data?.imageUrl ||
+      null
+    );
+  };
 
   useEffect(() => {
-    if (newNotification)
-    setModalVisible(true);
+    if (newNotification) {
+      setModalVisible(true);
+      const url = getImageUrlFromNotification(newNotification);
+      // Prefetch image to improve likelihood of immediate render
+      if (url && typeof url === 'string' && url.startsWith('http')) {
+        Image.prefetch(url).catch(() => {});
+      }
+    }
   }, [newNotification]);
 
  
@@ -88,15 +108,29 @@ const NotificationModal = ({
     });
   };
 
-  function isHttpUrl(string) {
-    console.log("string baskjbjbasjhbcjbas", string)
-    try {
-      if(string.includes('http'))
-      return true
-    } catch (err) {
-      return false;
+  const renderNotificationImage = (variant = 'toast') => {
+    const imageUrl = getImageUrlFromNotification(newNotification);
+    const isValid = typeof imageUrl === 'string' && /^(https?:)\/\//.test(imageUrl.trim());
+    if (isValid) {
+      return (
+        <Image
+          source={{ uri: imageUrl }}
+          style={variant === 'toast' ? styles.image : styles.detailImageLight}
+        />
+      );
     }
-  }
+    return (
+      <Bell
+        name="bell"
+        size={variant === 'toast' ? 20 : 64}
+        color={variant === 'toast' ? '#333' : '#999'}
+        style={variant === 'toast' ? styles.bellIcon : styles.bellIconLarge}
+      />
+    );
+  };
+
+  const titleText = newNotification?.notification?.title || newNotification?.data?.title || 'Notification';
+  const bodyText = newNotification?.notification?.body || newNotification?.data?.body || '';
 
   const handleNotificationPress = () => {
     setDetailVisible(true);
@@ -122,14 +156,11 @@ const NotificationModal = ({
         ]}
       >
         <Pressable onPress={handleNotificationPress} style={styles.innerContainer}>
-          <Image
-            source={isHttpUrl(imageUrl) ? { uri: imageUrl } : defaultImage}
-            style={styles.image}
-          />
+          {renderNotificationImage('toast')}
           <View style={styles.textContainer}>
-            <Text style={styles.title}>{newNotification?.notification?.title || 'Notification'}</Text>
+            <Text style={styles.title}>{titleText}</Text>
             <Text numberOfLines={2} style={styles.message}>
-              {newNotification?.notification?.body || ''}
+              {bodyText}
             </Text>
           </View>
           <Pressable onPress={handleClose}>
@@ -147,12 +178,9 @@ const NotificationModal = ({
   <View style={styles.modalBackdrop}>
     <View style={styles.detailModalLight}>
       <ScrollView contentContainerStyle={styles.detailContentLight}>
-        <Image
-          source={isHttpUrl(imageUrl) ? { uri: imageUrl } : defaultImage}
-          style={styles.detailImageLight}
-        />
-        <Text style={styles.detailTitleLight}>{newNotification?.notification?.title || 'Notification'}</Text>
-        <Text style={styles.detailMessageLight}>{newNotification?.notification?.body || ''}</Text>
+        {renderNotificationImage('detail')}
+        <Text style={styles.detailTitleLight}>{titleText}</Text>
+        <Text style={styles.detailMessageLight}>{bodyText}</Text>
         <Pressable style={styles.dismissButtonLight} onPress={handleDetailClose}>
           <Text style={styles.dismissTextLight}>Close</Text>
         </Pressable>
@@ -192,6 +220,14 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     resizeMode:'contain'
   },
+  bellIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 10,
+  },
+  bellIconLarge: {
+    marginBottom: 16,
+  },
   textContainer: {
     flex: 1,
     marginRight: 8,
@@ -217,46 +253,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.55)',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  detailModal: {
-    backgroundColor: '#1E1E1E',
-    borderRadius: 16,
-    width: width * 0.9,
-    maxHeight: '80%',
-    paddingBottom: 20,
-    overflow: 'hidden',
-  },
-  detailContent: {
-    padding: 16,
-  },
-  detailImage: {
-    width: '100%',
-    height: 180,
-    resizeMode: 'cover',
-    borderRadius: 12,
-    marginBottom: 16,
-  },
-  detailTitle: {
-    fontSize: 18,
-    color: '#F1F1F1',
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  detailMessage: {
-    color: '#CCCCCC',
-    fontSize: 15,
-    lineHeight: 22,
-  },
-  dismissButton: {
-    marginTop: 20,
-    backgroundColor: '#333',
-    paddingVertical: 10,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  dismissText: {
-    color: '#FFF',
-    fontSize: 15,
   },
   detailModalLight: {
     backgroundColor: '#FFFFFF',

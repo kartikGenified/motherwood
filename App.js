@@ -3,24 +3,14 @@ import {View, StyleSheet,Alert,Linking, Platform} from 'react-native';
 import StackNavigator from './src/navigation/StackNavigator';
 import { store } from './redux/store';
 import { Provider } from 'react-redux'
-import messaging from '@react-native-firebase/messaging';    
 import VersionCheck from 'react-native-version-check';
-import Close from 'react-native-vector-icons/Ionicons';
-import ModalWithBorder from './src/components/modals/ModalWithBorder';
-import NetInfo from "@react-native-community/netinfo";
 import { PaperProvider } from 'react-native-paper';
 import { InternetSpeedProvider } from './src/Contexts/useInternetSpeedContext';
 import GlobalErrorHandler from './src/utils/GlobalErrorHandler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import notifee from '@notifee/react-native';
-import { navigate } from './src/utils/notifications/navigationService';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
-import { NotificationModal } from '@/modules/notification';
 const App = () => {
-  const [notifModal, setNotifModal] = useState(false)
-  const [notifData, setNotifData] = useState(null)
-  const [notificationBody, setNotificationBody] = useState()
 
   const { t } = useTranslation();
   console.log("Version check",JSON.stringify(VersionCheck.getPlayStoreUrl({ packageName: 'com.genefied.motherwood' })))
@@ -74,30 +64,7 @@ const App = () => {
       
       
 
-      const notifModalFunc = () => {
-        return (
-          <View style={{height:130  }}>
-            <View style={{ height: '100%', width:'100%', alignItems:'center',}}>
-              <View>
-              {/* <Bell name="bell" size={18} style={{marginTop:5}} color={ternaryThemeColor}></Bell> */}
-    
-              </View>
-              <PoppinsTextLeftMedium content={notifData?.title ? notifData?.title : ""} style={{ color: ternaryThemeColor, fontWeight:'800', fontSize:20, marginTop:8 }}></PoppinsTextLeftMedium>
-          
-              <PoppinsTextLeftMedium content={notifData?.title ? notifData?.title : ""} style={{ color: '#000000', marginTop:10, padding:10, fontSize:15, fontWeight:'600' }}></PoppinsTextLeftMedium>
-            </View>
-    
-            <TouchableOpacity style={[{
-              backgroundColor: ternaryThemeColor, padding: 6, borderRadius: 5, position: 'absolute', top: -10, right: -10,
-            }]} onPress={() => setNotifModal(false)} >
-              <Close name="close" size={17} color="#ffffff" />
-            </TouchableOpacity>
-    
-    
-    
-          </View>
-        )
-      }
+
         
     return (
         <Provider store={store}>
@@ -105,9 +72,6 @@ const App = () => {
             <InternetSpeedProvider>
              
         <SafeAreaView style={{flex:1}}>
-  <NotificationModal  
-    imageUrl={Platform.OS=='android'? notifData?.android?.imageUrl : notifData?.ios?.imageUrl} 
-  />
             <StackNavigator>
             <GlobalErrorHandler>
             

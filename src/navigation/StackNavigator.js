@@ -117,11 +117,13 @@ import SearchInfluencer from "../screens/searchInfluencer/SearchInfluencer";
 import BirthdayScreen from "../screens/birthday/BirthdayScreen";
 import SelectContact from "@/screens/common/SelectContact";
 import navigations from "./stack-navigations";
+import { NotificationModal } from "@/modules/notification";
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
   return (
     <NavigationContainer>
+      <NotificationModal />
       <Stack.Navigator>
         <Stack.Screen
           options={{

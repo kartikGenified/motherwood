@@ -20,9 +20,18 @@ export const notificationsApi = baseAuthApi.injectEndpoints({
         };
       },
     }),
+    notificationCount: builder.mutation({
+          query(params) {
+            console.log("get notification count params", params);
+            return {
+              method: "GET",
+              url: `/api/app/notification/count`,
+            };
+          },
+        }),
   })
 });
 
 
-export const { useMarkNotificationAsReadApiMutation, useFetchNotificationListMutation } = notificationsApi
+export const { useMarkNotificationAsReadApiMutation, useFetchNotificationListMutation, useNotificationCountMutation } = notificationsApi
 

@@ -1,5 +1,6 @@
 import Notification from "./Notification";
 import NotificationModal from "./NotificationModal";
+import NotificationBell from "./NotificationBell";
 
 const NotificationModule = [
   {
@@ -10,4 +11,4 @@ const NotificationModule = [
 ]
 
 export default NotificationModule;
-export { NotificationModal };
+export { NotificationModal, NotificationBell };
