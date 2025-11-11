@@ -441,11 +441,10 @@ const UserManagement = () => {
             color: "black",
             borderColor: "#DDDDDD",
           }}
-          onChangeText={(text) => {
-            setSearchText(text);
-          }}
+          onChangeText={setSearchText}
           keyboardType="numeric"
           value={searchText}
+          maxLength={10}
           placeholder="Search"
           placeholderTextColor={"black"}
         ></TextInput>
