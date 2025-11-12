@@ -81,8 +81,8 @@ android {
         applicationId "com.genefied.motherwood"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 11
-        versionName "1.0.9"
+        versionCode 12
+        versionName "1.0.10"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
 
