@@ -43,8 +43,9 @@ const Splash = ({ navigation }) => {
   
   const allApiArray = [
     "getAppThemeData", 
-    "getTermsData", 
-    "getPolicyData", 
+    // "getTermsData", 
+    // "getPolicyData", 
+    "getLegalData",
     "getWorkflowData", 
     "getDashboardData", 
     "getAppMenuData", 

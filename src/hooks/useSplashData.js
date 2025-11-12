@@ -72,7 +72,7 @@ import { setPolicy, setTerms, setAbout, setDetails } from "../../redux/slices/te
 import { setDrawerData } from "../../redux/slices/drawerDataSlice";
 
 // Utility imports
-import { apiCachingLogic, storeData } from "../utils/apiCachingLogic";
+import { apiCachingLogic, storeApiData } from "../utils/apiCachingLogicMMKV";
 import { clientName } from "../utils/HandleClientSetup";
 
 // Cached dispatch imports
@@ -85,6 +85,7 @@ import { getAppmenuCachedDispatch } from "../../redux/dispatches/getAppmenuCache
 import { getDashboardCachedDispatch } from "../../redux/dispatches/getDashboardCachedDispatch";
 import { getTermsDataCachedDispatch } from "../../redux/dispatches/getTermsDataCachedDispatch";
 import { getUsersDataCachedDispatch } from "../../redux/dispatches/getUsersDataCachedDispatch";
+import { getLegalCachedDispatch } from "../../redux/dispatches/getLegalCachedDispatch";
 
 const useSplashData = () => {
   const dispatch = useDispatch();
@@ -152,25 +153,11 @@ const useSplashData = () => {
     isError: getDashboardIsError,
   }] = useGetAppDashboardDataMutation();
 
-  const [getTermsAndCondition, {
-    data: getTermsData,
-    error: getTermsError,
-    isLoading: termsLoading,
-    isError: termsIsError,
-  }] = useFetchLegalsMutation();
-
-  const [getAboutMotherwoodFunc, {
-    data: getAboutMotherwoodData,
-    error: getAboutMotherwoodError,
-    isLoading: getAboutMotherwoodIsLoading,
-    isError: getAboutMotherwoodIsError,
-  }] = useFetchLegalsMutation();
-
-  const [getDetailsFunc, {
-    data: getDetailsData,
-    error: getDetailsError,
-    isLoading: getDetailsIsLoading,
-    isError: getDetailsIsError,
+  const [getLegalFunc, {
+    data: getLegalData,
+    error: getLegalError,
+    isLoading: getLegalIsLoading,
+    isError: getLegalIsError,
   }] = useFetchLegalsMutation();
 
   const [getMinVersionSupportFunc, {
@@ -179,13 +166,6 @@ const useSplashData = () => {
     isLoading: getMinVersionSupportIsLoading,
     isError: getMinVersionSupportIsError,
   }] = useCheckVersionSupportMutation();
-
-  const [getPolicies, {
-    data: getPolicyData,
-    error: getPolicyError,
-    isLoading: policyLoading,
-    isError: policyIsError,
-  }] = useFetchLegalsMutation();
 
   // Initialize session data
   const initializeSessionData = async () => {
@@ -289,7 +269,7 @@ const useSplashData = () => {
       const cachedThemeData = await apiCachingLogic("getAppThemeData");
       if (cachedThemeData != null) {
         getAppThemeCachedDispatch(dispatch, cachedThemeData);
-        storeData("getAppThemeData", cachedThemeData);
+        storeApiData("getAppThemeData", cachedThemeData);
       } else {
         getAppTheme(clientName);
       }
@@ -302,38 +282,20 @@ const useSplashData = () => {
       const cachedUsersData = await apiCachingLogic("getUsersData");
       if (cachedUsersData != null) {
         getUsersDataCachedDispatch(dispatch, cachedUsersData);
-        storeData("getUsersData", cachedUsersData);
+        storeApiData("getUsersData", cachedUsersData);
       } else {
         getUsers();
       }
 
-      // Terms and conditions API
-      const cachedTermsData = await apiCachingLogic("getTermsData");
-      if (cachedTermsData != null) {
-        getTermsDataCachedDispatch(dispatch, cachedTermsData);
-        storeData("getTermsData", cachedTermsData);
+      // Legal data API (terms, policy, about, details) - fetch all at once
+      const cachedLegalData = await apiCachingLogic("getLegalData");
+      if (cachedLegalData != null) {
+        getLegalCachedDispatch(dispatch, cachedLegalData);
+        storeApiData("getLegalData", cachedLegalData);
       } else {
-        const params = { type: "term-and-condition" };
-        getTermsAndCondition(params);
+        // Fetch all legal data without type parameter
+        getLegalFunc({type: ''});
       }
-
-      // Privacy policy API
-      const cachedPolicyData = await apiCachingLogic("getPolicyData");
-      if (cachedPolicyData != null) {
-        getPolicyDataCachedDispatch(dispatch, cachedPolicyData);
-        storeData("getPolicyData", cachedPolicyData);
-      } else {
-        const params = { type: "privacy-policy" };
-        getPolicies(params);
-      }
-
-      // About API
-      const aboutParams = { type: "about" };
-      getAboutMotherwoodFunc(aboutParams);
-
-      // Details API
-      const detailsParams = { type: "details" };
-      getDetailsFunc(detailsParams);
 
     } catch (error) {
       console.error("Error calling open APIs:", error);
@@ -350,7 +312,7 @@ const useSplashData = () => {
       const cachedWorkflowData = await apiCachingLogic("getWorkflowData");
       if (cachedWorkflowData != null) {
         getWorkflowCachedDispatch(dispatch, cachedWorkflowData);
-        storeData("getWorkflowData", cachedWorkflowData);
+        storeApiData("getWorkflowData", cachedWorkflowData);
       } else {
         getWorkflowFunc({
           userId: sessionData?.user_type_id,
@@ -362,7 +324,7 @@ const useSplashData = () => {
       const cachedFormData = await apiCachingLogic("getFormData");
       if (cachedFormData != null) {
         getFormCachedDispatch(dispatch, cachedFormData);
-        storeData("getFormData", cachedFormData);
+        storeApiData("getFormData", cachedFormData);
       } else {
         const form_type = "2";
         getFormFunc({ form_type: form_type, token: sessionData?.token });
@@ -372,7 +334,7 @@ const useSplashData = () => {
       const cachedBannerData = await apiCachingLogic("getBannerData");
       if (cachedBannerData != null) {
         getBannerCachedDispatch(dispatch, cachedBannerData);
-        storeData("getBannerData", cachedBannerData);
+        storeApiData("getBannerData", cachedBannerData);
       } else {
         getBannerFunc(sessionData?.token);
       }
@@ -381,7 +343,7 @@ const useSplashData = () => {
       const cachedMenuData = await apiCachingLogic("getAppMenuData");
       if (cachedMenuData != null) {
         getAppmenuCachedDispatch(sessionData, dispatch, cachedMenuData);
-        storeData("getAppMenuData", cachedMenuData);
+        storeApiData("getAppMenuData", cachedMenuData);
       } else {
         getAppMenuFunc(sessionData?.token);
       }
@@ -390,7 +352,7 @@ const useSplashData = () => {
       const cachedDashboardData = await apiCachingLogic("getDashboardData");
       if (cachedDashboardData != null) {
         getDashboardCachedDispatch(dispatch, cachedDashboardData);
-        storeData("getDashboardData", cachedDashboardData);
+        storeApiData("getDashboardData", cachedDashboardData);
       } else {
         getDashboardFunc(sessionData?.token);
       }
@@ -405,7 +367,7 @@ const useSplashData = () => {
   useEffect(() => {
     if (getAppThemeData) {
       console.log("getAppThemeData", JSON.stringify(getAppThemeData?.body));
-      storeData("getAppThemeData", getAppThemeData);
+      storeApiData("getAppThemeData", getAppThemeData);
       getAppThemeCachedDispatch(dispatch, getAppThemeData, sessionData);
     } else if (getAppThemeError) {
       console.log("getAppThemeError", getAppThemeError);
@@ -414,39 +376,21 @@ const useSplashData = () => {
   }, [getAppThemeData, getAppThemeError]);
 
   useEffect(() => {
-    if (getTermsData) {
-      console.log("getTermsData", getTermsData.body.data?.[0]?.files[0]);
-      storeData("getTermsData", getTermsData);
-      getTermsDataCachedDispatch(dispatch, getTermsData);
-    } else if (getTermsError) {
-      console.log("getTermsError", getTermsError);
-      setError("Failed to load terms and conditions");
+    if (getLegalData) {
+      console.log("getLegalData", JSON.stringify(getLegalData));
+      storeApiData("getLegalData", getLegalData);
+      getLegalCachedDispatch(dispatch, getLegalData);
+    } else if (getLegalError) {
+      console.log("getLegalError", getLegalError);
+      setError("Failed to load legal data");
     }
-  }, [getTermsData, getTermsError]);
-
-  useEffect(() => {
-    if (getAboutMotherwoodData) {
-      console.log("getAboutMotherwoodData", getAboutMotherwoodData.body.data?.[0]?.files[0]);
-      dispatch(setAbout(getAboutMotherwoodData.body.data?.[0]?.files[0]));
-    } else if (getAboutMotherwoodError) {
-      console.log("getAboutMotherwoodError", getAboutMotherwoodError);
-    }
-  }, [getAboutMotherwoodData, getAboutMotherwoodError]);
-
-  useEffect(() => {
-    if (getDetailsData) {
-      console.log("getDetailsData", getDetailsData.body.data?.[0]?.files[0]);
-      dispatch(setDetails(getDetailsData.body.data?.[0]?.files[0]));
-    } else if (getDetailsError) {
-      console.log("getDetailsError", getDetailsError);
-    }
-  }, [getDetailsData, getDetailsError]);
+  }, [getLegalData, getLegalError]);
 
   useEffect(() => {
     if (getDashboardData) {
       console.log("getDashboardData", getDashboardData);
       getDashboardCachedDispatch(dispatch, getDashboardData);
-      storeData("getDashboardData", getDashboardData);
+      storeApiData("getDashboardData", getDashboardData);
     } else if (getDashboardError) {
       console.log("getDashboardError", getDashboardError);
       if (getDashboardError?.status === 401) {
@@ -459,33 +403,20 @@ const useSplashData = () => {
     if (getAppMenuData) {
       console.log("getAppMenuData", JSON.stringify(getAppMenuData));
       getAppmenuCachedDispatch(dispatch, getAppMenuData);
-      storeData("getAppMenuData", getAppMenuData);
+      storeApiData("getAppMenuData", getAppMenuData);
     } else if (getAppMenuError) {
       console.log("getAppMenuError", getAppMenuError);
       setError("Failed to load app menu");
     }
   }, [getAppMenuData, getAppMenuError]);
 
-  useEffect(() => {
-    if (getPolicyData) {
-      console.log("getPolicyData", JSON.stringify(getPolicyData));
-      getPolicyDataCachedDispatch(dispatch, getPolicyData);
-      storeData("getPolicyData", getPolicyData);
-    } else if (getPolicyError) {
-      console.log("getPolicyError", getPolicyError);
-      if (getPolicyError?.status === 401) {
-        setError("Session expired");
-      } else {
-        setError("Failed to load privacy policy");
-      }
-    }
-  }, [getPolicyData, getPolicyError]);
+
 
   useEffect(() => {
     if (getFormData) {
       console.log("getFormData", getFormData?.body);
       getFormCachedDispatch(dispatch, getFormData);
-      storeData("getFormData", getFormData);
+      storeApiData("getFormData", getFormData);
     } else if (getFormError) {
       console.log("getFormError", getFormError);
       setError("Can't fetch forms for warranty.");
@@ -494,7 +425,7 @@ const useSplashData = () => {
 
   useEffect(() => {
     if (getWorkflowData) {
-      storeData("getWorkflowData", getWorkflowData);
+      storeApiData("getWorkflowData", getWorkflowData);
       getWorkflowCachedDispatch(dispatch, getWorkflowData);
     } else if (getWorkflowError) {
       console.log("getWorkflowError", getWorkflowError);
@@ -509,7 +440,7 @@ const useSplashData = () => {
     if (getBannerData) {
       console.log("getBannerData", getBannerData?.body);
       getBannerCachedDispatch(dispatch, getBannerData);
-      storeData("getBannerData", getBannerData);
+      storeApiData("getBannerData", getBannerData);
     } else if (getBannerError) {
       setError("Unable to fetch app banners");
       console.log("getBannerError", getBannerError);
@@ -523,7 +454,7 @@ const useSplashData = () => {
     if (getUsersData) {
       console.log("getUsersData", getUsersData);
       getUsersDataCachedDispatch(dispatch, getUsersData);
-      storeData("getUsersData", getUsersData);
+      storeApiData("getUsersData", getUsersData);
     } else if (getUsersError) {
       console.log("getUsersError", getUsersError);
       setError("Failed to load users data");
@@ -634,11 +565,8 @@ const useSplashData = () => {
     getUsersDataIsLoading,
     getAppMenuIsLoading,
     getDashboardIsLoading,
-    termsLoading,
-    getAboutMotherwoodIsLoading,
-    getDetailsIsLoading,
+    getLegalIsLoading,
     getMinVersionSupportIsLoading,
-    policyLoading,
   ];
 
   const isApiLoading = allLoadingStates.some(loading => loading) || isLoading;
@@ -661,11 +589,8 @@ const useSplashData = () => {
     usersData: getUsersData,
     appMenuData: getAppMenuData,
     dashboardData: getDashboardData,
-    termsData: getTermsData,
-    aboutData: getAboutMotherwoodData,
-    detailsData: getDetailsData,
+    legalData: getLegalData,
     minVersionData: getMinVersionSupportData,
-    policyData: getPolicyData,
     
     // Functions
     initializeSessionData,

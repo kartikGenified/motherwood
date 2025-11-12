@@ -26,11 +26,17 @@ export const termsPolicySlice = createSlice({
       },
       setDetails:(state,action)=>{
         state.details = action.payload
-      }
+      },
+    setAllLegal:(state, action) => {
+        state.terms = action.payload.terms
+        state.policy = action.payload.policy
+        state.about = action.payload.about
+        state.details = action.payload.details
+      },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setTerms,setPolicy, setAbout, setDetails} = termsPolicySlice.actions
+export const { setTerms,setPolicy, setAbout, setDetails, setAllLegal } = termsPolicySlice.actions
 
 export default termsPolicySlice.reducer
