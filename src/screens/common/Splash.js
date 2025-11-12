@@ -100,7 +100,7 @@ const Splash = ({ navigation }) => {
     }
   
     return () => clearTimeout(fallbackTimer);
-  }, [apiCallStatus, sessionData]);
+  }, [apiCallStatus, sessionData, minVersionSupport]);
 
   // Check internet status
   useEffect(() => {
