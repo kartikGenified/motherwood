@@ -3,15 +3,15 @@
 //clint ID's
 export const clientName = "sudama";
 // prod
-// export const clientID = 38 ;
+export const clientID = 38 ;
 // staging
-export const clientID = 41 ;
+// export const clientID = 41 ;
 
 
 export const clientOfficialName = "MotherWood"
-// export const baseUrl =  "https://saas.genefied.in/"
+export const baseUrl =  "https://saas.genefied.in/"
 // "https://saas.genefied.in/" production
-export const baseUrl = "http://saas-api-dev.genefied.in/" //staging
+// export const baseUrl = "http://saas-api-dev.genefied.in/" //staging
 //icons and images
 export const appIcon = require("../../assets/images/motherwood_white_logo.png");
 export const splash = require("../../assets/gif/Splash-myronew.gif");
