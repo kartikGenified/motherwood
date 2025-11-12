@@ -38,7 +38,6 @@ import {
   useGetMembershipMutation,
 } from "../../apiServices/membership/AppMembershipApi";
 import PlatinumModal from "../../components/platinum/PlatinumModal";
-import FastImage from "react-native-fast-image";
 import ScannedDetailsBox from "../../components/organisms/ScannedDetailsBox";
 import dayjs from "dayjs";
 import ErrorModal from "../../components/modals/ErrorModal";
@@ -65,6 +64,7 @@ import moment from "moment";
 import BirthdayModal from "../../components/modals/BirthdayModal";
 import { setBirthdayModal } from "../../../redux/slices/birthdayModalSlice";
 import { useSelectedDreamGiftMutation } from "../../apiServices/dreamGift/DreamGiftApi";
+import Loader from "@/components/atoms/Loader";
 
 
 const Dashboard = ({ navigation }) => {
@@ -166,15 +166,6 @@ const Dashboard = ({ navigation }) => {
   const secondaryThemeColor = useSelector(
     (state) => state.apptheme.secondaryThemeColor
   );
-
-  const gifUri = Image.resolveAssetSource(
-    require("../../../assets/gif/loaderNew.gif")
-  ).uri;
-  // console.log("pointSharingData", JSON.stringify(pointSharingData), userData)
-  // console.log("user id is from dashboard", userId)
-  //   console.log(focused)
-  let startDate, endDate;
-
 
   const [
     fetchProfileFunc,
@@ -890,23 +881,8 @@ const Dashboard = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           )}
-
-          {userPointIsLoading && (
-            <View style={{ height: 200, width: "100%" }}>
-              <FastImage
-                style={{
-                  width: 100,
-                  height: 100,
-                  alignSelf: "center",
-                }}
-                source={{
-                  uri: gifUri, // Update the path to your GIF
-                  priority: FastImage.priority.normal,
-                }}
-                resizeMode={FastImage.resizeMode.contain}
-              />
-            </View>
-          )}
+          <Loader loading={userPointIsLoading}/>
+          
           {!(userData?.user_type == "sales") && (
             <View
               style={{

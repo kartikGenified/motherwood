@@ -3,10 +3,8 @@ import {
   View,
   StyleSheet,
   Image,
-  ScrollView,
   TouchableOpacity,
   Text,
-  RefreshControl,
 } from "react-native";
 import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import { useSelector } from "react-redux";
@@ -24,8 +22,7 @@ import PoppinsTextLeftMedium from "../../components/electrons/customFonts/Poppin
 import { useTranslation } from "react-i18next";
 import { neededHistory } from "../../utils/HandleClientSetup";
 import PointsCard from "../../components/passbook/PointsCard";
-import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
-import TopHeader from "@/components/topBar/TopHeader";
+import BackUi from "@/components/atoms/BackUi";
 
 const Passbook = ({ navigation }) => {
   const [warrantyOptionEnabled, setWarrantyOptionEnabled] = useState(false);
@@ -39,12 +36,28 @@ const Passbook = ({ navigation }) => {
 
   const [membershipModal, setMemberShipModal] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
-  const onRefresh = React.useCallback(() => {
+  
+  const onRefresh = React.useCallback(async () => {
+    // Set refreshing to true to trigger PointsCard refresh
     setRefreshing(true);
+    
+    // Refetch all data
+    await getMembership();
+    const credentials = await Keychain.getGenericPassword();
+    if (credentials) {
+      const token = credentials.username;
+      const params = {
+        token: token,
+        id: String(userData.id),
+        cause: "registration_bonus",
+      };
+      getPointSharingFunc(params);
+    }
+    
     setTimeout(() => {
       setRefreshing(false);
-    }, 1000);
-  }, []);
+    }, 500);
+  }, [userData]);
 
   const shouldSharePoints = useSelector(
     (state) => state.pointSharing.shouldSharePoints
@@ -418,13 +431,15 @@ const Passbook = ({ navigation }) => {
 
 
   return (
-    <ScrollView contentContainerStyle={{flex:1}} style={{ width: "100%" }}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+    <BackUi
+      title={t("Passbook")}
+      onBackPress={() => navigation.navigate("Dashboard")}
+      scrollable
+      onRefresh={onRefresh}
     >
       <View
         style={{
           alignItems: "center",
-          height: "93%",
           width: "100%",
           backgroundColor: "white",
         }}
@@ -438,7 +453,6 @@ const Passbook = ({ navigation }) => {
           getActiveMembershipData={getMemberShipData}
         />
         {/* coloured header */}
-          <TopHeader title={t("Passbook")} onBackPress={() => navigation.navigate("Dashboard")} />
         <View style={{ width: "100%", backgroundColor: secondaryThemeColor }}>
          {isTertiary!=undefined &&  <View style={{ width: "100%", marginTop: 20 }}>
             <PointsCard
@@ -783,18 +797,17 @@ const Passbook = ({ navigation }) => {
         )}
 
         {/* ----------------------------------- */}
+        
+        {/* modals */}
+        {PlatinumModalOpen && (
+          <PlatinumModal
+            isVisible={PlatinumModalOpen}
+            onClose={closePlatinumModal}
+            getActiveMembershipData={getActiveMembershipData}
+          />
+        )}
       </View>
-      {/* modals */}
-      {PlatinumModalOpen && (
-        <PlatinumModal
-          isVisible={PlatinumModalOpen}
-          onClose={closePlatinumModal}
-          getActiveMembershipData={getActiveMembershipData}
-        />
-      )}
-      
-      <SocialBottomBar />
-    </ScrollView>
+    </BackUi>
   );
 };
 

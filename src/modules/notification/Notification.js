@@ -6,19 +6,20 @@ import {
   Modal,
   Pressable,
   StyleSheet,
+  FlatList,
   ScrollView,
-  Dimensions,
 } from 'react-native';
 import { useSelector } from "react-redux";
 import HyperlinkText from "@/components/electrons/customFonts/HyperlinkText";
 import DataNotFound from "@/screens/data not found/DataNotFound";
 import { useTranslation } from "react-i18next";
 import { useMarkNotificationAsReadApiMutation, useFetchNotificationListMutation } from "./apis/notificationsApi";
-import TopHeader from "@/components/topBar/TopHeader";
 import Bell from "react-native-vector-icons/FontAwesome";
+import BackUi from "@/components/atoms/BackUi";
 
 const Notification = ({ navigation }) => {
-  const [notificationData, setNotificationData] = useState()
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const [getNotiFunc, {
     data: notifData,
@@ -29,11 +30,7 @@ const Notification = ({ navigation }) => {
 
 
 
-
   const userData = useSelector(state => state.appusersdata.userData)
-
-  console.log("userData", userData)
-
   const { t } = useTranslation()
 
   useEffect(() => {
@@ -47,16 +44,15 @@ const Notification = ({ navigation }) => {
   }, [])
 
   useEffect(() => {
+    setRefreshing(false);
     if (notifData) {
-      console.log("notifdata", JSON.stringify(notifData))
-
-      // const reversedData = notifData?.body?.data?.slice().reverse();
-      setNotificationData(notifData?.body?.data)
+      console.log("notifdata", JSON.stringify(notifData));
+      setInitialLoadComplete(true);
     } else if (notifError) {
-      console.log("notifError", notifError)
+      console.log("notifError", notifError);
+      setInitialLoadComplete(true);
     }
-
-  }, [notifData, notifError])
+  }, [notifData, notifError]);
 
   const refetchNotifications = () => {
     const data = {
@@ -66,6 +62,7 @@ const Notification = ({ navigation }) => {
       token: userData?.token
     };
     getNotiFunc(data);
+    setRefreshing(false);
   };
 
   const Notificationbar = (props) => {
@@ -101,7 +98,6 @@ const Notification = ({ navigation }) => {
     };
 
     const handleClose = () => {
-      props.refetch();
       setModalVisible(false);
     };
 
@@ -163,40 +159,34 @@ const Notification = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
-      <TopHeader title={t("Notification")} />
-      {notificationData && <ScrollView style={{ width: '100%' }}>
-
-        <View style={{ paddingBottom: 120, backgroundColor: 'white', width: '100%', borderTopLeftRadius: 30, borderTopRightRadius: 30 }}>
-          {
-            notificationData.map((item, index) => {
-              console.log("notificationData", item)
-              return <Notificationbar
-                imageUrl={item.image}
-                data={item}
-                notification={item?.title}
-                body={item?.body}
-                key={index}
-                refetch={refetchNotifications}
-              />
-
-            })
-          }
-
-        </View>
-      </ScrollView>}
-
-
-      {
-        notifData?.body?.count == "0" &&
-        <View style={{ height: '90%', backgroundColor: 'white', width: '100%' }}>
-          <DataNotFound></DataNotFound>
-        </View>
-      }
-
-    </View>
-
-
+    <BackUi
+      title={t("Notification")}
+      loading={isNotifLoading}
+    >
+      <FlatList
+        data={notifData?.body?.data || []}
+        keyExtractor={(item, index) => String(item?.id ?? index)}
+        contentContainerStyle={{ paddingBottom: 120, backgroundColor: 'white', width: '100%' }}
+        onRefresh={refetchNotifications}
+        refreshing={refreshing}
+        renderItem={({ item, index }) => (
+          <Notificationbar
+            imageUrl={item?.image}
+            data={item}
+            notification={item?.title}
+            body={item?.body}
+            key={item?.id ?? index}
+          />
+        )}
+        ListEmptyComponent={
+          initialLoadComplete && !isNotifLoading ? (
+            <View style={{ height: '90%', backgroundColor: 'white', width: '100%' }}>
+              <DataNotFound />
+            </View>
+          ) : null
+        }
+      />
+    </BackUi>
   )
 }
 const styles = StyleSheet.create({
