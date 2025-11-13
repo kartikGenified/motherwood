@@ -29,6 +29,8 @@ import { useFetchProfileMutation } from '../../apiServices/profile/profileApi';
 import { useIsFocused } from '@react-navigation/native';
 import { useGetUserStatusApiMutation } from '../../apiServices/userStatus/getUserStatus';
 import { useTranslation } from 'react-i18next';
+import TopHeader from '@/components/topBar/TopHeader';
+import SocialBottomBar from '@/components/socialBar/SocialBottomBar';
 
 const ReferAndEarn = ({ navigation }) => {
   const [openBottomInvitationModal, setOpenBottomInvitationModal] = useState(false)
@@ -270,65 +272,7 @@ const ReferAndEarn = ({ navigation }) => {
         modalClose={modalReferClose}
         openModal={openBottomReferModal}
         comp={ReferModalContent}></BottomModal>}
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          width: '100%',
-          marginTop: 10,
-          height: '10%',
-          marginLeft: 20,
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-              marginLeft: 10,
-            }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content={t("Refer & Earn")}
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: '700',
-            color: 'white',
-          }}></PoppinsTextMedium>
-        {/* <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("MyBonus")
-          }}
-          style={{
-            borderRadius: 4,
-            flexDirection: 'row',
-            borderColor: 'white',
-            borderWidth: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 4,
-            position: 'absolute',
-            right: 30,
-          }}>
-          <PoppinsTextMedium
-            style={{ color: 'white', fontSize: 16 }}
-            content={t("My Bonus")}></PoppinsTextMedium>
-          <Image
-            style={{
-              height: 20,
-              width: 20,
-              resizeMode: 'contain',
-              marginLeft: 10,
-            }}
-            source={require('../../../assets/images/whiteArrowRight.png')}></Image>
-        </TouchableOpacity> */}
-      </View>
+      <TopHeader title={t("Refer & Earn")} />
       <ScrollView style={{ width: '100%' }}>
 
         <View
@@ -441,6 +385,7 @@ const ReferAndEarn = ({ navigation }) => {
 
           </View>
         </View>
+      <SocialBottomBar showRelative={true} />
       </ScrollView>
     </View>
 

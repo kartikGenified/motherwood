@@ -14,6 +14,7 @@ import TextInputRectangularWithPlaceholder from "../../components/atoms/input/Te
 import { useTranslation } from "react-i18next";
 import { useGetLoginOtpMutation } from "../../apiServices/login/otpBased/SendOtpApi";
 import { useGetNameMutation } from "../../apiServices/login/GetNameByMobile";
+import TopHeader from "@/components/topBar/TopHeader";
 
 // create a component
 const ForgotMpin = (params) => {
@@ -167,46 +168,7 @@ const ForgotMpin = (params) => {
 
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          flexDirection: "row",
-          width: "100%",
-          backgroundColor: ternaryThemeColor,
-          alignItems: "center",
-          height: 80,
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-          style={{
-            position: "absolute",
-            left: 10,
-            top: 27,
-          }}
-        >
-          <Image
-            style={{
-              height: 30,
-              width: 30,
-              resizeMode: "contain",
-            }}
-            source={require("../../../assets/images/blackBack.png")}
-          />
-        </TouchableOpacity>
-        <Text
-          style={{
-            marginLeft: 55,
-            marginTop: 0,
-            fontSize: 20,
-            color: "white",
-            fontWeight: "bold",
-          }}
-        >
-          Forgot MPIN
-        </Text>
-      </View>
+      <TopHeader title={t("Forgot MPIN")} />
       <View>
         <KeyboardAvoidingView>
           <View

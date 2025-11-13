@@ -31,6 +31,7 @@ import FastImage from 'react-native-fast-image';
 import { gifUri } from '../../utils/GifUrl';
 import PrefilledTextInput from '../../components/atoms/input/PrefilledTextInput';
 import { useTranslation } from 'react-i18next';
+import TopHeader from "@/components/topBar/TopHeader";
 
 const ActivateWarranty = ({ navigation, route }) => {
   const [responseArray, setResponseArray] = useState([]);
@@ -456,34 +457,7 @@ const ActivateWarranty = ({ navigation, route }) => {
         backgroundColor: buttonThemeColor,
       }}>
       
-      <View
-        style={{
-          height: '10%',
-          width: '100%',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'absolute',
-          top: 0,
-        }}>
-        <TouchableOpacity
-          style={{ height: 20, width: 20, position: 'absolute', left: 10 }}
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Image
-            style={{ height: 20, width: 20, resizeMode: 'contain' }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          style={{
-            fontSize: 16,
-            fontWeight: '700',
-            color: 'white',
-            position: 'absolute',
-            left: 60,
-          }}
-          content="Activate Warranty"></PoppinsTextMedium>
-      </View>
+      <TopHeader title={t("Activate Warranty")} />
       <ScrollView
         style={{
           width: '100%',

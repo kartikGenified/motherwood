@@ -24,6 +24,7 @@ import VerifyUpi from '../../apiServices/bankAccount/VerifyUpi';
 import { useDeleteBankMutation } from '../../apiServices/bankAccount/DeleteBankAccount';
 import { useIsFocused } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import TopHeader from "../../components/topBar/TopHeader";
 
 const AddUpi = ({navigation}) => {
   const [upi, setUpi] = useState();
@@ -325,37 +326,7 @@ console.log("deleteBankError",deleteBankError)
           comp={ModalContent}></BottomModal>
       )}
 
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          width: '100%',
-          height: '14%',
-          marginTop: 10,
-          flexDirection:'row'
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-              marginLeft: 10,
-            }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content={t("UPI ID Details")}
-          style={{
-            fontSize: 22,
-            fontWeight: '700',
-            color: 'black',
-            marginLeft: 30,
-          }}></PoppinsTextMedium>
-      </View>
+      <TopHeader title={t("UPI ID Details")} />
       <View
         style={{
           alignItems: 'center',

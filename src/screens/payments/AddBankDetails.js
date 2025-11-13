@@ -14,6 +14,7 @@ import { useIsFocused } from '@react-navigation/native';
 import ErrorModal from '../../components/modals/ErrorModal';
 import { useTranslation } from 'react-i18next';
 import SocialBottomBar from '../../components/socialBar/SocialBottomBar';
+import TopHeader from "../../components/topBar/TopHeader";
 
 const AddBankDetails = ({navigation}) => {
     const [message, setMessage] = useState();
@@ -229,17 +230,8 @@ const AddBankDetails = ({navigation}) => {
               navigateTo="BankAccounts"
               openModal={success}></MessageModal>
             )}
+            <TopHeader title={t("Add Bank Details")} />
             <ScrollView style={{width:'100%',minHeight:'90%'}}>
-            <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:20,height:30}}>
-                <TouchableOpacity onPress={()=>{
-                    navigation.goBack()
-                }}>
-            <Image style={{height:24,width:24,resizeMode:'contain',marginLeft:20}} source={require('../../../assets/images/blackBack.png')}></Image>
-
-                </TouchableOpacity>
-            <PoppinsTextMedium content ={t("Add Bank Details")} style={{marginLeft:10,fontSize:16,fontWeight:'700',color:'black'}}></PoppinsTextMedium>
-            
-            </View>
             
             <View style={{alignItems:"center",justifyContent:'center',borderTopRightRadius:40,borderTopLeftRadius:40,backgroundColor:"#F6F6F6",width:'100%',marginTop:40}}>
                 <BankDetails></BankDetails>

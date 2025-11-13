@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import Down from 'react-native-vector-icons/Entypo'
 import * as Keychain from "react-native-keychain";
 import { useGetZoneWiseEmployeeUserMutation } from '../../apiServices/userMapping/userMappingApi';
+import TopHeader from "../../components/topBar/TopHeader";
 // create a component
 const PointsDistribution = ({navigation}) => {
   const [employeeList, setEmployeeList] = useState();
@@ -323,39 +324,10 @@ const PointsDistribution = ({navigation}) => {
     return (
         <View style={styles.container}>
            {/* coloured header */}
-      <View style={{ width: "100%", backgroundColor: secondaryThemeColor }}>
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "flex-start",
-            flexDirection: "row",
-            width: "100%",
-            marginTop: 10,
-            height: 50,
-            marginLeft: 20,
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Dashboard");
-            }}
-          >
-            <Image
-              style={{ height: 30, width: 30, resizeMode: "contain" }}
-              source={require("../../../assets/images/blackBack.png")}
-            ></Image>
-          </TouchableOpacity>
-          <PoppinsTextMedium
-            content={t("Point Distribution")}
-            style={{
-              marginLeft: 10,
-              fontSize: 18,
-              fontWeight: "700",
-              color: "black",
-            }}
-          ></PoppinsTextMedium>
-        </View>
-      </View>
+      <TopHeader 
+        title={t("Point Distribution")} 
+        onBackPress={() => navigation.navigate("Dashboard")}
+      />
       <View style={{alignItems:'center', justifyContent:'space-around', width:'100%',flexDirection:'row',height:60}}>
       <View style={{ width:'44%', height:'100%',position:'absolute',top:15,left:10 }}>
        

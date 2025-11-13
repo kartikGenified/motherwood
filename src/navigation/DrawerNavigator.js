@@ -909,7 +909,7 @@ const CustomDrawer = (props) => {
               }}
             >
               <Image
-                style={{ height: 30, width: 30, resizeMode: "contain" }}
+                style={{ height: 20, width: 20, resizeMode: "contain" }}
                 source={require("../../assets/images/blackBack.png")}
               ></Image>
             </TouchableOpacity>
@@ -1062,7 +1062,7 @@ const CustomDrawer = (props) => {
         ></PoppinsTextMedium>
       </View>
       <ScrollView
-        contentContainerStyle={{ width: "100%", paddingBottom:160}}
+        contentContainerStyle={{ width: "100%", paddingBottom:100}}
         style={{ width: "100%" }}
       >
 
@@ -1109,6 +1109,9 @@ const CustomDrawer = (props) => {
               </View>
             );
           })}
+
+          {/* <PoppinsTextMedium content={`Designed & Developed by`} style={{ marginTop: 10 }}/> */}
+          {/* <PoppinsTextMedium style={{ fontWeight: 'bold' }} content={`Genified.ai`}/> */}
           {/* <DrawerItems
           // key={index}
           title={"Events"}
@@ -1457,14 +1460,15 @@ const CustomDrawer = (props) => {
             style={{ color: "white" }}
             content={t("LOG OUT")}
           ></PoppinsTextLeftMedium>
-          <PoppinsTextLeftMedium
-            style={{
-              color: "white",
-              fontSize: 10,
-            }}
-            content="Designed and developed by Genefied"
-          ></PoppinsTextLeftMedium>
         </TouchableOpacity> */}
+        <PoppinsTextMedium
+            style={{
+              color: "black",
+              fontSize: 10,
+              marginTop:40,
+            }}
+            content={t("Designed & Developed by Genefied")}
+          ></PoppinsTextMedium>
       </ScrollView>
     </View>
   );

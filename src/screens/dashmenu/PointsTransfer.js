@@ -118,6 +118,10 @@ const PointsTransfer = () => {
       setRefreshing(false);
     }, 1000);
   }
+  const onChangeNumber = (number) => {
+    // regx for allowing only numbers
+    setMobile(number.replace(/[^0-9]/g, ''));
+  }
 
   return (
     <>
@@ -179,7 +183,8 @@ const PointsTransfer = () => {
         ></PoppinsTextLeftMedium>
         <TextInput
           value={mobile}
-          onChangeText={setMobile}
+          onChangeText={onChangeNumber}
+          keyboardType="number-pad"
           placeholder="9999999999"
           placeholderTextColor={"#808080"}
           maxLength={10}

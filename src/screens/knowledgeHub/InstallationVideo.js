@@ -9,6 +9,7 @@ import PoppinsTextLeftMedium from '../../components/electrons/customFonts/Poppin
 import DataNotFound from '../data not found/DataNotFound';
 import FastImage from 'react-native-fast-image';
 import { useTranslation } from 'react-i18next';
+import TopHeader from '@/components/topBar/TopHeader';
 
 // create a component
 const InstallationVideo = ({ navigation }) => {
@@ -56,31 +57,7 @@ const InstallationVideo = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            {/* Navigator */}
-            <View
-                style={{
-                    height: 50,
-                    width: '100%',
-                    backgroundColor: ternaryThemeColor,
-                    alignItems: 'flex-start',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    // marginTop: 10,
-                }}>
-                <TouchableOpacity
-                    style={{ height: 20, width: 20, position: 'absolute', left: 20, marginTop: 15 }}
-                    onPress={() => {
-                        navigation.goBack();
-                    }}>
-                    <Image
-                        style={{ height: 20, width: 20, resizeMode: 'contain' }}
-                        source={require('../../../assets/images/blackBack.png')}></Image>
-                </TouchableOpacity>
-
-                <PoppinsTextMedium style={{ fontSize: 20, color: '#ffffff', marginTop: 10, position: 'absolute', left: 50 }} content={t("Installation Video")}></PoppinsTextMedium>
-
-            </View>
-            {/* navigator */}
+            <TopHeader title={t("Installation Video")} />
             {videoIsLoading &&
                 <FastImage
                     style={{ width: 50, height: "100%", alignItems:'center', marginLeft:'45%' }}

@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium';
 import dayjs  from 'dayjs'
 import { useTranslation } from 'react-i18next';
+import TopHeader from "@/components/topBar/TopHeader";
 
 // create a component
 const WarrantyClaimDetails = ({ navigation, route }) => {
@@ -22,21 +23,8 @@ const WarrantyClaimDetails = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
+            <TopHeader title={t("Warranty Claim Details")} />
             <ScrollView style={{width:"100%"}}>
-            {/* header */}
-            <View style={{ alignItems: "center", justifyContent: "flex-start", flexDirection: "row", width: '100%', marginTop: 10, height: 40, marginLeft: 20 }}>
-                <TouchableOpacity onPress={() => {
-                    navigation.goBack()
-                }}>
-                    <Image style={{ height: 24, width: 24, resizeMode: 'contain', marginLeft: 10 }} source={require('../../../assets/images/blackBack.png')}></Image>
-
-                </TouchableOpacity>
-                <PoppinsTextMedium content="Warranty Claim Details" style={{ marginLeft: 10, fontSize: 16, fontWeight: '600', color: '#171717' }}></PoppinsTextMedium>
-                {/* <TouchableOpacity style={{ marginLeft: 180 }}>
-                    <Image style={{ height: 30, width: 30, resizeMode: 'contain' }} source={require('../../../assets/images/notificationOn.png')}></Image>
-                </TouchableOpacity> */}
-            </View>
-            {/* header */}
 
             <View style={styles.imageView}>
                 <Image source={require('../../../assets/images/warrantyReport.png')} style={{ height: 82, width: 75 }} />

@@ -37,6 +37,7 @@ import { setKycData } from "../../../redux/slices/userKycStatusSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import TopHeader from "../../components/topBar/TopHeader";
 const KycMotherhood = ({ navigation }) => {
   const [modalContent, setModalContent] = useState();
   const [modal, setModal] = useState(false);
@@ -1948,37 +1949,10 @@ const KycMotherhood = ({ navigation }) => {
         compBankAccount={BankAccountComp}
         compUpiAccount={AddUpiComp}
       ></BottomModal>
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "flex-start",
-          flexDirection: "row",
-          width: "100%",
-          height: 60,
-          backgroundColor: secondaryThemeColor,
-        }}
-      >
-        <TouchableOpacity
-          style={{ marginLeft: 10 }}
-          onPress={() => {
-            navigation.navigate("Dashboard");
-          }}
-        >
-          <Image
-            style={{ height: 24, width: 24, resizeMode: "contain" }}
-            source={require("../../../assets/images/blackBack.png")}
-          ></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content={t("KYC")}
-          style={{
-            marginLeft: 10,
-            fontSize: 18,
-            fontWeight: "600",
-            color: "black",
-          }}
-        ></PoppinsTextMedium>
-      </View>
+      <TopHeader 
+        title={t("KYC")} 
+        onBackPress={() => navigation.navigate("Dashboard")}
+      />
       <View
         style={{
           alignItems: "center",

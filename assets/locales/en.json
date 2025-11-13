@@ -280,7 +280,7 @@
   "Videos": "Videos",
   "Enter Amount": "Enter Amount",
   "Amount": "Amount",
-  "App tutorial": "App tutorial",
+  "App tutorial": "App Tutorial",
   "Home": "Home",
   "About Motherwood": "About Motherwood",
   "Motherwood Saathi": "Motherwood Saathi",
@@ -288,7 +288,7 @@
   "KYC": "KYC",
   "Redeem": "Redeem",
   "Passbook": "Passbook",
-  "Refer and earn": "Refer and earn",
+  "Refer and earn": "Refer and Earn",
   "Motherwood PlayZone": "Motherwood PlayZone",
   "Playzone": "PlayZone",
   "PlayZone": "PlayZone",
@@ -832,5 +832,12 @@
   "No contacts found": "No contacts found",
   "No contacts available": "No contacts available",
   "Contact permission is required to select contacts": "Contact permission is required to select contacts",
-  "Grant Permission": "Grant Permission"
+  "Grant Permission": "Grant Permission",
+  "Wheel": "Wheel",
+  "Warranty Claim Details": "Warranty Claim Details",
+  "Forgot MPIN": "Forgot MPIN",
+  "Video": "Video",
+  "View Profile": "View Profile",
+  "Return List": "Return List",
+  "Designed & Developed by Genefied":"Designed & Developed by Genefied"
 }

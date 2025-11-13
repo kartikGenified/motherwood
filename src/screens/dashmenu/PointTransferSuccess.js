@@ -535,7 +535,7 @@ const PointsTransferSuccess = (params) => {
             );
           })}
         </ScrollView>
-        <TouchableOpacity style={{alignSelf:'center',width:120, backgroundColor:'black',alignItems:'center',height:40,justifyContent:'center', borderRadius:20,marginBottom:30}} onPress={()=>{navigation.replace("PointsTransfer")}}>
+        <TouchableOpacity style={{alignSelf:'center',width:120, backgroundColor:'black',alignItems:'center',height:40,justifyContent:'center', borderRadius:20,marginBottom:30}} onPress={()=>{navigation.navigate("PointsTransfer")}}>
         <Text style={{color:'white',width:160, textAlign:'center'}}>{t("Done")}</Text>
       </TouchableOpacity>
       </ScrollView>

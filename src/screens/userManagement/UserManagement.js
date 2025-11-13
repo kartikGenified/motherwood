@@ -23,6 +23,7 @@ import * as Keychain from "react-native-keychain";
 import moment from "moment";
 import { useSalesPointsDashboardMutation } from "../../apiServices/workflow/rewards/GetPointsApi";
 import { useIsFocused } from "@react-navigation/native";
+import TopHeader from "@/components/topBar/TopHeader";
 // create a component
 const UserManagement = () => {
   const secondaryThemeColor = useSelector(
@@ -415,39 +416,7 @@ const UserManagement = () => {
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
     >
       {/* coloured header */}
-      <View style={{ width: "100%", backgroundColor: secondaryThemeColor }}>
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "flex-start",
-            flexDirection: "row",
-            width: "100%",
-            marginTop: 10,
-            height: 50,
-            marginLeft: 20,
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Dashboard");
-            }}
-          >
-            <Image
-              style={{ height: 30, width: 30, resizeMode: "contain" }}
-              source={require("../../../assets/images/blackBack.png")}
-            ></Image>
-          </TouchableOpacity>
-          <PoppinsTextMedium
-            content={t("User Management")}
-            style={{
-              marginLeft: 10,
-              fontSize: 18,
-              fontWeight: "700",
-              color: "black",
-            }}
-          ></PoppinsTextMedium>
-        </View>
-      </View>
+      <TopHeader title={t("User Management")} onBackPress={() => navigation.navigate("Dashboard")} />
 
       <View style={{ margin: 20 }}>
         <Text style={{ fontWeight: "600", color: "black" }}>
@@ -472,11 +441,10 @@ const UserManagement = () => {
             color: "black",
             borderColor: "#DDDDDD",
           }}
-          onChangeText={(text) => {
-            setSearchText(text);
-          }}
+          onChangeText={setSearchText}
           keyboardType="numeric"
           value={searchText}
+          maxLength={10}
           placeholder="Search"
           placeholderTextColor={"black"}
         ></TextInput>

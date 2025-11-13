@@ -571,6 +571,10 @@ const PointHistory = ({ navigation }) => {
    const date = props.date
    const points = props.points
    const item = props.item
+   const invoiceDate = props.invoiceDate
+   const uploadDate = props.uploadDate
+   console.log('user type', userData.user_type);
+   
     return (
       <TouchableOpacity
       onPress={()=>{
@@ -608,10 +612,19 @@ const PointHistory = ({ navigation }) => {
         ></PoppinsTextMedium>
 
         </View>
-        <PoppinsTextMedium
+        { !(userData.user_type === "distributor" || userData.user_type === "directdealer") && <PoppinsTextMedium
           style={{ fontWeight: "400", fontSize: 12, color: "black" }}
           content={`${t("Date")} : ${date}`}
+        ></PoppinsTextMedium>}
+        { (userData.user_type === "distributor" || userData.user_type === "directdealer") && <PoppinsTextMedium
+          style={{ fontWeight: "400", fontSize: 12, color: "black" }}
+          content={`${t("Invoice Date")} : ${invoiceDate}`}
+        ></PoppinsTextMedium>}
+        { (userData.user_type === "distributor" || userData.user_type === "directdealer")  && <PoppinsTextMedium
+          style={{ fontWeight: "400", fontSize: 12, color: "black" }}
+          content={`${t("Upload Date")} : ${uploadDate}`}
         ></PoppinsTextMedium>
+        }
         </View>
         
       <View style={{width:'20%',flexDirection:'row', alignItems:'center', justifyContent:'center', height:'100%',}}>
@@ -722,23 +735,6 @@ const PointHistory = ({ navigation }) => {
 
       <Header></Header>
 
-      {displayList.length == 0 && !isLoading && (
-        <View style={{ justifyContent:'center',marginTop:'40%'}}>
-          <FastImage
-            style={{ width: 180, height: 180, }}
-            source={{
-              uri: noData, // Update the path to your GIF
-              priority: FastImage.priority.normal,
-            }}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-          <PoppinsTextMedium
-            style={{ color: "#808080", marginTop: -20, fontWeight: "bold" }}
-            content="NO DATA"
-          ></PoppinsTextMedium>
-        </View>
-      )}
-
       {isLoading && (
         <View style={{ backgroundColor: "white" }}>
           <FastImage
@@ -756,7 +752,7 @@ const PointHistory = ({ navigation }) => {
           />
         </View>
       )}
-      {displayList && !isLoading && (
+      {!isLoading && (
         <FlatList
           refreshing={refreshing}
           onRefresh={onRefresh}
@@ -780,10 +776,28 @@ const PointHistory = ({ navigation }) => {
               points={(item.points)}
                 date={dayjs(item.created_at).format("DD-MMM-YYYY")}
                 time={dayjs(item.created_at).format("HH:mm a")}
+              invoiceDate={dayjs(item.voucher_date).format("DD-MMM-YYYY")}
+              uploadDate={dayjs(item.created_at).format("DD-MMM-YYYY")}
               />
             );
           }}
           keyExtractor={(item, index) => index}
+          ListEmptyComponent={()=>(
+        <View style={{ justifyContent:'center',marginTop:'40%'}}>
+          <FastImage
+            style={{ width: 180, height: 180, }}
+            source={{
+              uri: noData, // Update the path to your GIF
+              priority: FastImage.priority.normal,
+            }}
+            resizeMode={FastImage.resizeMode.contain}
+          />
+          <PoppinsTextMedium
+            style={{ color: "#808080", marginTop: -20, fontWeight: "bold" }}
+            content="NO DATA"
+          ></PoppinsTextMedium>
+        </View>
+      )}
         />
       )}
     </View>

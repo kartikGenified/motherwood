@@ -8,6 +8,7 @@ import ProductCategoryDropDown from '../../components/atoms/dropdown/ProductCate
 import { useGetProductLevelMutation } from '../../apiServices/productCategory/ProductCategoryApi';
 import FastImage from "react-native-fast-image";
 import { useTranslation } from 'react-i18next';
+import TopHeader from "../../components/topBar/TopHeader";
 
 
 const ProductCategory = ({navigation}) => {
@@ -135,38 +136,7 @@ const ProductCategory = ({navigation}) => {
 
     return (
         <View style={{alignItems:"center",justifyContent:'flex-start',height:'100%',width:'100%',backgroundColor:ternaryThemeColor,flex:1}}>
-        <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          width: '100%',
-          marginTop: 10,
-          height: '10%',
-          marginLeft: 20,
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-              marginLeft: 10,
-            }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content={t("Category wise product information")}
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: '700',
-            color: 'white',
-          }}></PoppinsTextMedium>
-      </View>       
+        <TopHeader title={t("Category wise product information")} />
 
       <View style={{height:'90%',width:'100%',alignItems:"center",justifyContent:'flex-start',backgroundColor:"white",paddingTop:30}}>
         <View style={{width:"100%",alignItems:"center",justifyContent:'center'}}>

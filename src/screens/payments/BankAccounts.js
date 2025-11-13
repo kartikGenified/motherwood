@@ -27,6 +27,7 @@ import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import { useDeleteBankMutation } from '../../apiServices/bankAccount/DeleteBankAccount';
 import { useIsFocused } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import TopHeader from "../../components/topBar/TopHeader";
 
 
 const BankAccounts = ({ navigation, route }) => {
@@ -401,38 +402,7 @@ const BankAccounts = ({ navigation, route }) => {
           openModal={success}></MessageModal>
       )}
 
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          width: '100%',
-          marginTop: 20,
-          height: 30,
-
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-              marginLeft: 20,
-            }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <PoppinsTextMedium
-          content={t("Bank Account")}
-          style={{
-            marginLeft: 10,
-            fontSize: 16,
-            fontWeight: '700',
-            color: 'black',
-          }}></PoppinsTextMedium>
-      </View>
+      <TopHeader title={t("Bank Account")} />
 
       <View
         style={{

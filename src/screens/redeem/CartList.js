@@ -25,6 +25,7 @@ import { useTranslation } from 'react-i18next';
 import SocialBottomBar from '../../components/socialBar/SocialBottomBar';
 import useKycValidation from '../../utils/checkKycStatus';
 import { useIsFocused } from '@react-navigation/native';
+import TopHeader from '@/components/topBar/TopHeader';
 
 const CartList = ({ navigation, route }) => {
   const [cart, setCart] = useState(route.params.cart);
@@ -426,43 +427,7 @@ const CartList = ({ navigation, route }) => {
           
         ></MessageModal>
       )}
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          flexDirection: 'row',
-          width: '100%',
-
-          height: '10%',
-          marginLeft: 20,
-
-
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-            setCart([])
-          }}>
-          <Image
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-              marginLeft: 10,
-            }}
-            source={require('../../../assets/images/blackBack.png')}></Image>
-        </TouchableOpacity>
-        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <PoppinsTextMedium
-            content={t("Add to Cart")}
-            style={{
-              marginLeft: 10,
-              fontSize: 16,
-              fontWeight: '700',
-              color: 'black',
-            }}></PoppinsTextMedium>
-        </View>
-      </View>
+      <TopHeader title={t("Add to Cart")} onBackPress={() => { navigation.goBack(); setCart([]); }} />
 
       <View
         style={{

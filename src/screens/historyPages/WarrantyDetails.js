@@ -21,6 +21,7 @@ import Close from 'react-native-vector-icons/Ionicons';
 import ErrorModal from '../../components/modals/ErrorModal';
 import ModalWithBorder from '../../components/modals/ModalWithBorder';
 import { useTranslation } from 'react-i18next';
+import TopHeader from '@/components/topBar/TopHeader';
 
 
 const WarrantyDetails = ({ navigation, route }) => {
@@ -350,18 +351,7 @@ const WarrantyDetails = ({ navigation, route }) => {
     return (
         <View style={{ alignItems: "center", justifyContent: "flex-start", backgroundColor: "white", height: '100%' }}>
 
-            <View style={{ alignItems: "center", justifyContent: "flex-start", flexDirection: "row", width: '100%', marginTop: 10, height: 40, marginLeft: 20 }}>
-                <TouchableOpacity onPress={() => {
-                    navigation.goBack()
-                }}>
-                    <Image style={{ height: 24, width: 24, resizeMode: 'contain', marginLeft: 10 }} source={require('../../../assets/images/blackBack.png')}></Image>
-
-                </TouchableOpacity>
-                <PoppinsTextMedium content={t("Warranty Details")} style={{ marginLeft: 10, fontSize: 16, fontWeight: '600', color: '#171717' }}></PoppinsTextMedium>
-                {/* <TouchableOpacity style={{ marginLeft: 160 }}>      
-                    <Image style={{ height: 30, width: 30, resizeMode: 'contain' }} source={require('../../../assets/images/notificationOn.png')}></Image>
-                </TouchableOpacity> */}
-            </View>
+            <TopHeader title={t("Warranty Details")} />
             <ScannedDetailsProductBox></ScannedDetailsProductBox>
 
 

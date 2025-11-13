@@ -39,6 +39,7 @@ import { useRedeemSchemeApiMutation } from "../../apiServices/scheme/RedeemSchem
 import { getCurrentLocation } from "../../utils/getCurrentLocation";
 import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
 import { useGetUserStatusApiMutation } from "../../apiServices/userStatus/getUserStatus";
+import TopHeader from "@/components/topBar/TopHeader";
 
 const OtpVerification = ({ navigation, route }) => {
   const [message, setMessage] = useState();
@@ -536,36 +537,9 @@ const OtpVerification = ({ navigation, route }) => {
         backgroundColor: "white",
       }}
     >
+      <TopHeader title={t("Verify OTP")} />
       <ScrollView style={{width:'100%',minHeight:'90%'}} contentContainerStyle={{alignItems: "center",
         justifyContent: "flex-start",}}>
-      <View
-        style={{
-          height: "6%",
-          width: "100%",
-          backgroundColor: secondaryThemeColor,
-          alignItems: "center",
-          justifyContent: "flex-start",
-          flexDirection: "row",
-          marginBottom: 20,
-          // marginTop: 10,
-        }}
-      >
-        <TouchableOpacity
-          style={{ height: 20, width: 20, marginLeft: 10 }}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Image
-            style={{ height: 20, width: 20, resizeMode: "contain" }}
-            source={require("../../../assets/images/blackBack.png")}
-          ></Image>
-        </TouchableOpacity>
-
-        <PoppinsTextMedium
-          style={{ fontSize: 20, color: "black", marginLeft: 10 }}
-          content={t("Verify OTP")}
-        ></PoppinsTextMedium>
 
         {error && (
           <ErrorModal
@@ -584,7 +558,7 @@ const OtpVerification = ({ navigation, route }) => {
             navigateTo="Dashboard"
           ></MessageModal>
         )}
-      </View>
+
       
       <TextInputRectangularWithPlaceholder
         placeHolder={t("Mobile No")}

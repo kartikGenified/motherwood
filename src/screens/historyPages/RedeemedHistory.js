@@ -19,6 +19,7 @@ import PoppinsTextLeftMedium from '../../components/electrons/customFonts/Poppin
 import InputDate from '../../components/atoms/input/InputDate';
 import { useTranslation } from 'react-i18next';
 import useKycValidation from '../../utils/checkKycStatus';
+import TopHeader from '@/components/topBar/TopHeader';
 
 const RedeemedHistory = ({ navigation }) => {
   const [message, setMessage] = useState();
@@ -525,18 +526,7 @@ useEffect(()=>{refresh()},[focused])
     <View style={{ alignItems: "center", justifyContent: "flex-start", width: '100%', height: '100%', backgroundColor: "white" }}>
       
 
-      <View style={{ alignItems: "center", justifyContent: "flex-start", flexDirection: "row", width: '100%', marginTop: 10, height: 40, marginLeft: 20 }}>
-        <TouchableOpacity onPress={() => {
-          navigation.goBack()
-        }}>
-          <Image style={{ height: 24, width: 24, resizeMode: 'contain', marginLeft: 10 }} source={require('../../../assets/images/blackBack.png')}></Image>
-
-        </TouchableOpacity>
-        <PoppinsTextMedium content={t("redeemed history")} style={{ marginLeft: 10, fontSize: 16, fontWeight: '600', color: '#171717' }}></PoppinsTextMedium>
-        <TouchableOpacity style={{ marginLeft: 160 }}>
-          {/* <Image style={{height:30,width:30,resizeMode:'contain'}} source={require('../../../assets/images/notificationOn.png')}></Image> */}
-        </TouchableOpacity>
-      </View>
+      <TopHeader title={t("redeemed history")} />
       <View style={{ padding: 14, alignItems: "flex-start", justifyContent: "flex-start", width: "100%" }}>
         <PoppinsTextMedium style={{ marginLeft: 10, fontSize: 20, fontWeight: '600', color: '#6E6E6E' }} content={t("you have")}></PoppinsTextMedium>
         <Image style={{ position: 'absolute', right: 0, width: 117, height: 82, marginRight: 23, marginTop: 20 }} source={require('../../../assets/images/reedem2.png')}></Image>

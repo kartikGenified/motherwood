@@ -58,7 +58,19 @@ const App = () => {
       return unsubscribe;
     }, []);
      
-    
+      const compareVersions = (v1, v2) => {
+        const parts1 = v1.split('.').map(Number);
+        const parts2 = v2.split('.').map(Number);
+        
+        for (let i = 0; i < Math.max(parts1.length, parts2.length); i++) {
+          const part1 = parts1[i] || 0;
+          const part2 = parts2[i] || 0;
+          
+          if (part1 > part2) return 1;
+          if (part1 < part2) return -1;
+        }
+        return 0;
+      };
 
       useEffect(() => {
         const checkAppVersion = async () => {
@@ -75,7 +87,7 @@ const App = () => {
             const currentVersion = VersionCheck.getCurrentVersion();
     
             console.log("current verison and new version,",currentVersion, latestVersion)
-            if (latestVersion > currentVersion) {
+            if (compareVersions(latestVersion, currentVersion) > 0) {
               Alert.alert(
                 t('Update Required'),
                 t('A new version of the app is available. Please update to continue using the app.'),
