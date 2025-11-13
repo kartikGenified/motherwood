@@ -1096,7 +1096,7 @@ const CustomDrawer = (props) => {
           </View>
         )}
         {drawerData !== undefined &&
-          drawerData.app_menu.map((item, index) => {
+          drawerData?.app_menu?.map?.((item, index) => {
             return (
               <View>
                 <DrawerItems

@@ -1,25 +1,18 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, StyleSheet, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFetchUserPointsMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
 import * as Keychain from 'react-native-keychain';
 import FastImage from 'react-native-fast-image';
 import { useTranslation } from 'react-i18next';
 import RewardRectangular from '../atoms/RewardRectangular';
-import Tooltip from 'react-native-walkthrough-tooltip';
-import { setAlreadyWalkedThrough, setStepId } from '../../../redux/slices/walkThroughSlice';
-import { useIsFocused } from '@react-navigation/native';
+import AppTutorial from '../atoms/AppTutorial';
 const RewardBoxDashboard = ({ refreshing }) => {
-    const [walkThrough, setWalkThrough] = useState(true);
-    const focused = useIsFocused();
-    
     // Selectors
     const workflow = useSelector(state => state.appWorkflow.program);
     const ternaryThemeColor = useSelector(state => state.apptheme.ternaryThemeColor);
     const secondaryThemeColor = useSelector(state => state.apptheme.secondaryThemeColor);
     const id = useSelector(state => state.appusersdata.id);
-    const stepId = useSelector(state => state.walkThrough.stepId);
     
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -68,44 +61,7 @@ const RewardBoxDashboard = ({ refreshing }) => {
         }
     }, [id, userPointFunc]);
 
-    const checkWalkThroughStatus = useCallback(async () => {
-        try {
-            const value = await AsyncStorage.getItem("isAlreadyWalkedThrough");
-            if (value) {
-                setWalkThrough(false);
-            } else {
-                setWalkThrough(true);
-                dispatch(setStepId(4));
-            }
-        } catch (error) {
-            console.error("Error checking walkthrough status:", error);
-        }
-    }, [dispatch]);
-
-    const storeWalkThroughData = useCallback(async () => {
-        try {
-            await AsyncStorage.setItem('isAlreadyWalkedThrough', "true");
-        } catch (error) {
-            console.error("Error storing walkthrough data:", error);
-        }
-    }, []);
-
-    const handleNextStep = useCallback(() => {
-        dispatch(setStepId(stepId + 1));
-    }, [dispatch, stepId]);
-
-    const handleSkip = useCallback(() => {
-        storeWalkThroughData();
-        dispatch(setAlreadyWalkedThrough(true));
-        setWalkThrough(false);
-    }, [dispatch, storeWalkThroughData]);
-    
-
     // Effects
-    useEffect(() => {
-        checkWalkThroughStatus();
-    }, [checkWalkThroughStatus]);
-
     useEffect(() => {
         fetchPoints();
     }, []);
@@ -121,6 +77,7 @@ const RewardBoxDashboard = ({ refreshing }) => {
             console.error("User point error:", userPointError);
         }
     }, [userPointError]);
+
     return (
         <View style={[styles.container, { backgroundColor: secondaryThemeColor }]}>
             {userPointIsLoading && (
@@ -134,28 +91,10 @@ const RewardBoxDashboard = ({ refreshing }) => {
                 />
             )}
             
-            <Tooltip
-                isVisible={walkThrough && stepId === 4}
-                content={
-                    <View style={styles.tooltipContent}>
-                        <Text style={styles.tooltipText}>
-                            Check your all points
-                        </Text>
-                        <View style={styles.tooltipButtonContainer}>
-                            <TouchableOpacity
-                                style={styles.nextButton(ternaryThemeColor)}
-                                onPress={handleNextStep}
-                            >
-                                <Text style={styles.buttonText}>Next</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                }
+            <AppTutorial
+                stepNumber={4}
+                content="Check your all points"
                 placement="bottom"
-                animated
-                onClose={() => setWalkThrough(false)}
-                tooltipStyle={styles.tooltip}
-                contentStyle={[styles.tooltipContentStyle, { borderColor: ternaryThemeColor }]}
             >
                 <View style={styles.rewardContainer}>
                     {workflow?.includes("Static Coupon") && (
@@ -209,7 +148,7 @@ const RewardBoxDashboard = ({ refreshing }) => {
                         />
                     )}
                 </View>
-            </Tooltip>
+            </AppTutorial>
         </View>
     );
 };
@@ -233,47 +172,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    tooltipContent: {
-        alignItems: 'center',
-    },
-    tooltipText: {
-        color: 'black',
-        textAlign: 'center',
-        marginBottom: 10,
-        fontWeight: 'bold',
-    },
-    tooltipButtonContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    tooltip: {
-        borderRadius: 30,
-    },
-    tooltipContentStyle: {
-        backgroundColor: 'white',
-        minHeight: 100,
-        borderWidth: 2,
-        borderRadius: 10,
-        width: 200,
-    },
-    buttonText: {
-        color: 'white',
-        fontWeight: 'bold',
-    },
-    skipButton: (color) => ({
-        backgroundColor: color,
-        paddingVertical: 5,
-        paddingHorizontal: 15,
-        borderRadius: 5,
-        marginRight: 12,
-    }),
-    nextButton: (color) => ({
-        backgroundColor: color,
-        paddingVertical: 5,
-        paddingHorizontal: 15,
-        borderRadius: 5,
-    }),
 });
 
 export default RewardBoxDashboard;

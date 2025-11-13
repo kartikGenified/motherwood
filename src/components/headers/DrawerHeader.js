@@ -1,87 +1,24 @@
-import React, { useRef, useEffect, useState } from "react";
+import React from "react";
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   Image,
-  Text,
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigation, DrawerActions } from "@react-navigation/core";
-import Tooltip from "react-native-walkthrough-tooltip";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  setAlreadyWalkedThrough,
-  setStepId,
-} from "../../../redux/slices/walkThroughSlice";
-import { useIsFocused } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import {NotificationBell} from "@/modules/notification";
+import AppTutorial from "../atoms/AppTutorial";
 
 const DrawerHeader = (props) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const dispatch = useDispatch();
-  const focused = useIsFocused();
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
   );
   const icon = useSelector((state) => state.apptheme.icon);
-  const stepId = useSelector((state) => state.walkThrough.stepId);
-
-  const isAlreadyWalkedThrough = useSelector((state) => state.walkThrough.isAlreadyWalkedThrough);
-  let walkThrough = !isAlreadyWalkedThrough;
-
-
-  console.log(
-    "isAlreadyWalkedThroughasdjkasjdhj count ",
-    walkThrough,
-    stepId,
-  );
-  //asynch storage data saving
-  const storeData = async () => {
-    try {
-      await AsyncStorage.setItem("isAlreadyWalkedThrough", "true");
-    } catch (e) {
-      // saving error
-      console.log("error", e);
-    }
-  };
-
-  useEffect(() => {
-    const checkWalkThroughStatus = async () => {
-      const value = await AsyncStorage.getItem("isAlreadyWalkedThrough");
-      const isWalkThroughDone = value === "true";
-      if (isWalkThroughDone) {
-        dispatch(setAlreadyWalkedThrough(true))
-      }
-
-    };
-
-    if (focused) {
-      checkWalkThroughStatus();
-    }
-  }, [focused]);
-
-  useEffect(() => {
-    console.log("FOCUSED:", focused);
-    console.log("WALKTHROUGH:", walkThrough);
-    console.log("STEP ID:", stepId);
-  }, [focused, walkThrough, stepId]);
-
-
-
-
-  const handleNextStep = () => {
-    dispatch(setStepId(stepId + 1));
-  };
-
-  const handleSkip = () => {
-    // dispatch(setStepId(0)); // Reset or handle skip logic
-    dispatch(setAlreadyWalkedThrough(true)); // Mark walkthrough as completed
-    storeData();
-  };
 
   return (
     <View
@@ -94,60 +31,10 @@ const DrawerHeader = (props) => {
         backgroundColor: "white",
       }}
     >
-      <Tooltip
-        isVisible={walkThrough && stepId === 1}
-        content={
-          <View style={{ alignItems: "center" }}>
-            <Text
-              style={{
-                color: "black",
-                textAlign: "center",
-                marginBottom: 10,
-                fontWeight: "bold",
-              }}
-            >
-              {t("Hamburger button (Select for more menu)")}
-            </Text>
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: ternaryThemeColor,
-                  paddingVertical: 5,
-                  paddingHorizontal: 15,
-                  borderRadius: 5,
-                  marginRight: 12,
-                }}
-                onPress={() => handleSkip()}
-              >
-                <Text style={{ color: "white" }}>{t("Skip")}</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={{
-                  backgroundColor: ternaryThemeColor,
-                  paddingVertical: 5,
-                  paddingHorizontal: 15,
-                  borderRadius: 5,
-                }}
-                onPress={() => handleNextStep()}
-              >
-                <Text style={{ color: "white", fontWeight: "bold" }}>{t("Next")}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        }
+      <AppTutorial
+        stepNumber={1}
+        content="Hamburger button (Select for more menu)"
         placement="right"
-        onClose={() => {
-          walkThrough = false
-        }}
-        tooltipStyle={{ borderRadius: 30 }}
-        contentStyle={{
-          backgroundColor: "white",
-          minHeight: 100,
-          borderWidth: 2,
-          borderRadius: 10,
-          borderColor: ternaryThemeColor,
-        }}
       >
         <TouchableOpacity
           onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
@@ -155,93 +42,25 @@ const DrawerHeader = (props) => {
         >
           <Icon name="bars" size={30} color={ternaryThemeColor} />
         </TouchableOpacity>
-      </Tooltip>
+      </AppTutorial>
 
       <Image
         style={{ height: 50, width: 80, resizeMode: "cover", marginLeft: 10 }}
         source={{ uri: icon }}
       ></Image>
       <View style={{ position: "absolute", right: 10, top: 20 }}>
-        <Tooltip
-          isVisible={walkThrough && stepId === 2}
-          content={
-            <View style={{ alignItems: "center" }}>
-              <Text
-                style={{
-                  color: "black",
-                  textAlign: "center",
-                  marginBottom: 10,
-                  fontWeight: "bold",
-                }}
-              >
-                {t("Check Notifications")}
-              </Text>
-              <View style={{ flexDirection: "row" }}>
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: ternaryThemeColor,
-                    paddingVertical: 5,
-                    paddingHorizontal: 15,
-                    borderRadius: 5,
-                    marginRight: 12,
-                  }}
-                  onPress={() => handleSkip()}
-                >
-                  <Text style={{ color: "white" }}>{t("Skip")}</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: ternaryThemeColor,
-                    paddingVertical: 5,
-                    paddingHorizontal: 15,
-                    borderRadius: 5,
-                  }}
-                  onPress={() => handleNextStep()}
-                >
-                  <Text style={{ color: "white", fontWeight: "bold" }}>
-                    {t("Next")}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          }
+        <AppTutorial
+          stepNumber={2}
+          content="Check Notifications"
           placement="left"
-          onClose={() => {
-            walkThrough = false
-          }}
-          tooltipStyle={{ borderRadius: 30 }}
-          contentStyle={{
-            backgroundColor: "white",
-            minHeight: 70,
-            borderWidth: 2,
-            borderRadius: 10,
-            borderColor: ternaryThemeColor,
-          }}
-        />
-        
-      <NotificationBell/>
+        >
+          <NotificationBell/>
+        </AppTutorial>
       </View>
-      {/* <FadeInOutAnimations comp = {BellComponent}></FadeInOutAnimations> */}
-      {/* <BellComponent></BellComponent> */}
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  skipButton: (color) => ({
-    backgroundColor: color,
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-    marginRight: 12,
-  }),
-  nextButton: (color) => ({
-    backgroundColor: color,
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-  }),
-});
+const styles = StyleSheet.create({});
 
 export default DrawerHeader;
