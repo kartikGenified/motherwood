@@ -187,7 +187,7 @@ export default BackUi
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     height: '100%',
   },
   scrollView: {
