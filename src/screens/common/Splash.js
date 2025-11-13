@@ -31,6 +31,9 @@ const Splash = ({ navigation }) => {
     minVersionData,
     isSlowInternet,
     setError: setSplashError,
+    allApisComplete,
+    criticalError,
+    failedApis,
   } = useSplashData();
 
   // Local state for UI
@@ -38,21 +41,7 @@ const Splash = ({ navigation }) => {
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
   
-  const apiCallStatus = useSelector((state) => state.splashApi.apiCallStatus);
   const isConnected = useSelector((state) => state.internet.isConnected);
-  
-  const allApiArray = [
-    "getAppThemeData", 
-    // "getTermsData", 
-    // "getPolicyData", 
-    "getLegalData",
-    "getWorkflowData", 
-    "getDashboardData", 
-    "getAppMenuData", 
-    "getFormData", 
-    "getBannerData", 
-    "getUsersData"
-  ];
   // Initialize language
   useEffect(() => {
     AsyncStorage.getItem('selectedLanguage')
@@ -74,45 +63,76 @@ const Splash = ({ navigation }) => {
   // Navigation logic based on API completion
   useEffect(() => {
     let fallbackTimer;
-    console.log("session data", sessionData);
+    
+    const handleNavigation = () => {
+      console.log("session data", sessionData);
+      console.log("All APIs complete", allApisComplete);
+      console.log("Critical error", criticalError);
+      console.log("minVersionSupport", minVersionSupport);
   
-    if (sessionData) {
-      const allApisComplete = areAllApisComplete(apiCallStatus, allApiArray);
+      // Wait for version check to complete before any navigation
+      if (minVersionSupport === null) {
+        console.log("Waiting for version check...");
+        return;
+      }
+
+      // If version not supported, don't navigate - alert is shown in useSplashData
+      if (minVersionSupport === false) {
+        console.log("Version not supported, blocking navigation");
+        return;
+      }
+
+      // If no session data, go to login immediately
+      if (sessionData === null && !hookIsLoading) {
+        console.log("No session data, navigating to OtpLogin");
+        navigation.reset({ index: 0, routes: [{ name: "OtpLogin" }] });
+        return;
+      }
   
-      if (allApisComplete ) {
-        if(minVersionSupport){
-          setTimeout(() => {
-            navigation.reset({ index: 0, routes: [{ name: "Dashboard" }] });
-          }, 2000);
+      // If we have session data and version is supported
+      if (sessionData) {
+        // If API loading failed or timeout, navigate to OtpLogin
+        if (criticalError) {
+          console.log("API error occurred, navigating to OtpLogin");
+          navigation.reset({ index: 0, routes: [{ name: "OtpLogin" }] });
+          return;
+        }
+
+        // If all APIs completed successfully, navigate to Dashboard immediately
+        if (allApisComplete) {
+          console.log("All APIs completed successfully, navigating to Dashboard");
+          navigation.reset({ index: 0, routes: [{ name: "Dashboard" }] });
+          return;
+        } else {
+          // Set fallback timer - if APIs don't complete in 4 seconds, go to OtpLogin
+          fallbackTimer = setTimeout(() => {
+            console.log("⏱️ Timeout: APIs did not complete in time, navigating to OtpLogin");
+            navigation.reset({ index: 0, routes: [{ name: "OtpLogin" }] });
+          }, 4000);
         }
       } else {
+        // No session data case - set fallback timer
         fallbackTimer = setTimeout(() => {
-          const missingApis = allApiArray.filter(api => !apiCallStatus?.includes(api));
-          console.log("Timeout: Missing APIs:", missingApis);
+          console.log("⏱️ Timeout: No session data timeout, navigating to OtpLogin");
           navigation.reset({ index: 0, routes: [{ name: "OtpLogin" }] });
         }, 4000);
       }
-    } else {
-      fallbackTimer = setTimeout(() => {
-        const missingApis = allApiArray.filter(api => !apiCallStatus?.includes(api));
-        console.log("Timeout: Missing APIs:", missingApis);
-        navigation.reset({ index: 0, routes: [{ name: "OtpLogin" }] });
-      }, 4000);
-    }
-  
-    return () => clearTimeout(fallbackTimer);
-  }, [apiCallStatus, sessionData, minVersionSupport]);
+    };
+
+    handleNavigation();
+    
+    return () => {
+      if (fallbackTimer) {
+        clearTimeout(fallbackTimer);
+      }
+    };
+  }, [allApisComplete, sessionData, minVersionSupport, hookIsLoading, criticalError]);
 
   // Check internet status
   useEffect(() => {
     console.log("internet status", isConnected);
     setConnected(isConnected.isInternetReachable);
   }, [isConnected]);
-
-  // Helper function to check if all APIs are complete
-  const areAllApisComplete = (apiCallStatus, allApiArray) => {
-    return allApiArray.every(api => apiCallStatus?.includes(api));
-  };
 
   const modalClose = () => {
     setError(false);

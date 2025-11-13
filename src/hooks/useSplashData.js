@@ -77,15 +77,12 @@ import { clientName } from "../utils/HandleClientSetup";
 
 // Cached dispatch imports
 import { getAppThemeCachedDispatch } from "../../redux/dispatches/getAppThemeCachedDispatch";
-import { getPolicyDataCachedDispatch } from "../../redux/dispatches/getPolicyDataCachedDispatch";
 import { getWorkflowCachedDispatch } from "../../redux/dispatches/getWorkflowCachedDispatch";
 import { getFormCachedDispatch } from "../../redux/dispatches/getFormCachedDispatch";
 import { getBannerCachedDispatch } from "../../redux/dispatches/getBannerCachedDispatch";
 import { getAppmenuCachedDispatch } from "../../redux/dispatches/getAppmenuCachedDispatch";
 import { getDashboardCachedDispatch } from "../../redux/dispatches/getDashboardCachedDispatch";
-import { getTermsDataCachedDispatch } from "../../redux/dispatches/getTermsDataCachedDispatch";
 import { getUsersDataCachedDispatch } from "../../redux/dispatches/getUsersDataCachedDispatch";
-import { getLegalCachedDispatch } from "../../redux/dispatches/getLegalCachedDispatch";
 
 const useSplashData = () => {
   const dispatch = useDispatch();
@@ -102,6 +99,21 @@ const useSplashData = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isSlowInternet, setIsSlowInternet] = useState(false);
+  const [completedApis, setCompletedApis] = useState([]);
+  const [failedApis, setFailedApis] = useState([]);
+  const [allApisComplete, setAllApisComplete] = useState(false);
+  const [criticalError, setCriticalError] = useState(false);
+
+  // Define all required APIs
+  const allApiArray = [
+    "getAppThemeData", 
+    "getWorkflowData", 
+    "getDashboardData", 
+    "getAppMenuData", 
+    "getFormData", 
+    "getBannerData", 
+    "getUsersData"
+  ];
 
   // API hooks
   const [getAppTheme, {
@@ -153,12 +165,6 @@ const useSplashData = () => {
     isError: getDashboardIsError,
   }] = useGetAppDashboardDataMutation();
 
-  const [getLegalFunc, {
-    data: getLegalData,
-    error: getLegalError,
-    isLoading: getLegalIsLoading,
-    isError: getLegalIsError,
-  }] = useFetchLegalsMutation();
 
   const [getMinVersionSupportFunc, {
     data: getMinVersionSupportData,
@@ -270,7 +276,9 @@ const useSplashData = () => {
       if (cachedThemeData != null) {
         getAppThemeCachedDispatch(dispatch, cachedThemeData);
         storeApiData("getAppThemeData", cachedThemeData);
+        markApiComplete("getAppThemeData");
       } else {
+        console.log("Fetching fresh theme data");
         getAppTheme(clientName);
       }
       console.log('current version', currentAppVersion);
@@ -283,20 +291,12 @@ const useSplashData = () => {
       if (cachedUsersData != null) {
         getUsersDataCachedDispatch(dispatch, cachedUsersData);
         storeApiData("getUsersData", cachedUsersData);
+        markApiComplete("getUsersData");
       } else {
         getUsers();
       }
 
-      // Legal data API (terms, policy, about, details) - fetch all at once
-      const cachedLegalData = await apiCachingLogic("getLegalData");
-      if (cachedLegalData != null) {
-        getLegalCachedDispatch(dispatch, cachedLegalData);
-        storeApiData("getLegalData", cachedLegalData);
-      } else {
-        // Fetch all legal data without type parameter
-        getLegalFunc({type: ''});
-      }
-
+      console.log("Finished callOpenApis");
     } catch (error) {
       console.error("Error calling open APIs:", error);
       setError("Failed to load app data");
@@ -308,11 +308,14 @@ const useSplashData = () => {
     if (!sessionData) return;
 
     try {
+      console.log("Starting callProtectedApis");
+      
       // Workflow API
       const cachedWorkflowData = await apiCachingLogic("getWorkflowData");
       if (cachedWorkflowData != null) {
         getWorkflowCachedDispatch(dispatch, cachedWorkflowData);
         storeApiData("getWorkflowData", cachedWorkflowData);
+        markApiComplete("getWorkflowData");
       } else {
         getWorkflowFunc({
           userId: sessionData?.user_type_id,
@@ -325,6 +328,7 @@ const useSplashData = () => {
       if (cachedFormData != null) {
         getFormCachedDispatch(dispatch, cachedFormData);
         storeApiData("getFormData", cachedFormData);
+        markApiComplete("getFormData");
       } else {
         const form_type = "2";
         getFormFunc({ form_type: form_type, token: sessionData?.token });
@@ -335,6 +339,7 @@ const useSplashData = () => {
       if (cachedBannerData != null) {
         getBannerCachedDispatch(dispatch, cachedBannerData);
         storeApiData("getBannerData", cachedBannerData);
+        markApiComplete("getBannerData");
       } else {
         getBannerFunc(sessionData?.token);
       }
@@ -344,6 +349,7 @@ const useSplashData = () => {
       if (cachedMenuData != null) {
         getAppmenuCachedDispatch(sessionData, dispatch, cachedMenuData);
         storeApiData("getAppMenuData", cachedMenuData);
+        markApiComplete("getAppMenuData");
       } else {
         getAppMenuFunc(sessionData?.token);
       }
@@ -353,6 +359,7 @@ const useSplashData = () => {
       if (cachedDashboardData != null) {
         getDashboardCachedDispatch(dispatch, cachedDashboardData);
         storeApiData("getDashboardData", cachedDashboardData);
+        markApiComplete("getDashboardData");
       } else {
         getDashboardFunc(sessionData?.token);
       }
@@ -363,36 +370,75 @@ const useSplashData = () => {
     }
   };
 
+  // Helper function to mark API as complete
+  const markApiComplete = (apiName) => {
+    setCompletedApis(prev => {
+      if (!prev.includes(apiName)) {
+        console.log(`✅ ${apiName} completed`);
+        const newCompleted = [...prev, apiName];
+        checkCompletion(newCompleted, failedApis);
+        return newCompleted;
+      }
+      return prev;
+    });
+  };
+
+  // Helper function to mark API as failed
+  const markApiFailed = (apiName, error) => {
+    setFailedApis(prev => {
+      if (!prev.includes(apiName)) {
+        console.log(`❌ ${apiName} failed:`, error);
+        const newFailed = [...prev, apiName];
+        checkCompletion(completedApis, newFailed);
+        return newFailed;
+      }
+      return prev;
+    });
+  };
+
+  // Check if we can proceed (all APIs either completed or failed)
+  const checkCompletion = (completed, failed) => {
+    const totalProcessed = completed.length + failed.length;
+    const allProcessed = totalProcessed === allApiArray.length;
+    
+    if (allProcessed) {
+      console.log(`📊 API Status: ${completed.length} completed, ${failed.length} failed`);
+      
+      // If any API failed, set error state
+      if (failed.length > 0) {
+        console.error("❌ Some APIs failed - will navigate to OtpLogin");
+        setCriticalError(true);
+        setAllApisComplete(false);
+      } else {
+        console.log("✅ All APIs completed successfully");
+        setAllApisComplete(true);
+      }
+    }
+  };
+
   // Handle API responses
   useEffect(() => {
     if (getAppThemeData) {
       console.log("getAppThemeData", JSON.stringify(getAppThemeData?.body));
       storeApiData("getAppThemeData", getAppThemeData);
       getAppThemeCachedDispatch(dispatch, getAppThemeData, sessionData);
+      markApiComplete("getAppThemeData");
     } else if (getAppThemeError) {
       console.log("getAppThemeError", getAppThemeError);
+      markApiFailed("getAppThemeData", getAppThemeError);
       setError("Failed to load app theme");
     }
   }, [getAppThemeData, getAppThemeError]);
-
-  useEffect(() => {
-    if (getLegalData) {
-      console.log("getLegalData", JSON.stringify(getLegalData));
-      storeApiData("getLegalData", getLegalData);
-      getLegalCachedDispatch(dispatch, getLegalData);
-    } else if (getLegalError) {
-      console.log("getLegalError", getLegalError);
-      setError("Failed to load legal data");
-    }
-  }, [getLegalData, getLegalError]);
 
   useEffect(() => {
     if (getDashboardData) {
       console.log("getDashboardData", getDashboardData);
       getDashboardCachedDispatch(dispatch, getDashboardData);
       storeApiData("getDashboardData", getDashboardData);
+      markApiComplete("getDashboardData");
     } else if (getDashboardError) {
       console.log("getDashboardError", getDashboardError);
+      markApiFailed("getDashboardData", getDashboardError);
       if (getDashboardError?.status === 401) {
         setError("Session expired");
       }
@@ -404,8 +450,10 @@ const useSplashData = () => {
       console.log("getAppMenuData", JSON.stringify(getAppMenuData));
       getAppmenuCachedDispatch(dispatch, getAppMenuData);
       storeApiData("getAppMenuData", getAppMenuData);
+      markApiComplete("getAppMenuData");
     } else if (getAppMenuError) {
       console.log("getAppMenuError", getAppMenuError);
+      markApiFailed("getAppMenuData", getAppMenuError);
       setError("Failed to load app menu");
     }
   }, [getAppMenuData, getAppMenuError]);
@@ -417,8 +465,10 @@ const useSplashData = () => {
       console.log("getFormData", getFormData?.body);
       getFormCachedDispatch(dispatch, getFormData);
       storeApiData("getFormData", getFormData);
+      markApiComplete("getFormData");
     } else if (getFormError) {
       console.log("getFormError", getFormError);
+      markApiFailed("getFormData", getFormError);
       setError("Can't fetch forms for warranty.");
     }
   }, [getFormData, getFormError]);
@@ -427,8 +477,10 @@ const useSplashData = () => {
     if (getWorkflowData) {
       storeApiData("getWorkflowData", getWorkflowData);
       getWorkflowCachedDispatch(dispatch, getWorkflowData);
+      markApiComplete("getWorkflowData");
     } else if (getWorkflowError) {
       console.log("getWorkflowError", getWorkflowError);
+      markApiFailed("getWorkflowData", getWorkflowError);
       setError("Oops something went wrong");
       if (getWorkflowError?.status === 401) {
         setError("Session expired");
@@ -441,9 +493,12 @@ const useSplashData = () => {
       console.log("getBannerData", getBannerData?.body);
       getBannerCachedDispatch(dispatch, getBannerData);
       storeApiData("getBannerData", getBannerData);
+      markApiComplete("getBannerData");
     } else if (getBannerError) {
       setError("Unable to fetch app banners");
       console.log("getBannerError", getBannerError);
+      markApiFailed("getBannerData", getBannerError);
+      setError("Unable to fetch app banners");
       if (getBannerError?.status === 401) {
         setError("Session expired");
       }
@@ -455,8 +510,10 @@ const useSplashData = () => {
       console.log("getUsersData", getUsersData);
       getUsersDataCachedDispatch(dispatch, getUsersData);
       storeApiData("getUsersData", getUsersData);
+      markApiComplete("getUsersData");
     } else if (getUsersError) {
       console.log("getUsersError", getUsersError);
+      markApiFailed("getUsersData", getUsersError);
       setError("Failed to load users data");
     }
   }, [getUsersData, getUsersError]);
@@ -464,42 +521,44 @@ const useSplashData = () => {
   useEffect(() => {
     console.log("getMinVersionSupportData", getMinVersionSupportData);
     if (getMinVersionSupportData) {
-      setMinVersionSupport(!!(getMinVersionSupportData?.success && getMinVersionSupportData?.body?.data))
+      const isSupported = !!(getMinVersionSupportData?.success && getMinVersionSupportData?.body?.data);
+      console.log("Version support result:", isSupported);
+      setMinVersionSupport(isSupported);
     } else if (getMinVersionSupportError) {
       console.log("getMinVersionSupportError", getMinVersionSupportError);
-      // setError("An error occurred while fetching minimum version support.");
-      Alert.alert(
-              t("Error"),
-              t("An error occurred while fetching minimum version support."),
-              [{ text: "Exit", onPress: () => BackHandler.exitApp() }],
-              { cancelable: false }
-            );
+      // On error, treat as unsupported for safety - better to show update than allow outdated version
+      setMinVersionSupport(false);
     }
   }, [getMinVersionSupportData, getMinVersionSupportError]);
 
 
 
-  // TODO: remaining update for ios
-  useEffect(()=>{
-    if(minVersionSupport===false){
-    Alert.alert(
-          t("Kindly update the app to the latest version"),
-          t("Your version of app is not supported anymore, kindly update"),
-          [
-            {
-              text: "Update",
-              onPress: () =>{
-                if(Platform.OS === 'android'){
-                  Linking.openURL(
-                    "https://play.google.com/store/apps/details?id=com.genefied.motherwood"
-                  );
-                }
-              }
-            },
-          ]
-        );
+  // Handle version update alert
+  useEffect(() => {
+    if (minVersionSupport === false) {
+      Alert.alert(
+        t("Update Required"),
+        t("Your version of the app is not supported anymore. Please update to continue using the app."),
+        [
+          {
+            text: t("Update Now"),
+            onPress: () => {
+              const url = Platform.OS === 'android'
+                ? "https://play.google.com/store/apps/details?id=com.genefied.motherwood"
+                : "https://apps.apple.com/in/app/com.genefied.motherwood";
+              Linking.openURL(url);
+            }
+          },
+          {
+            text: t("Exit"),
+            onPress: () => BackHandler.exitApp(),
+            style: "cancel"
+          }
+        ],
+        { cancelable: false }
+      );
     }
-  },[minVersionSupport])
+  }, [minVersionSupport]);
 
   // Initialize hook
   useEffect(() => {
@@ -565,7 +624,6 @@ const useSplashData = () => {
     getUsersDataIsLoading,
     getAppMenuIsLoading,
     getDashboardIsLoading,
-    getLegalIsLoading,
     getMinVersionSupportIsLoading,
   ];
 
@@ -580,6 +638,9 @@ const useSplashData = () => {
     isLoading: isApiLoading,
     error,
     isSlowInternet,
+    allApisComplete,
+    criticalError,
+    failedApis,
     
     // Data
     appThemeData: getAppThemeData,
@@ -589,7 +650,6 @@ const useSplashData = () => {
     usersData: getUsersData,
     appMenuData: getAppMenuData,
     dashboardData: getDashboardData,
-    legalData: getLegalData,
     minVersionData: getMinVersionSupportData,
     
     // Functions

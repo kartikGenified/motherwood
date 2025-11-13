@@ -20,6 +20,7 @@ import DrawerHeader from "../../components/headers/DrawerHeader";
 import DashboardSupportBox from "../../components/molecules/DashboardSupportBox";
 import { useSelector, useDispatch } from "react-redux";
 import { useGetkycStatusMutation } from "../../apiServices/kyc/KycStatusApi";
+import { useFetchLegalsMutation } from "../../apiServices/fetchLegal/FetchLegalApi";
 import { setKycData } from "../../../redux/slices/userKycStatusSlice";
 import { useIsFocused } from "@react-navigation/native";
 import {
@@ -64,6 +65,8 @@ import moment from "moment";
 import BirthdayModal from "../../components/modals/BirthdayModal";
 import { setBirthdayModal } from "../../../redux/slices/birthdayModalSlice";
 import { useSelectedDreamGiftMutation } from "../../apiServices/dreamGift/DreamGiftApi";
+import { apiCachingLogic, storeApiData } from "../../utils/apiCachingLogicMMKV";
+import { getLegalCachedDispatch } from "../../../redux/dispatches/getLegalCachedDispatch";
 import Loader from "@/components/atoms/Loader";
 
 
@@ -209,6 +212,15 @@ const Dashboard = ({ navigation }) => {
     },
   ] = useGetkycStatusMutation();
 
+  const [
+    getLegalFunc,
+    {
+      data: getLegalData,
+      error: getLegalError,
+      isLoading: getLegalIsLoading,
+      isError: getLegalIsError,
+    },
+  ] = useFetchLegalsMutation();
 
 
 
@@ -274,6 +286,24 @@ const Dashboard = ({ navigation }) => {
 
   };
 
+  const fetchLegalData = async () => {
+    try {
+      // Check cache first
+      const cachedLegalData = await apiCachingLogic("getLegalData");
+      if (cachedLegalData != null) {
+        console.log("Loading legal data from cache");
+        getLegalCachedDispatch(dispatch, cachedLegalData);
+        storeApiData("getLegalData", cachedLegalData);
+      } else {
+        // Fetch all legal data without type parameter
+        console.log("Fetching fresh legal data");
+        getLegalFunc({type: ''});
+      }
+    } catch (error) {
+      console.error("Error fetching legal data:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const credentials = await Keychain.getGenericPassword();
@@ -287,6 +317,11 @@ const Dashboard = ({ navigation }) => {
       }
     };
     fetchData();
+  }, []);
+
+  // Fetch legal data on component mount
+  useEffect(() => {
+    fetchLegalData();
   }, []);
 
   useEffect(() => {
@@ -585,6 +620,17 @@ const Dashboard = ({ navigation }) => {
       fetchOnPageActive();
     }
   }, [focused]);
+
+  // Handle legal data response
+  useEffect(() => {
+    if (getLegalData) {
+      console.log("getLegalData received in Dashboard", JSON.stringify(getLegalData));
+      storeApiData("getLegalData", getLegalData);
+      getLegalCachedDispatch(dispatch, getLegalData);
+    } else if (getLegalError) {
+      console.log("getLegalError in Dashboard", getLegalError);
+    }
+  }, [getLegalData, getLegalError]);
 
   // ozone change
 
