@@ -188,7 +188,7 @@ const OtpVerification = ({ navigation, route }) => {
             platform_id: 1,
             platform: "mobile",
             points: pointsConversion,
-            remarks: "demo",
+            remarks: "",
             state: location?.state === undefined ? "N/A" : location?.state,
             district:
               location?.district === undefined ? "N/A" : location?.district,
