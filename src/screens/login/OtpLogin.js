@@ -4,8 +4,6 @@ import {
   StyleSheet,
   Dimensions,
   Image,
-  ScrollView,
-  KeyboardAvoidingView,
   TouchableOpacity,
   Keyboard,
 } from "react-native";
@@ -19,7 +17,7 @@ import CustomTextInputNumeric from "../../components/organisms/CustomTextInputNu
 import ButtonNavigateArrow from "../../components/atoms/buttons/ButtonNavigateArrow";
 import { useGetLoginOtpMutation } from "../../apiServices/login/otpBased/SendOtpApi";
 import ButtonNavigate from "../../components/atoms/buttons/ButtonNavigate";
-import ErrorModal from "../../components/modals/ErrorModal";
+// Error/Alert modals are now handled by BackUi
 import { useGetNameMutation } from "../../apiServices/login/GetNameByMobile";
 import Mobile from 'react-native-vector-icons/AntDesign'
 import { useIsFocused } from "@react-navigation/native";
@@ -29,12 +27,11 @@ import { useFetchLegalsMutation } from "../../apiServices/fetchLegal/FetchLegalA
 import * as Keychain from "react-native-keychain";
 import FastImage from "react-native-fast-image";
 import { useTranslation } from "react-i18next";
-import AlertModal from "../../components/modals/AlertModal";
 import crashlytics from "@react-native-firebase/crashlytics";
 import { appIcon, eKyc } from "../../utils/HandleClientSetup";
 import TextInputInsIdePlaceholder from "../../components/atoms/input/TextInputInsIdePlaceholder";
 import { useGetLoginOtpForVerificationMutation } from "../../apiServices/otp/GetOtpApi";
-import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import BackUi from "../../components/atoms/BackUi";
 
 const OtpLogin = ({ navigation, route }) => {
   const [mobile, setMobile] = useState("");
@@ -273,21 +270,17 @@ const OtpLogin = ({ navigation, route }) => {
     setAlert(false);
   };
   return (
-    <KeyboardAvoidingView
-      style={{height:'100%' }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"} // Or "position"
-      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -20}
+    <BackUi
+      scrollable
+      keyboardAvoidingEnabled
+      errorMessage={error ? message : undefined}
+      alertMessage={alert ? message : undefined}
+      scrollContentContainerStyle={{
+        alignItems: "center",
+        justifyContent: "flex-start",
+        paddingBottom: 80,
+      }}
     >
-    <View style={{}}>
-    <ScrollView
-          contentContainerStyle={{
-            alignItems: "center",
-            justifyContent: "flex-start",
-            paddingBottom: 80, // Leave space for the fixed SocialBottomBar
-          }}
-          style={{ width: "100%" }}
-          keyboardShouldPersistTaps="handled"
-        >
       <View
         style={{
           width: "100%",
@@ -325,20 +318,7 @@ const OtpLogin = ({ navigation, route }) => {
         </View>
       </View>
 
-      {error && (
-        <ErrorModal
-          modalClose={modalClose}
-          message={message}
-          openModal={error}
-        ></ErrorModal>
-      )}
-      {alert && (
-        <AlertModal
-          modalClose={modalClose}
-          message={message}
-          openModal={alert}
-        ></AlertModal>
-      )}
+      {/* Error and Alert handled by BackUi via props */}
       <View style={{flexDirection:"row",
             marginTop: 20,
             alignItems:'center',
@@ -379,14 +359,7 @@ const OtpLogin = ({ navigation, route }) => {
       >
         <View style={{ flexDirection: "row", marginHorizontal: 24 }}>
           <Checkbox CheckBoxData={getCheckBoxData} />
-          <TouchableOpacity
-            style={{ flexDirection: "row" }}
-            onPress={() => {
-              navigation.navigate("PdfComponent", {
-                pdf: getTermsData?.body?.data?.[0]?.files[0],
-              });
-            }}
-          >
+          
             <PoppinsTextLeftMedium
               content={t("I hearby accept all the ")}
               style={{
@@ -398,6 +371,14 @@ const OtpLogin = ({ navigation, route }) => {
                 marginTop: 16,
               }}
             ></PoppinsTextLeftMedium>
+            <TouchableOpacity
+            // style={{ flexDirection: "row" }}
+            onPress={() => {
+              navigation.navigate("PdfComponent", {
+                pdf: getTermsData?.body?.data?.[0]?.files[0],
+              });
+            }}
+          >
             <PoppinsTextLeftMedium
               content={t("Terms & Conditions")}
               style={{
@@ -439,12 +420,7 @@ const OtpLogin = ({ navigation, route }) => {
                 <PoppinsTextLeftMedium style={{color:'white', fontSize:20}} content={t("Proceed")}></PoppinsTextLeftMedium>
               </TouchableOpacity>
             }
-
-       
-    </ScrollView>
-    </View>
-            <SocialBottomBar></SocialBottomBar>
-    </KeyboardAvoidingView>
+    </BackUi>
   );
 };
 

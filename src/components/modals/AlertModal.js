@@ -56,7 +56,6 @@ const AlertModal = (props) => {
 
 
   return (
-    <View style={styles.centeredView}>
       <Modal
         animationType="slide"
         transparent={true}
@@ -91,7 +90,6 @@ const AlertModal = (props) => {
           </View>
         </View>
       </Modal>
-    </View>
   );
 };
 
