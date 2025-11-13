@@ -82,7 +82,6 @@ const ErrorModal = (props) => {
 
 
   return (
-    <View style={styles.centeredView}>
       <Modal
         animationType="slide"
         transparent={true}
@@ -122,7 +121,6 @@ const ErrorModal = (props) => {
           </View>
         </View>
       </Modal>
-    </View>
   );
 };
 

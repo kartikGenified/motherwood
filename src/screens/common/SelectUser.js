@@ -4,37 +4,28 @@ import {
   StyleSheet,
   Dimensions,
   Image,
-  ScrollView,
   BackHandler,
-  ImageBackground,
-  Text,
   Alert,
-  TouchableOpacity,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { BaseUrl } from "../../utils/BaseUrl";
 import LinearGradient from "react-native-linear-gradient";
-import { useGetAppUsersDataMutation } from "../../apiServices/appUsers/AppUsersApi";
-import SelectUserBox from "../../components/molecules/SelectUserBox";
-import { setAppUsers } from "../../../redux/slices/appUserSlice";
-import { slug } from "../../utils/Slug";
+import { useGetAppUsersDataMutation } from "@/apiServices/appUsers/AppUsersApi";
+import SelectUserBox from "@/components/molecules/SelectUserBox";
+import { setAppUsers } from "@/../redux/slices/appUserSlice";
 import {
   setAppUserType,
   setAppUserName,
   setAppUserId,
   setUserData,
   setId,
-} from "../../../redux/slices/appUserDataSlice";
-import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
+} from "@/../redux/slices/appUserDataSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import ErrorModal from "../../components/modals/ErrorModal";
 import { t } from "i18next";
-import { ActivityIndicator, MD2Colors } from "react-native-paper";
-import hideUserFromLogin from "../../utils/hideUserFromLogin";
+import hideUserFromLogin from "@/utils/hideUserFromLogin";
 import FastImage from "react-native-fast-image";
-import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
-import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import PoppinsTextLeftMedium from "@/components/electrons/customFonts/PoppinsTextLeftMedium";
 import { useIsFocused } from "@react-navigation/native";
+import BackUi from "@/components/atoms/BackUi";
 
 const SelectUser = ({ navigation,route }) => {
   const [listUsers, setListUsers] = useState();
@@ -42,16 +33,15 @@ const SelectUser = ({ navigation,route }) => {
   const [connected, setConnected] = useState(true);
   const [isSingleUser, setIsSingleUser] = useState(true);
   const [needsApproval, setNeedsApproval] = useState();
-  const [error, setError] = useState(false);
-  const [message, setMessage] = useState();
+  const [errorMessage, setErrorMessage] = useState("");
   const [users, setUsers] = useState();
-  const primaryThemeColor = useSelector(
-    (state) => state.apptheme.primaryThemeColor
-  );
+  // const primaryThemeColor = useSelector(
+  //   (state) => state.apptheme.primaryThemeColor
+  // );
 
-  const secondaryThemeColor = useSelector(
-    (state) => state.apptheme.secondaryThemeColor
-  );
+  // const secondaryThemeColor = useSelector(
+  //   (state) => state.apptheme.secondaryThemeColor
+  // );
 
   const ternaryThemeColor = useSelector(
     (state) => state.apptheme.ternaryThemeColor
@@ -135,8 +125,7 @@ const SelectUser = ({ navigation,route }) => {
       dispatch(setAppUsers(tempUsers));
       setListUsers(tempUsers);
     } else if (getUsersError) {
-      setError(true);
-      setMessage("Error in getting profile data, kindly retry after sometime");
+      setErrorMessage("Error in getting profile data, kindly retry after sometime");
       console.log("getUsersError", getUsersError);
     }
   }, [getUsersData, getUsersError]);
@@ -202,99 +191,67 @@ const SelectUser = ({ navigation,route }) => {
   console.log("issingleuserqwerty", isSingleUser);
 
   return (
-    <View
-      style={{
-        height: "100%",
-        width: "100%",
-        justifyContent: "center",
-        backgroundColor: "#F0F8F6",
-      }}
+    <BackUi
+      scrollable={!isSingleUser}
+      style={styles.mainContainer}
+      errorMessage={errorMessage}
     >
       {!isSingleUser ? (
         <LinearGradient
           colors={["#F0F8F6", "#F0F8F6"]}
           style={styles.container}
         >
-          <ScrollView showsVerticalScrollIndicator={false} style={{}}>
-            <View
+          <View
+            style={{
+              width: "100%",
+            }}
+          >
+            <Image
               style={{
-                width: "100%",
+                height: 220,
+                width: 220,
+                resizeMode: "cover",
               }}
-            >
-              <Image
-                style={{
-                  height: 220,
-                  width: 220,
-                  resizeMode: "cover",
-                }}
-                source={require("../../../assets/images/MotherWoodCircle.png")}
-              ></Image>
+              source={require("@assets/images/MotherWoodCircle.png")}
+            ></Image>
+          </View>
 
-              {/* <PoppinsTextMedium style={{color:'#171717',fontSize:20,fontWeight:'700'}} ></PoppinsTextMedium> */}
+          <View style={{ marginTop: "10%", marginBottom: 30 }}>
+            <PoppinsTextLeftMedium
+              style={{
+                color: "#00A79D",
+                fontSize: 22,
+                fontWeight: "700",
+                marginLeft: 40,
+              }}
+              content={t("Let's get started! I am a...")}
+            />
+          </View>
 
-              {/* </View> */}
-            </View>
-
-            {error && (
-              <ErrorModal
-                modalClose={modalClose}
-                message={message}
-                openModal={error}
-              ></ErrorModal>
-            )}
-
-            <View style={{ marginTop: "10%", marginBottom: 30 }}>
-              <PoppinsTextLeftMedium
-                style={{
-                  color: "#00A79D",
-                  fontSize: 22,
-                  fontWeight: "700",
-                  marginLeft: 40,
-                }}
-                content={t("Let's get started! I am a...")}
-              />
-            </View>
-
-            <View style={styles.userListContainer}>
-              {listUsers &&
-                listUsers.map((item, index) => {
-                  return (
-                    <SelectUserBox
-                      style={{}}
-                      navigation={navigation}
-                      otpLogin={otpLogin}
-                      passwordLogin={passwordLogin}
-                      autoApproval={autoApproval}
-                      manualApproval={manualApproval}
-                      registrationRequired={registrationRequired}
-                      key={index}
-                      mobile={route?.params?.mobile}
-                      color={ternaryThemeColor}
-                      image={item.user_type_logo}
-                      content={item.user_type}
-                      id={item.user_type_id}
-                    ></SelectUserBox>
-                  );
-                })}
-            </View>
-
-            {/* <PoppinsTextMedium style={{color:'black',fontSize:12,marginTop:20,marginBottom:10}} content="Designed and developed by Genefied"></PoppinsTextMedium> */}
-          </ScrollView>
-
-          <SocialBottomBar showRelative={true}></SocialBottomBar>
+          <View style={styles.userListContainer}>
+            {listUsers &&
+              listUsers.map((item, index) => {
+                return (
+                  <SelectUserBox
+                    style={{}}
+                    navigation={navigation}
+                    otpLogin={otpLogin}
+                    passwordLogin={passwordLogin}
+                    autoApproval={autoApproval}
+                    manualApproval={manualApproval}
+                    registrationRequired={registrationRequired}
+                    key={index}
+                    mobile={route?.params?.mobile}
+                    color={ternaryThemeColor}
+                    image={item.user_type_logo}
+                    content={item.user_type}
+                    id={item.user_type_id}
+                  ></SelectUserBox>
+                );
+              })}
+          </View>
         </LinearGradient>
       ) : (
-        //   <ImageBackground
-        //   resizeMode="contain"
-        //   style={{
-        //     height: "100%",
-        //     width: "100%",
-        //     alignItems: "center",
-        //     justifyContent: "center",
-        //   }}
-        //   source={require("../../../assets/images/splash.png")}
-        // >
-
         <View
           style={{
             alignItems: "center",
@@ -306,33 +263,21 @@ const SelectUser = ({ navigation,route }) => {
           <FastImage
             style={{ width: "100%", height: "100%", alignSelf: "center" }}
             source={{
-              uri: gifUri, // Update the path to your GIF
+              uri: gifUri,
               priority: FastImage.priority.normal,
             }}
             resizeMode={FastImage.resizeMode.contain}
           />
-
-          {/* <View style={{ position: "absolute", bottom: 70, height: 70 }}>
-        <PoppinsTextMedium stytle={{color:'#DDDDDD',fontWeight:'800',fontSize:30,marginBottom:20}} content ="Preparing your login experience..."></PoppinsTextMedium>
-
-          <ActivityIndicator
-          style={{marginTop:10}}
-            size={"medium"}
-            animating={true}
-            color={MD2Colors.yellow800}
-          />
-          <PoppinsTextMedium
-            style={{ color: "white", marginTop: 4 }}
-            content="Please Wait"
-          ></PoppinsTextMedium>
-        </View> */}
         </View>
       )}
-    </View>
+    </BackUi>
   );
 };
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    backgroundColor: "#F0F8F6",
+  },
   container: {
     flex: 1,
     height: "100%",
