@@ -190,7 +190,7 @@ const DashboardMenuBox = (props) => {
           justifyContent: "center",
         }}
       >
-        {data.map((item, index) => {
+        {data?.map?.((item, index) => {
           return (
             <MenuItems
               handlePress={handleMenuItemPress}

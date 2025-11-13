@@ -178,14 +178,10 @@ const Notification = ({ navigation }) => {
             key={item?.id ?? index}
           />
         )}
-        ListEmptyComponent={
-          initialLoadComplete && !isNotifLoading ? (
-            <View style={{ height: '90%', backgroundColor: 'white', width: '100%' }}>
-              <DataNotFound />
-            </View>
-          ) : null
-        }
       />
+      { (initialLoadComplete && !isNotifLoading) && !(notifData?.body?.data?.length >0) &&
+          <DataNotFound></DataNotFound>
+      }
     </BackUi>
   )
 }

@@ -4,11 +4,10 @@ import {
   StyleSheet,
   Dimensions,
   Image,
-  ScrollView,
-  KeyboardAvoidingView,
   TouchableOpacity,
   Text,
   BackHandler,
+  Platform,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { BaseUrl } from "../../utils/BaseUrl";
@@ -28,9 +27,6 @@ import {
 } from "../../../redux/slices/appUserDataSlice";
 import OtpInput from "../../components/organisms/OtpInput";
 import * as Keychain from "react-native-keychain";
-import { useGetNameMutation } from "../../apiServices/login/GetNameByMobile";
-import ErrorModal from "../../components/modals/ErrorModal";
-import MessageModal from "../../components/modals/MessageModal";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ModalWithBorder from "../../components/modals/ModalWithBorder";
 import Icon from "react-native-vector-icons/Feather";
@@ -68,7 +64,7 @@ import { getBannerCachedDispatch } from "../../../redux/dispatches/getBannerCach
 import { storeData } from "../../utils/apiCachingLogic";
 import { useIsFocused } from "@react-navigation/native";
 import { useVerifyOtpForNormalUseMutation } from "../../apiServices/otp/VerifyOtpForNormalUseApi";
-import SocialBottomBar from "../../components/socialBar/SocialBottomBar";
+import BackUi from "../../components/atoms/BackUi";
 import { useGetLoginOtpForVerificationMutation } from "../../apiServices/otp/GetOtpApi";
 import Phone from 'react-native-vector-icons/FontAwesome'
 import SuccessConfettiModal from "../../components/modals/SuccessConfettiModal";
@@ -757,11 +753,12 @@ useEffect(()=>{
   };
 
   return (
-    <KeyboardAvoidingView
-    style={{ height:'100%',flex:1}}
-    behavior={Platform.OS === "ios" ? "padding" : undefined}
-  >
-    <ScrollView contentContainerStyle={{alignItems:'center'}} style={styles.container}>
+    <BackUi
+      scrollable
+      keyboardAvoidingEnabled
+      errorMessage={error ? message : undefined}
+      scrollContentContainerStyle={{ alignItems: 'center', paddingBottom: 50 }}
+    >
       <View
         style={{
           width: "100%",
@@ -816,15 +813,6 @@ useEffect(()=>{
           </View>
           
         </View>
-      </View>
-      <View style={{ marginHorizontal: 100 }}>
-        {error && (
-          <ErrorModal
-            modalClose={modalClose}
-            message={message}
-            openModal={error}
-          ></ErrorModal>
-        )}
       </View>
       <View style={{ marginHorizontal: 100 }}>
         {openModalWithBorder && (
@@ -894,11 +882,7 @@ useEffect(()=>{
          {t("Verify OTP")}
             </Text>)}
         </TouchableOpacity>
-
-    </ScrollView>
-    <SocialBottomBar showRelative={true}/>
-
-    </KeyboardAvoidingView>
+    </BackUi>
   );
 };
 

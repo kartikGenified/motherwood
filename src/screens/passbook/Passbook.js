@@ -436,6 +436,7 @@ const Passbook = ({ navigation }) => {
       onBackPress={() => navigation.navigate("Dashboard")}
       scrollable
       onRefresh={onRefresh}
+      style={{backgroundColor:'white'}}
     >
       <View
         style={{
