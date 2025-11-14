@@ -1,37 +1,27 @@
 import React, { useEffect, useState } from "react";
 import {
-  View,
-  StyleSheet,
-  Dimensions,
-  Image,
-  TouchableOpacity,
-  Keyboard,
+	Dimensions,
+	Image,
+	Keyboard,
+	StyleSheet,
+	TouchableOpacity,
+	View,
 } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
-import { BaseUrl } from "../../utils/BaseUrl";
-import LinearGradient from "react-native-linear-gradient";
-import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
-import PoppinsText from "../../components/electrons/customFonts/PoppinsText";
-import CustomTextInput from "../../components/organisms/CustomTextInput";
-import CustomTextInputNumeric from "../../components/organisms/CustomTextInputNumeric";
-import ButtonNavigateArrow from "../../components/atoms/buttons/ButtonNavigateArrow";
+import { useSelector } from "react-redux";
 import { useGetLoginOtpMutation } from "../../apiServices/login/otpBased/SendOtpApi";
-import ButtonNavigate from "../../components/atoms/buttons/ButtonNavigate";
-// Error/Alert modals are now handled by BackUi
-import { useGetNameMutation } from "../../apiServices/login/GetNameByMobile";
-import Mobile from 'react-native-vector-icons/AntDesign'
+import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 import { useIsFocused } from "@react-navigation/native";
-import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
-import Checkbox from "../../components/atoms/checkbox/Checkbox";
-import { useFetchLegalsMutation } from "../../apiServices/fetchLegal/FetchLegalApi";
-import * as Keychain from "react-native-keychain";
-import FastImage from "react-native-fast-image";
 import { useTranslation } from "react-i18next";
-import crashlytics from "@react-native-firebase/crashlytics";
-import { appIcon, eKyc } from "../../utils/HandleClientSetup";
-import TextInputInsIdePlaceholder from "../../components/atoms/input/TextInputInsIdePlaceholder";
+import FastImage from "react-native-fast-image";
+import * as Keychain from "react-native-keychain";
+import Mobile from 'react-native-vector-icons/AntDesign';
+import { useFetchLegalsMutation } from "../../apiServices/fetchLegal/FetchLegalApi";
+import { useGetNameMutation } from "../../apiServices/login/GetNameByMobile";
 import { useGetLoginOtpForVerificationMutation } from "../../apiServices/otp/GetOtpApi";
 import BackUi from "../../components/atoms/BackUi";
+import Checkbox from "../../components/atoms/checkbox/Checkbox";
+import TextInputInsIdePlaceholder from "../../components/atoms/input/TextInputInsIdePlaceholder";
+import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
 
 const OtpLogin = ({ navigation, route }) => {
   const [mobile, setMobile] = useState("");
@@ -45,24 +35,8 @@ const OtpLogin = ({ navigation, route }) => {
   const [hideButton, setHideButton] = useState(false);
   const [alert, setAlert] = useState(false);
   const { t } = useTranslation();
-  // fetching theme for the screen-----------------------
 
-  const primaryThemeColor = useSelector(
-    (state) => state.apptheme.primaryThemeColor
-  );
-
-  const secondaryThemeColor = useSelector(
-    (state) => state.apptheme.secondaryThemeColor
-  );
-
-  const ternaryThemeColor = useSelector(
-    (state) => state.apptheme.ternaryThemeColor
-  );
-
-  const buttonThemeColor = useSelector(
-    (state) => state.apptheme.ternaryThemeColor
-  );
-
+  
   const icon = useSelector((state) => state.apptheme.icon);
 
   console.log("Icon in  select user", icon);
@@ -117,16 +91,18 @@ const OtpLogin = ({ navigation, route }) => {
   
   const registrationRequired = route?.params?.registrationRequired;
   console.log("registrationRequiredotpLogin", registrationRequired);
-  const width = Dimensions.get("window").width;
-  var pattern = /^(0|[+91]{3})?[6-9][0-9]{9}$/;
+
   
 
   const gifUri = Image.resolveAssetSource(
     require("../../../assets/gif/loaderNew.gif")
   ).uri;
 
+	useEffect(() => {
+		fetchTerms();
+	}, []);
+
   useEffect(() => {
-    fetchTerms();
     setHideButton(false);
   }, [focused, registrationRequired]);
 
@@ -228,12 +204,7 @@ const OtpLogin = ({ navigation, route }) => {
   };
 
   const fetchTerms = async () => {
-    const credentials = await Keychain.getGenericPassword();
-    const token = credentials.username;
-    const params = {
-      type: "term-and-condition",
-    };
-    getTermsAndCondition(params);
+    getTermsAndCondition({type: "term-and-condition" });
   };
 
   
@@ -262,76 +233,38 @@ const OtpLogin = ({ navigation, route }) => {
     }
   }
 
-  
- 
-
-  const modalClose = () => {
-    setError(false);
-    setAlert(false);
-  };
   return (
     <BackUi
       scrollable
       keyboardAvoidingEnabled
       errorMessage={error ? message : undefined}
       alertMessage={alert ? message : undefined}
-      scrollContentContainerStyle={{
-        alignItems: "center",
-        justifyContent: "flex-start",
-        paddingBottom: 80,
-      }}
+      scrollContentContainerStyle={styles.scrollContent}
     >
-      <View
-        style={{
-          width: "100%",
-          alignItems: "center",
-          justifyContent: "flex-start",
-        }}
-      >
+      <View style={styles.container}>
         
          
-        <View style={{alignItems:'center',width:'100%',justifyContent:'flex-start',height:240,}}>
+        <View style={styles.imageContainer}>
           <Image
-            style={{
-              height:200,
-              width:'100%',
-              resizeMode: "cover",
-            }}
+            style={styles.logo}
             source={require("../../../assets/images/sathiLogoWithCircle.png")}
           ></Image>
           </View>
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            marginLeft: 12,
-          }}
-        >
+        <View style={styles.welcomeContainer}>
           <PoppinsTextMedium
-            style={{ color: "#00A79D", fontSize: 28, fontWeight: "800" }}
+            style={styles.welcomeTitle}
             content={t("welcome")}
           ></PoppinsTextMedium>
           <PoppinsTextMedium
-            style={{ color: "#00A79D", fontSize: 16 }}
+            style={styles.welcomeSubtitle}
             content={t("Login to your account")}
           ></PoppinsTextMedium>
         </View>
       </View>
 
       {/* Error and Alert handled by BackUi via props */}
-      <View style={{flexDirection:"row",
-            marginTop: 20,
-            alignItems:'center',
-            justifyContent:'center',
-            width:'100%',
-          }}>
-        <View
-          style={{
-            width: "80%",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+      <View style={styles.inputRow}>
+        <View style={styles.inputContainer}>
           <TextInputInsIdePlaceholder
             value={mobile}
             title="mobile"
@@ -344,35 +277,20 @@ const OtpLogin = ({ navigation, route }) => {
 
         
         </View>
-        <View style={{alignItems:'center', justifyContent:'center',backgroundColor:"white",height:70,width:'10%'}}>
+        <View style={styles.iconContainer}>
           <Mobile name="mobile1" size={30} color={"grey"}></Mobile>
         </View>
       </View>
 
-      <View
-        style={{
-          width: "100%",
-          // marginTop: 20,
-          marginBottom: 20,
-          marginLeft: 10,
-        }}
-      >
-        <View style={{ flexDirection: "row", marginHorizontal: 24 }}>
+      <View style={styles.checkboxContainer}>
+        <View style={styles.checkboxRow}>
           <Checkbox CheckBoxData={getCheckBoxData} />
           
             <PoppinsTextLeftMedium
               content={t("I hearby accept all the ")}
-              style={{
-                color: "black",
-
-                marginBottom: 20,
-                fontSize: 14,
-                marginLeft: 8,
-                marginTop: 16,
-              }}
+              style={styles.termsText}
             ></PoppinsTextLeftMedium>
             <TouchableOpacity
-            // style={{ flexDirection: "row" }}
             onPress={() => {
               navigation.navigate("PdfComponent", {
                 pdf: getTermsData?.body?.data?.[0]?.files[0],
@@ -381,26 +299,14 @@ const OtpLogin = ({ navigation, route }) => {
           >
             <PoppinsTextLeftMedium
               content={t("Terms & Conditions")}
-              style={{
-                color: "#00A79D",
-
-                marginBottom: 20,
-                fontSize: 13,
-
-                marginTop: 16,
-              }}
+              style={styles.termsLink}
             ></PoppinsTextLeftMedium>
           </TouchableOpacity>
         </View>
       
         {sendOtpIsLoading && (
           <FastImage
-            style={{
-              width: 100,
-              height: 100,
-              alignSelf: "center",
-              marginTop: 10,
-            }}
+            style={styles.loader}
             source={{
               uri: gifUri, // Update the path to your GIF
               priority: FastImage.priority.normal,
@@ -414,10 +320,8 @@ const OtpLogin = ({ navigation, route }) => {
            
 
             {
-              <TouchableOpacity onPress={()=>{
-                handleNavigation()
-              }} style={{alignItems:'center', justifyContent:'center', height:50,width:'86%',backgroundColor:"black",borderRadius:4}}>
-                <PoppinsTextLeftMedium style={{color:'white', fontSize:20}} content={t("Proceed")}></PoppinsTextLeftMedium>
+              <TouchableOpacity onPress={handleNavigation} style={styles.proceedButton}>
+                <PoppinsTextLeftMedium style={styles.proceedButtonText} content={t("Proceed")}></PoppinsTextLeftMedium>
               </TouchableOpacity>
             }
     </BackUi>
@@ -426,30 +330,98 @@ const OtpLogin = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     width: "100%",
     alignItems: "center",
-    backgroundColor: "#F0F8F6",
+    justifyContent: "flex-start",
   },
-  semicircle: {
-    position: "absolute",
+  imageContainer: {
+    alignItems: 'center',
+    width: '100%',
+    justifyContent: 'flex-start',
+    height: 240,
+  },
+  logo: {
+    height: 200,
+    width: '100%',
+    resizeMode: "cover",
+  },
+  welcomeContainer: {
     alignItems: "center",
     justifyContent: "center",
-    flexDirection: "row",
+    marginLeft: 12,
   },
-  banner: {
-    height: 184,
-    width: "90%",
-    borderRadius: 10,
+  welcomeTitle: {
+    color: "#00A79D",
+    fontSize: 28,
+    fontWeight: "800",
   },
-  userListContainer: {
-    width: "100%",
-    height: 600,
+  welcomeSubtitle: {
+    color: "#00A79D",
+    fontSize: 16,
+  },
+  inputRow: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "center",
-    justifyContent: "center",
     marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  inputContainer: {
+    width: "80%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  iconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "white",
+    height: 70,
+    width: '10%',
+  },
+  checkboxContainer: {
+    width: "100%",
+    marginBottom: 20,
+    marginLeft: 10,
+  },
+  checkboxRow: {
+    flexDirection: "row",
+    marginHorizontal: 24,
+  },
+  termsText: {
+    color: "black",
+    marginBottom: 20,
+    fontSize: 14,
+    marginLeft: 8,
+    marginTop: 16,
+  },
+  termsLink: {
+    color: "#00A79D",
+    marginBottom: 20,
+    fontSize: 13,
+    marginTop: 16,
+  },
+  loader: {
+    width: 100,
+    height: 100,
+    alignSelf: "center",
+    marginTop: 10,
+  },
+  proceedButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    width: '86%',
+    backgroundColor: "black",
+    borderRadius: 4,
+  },
+  proceedButtonText: {
+    color: 'white',
+    fontSize: 20,
+  },
+  scrollContent: {
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingBottom: 80,
   },
 });
 
